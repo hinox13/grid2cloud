@@ -1,0 +1,14 @@
+{
+  "family": "S2_MATCHED_PV_CONTROL_s108",
+  "control_seed": 108,
+  "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+  "base_timestamps": 2829,
+  "excluded_singleton_strata": 1,
+  "generated": 2828,
+  "converged": 2828,
+  "accepted": 2828,
+  "rejected": {},
+  "wall_s": 272.66923235263675,
+  "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+  "working_tree_dirty": true
+}

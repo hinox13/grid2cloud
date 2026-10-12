@@ -1,0 +1,132 @@
+{
+  "ok": true,
+  "checks": {
+    "unique_scoped_bus_ids": {
+      "ok": true,
+      "detail": {
+        "n_buses": 38,
+        "duplicates": []
+      }
+    },
+    "all_region_branches_built": {
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "extra": []
+      }
+    },
+    "line_endpoints_valid": {
+      "ok": true,
+      "detail": {
+        "n_lines": 29
+      }
+    },
+    "trafo_endpoints_valid": {
+      "ok": true,
+      "detail": {
+        "n_trafos": 15
+      }
+    },
+    "line_voltage_consistency": {
+      "ok": true,
+      "detail": {
+        "mismatched_lines": []
+      }
+    },
+    "trafo_voltage_consistency (\u00b16% rated vs bus nominal)": {
+      "ok": true,
+      "detail": {
+        "off_nominal_lv_ratio": [
+          "Chaul End Primary 33kV -> Chaul End Primary 11kV",
+          "Chaul End Primary 33kV -> Chaul End Primary 11kV",
+          "Leighton Buzzard Primary 33kV -> Leighton Buzzard Primary 11kV",
+          "Sundon Primary 33kV -> Sundon Primary 11kV",
+          "Sundon Primary 33kV -> Sundon Primary 11kV",
+          "Sundon Primary 33kV -> Sundon Primary 11kV"
+        ]
+      }
+    },
+    "finite_positive_line_parameters": {
+      "ok": true,
+      "detail": {}
+    },
+    "finite_positive_trafo_parameters": {
+      "ok": true,
+      "detail": {}
+    },
+    "duplicate_circuits_reported": {
+      "ok": true,
+      "detail": {
+        "parallel_or_duplicate": [
+          {
+            "name": "SU33_LBUZT_1_(3A)",
+            "from_bus": "EPN:LBUZ3C",
+            "to_bus": "EPN:LBUZ31"
+          },
+          {
+            "name": "SU33_LBUZT_2_(3A)",
+            "from_bus": "EPN:LBUZ3D",
+            "to_bus": "EPN:LBUZ32"
+          },
+          {
+            "name": "SU33_LBUZT_1_(3B)",
+            "from_bus": "EPN:LBUZ31",
+            "to_bus": "EPN:LBUZ3C"
+          },
+          {
+            "name": "SU33_LBUZT_2_(3B)",
+            "from_bus": "EPN:LBUZ32",
+            "to_bus": "EPN:LBUZ3D"
+          }
+        ]
+      }
+    },
+    "single_connected_component": {
+      "ok": true,
+      "detail": {
+        "n_components": 1,
+        "sizes": [
+          38
+        ]
+      }
+    },
+    "no_isolated_buses": {
+      "ok": true,
+      "detail": {
+        "isolated": []
+      }
+    },
+    "transformers_connected_to_slack": {
+      "ok": true,
+      "detail": {}
+    },
+    "leaf_buses_reported": {
+      "ok": true,
+      "detail": {
+        "leaf_buses": [
+          "EPN:CHAP31",
+          "EPN:CHAU52",
+          "EPN:GFSF31",
+          "EPN:LBUZ5A",
+          "EPN:MFES31",
+          "EPN:SURP5A",
+          "EPN:SURP5B"
+        ]
+      }
+    },
+    "ybus_constructed": {
+      "ok": true,
+      "detail": {
+        "shape": [
+          37,
+          37
+        ],
+        "nnz": 121
+      }
+    },
+    "ybus_offdiag_symmetric (no phase shifters)": {
+      "ok": true,
+      "detail": {}
+    }
+  }
+}

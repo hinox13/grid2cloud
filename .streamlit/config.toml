@@ -1,0 +1,14 @@
+[theme]
+# light is the default; the app's "Dark" toggle switches its own palette (demo/c2g/theme.py)
+base = "light"
+primaryColor = "#b45309"
+backgroundColor = "#f5f7fb"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#0f172a"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

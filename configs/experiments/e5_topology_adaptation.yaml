@@ -1,0 +1,139 @@
+# E5 — topology-only adaptation of GENCO on SYNTHETIC Sundon data, then E4 repeated exactly.
+# PRE-REGISTERED 2026-10-06 before any E5 data generation, training or evaluation.
+# Parent: E4 frozen at commit 0f3101b (B — topology shift dominates; D — no measurable weather
+# gap under zero-shot). E4 outputs are never modified.
+
+experiment_id: e5_topology_adaptation
+question: >-
+  Can topology-only adaptation on synthetic Sundon data remove the zero-shot topology error floor,
+  and if it does, does real satellite weather then generalise differently from matched controls?
+
+isolation:               # ABSOLUTE — enforced in code (cloud2grid.genco.adaptation) and tests
+  training_validation_selection_normalizer_may_use: SUNDON SYNTHETIC DATA ONLY (datakit pools below)
+  allowed_training_root: data/interim/e5/synthetic
+  forbidden: [S1_WEATHER_ALIGNED, S1_WEATHER_ALIGNED_BASE_LTDS, S2_MATCHED_PV_CONTROL, E4D_TIMELINE,
+              hero events, satellite irradiance, PV ramps, weather classes, E4 S0 test states]
+  weather_populations_hidden_until: the selected checkpoint is frozen (metadata/e5_checkpoint_registry.yaml)
+
+model:
+  init: E4 checkpoint — gridfm/genco-pf-transfer@e7a98e99221ba8241385e491787aedb0940d5130
+    pretraining/best_model_state_dict.pt (pretrained on 100 subgrids)
+  architecture: unchanged (GNS_heterogeneous, hidden 48, 12 layers, 8 heads)
+
+official_workflow:       # GENCO paper transfer experiment, published in the model repo
+  command: gridfm_graphkit finetune --config <cfg> --data_path <ds> --model_path <pretrained>
+  recipe_source: finetune/case118_{N}/case118_{N}.yaml (identical for every N in the paper)
+  recipe:
+    optimizer: {learning_rate: 0.0005, beta1: 0.9, beta2: 0.999, lr_decay: 0.7, lr_patience: 5}
+    training: {batch_size: 64, epochs: 200, losses: [LayeredWeightedPhysics, MaskedBusMSE],
+               loss_weights: [0.1, 0.9], loss_args: [{base_weight: 0.5}, {}]}
+    callbacks: {patience: 100, tol: 0}
+    best_epoch: graphkit SaveBestModelStateDict on "Validation loss" (synthetic validation only)
+    normalization: HeteroDataMVANormalizer, fit_on_train (graphkit) = fitted on the run's
+      training subset only; saved with the checkpoint
+  differences_from_paper:
+    - network sundon_33kv instead of case118_ieee
+    - N counts TRAINING states; the paper's N is the total split 80/10/10
+    - explicit split files (fixed pools) instead of split_by_load_scenario_idx on one dataset;
+      pools are disjoint datakit runs, so no load scenario is shared between train/val/test
+    - "training seeds 0, 1, 2 (paper: seed 0 only)"
+
+synthetic_data:          # same methodology as E4 S0 (configs/experiments/e4_zero_shot.yaml)
+  recipe: >-
+    e4_zero_shot.yaml#s0_standard_synthetic.recipe, unchanged (agg_load_profile, admittance
+    σ 0.2, random N-1 × 22 variants, cost permutation, PF mode, DC baseline)
+  network_file: data/interim/e4/network/sundon_33kv.m   # E1 planning case + A1 slack limits
+  load_scenarios_per_seed: 43                            # as E4 S0
+  ac_gates: e4_zero_shot.yaml#ac_reference_gates (unchanged; every rejection reported)
+  pools:                 # disjoint datakit seeds; none equals an E4 S0 seed (0, 1, 2)
+    test:  {datakit_seeds: [5000, 5001, 5002]}             # ≈ 2.3k states, a fresh S0 replicate
+    val:   {datakit_seeds: "5100–5109"}                     # ≈ 7.7k states
+    train: {datakit_seeds: "6000–6069", minimum_accepted: 50000,
+            if_short: "extend with consecutive seeds 6070, 6071, … until >= 50,000 accepted"}
+  independence: >-
+    datakit builds every seed's load curve from the first 43 h of its default aggregate profile
+    (not UKPN, not weather); seeds differ in load noise, N-1 element and admittance draws.
+    E4 S0 used seeds 0–2. No real timestamp, UKPN reading or PV value enters any pool.
+  held_out_test: identical for every run; composition never changed after results
+
+ladder:
+  training_states: [0, 100, 1000, 10000, 50000]   # 0 = frozen E4 zero-shot (re-scored on the test pool)
+  order: ascending (never start at 50k)
+  training_subset: first N of a permutation of the train pool drawn with numpy default_rng(seed);
+    nested within a seed (100 ⊂ 1k ⊂ 10k ⊂ 50k), different across seeds
+  validation_subset: first ceil(N/8) of ONE fixed permutation of the val pool (rng 20261007),
+    same for every seed (paper ratio train:val = 8:1)
+  seeds: {100: [0, 1, 2], 1000: [0, 1, 2], 10000: [0, 1, 2], 50000: [0]}
+  saturation_rule: >-
+    50k may be skipped ONLY if, averaged over seeds, BOTH PBE_mean and P_residual on the held-out
+    synthetic test improve by < 5 % from 1k to 10k. Decided before any weather evaluation.
+  scratch_secondary:     # after the main curve; does pretraining reduce data needed?
+    command: gridfm_graphkit train (same recipe, random init)
+    runs: {1000: [0], 10000: [0]}
+
+synthetic_evaluation:    # every run, same held-out test pool; graphkit predict + E4 metric code
+  compare: ["zero_shot (E4 checkpoint + E4 fixed S0 normalizer, 116 MVA)", adapted, DC-PF, AC reference]
+  metrics: [PBE_mean, PBE_max, P_residual, Q_residual, V_error, angle_error, branch_P_error,
+            branch_Q_error, ref_import_error]
+  ref_import:            # REF-bus Pg (GENCO Pg_pred vs AC Pg_target)
+    sign_accuracy: share of states with sign(pred) == sign(AC)
+    mae_mw: mean |pred − AC|
+    correlation: Pearson r over states
+    dynamic_range: std(pred) / std(AC) over states
+  explicit_checks:       # reported per checkpoint
+    wrong_import_sign: sign_accuracy < 0.99
+    near_constant_import: dynamic_range < 0.2
+    weak_voltage_tracking: >-
+      median over non-REF buses of the per-bus Pearson r(Vm_pred, Vm_AC) across states < 0.9
+      (E4 definition: zero-shot median 0.40 on S1, −0.19 on S0)
+  efficiency: [training states, wall time, GPU, best epoch, epochs run, inference s/scenario]
+
+adaptation_gate:         # ALL on the held-out synthetic test; written before any training
+  per_checkpoint:
+    G1_pbe: "PBE_mean <= 0.10 × zero-shot PBE_mean (same test states)"
+    G2_active: "P_residual <= 0.10 × zero-shot P_residual"
+    G3_import_sign: "REF import sign correct on >= 99 % of test states"
+    G4_vs_dc: >-
+      P_residual <= 5 × DC-PF P_residual on the same states. 5× ≈ the ratio the GENCO paper itself
+      reports for this checkpoint ZERO-SHOT on its unseen-grid benchmark (IEEE 118: 11.08 / 2.30
+      = 4.8×); E4 Sundon zero-shot was 149×. The paper's fine-tuned 100 / 1k reach 2.4× / 0.84×.
+  tier_reported: "DC_PARITY if additionally P_residual <= DC-PF P_residual (not required)"
+  ladder_pass_size: "first N at which ALL seeds of that N pass"
+  if_none_pass: "STOP — E5-C topology adaptation insufficient; S1/S2 are NOT evaluated"
+
+checkpoint_selection:    # synthetic validation only; never S1/S2/ramps/heroes
+  candidates: gate-passing checkpoints (fine-tuned ladder; scratch runs excluded)
+  criterion: lowest PBE_mean on the FULL validation pool (all val seeds), tie (< 1 %) → smaller N
+  then: FREEZE (sha256 of weights + normalizer) in metadata/e5_checkpoint_registry.yaml and commit
+    BEFORE any weather-family inference
+
+repeat_e4:               # only with the frozen checkpoint and ITS normalizer
+  populations: [S0_STANDARD_SYNTHETIC, S1_WEATHER_ALIGNED, S2_MATCHED_PV_CONTROL (10 seeds),
+                E4D_TIMELINE, hero events]
+  reuse_exactly: E4 exported AC datasets (data/interim/e4/datasets), gate tables, S2 donors,
+    bootstrap blocks/seed, metrics, materiality, ramp bins, event definitions
+  only_change: GENCO weights + normalizer
+  statistics: e4_zero_shot.yaml#statistics (day-block bootstrap B=2000, seed 20261006)
+  material_weather_gap: "|relative gap S1 vs S2| >= 10 % AND its 95 % CI excludes 0 (PBE_mean primary)"
+  s1_vs_s0: reported as operating-distribution generalisation, never as a weather effect
+  ramp_bins_frozen:      # E4-D edges of |ΔPV_injected| (MW), within-half-hour transitions
+    edges: [0.0, 0.32592431591982063, 0.6728673498590775, 1.4023915421511415, 4.197577445533432]
+    labels: [low, medium, high, extreme]
+  heroes: [D01_20240615T0930, B02_20240615T0845, C01_20240415T1215, A02_20240823T1045]
+
+normalizer_sensitivity_after_adaptation:   # reported only; never used to choose anything
+  primary: the checkpoint's own train-fitted normalizer
+  alternatives: ["E4 fixed S0 base (116.0 MVA, existing file)", "E4 S1-own base (24.5 MVA, existing file; no new fit on weather data)"]
+  populations: [held-out synthetic test, S1_WEATHER_ALIGNED]
+
+outcomes:                # exactly one primary
+  A_TOPOLOGY_ADAPTATION_SUFFICIENT_WEATHER_ROBUST: >-
+    gate passed AND no material S1−S2 gap AND ramp response improved (|1 − median tracking ratio|
+    smaller than zero-shot in BOTH high and extreme bins)
+  B_TOPOLOGY_ADAPTATION_EXPOSES_WEATHER_GAP: gate passed AND material S1−S2 gap
+  C_TOPOLOGY_ADAPTATION_INSUFFICIENT: no checkpoint passes the gate
+  D_OTHER: gate passed, no material gap, but ramp response not improved — or anything else; explained
+  ramp_acceptable_reported: "extreme-bin median tracking ratio within [0.8, 1.25]"
+
+out_of_scope: [weather fine-tuning, satellite-aware training, weather calibration (E6),
+               Canterbury, Streamlit]

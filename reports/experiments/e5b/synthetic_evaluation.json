@@ -1,0 +1,21 @@
+{
+  "zero_shot_on_e5b_test": {
+    "PBE_mean": 48.21567966685894,
+    "P_residual": 35.63580311571477,
+    "dc_P_residual": 0.11805190023359595
+  },
+  "runs_passing_synthetic_gate": [],
+  "first_size_all_seeds_pass": null,
+  "saturation_rule": {
+    "improvement_1k_to_10k": {
+      "PBE_mean": 0.445501944888394,
+      "P_residual": 0.41934078715473666
+    },
+    "saturated": false
+  },
+  "selection_rule": "lowest PBE_mean on the FULL E5b validation pool, tie (< 1 %) \u2192 smaller N",
+  "selected": "e5b_ft_n10000_s2",
+  "selected_without_gate_pass": true,
+  "git_commit": "14ccda83aa52128dbd3ee16a728ae796909fbd9c",
+  "working_tree_dirty": true
+}

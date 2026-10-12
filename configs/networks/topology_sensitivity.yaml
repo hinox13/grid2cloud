@@ -1,0 +1,37 @@
+# Sundon topology / measurement-interpretation sensitivity (E2 follow-up).
+# Written BEFORE any variant was run. The baseline (sundon_base_ltds) is never modified.
+
+baseline: configs/networks/sundon_base_ltds.yaml
+validation_timestamps: reports/tables/e2_timestamps.csv   # identical set for every scenario
+
+variants:
+  - configs/networks/sundon_battery_meter_capacity_scaled.yaml
+  - configs/networks/sundon_observed_outages.yaml
+  - configs/networks/sundon_capacity_scaled_with_outages.yaml
+  - configs/networks/sundon_battery_meter_kcl_calibrated.yaml   # calibration experiment
+
+# A variant may REPLACE the baseline as the default network for later stages only if ALL hold
+# (evaluated on the primary scenario V0_none, same 200 timestamps, same metrics):
+replacement_rule:
+  evidence_independent_of_improved_targets: true   # interpretation not derived from the
+                                                   # validation series it improves
+  no_parameters_fitted_to_operational_targets: true  # excludes calibration experiments
+  import_nmae_must_decrease: true
+  share_core_fit_must_not_decrease: true            # r >= 0.9 and NMAE <= 0.15
+  max_core_circuit_nmae_worsening: 0.02             # absolute, any single core circuit
+  min_direction_agreement_core: 0.95
+  # "Prefer improvements that generalise": an improvement confined to one circuit, with no
+  # change elsewhere, is reported but does not by itself justify replacing the baseline.
+  min_core_circuits_improved_nmae: 2
+
+# Hypotheses considered and NOT implemented (no supporting evidence) — recorded for audit:
+not_implemented:
+  sundon_coupler_open: >-
+    Observed battery-circuit swings are shared equally by all three grid transformers
+    (night slopes 0.209 / 0.223 / 0.215 per MW), including GT2 on the SUND12 section. With
+    both 132 kV sections supplied at equal voltage (A05) an open coupler yields the same
+    solution as a closed one; no voltage/angle measurements exist to distinguish them.
+  sundon_secondary_path: >-
+    Contradicted by data: no metered 33 kV circuit co-moves with lne_SUND_CHAP (all night
+    slopes |s| <= 0.008 MW/MW, n > 3,000 each); the only unmetered outlet of SUND31
+    (SU33_SU11_2, ~2 MVA) cannot carry the missing ~30% of ±63 MW swings.

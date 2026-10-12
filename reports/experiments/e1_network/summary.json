@@ -1,0 +1,306 @@
+{
+  "region_id": "BSP:EPN:Sundon 33kV",
+  "selection_mode": "post_audit_manual",
+  "network": {
+    "buses": 38,
+    "lines": 29,
+    "transformers": 15,
+    "bus_couplers": 1,
+    "ext_grids": 1,
+    "load_nodes": 9,
+    "buses_by_kv": {
+      "11.0": 8,
+      "33.0": 25,
+      "132.0": 5
+    },
+    "geolocation_status": {
+      "resolved": 29,
+      "unresolved": 9
+    }
+  },
+  "structural_ok": true,
+  "provenance_counts": {
+    "PUBLISHED": 229,
+    "DERIVED": 117,
+    "ASSUMED": 47,
+    "MISSING": 9
+  },
+  "provenance_by_element": {
+    "bus": {
+      "ASSUMED": 0,
+      "DERIVED": 0,
+      "MISSING": 9,
+      "PUBLISHED": 67
+    },
+    "ext_grid": {
+      "ASSUMED": 1,
+      "DERIVED": 0,
+      "MISSING": 0,
+      "PUBLISHED": 0
+    },
+    "line": {
+      "ASSUMED": 0,
+      "DERIVED": 87,
+      "MISSING": 0,
+      "PUBLISHED": 87
+    },
+    "switch": {
+      "ASSUMED": 1,
+      "DERIVED": 0,
+      "MISSING": 0,
+      "PUBLISHED": 0
+    },
+    "trafo": {
+      "ASSUMED": 45,
+      "DERIVED": 30,
+      "MISSING": 0,
+      "PUBLISHED": 75
+    }
+  },
+  "sign_conventions": [
+    {
+      "tx_id": "sundon_33kv_gt1",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_1",
+      "r": 0.9661759204351914,
+      "expected_sign": 1,
+      "n": 46645,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt2",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_2",
+      "r": 0.9795769737935835,
+      "expected_sign": 1,
+      "n": 46601,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt3",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_3",
+      "r": 0.9757625924931066,
+      "expected_sign": 1,
+      "n": 46559,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t1",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_2_(1)",
+      "r": -0.9317794821312055,
+      "expected_sign": -1,
+      "n": 13890,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t2",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_1",
+      "r": 0.9574659194138065,
+      "expected_sign": 1,
+      "n": 36922,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t3",
+      "declared": "lv_to_hv",
+      "evidence": "SUND_LBUZ_3(1)",
+      "r": -0.8613002590013266,
+      "expected_sign": -1,
+      "n": 44299,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t1",
+      "declared": "hv_to_lv",
+      "evidence": "SU33_SU11_1",
+      "r": 0.7462902464098687,
+      "expected_sign": 1,
+      "n": 47016,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t2",
+      "declared": "hv_to_lv",
+      "evidence": "same_as sundon_11kv_t1",
+      "r": 0.940331679940806,
+      "expected_sign": 1,
+      "n": 50767,
+      "ok": true,
+      "class": "ASSUMED"
+    }
+  ],
+  "planning_peak_notes": [
+    "EPN-S0000000H8072: 31.3 MW (pf 0.96) over ['EPN:CHAU51', 'EPN:CHAU52']",
+    "EPN-S0000000H8123: 15.5 MW (pf 0.96) over ['EPN:LEWS51']",
+    "EPN-S0000000H8037: 30.0 MW (pf 0.96) over ['EPN:LBUZ51', 'EPN:LBUZ5A']",
+    "EPN-S0000000H8086: 12.5 MW (pf 0.96) over ['EPN:SURP5B', 'EPN:SURP5A', 'EPN:SUPR52']",
+    "['EPN:CHAP31']: 33 kV customer node(s) set to 0 (not a primary in LTDS 3a)"
+  ],
+  "ltds_bsp_max_demand_mw": 127.1,
+  "sanity_cases": [
+    {
+      "case": "LTDS 3a winter planning peak (unobserved 33 kV customers = 0)",
+      "converged": true,
+      "import_mw": 90.289,
+      "demand_mw": 89.3,
+      "losses_mw": 0.989,
+      "power_balance_residual_mw": -0.0,
+      "vm_min_pu": 0.9167,
+      "vm_max_pu": 1.0009,
+      "vm_11kv_range": "0.9167-1.0009",
+      "vm_33kv_range": "0.9453-0.9687",
+      "vm_132kv_range": "0.9999-1.0000",
+      "max_line_loading_pct": 92.1,
+      "max_line_loading_name": "Lne_NESD_T1",
+      "max_trafo_loading_pct": 79.1,
+      "ext_grid_sign": "positive p_mw = import into the model (pandapower generator convention)"
+    },
+    {
+      "case": "observed state 2023-12-05T23:30:00+00:00 (median import; customers = 0)",
+      "converged": true,
+      "import_mw": 53.809,
+      "demand_mw": 53.482,
+      "losses_mw": 0.327,
+      "power_balance_residual_mw": 0.0,
+      "vm_min_pu": 0.9622,
+      "vm_max_pu": 1.0228,
+      "vm_11kv_range": "0.9622-1.0228",
+      "vm_33kv_range": "0.9760-0.9868",
+      "vm_132kv_range": "1.0000-1.0000",
+      "max_line_loading_pct": 52.6,
+      "max_line_loading_name": "Lne_NESD_T1",
+      "max_trafo_loading_pct": 55.5,
+      "ext_grid_sign": "positive p_mw = import into the model (pandapower generator convention)",
+      "observed_import_mw": 54.52
+    }
+  ],
+  "solar_geometry": {
+    "connected_solar_assets": 12,
+    "connected_solar_mw": 43.945,
+    "assets_for_95pct": 4,
+    "mw_for_95pct": 43.0,
+    "share_of_total": 0.9785,
+    "pairwise_km": [
+      {
+        "a": "20 MW",
+        "b": "15 MW",
+        "distance_km": 4.11
+      },
+      {
+        "a": "20 MW",
+        "b": "6 MW",
+        "distance_km": 1.09
+      },
+      {
+        "a": "20 MW",
+        "b": "2 MW",
+        "distance_km": 2.01
+      },
+      {
+        "a": "15 MW",
+        "b": "6 MW",
+        "distance_km": 3.32
+      },
+      {
+        "a": "15 MW",
+        "b": "2 MW",
+        "distance_km": 5.34
+      },
+      {
+        "a": "6 MW",
+        "b": "2 MW",
+        "distance_km": 3.03
+      }
+    ],
+    "min_pairwise_km": 1.09,
+    "max_pairwise_km": 5.34,
+    "bbox": {
+      "lat_min": 51.91881829722974,
+      "lat_max": 51.95131714633963,
+      "lon_min": -0.6213571459987619,
+      "lon_max": -0.5639412317462732
+    },
+    "extent_ew_km": 3.94,
+    "extent_ns_km": 3.61,
+    "lsa_saf_pixel_km_nominal": 3.0,
+    "note": "Geometry only. Coordinates are ECR asset locations (PUBLISHED); no weather data used.",
+    "accepted_not_connected_solar_mw": 75.1
+  },
+  "opengridfm_export": {
+    "status": "ok",
+    "dataset_dir": "data/processed/opengridfm/sundon_33kv/raw",
+    "scenarios": [
+      "planning_peak",
+      "observed_2023-12-05T23:30:00+00:00"
+    ],
+    "datakit_vs_pandapower": [
+      {
+        "scenario": 0,
+        "datakit_pf_converged": true,
+        "max_abs_vm_diff_pu": 3.117539004726666e-09,
+        "max_abs_va_diff_deg": 1.397808429004499e-07,
+        "max_abs_pf_diff_mw": 2.2916423425556331e-07
+      },
+      {
+        "scenario": 1,
+        "datakit_pf_converged": true,
+        "max_abs_vm_diff_pu": 9.281641677461039e-09,
+        "max_abs_va_diff_deg": 4.695663999854105e-07,
+        "max_abs_pf_diff_mw": 7.036038756069729e-07
+      }
+    ],
+    "power_balance_from_exported_tables": [
+      {
+        "scenario": 0,
+        "max_p_mismatch_mw": 2.9387337008301984e-10,
+        "max_q_mismatch_mvar": 1.3460432768397368e-10,
+        "n_bus": 37
+      },
+      {
+        "scenario": 1,
+        "max_p_mismatch_mw": 1.3473482560755201e-06,
+        "max_q_mismatch_mvar": 8.777362339174033e-07,
+        "n_bus": 37
+      }
+    ],
+    "graphkit_load": {
+      "n_scenarios": 2,
+      "node_types": [
+        "bus",
+        "gen"
+      ],
+      "edge_types": [
+        [
+          "bus",
+          "connects",
+          "bus"
+        ],
+        [
+          "gen",
+          "connected_to",
+          "bus"
+        ],
+        [
+          "bus",
+          "connected_to",
+          "gen"
+        ]
+      ],
+      "n_bus_nodes": 37,
+      "n_gen_nodes": 1,
+      "n_bus_edges": 88,
+      "bus_feature_dim": 15,
+      "all_finite": true
+    }
+  }
+}

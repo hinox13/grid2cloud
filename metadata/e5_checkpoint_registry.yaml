@@ -1,0 +1,109 @@
+schema: cloud2grid E5 checkpoint registry v1
+frozen: true
+frozen_before_weather_evaluation: true
+selection_basis: 'synthetic only: gate on held-out synthetic test, then lowest PBE_mean
+  on the FULL validation pool (all val seeds), tie (< 1 %) → smaller N'
+selected: ft_n50000_s0
+evaluable_on_weather:
+- ft_n50000_s0
+zero_shot_reference:
+  source_id: genco_pf_transfer_checkpoints
+  repo_id: gridfm/genco-pf-transfer
+  revision: e7a98e99221ba8241385e491787aedb0940d5130
+  weights: pretraining/best_model_state_dict.pt
+  pretrain_config: pretraining/HGNS_PreTrain_subnets_100.yaml
+  rationale: The official checkpoint intended for transfer to unseen grids (GENCO
+    paper §5.5.3); its zero-shot use (no grid-specific training) is the paper's `finetune_case118_0_eval`
+    run. The case14 checkpoint of E0 is grid-specific and is NOT used on Sundon.
+  normalizer: E4 fixed S0 base (116.0 MVA)
+checkpoints:
+  ft_n50000_s0:
+    n_train: 50000
+    seed: 0
+    init: pretrained
+    representation: SUNDON_ORIGINAL
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n50000_s0/best_model_state_dict.pt
+      sha256: be88790a54b9391238f6d402ed637bd217b8229d2e733b18ccf67f8ec2cf6061
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n50000_s0/normalizer_stats.pt
+      sha256: abeeb82c8cca56e85992f182b63cad0feea79d2cf4d3a24443b58cd7ddc0a888
+      baseMVA_orig: 100.0
+      baseMVA: 113.84051513671875
+      vn_kv_max: 132.0
+    normalizer_fitted_on: training split only (50000 synthetic states)
+    training_split_sha256:
+      train: 81f9d33806bf359470d37ba8d6cf29a0e4fce4ccb3ec6eded79761223432c6f2
+      val: dcacf12fb7f2aa40e95c8f248d2fb28496d0ed6a697c618b4d51eff42bc47e86
+      test: fb59e6f77d1faa4a129c695ddccfc3f8f2d9f50dd3ecb6e91921f5c5fd57f757
+    best_epoch: 198
+    epochs_run: 200
+    best_validation_loss: 0.0009435197571292
+    val_pool_PBE_mean: 0.4829673767089844
+    held_out_synthetic_test:
+      PBE_mean: 0.4716563308809666
+      P_residual: 0.3765769781584435
+      dc_P_residual: 0.2253483886214449
+    init_checkpoint:
+      source_id: genco_pf_transfer_checkpoints
+      repo_id: gridfm/genco-pf-transfer
+      revision: e7a98e99221ba8241385e491787aedb0940d5130
+      weights: pretraining/best_model_state_dict.pt
+      pretrain_config: pretraining/HGNS_PreTrain_subnets_100.yaml
+      rationale: The official checkpoint intended for transfer to unseen grids (GENCO
+        paper §5.5.3); its zero-shot use (no grid-specific training) is the paper's
+        `finetune_case118_0_eval` run. The case14 checkpoint of E0 is grid-specific
+        and is NOT used on Sundon.
+    graphkit_config: data/interim/e5/configs/ft_n50000_s0.yaml
+    mlflow_run: data/interim/e5/mlruns/646660896189489083/b8b148f80c58482faff1f392a0b0d475
+all_runs:
+  ft_n10000_s0:
+    checkpoint_sha256: b6997dbe866d22d16b9c6c4521fdd68a80b32e3710d6ff7bed1aa33350a01815
+    normalizer_sha256: 5ab89f9b636c8472305875d92d51c412f16c0100a2b3c89c72f6aa2390c204e9
+    gate_pass: true
+  ft_n10000_s1:
+    checkpoint_sha256: d3045a6bb83d040670d82573c0a8434eaa41a79b538871a427764ae3ce825b35
+    normalizer_sha256: 0933acb20eb320730188db60e85187ba90b29f2fbe876a6ab57e822bf6a5ac75
+    gate_pass: true
+  ft_n10000_s2:
+    checkpoint_sha256: 22ddb5343cfdc642df9de4eb9a52e5ab7d70720b06da4dd90c916678d698b6b5
+    normalizer_sha256: d685a4546314da52d710775e214486b6775bc2d0b892f4dd9c81c21201fc1968
+    gate_pass: true
+  ft_n1000_s0:
+    checkpoint_sha256: a74bb37633fe83b40099d34e444f878e2e43eeb904279a07109fb38fb0ae04c2
+    normalizer_sha256: 89893efbb7449915b3d42e1f1b2744481309c8ddeeab1aba6d3bc128be4db797
+    gate_pass: false
+  ft_n1000_s1:
+    checkpoint_sha256: d07af09f03c5360ac0e343b86461834c7ef1edda7327d0a2e38d98e3648911fa
+    normalizer_sha256: bda223c1651d37d032160434afbded155ad18c8c37bf2ab2ad0b8f8f5042c840
+    gate_pass: false
+  ft_n1000_s2:
+    checkpoint_sha256: 82785db0f3511d038d78591daa6db65be32994e375768800021c27891a9533b7
+    normalizer_sha256: 06dcfda88d8aa33c4a8e8d39ffafd4ffdca9e4587eea26b3eef97eae2ba944a5
+    gate_pass: false
+  ft_n100_s0:
+    checkpoint_sha256: 1d15c555d8275a8beda562713dcedf4a693b8d9c99d86b75a68ae7cbbe037554
+    normalizer_sha256: 337ed11d9a88206b29d3954cd127cf1db445b0322040e80afb20d69429534183
+    gate_pass: false
+  ft_n100_s1:
+    checkpoint_sha256: d29321017f2ebf90d26590106e8c23dea306da97b366d6f798b5dfe2cc874db2
+    normalizer_sha256: 97e77f283be44ee43ca06eeb0f34fa6f4463e83809f0e5b522d43010582a761e
+    gate_pass: false
+  ft_n100_s2:
+    checkpoint_sha256: e5750cd71799a8bdf17220fdf268b9cb6247efff06a69120743dbd921454b50f
+    normalizer_sha256: eae88495f290e746be3508d2bbda3e991b510c8d25596f14ff6fac340490119d
+    gate_pass: false
+  ft_n50000_s0:
+    checkpoint_sha256: be88790a54b9391238f6d402ed637bd217b8229d2e733b18ccf67f8ec2cf6061
+    normalizer_sha256: abeeb82c8cca56e85992f182b63cad0feea79d2cf4d3a24443b58cd7ddc0a888
+    gate_pass: true
+  scratch_n10000_s0:
+    checkpoint_sha256: b9ab4f7dd2abe1d8e1d38578bffbdcdcf88f0ca45d2a9033be85de716213f46b
+    normalizer_sha256: 5ab89f9b636c8472305875d92d51c412f16c0100a2b3c89c72f6aa2390c204e9
+    gate_pass: true
+  scratch_n1000_s0:
+    checkpoint_sha256: dccf184bd2f094a7880075d3fe46f628f416cbc61a317b97238787420bb957e3
+    normalizer_sha256: 89893efbb7449915b3d42e1f1b2744481309c8ddeeab1aba6d3bc128be4db797
+    gate_pass: false
+git_commit: cb5b11d803c5a8d2f2106006e908a13c015b6321
+working_tree_dirty: true

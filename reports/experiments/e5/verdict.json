@@ -1,0 +1,14 @@
+{
+  "e5_primary_outcome": "D_OTHER",
+  "preregistered_rule_as_encoded_returned": "A_TOPOLOGY_ADAPTATION_SUFFICIENT_WEATHER_ROBUST",
+  "why_not_A": [
+    "The spec's outcome A requires 'synthetic topology-only adaptation enables generalisation to real satellite-driven operating states'. The encoded rule (cb5b11d) checked only gate + no material S1-S2 gap + |1 - ramp tracking ratio| in high/extreme bins; it omitted any real-state accuracy condition. That omission is an encoding error, recorded here rather than silently corrected.",
+    "Real-state accuracy did not improve materially: S1 active residual 28.85 MW adapted vs 28.90 MW zero-shot (295x DC-PF); no S1 state reaches PBE < 1 MVA or <= 5x DC-PF; per-bus voltage tracking r = -0.34 (zero-shot 0.40).",
+    "The ramp 'improvement' is overshoot: median tracking 1.37 (extreme) vs 0.46 zero-shot, while the absolute dP transition error is 4x larger (0.84 vs 0.21 MW per edge)."
+  ],
+  "why_not_B": "No material S1-S2 gap: PBE -0.075 MVA (-0.22 %, 95% CI of rel. [-1.4 %, +0.8 %]); every core metric not material.",
+  "why_not_C": "Held-out synthetic performance is good: PBE 0.47 MVA (-99 %), active residual 0.38 MW (1.7x DC-PF), import sign 100 %; the pre-registered gate passes at 10k (all seeds) and 50k.",
+  "D_statement": "Topology-only adaptation on standard datakit synthetic data removes the topology error floor ON THE SYNTHETIC DISTRIBUTION but does not transfer to real Sundon operating states, because the real states lie outside the synthetic support (every primary 11 kV load below the synthetic minimum; a 33 kV customer node swinging -24..+21 MW and PV export nodes that datakit holds at 0). S1 and S2 remain indistinguishable, so no weather-specific gap is detected; the weather question remains bounded by an operating-distribution (not topology, not weather) error floor.",
+  "selected_checkpoint": "ft_n50000_s0",
+  "frozen_commit": "61a4fbd"
+}

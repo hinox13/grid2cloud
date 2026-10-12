@@ -1,0 +1,229 @@
+{
+  "sources": [
+    {
+      "source_id": "eumetsat_eview",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "\"Contains modified EUMETSAT Meteosat data [year]\" (EUMETSAT Data Policy Art. 6.3, adapted: E-View / European HRV RGB, EO:EUM:DAT:MSG:EVIEW).",
+      "modified": true
+    },
+    {
+      "source_id": "lsa_saf_mdssftd",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Figures: \"EUMETSAT LSA SAF [MDSSFTD, LSA-207]\". Text: \"Data source: EUMETSAT LSA SAF, MSG Total and Diffuse Downward Surface Shortwave Flux, MDSSFTD, LSA-207.\" Papers: cite Carrer et al. (2019a, Remote Sens. 11, 2532; 2019b, Remote Sens. 11, 2630) and Trigo et al. (2011).",
+      "modified": true
+    },
+    {
+      "source_id": "lsa_saf_msg_static",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "\"EUMETSAT LSA SAF (static MSG grid and land/water mask)\".",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_grid_and_primary_sites",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (Grid and Primary Sites), licensed under CC BY 4.0. Contains data from Office for National Statistics licensed under the Open Government Licence v.3.0. Contains OS data \u00a9 Crown copyright and database right [2019-].",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_ltds_table_1_circuit_data",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (LTDS Table 1 Circuit data), licensed under CC BY 4.0.",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_ltds_table_2a_transformer_2w",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (LTDS Table 2a Transformer Data - 2W), licensed under CC BY 4.0.",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_ltds_table_3a_observed_demand",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (Long Term Development Statement (LTDS) Table 3a Observed Peak Demand), licensed under CC BY 4.0.",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_ecr_1mw_and_above",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (Embedded Capacity Register, 1 MW and above), licensed under CC BY 4.0. Contains data from Office for National Statistics licensed under the Open Government Licence v.3.0. Contains OS data \u00a9 Crown copyright and database right [2019-].",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_ecr_under_1mw",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (Embedded Capacity Register, under 1 MW), licensed under CC BY 4.0.",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_33kv_operational_half_hourly_epn",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (33kV Circuit Operational Data Half Hourly - EPN), licensed under CC BY 4.0.",
+      "modified": true
+    },
+    {
+      "source_id": "ukpn_33kv_operational_monthly",
+      "licence": "CC-BY-4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains UK Power Networks data (33kV Circuit Operational Data Monthly), licensed under CC BY 4.0.",
+      "modified": true
+    },
+    {
+      "source_id": "genco_paper",
+      "licence": "CC-BY-4.0",
+      "licence_url": "http://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Puech et al. (2026), GENCO - A Unified Neural Solver Embedded in a Development Framework for Steady-State Grid Analysis, arXiv:2608.09921.",
+      "modified": true
+    },
+    {
+      "source_id": "genco_pf_transfer_checkpoints",
+      "licence": "Apache-2.0",
+      "licence_url": "https://www.apache.org/licenses/LICENSE-2.0",
+      "attribution": "GENCO transfer checkpoints, gridfm/genco-pf-transfer (Apache-2.0); Puech et al. (2026), arXiv:2608.09921.",
+      "modified": true
+    },
+    {
+      "source_id": "gridfm_datakit",
+      "licence": "Apache-2.0",
+      "licence_url": "https://github.com/gridfm/gridfm-datakit/blob/main/LICENSE",
+      "attribution": "gridfm-datakit (Puech et al., 2025, arXiv:2512.14658), Apache-2.0.",
+      "modified": true
+    },
+    {
+      "source_id": "gridfm_graphkit",
+      "licence": "Apache-2.0",
+      "licence_url": "https://github.com/gridfm/gridfm-graphkit/blob/main/LICENSE",
+      "attribution": "gridfm-graphkit (GridFM), Apache-2.0. Cite Puech et al. (2026), arXiv:2608.09921.",
+      "modified": true
+    },
+    {
+      "source_id": "pandapower",
+      "licence": "BSD-3-Clause",
+      "licence_url": "https://github.com/e2nIEE/pandapower/blob/develop/LICENSE",
+      "attribution": "pandapower (Thurner et al., 2018, IEEE Trans. Power Syst. 33(6)), BSD-3-Clause.",
+      "modified": true
+    },
+    {
+      "source_id": "pvlib",
+      "licence": "BSD-3-Clause",
+      "licence_url": "https://github.com/pvlib/pvlib-python/blob/main/LICENSE",
+      "attribution": "pvlib python (Anderson et al., 2023, JOSS 8(92), 5994), BSD-3-Clause.",
+      "modified": true
+    }
+  ],
+  "gate_decisions": [
+    {
+      "source_id": "eumetsat_eview",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "lsa_saf_mdssftd",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "lsa_saf_msg_static",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_grid_and_primary_sites",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_ltds_table_1_circuit_data",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_ltds_table_2a_transformer_2w",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_ltds_table_3a_observed_demand",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_ecr_1mw_and_above",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_ecr_under_1mw",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_33kv_operational_half_hourly_epn",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "ukpn_33kv_operational_monthly",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "genco_paper",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "genco_pf_transfer_checkpoints",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "gridfm_datakit",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "gridfm_graphkit",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "pandapower",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    },
+    {
+      "source_id": "pvlib",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "reason": "ok"
+    }
+  ],
+  "modified_notice": "Cloud2Grid modified these data: satellite imagery re-encoded (WebP) and overlaid; irradiance sampled at asset locations; PV estimated with pvlib; network topology reconstructed from LTDS; loads scaled to operational data; power flows simulated.",
+  "attribution_text": "\"Contains modified EUMETSAT Meteosat data [year]\" (EUMETSAT Data Policy Art. 6.3, adapted: E-View / European HRV RGB, EO:EUM:DAT:MSG:EVIEW). Licence: https://creativecommons.org/licenses/by/4.0/\nFigures: \"EUMETSAT LSA SAF [MDSSFTD, LSA-207]\". Text: \"Data source: EUMETSAT LSA SAF, MSG Total and Diffuse Downward Surface Shortwave Flux, MDSSFTD, LSA-207.\" Papers: cite Carrer et al. (2019a, Remote Sens. 11, 2532; 2019b, Remote Sens. 11, 2630) and Trigo et al. (2011). Licence: https://creativecommons.org/licenses/by/4.0/\n\"EUMETSAT LSA SAF (static MSG grid and land/water mask)\". Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (Grid and Primary Sites), licensed under CC BY 4.0. Contains data from Office for National Statistics licensed under the Open Government Licence v.3.0. Contains OS data \u00a9 Crown copyright and database right [2019-]. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (LTDS Table 1 Circuit data), licensed under CC BY 4.0. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (LTDS Table 2a Transformer Data - 2W), licensed under CC BY 4.0. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (Long Term Development Statement (LTDS) Table 3a Observed Peak Demand), licensed under CC BY 4.0. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (Embedded Capacity Register, 1 MW and above), licensed under CC BY 4.0. Contains data from Office for National Statistics licensed under the Open Government Licence v.3.0. Contains OS data \u00a9 Crown copyright and database right [2019-]. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (Embedded Capacity Register, under 1 MW), licensed under CC BY 4.0. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (33kV Circuit Operational Data Half Hourly - EPN), licensed under CC BY 4.0. Licence: https://creativecommons.org/licenses/by/4.0/\nContains UK Power Networks data (33kV Circuit Operational Data Monthly), licensed under CC BY 4.0. Licence: https://creativecommons.org/licenses/by/4.0/\nPuech et al. (2026), GENCO - A Unified Neural Solver Embedded in a Development Framework for Steady-State Grid Analysis, arXiv:2608.09921. Licence: http://creativecommons.org/licenses/by/4.0/\nGENCO transfer checkpoints, gridfm/genco-pf-transfer (Apache-2.0); Puech et al. (2026), arXiv:2608.09921. Licence: https://www.apache.org/licenses/LICENSE-2.0\ngridfm-datakit (Puech et al., 2025, arXiv:2512.14658), Apache-2.0. Licence: https://github.com/gridfm/gridfm-datakit/blob/main/LICENSE\ngridfm-graphkit (GridFM), Apache-2.0. Cite Puech et al. (2026), arXiv:2608.09921. Licence: https://github.com/gridfm/gridfm-graphkit/blob/main/LICENSE\npandapower (Thurner et al., 2018, IEEE Trans. Power Syst. 33(6)), BSD-3-Clause. Licence: https://github.com/e2nIEE/pandapower/blob/develop/LICENSE\npvlib python (Anderson et al., 2023, JOSS 8(92), 5994), BSD-3-Clause. Licence: https://github.com/pvlib/pvlib-python/blob/main/LICENSE"
+}

@@ -1,0 +1,54 @@
+# E3 weather-event discovery — PRE-REGISTERED (written 2 Oct 2026, before any MDSSFTD data or
+# GENCO results on weather scenarios existed). Inputs: satellite irradiance + estimated PV only.
+# Never: GENCO error, AC solver error, network loading, later model performance (README §18–19).
+
+search_period:
+  start: "2024-04-01T00:00:00Z"
+  end: "2024-09-30T23:45:00Z"
+  rationale: >-
+    2024 is where Sundon's E2 inputs are complete (12 validation timestamps in every 2024 month;
+    reports/tables/e2_timestamps.csv). April–September gives solar elevation >= 30° at midday
+    at 52°N and long days. The fleet active in this period is fixed (no commissioning inside
+    it): see reports/e3_pv_forcing.md §historical capacity.
+  daylight_min_elevation_deg: 10.0     # slots below this are not requested
+step_minutes: 15
+asset_set: sundon_active_2024          # resolved by scripts/build_pv_timeseries.py
+satellite_version_note: record product algorithm_version from file attributes in the output
+
+window_slots: 12                       # 3 h windows
+thresholds:
+  min_field_valid: 0.9                 # share of analysis-box pixels GOOD/NIGHT
+  min_elevation_deg: 20.0              # every slot in a window
+  asset_ramp_affected: 0.20            # |Δcf| per slot for "capacity strongly affected"
+  significant_ramp: 0.15               # |Δ fleet cf| per slot
+  recovery_tolerance: 0.05
+  kc_clear: 0.80                       # clear-sky index thresholds for the field fractions
+  kc_cloudy: 0.40
+
+classes:
+  A:   # clear-sky / control
+    min_mean_kc: 0.85
+    max_std_kc_time: 0.05
+    max_field_std_kc: 0.06
+    max_abs_ramp: 0.05
+  B:   # fast irradiance / PV ramp
+    min_one_step_ramp: 0.40
+    min_two_step_ramp: 0.50
+  C:   # broken-cloud variability
+    min_sign_changes: 3
+    min_significant_ramps: 4
+    kc_min: 0.30
+    kc_max: 0.85
+  D:   # coherent cloud transition (analysis-box field)
+    min_frac_start: 0.70
+    min_frac_end: 0.70
+    min_abs_trend_rho: 0.80
+    min_field_grad: 0.02               # mean |∇kc| per km at some slot
+  E:   # low / stable radiation (overcast control)
+    max_mean_kc: 0.30
+    max_std_kc_time: 0.05
+    max_field_std_kc: 0.06
+
+selection:
+  per_class: 3
+  min_separation_h: 24                 # at most one event per class per day

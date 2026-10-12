@@ -1,0 +1,446 @@
+{
+  "families": {
+    "S2_MATCHED_PV_CONTROL_s110": {
+      "family": "S2_MATCHED_PV_CONTROL_s110",
+      "control_seed": 110,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 270.7296537877992,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S1_WEATHER_ALIGNED": {
+      "family": "S1_WEATHER_ALIGNED",
+      "interpretation": "sundon_capacity_scaled_with_outages",
+      "generated": 2829,
+      "ac_attempted": 2829,
+      "converged": 2829,
+      "accepted": 2829,
+      "rejected": {},
+      "days": 136,
+      "wall_s": 276.57808981323615,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s102": {
+      "family": "S2_MATCHED_PV_CONTROL_s102",
+      "control_seed": 102,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 259.90527585707605,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s107": {
+      "family": "S2_MATCHED_PV_CONTROL_s107",
+      "control_seed": 107,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 470.79681675182655,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s104": {
+      "family": "S2_MATCHED_PV_CONTROL_s104",
+      "control_seed": 104,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 259.82160572707653,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s101": {
+      "family": "S2_MATCHED_PV_CONTROL_s101",
+      "control_seed": 101,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 281.72412193659693,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s108": {
+      "family": "S2_MATCHED_PV_CONTROL_s108",
+      "control_seed": 108,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 272.66923235263675,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s109": {
+      "family": "S2_MATCHED_PV_CONTROL_s109",
+      "control_seed": 109,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 470.4844887428917,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S1_WEATHER_ALIGNED_BASE_LTDS": {
+      "family": "S1_WEATHER_ALIGNED_BASE_LTDS",
+      "interpretation": "sundon_base_ltds",
+      "generated": 2829,
+      "ac_attempted": 2829,
+      "converged": 2829,
+      "accepted": 2829,
+      "rejected": {},
+      "days": 136,
+      "wall_s": 221.65968853700906,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s106": {
+      "family": "S2_MATCHED_PV_CONTROL_s106",
+      "control_seed": 106,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 263.5677223429084,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s103": {
+      "family": "S2_MATCHED_PV_CONTROL_s103",
+      "control_seed": 103,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 281.1335258092731,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S0_STANDARD_SYNTHETIC": {
+      "family": "S0_STANDARD_SYNTHETIC",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "requested_max": 2838,
+      "generated_by_datakit": 2671,
+      "not_returned_by_datakit": 167,
+      "accepted": 2297,
+      "rejected": {
+        "voltage_sanity": 374
+      },
+      "topology_intact_accepted": 0,
+      "wall_s": 112.49137527728453,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "E4D_TIMELINE": {
+      "family": "E4D_TIMELINE",
+      "interpretation": "sundon_capacity_scaled_with_outages",
+      "generated": 5667,
+      "ac_attempted": 5667,
+      "converged": 5667,
+      "accepted": 5667,
+      "rejected": {},
+      "days": 136,
+      "wall_s": 548.596158914268,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    },
+    "S2_MATCHED_PV_CONTROL_s105": {
+      "family": "S2_MATCHED_PV_CONTROL_s105",
+      "control_seed": 105,
+      "method": "stratified PV\u2013load reassignment (derangement within month \u00d7 UTC time-of-day)",
+      "base_timestamps": 2829,
+      "excluded_singleton_strata": 1,
+      "generated": 2828,
+      "converged": 2828,
+      "accepted": 2828,
+      "rejected": {},
+      "wall_s": 279.23910587327555,
+      "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+      "working_tree_dirty": true
+    }
+  },
+  "summary_primary": {
+    "S0_STANDARD_SYNTHETIC": {
+      "n": 2297,
+      "PBE_mean": 45.289581050133776,
+      "P_residual": 33.65214492198328,
+      "dc_P_residual": 0.2251804631659362,
+      "V_error": 0.03731033388114931
+    },
+    "S1_WEATHER_ALIGNED": {
+      "n": 2829,
+      "PBE_mean": 48.98778518428647,
+      "P_residual": 28.89509353624211,
+      "dc_P_residual": 0.09775644551413047,
+      "V_error": 0.023707182719755738
+    },
+    "S1_WEATHER_ALIGNED_BASE_LTDS": {
+      "n": 2829,
+      "PBE_mean": 48.93416960882441,
+      "P_residual": 28.906557110098404,
+      "dc_P_residual": 0.097932771191236,
+      "V_error": 0.023857204092106198
+    },
+    "E4D_TIMELINE": {
+      "n": 5667,
+      "PBE_mean": 48.98453448086751,
+      "P_residual": 28.893771958641427,
+      "dc_P_residual": 0.09771727270536187,
+      "V_error": 0.023692410195698933
+    },
+    "S1_WEATHER_ALIGNED_ownnorm": {
+      "n": 2829,
+      "PBE_mean": 200.86724830862067,
+      "P_residual": 175.60491881871147,
+      "dc_P_residual": 0.09775644551413047,
+      "V_error": 0.02803400075099322
+    },
+    "S2_MATCHED_PV_CONTROL (10 seeds pooled)": {
+      "n": 28280,
+      "PBE_mean": 48.98832798894426,
+      "P_residual": 28.895409631459344,
+      "dc_P_residual": 0.09775373016342483,
+      "V_error": 0.023707178446742187
+    },
+    "S2_MATCHED_PV_CONTROL_s101": {
+      "n": 2828,
+      "PBE_mean": 48.98874790429057,
+      "P_residual": 28.895186710897228,
+      "dc_P_residual": 0.0977529646651615,
+      "V_error": 0.02370742683679582
+    },
+    "S2_MATCHED_PV_CONTROL_s102": {
+      "n": 2828,
+      "PBE_mean": 48.987631526661055,
+      "P_residual": 28.895035136707097,
+      "dc_P_residual": 0.0977555067594842,
+      "V_error": 0.0237083930467536
+    },
+    "S2_MATCHED_PV_CONTROL_s103": {
+      "n": 2828,
+      "PBE_mean": 48.98804255354691,
+      "P_residual": 28.89490391813545,
+      "dc_P_residual": 0.09775396633166973,
+      "V_error": 0.02370692355639948
+    },
+    "S2_MATCHED_PV_CONTROL_s104": {
+      "n": 2828,
+      "PBE_mean": 48.98876443644393,
+      "P_residual": 28.896016092583686,
+      "dc_P_residual": 0.09775401811084963,
+      "V_error": 0.023707398476245086
+    },
+    "S2_MATCHED_PV_CONTROL_s105": {
+      "n": 2828,
+      "PBE_mean": 48.98786803384481,
+      "P_residual": 28.89567259582131,
+      "dc_P_residual": 0.09775616605591456,
+      "V_error": 0.02370782481121819
+    },
+    "S2_MATCHED_PV_CONTROL_s106": {
+      "n": 2828,
+      "PBE_mean": 48.9888027803564,
+      "P_residual": 28.895868702015747,
+      "dc_P_residual": 0.09775607704641616,
+      "V_error": 0.023707734578311487
+    },
+    "S2_MATCHED_PV_CONTROL_s107": {
+      "n": 2828,
+      "PBE_mean": 48.98782742377555,
+      "P_residual": 28.894932930337994,
+      "dc_P_residual": 0.09775200985231323,
+      "V_error": 0.023705688414534045
+    },
+    "S2_MATCHED_PV_CONTROL_s108": {
+      "n": 2828,
+      "PBE_mean": 48.989142621592045,
+      "P_residual": 28.896003919409896,
+      "dc_P_residual": 0.09775160788949003,
+      "V_error": 0.023706377751972457
+    },
+    "S2_MATCHED_PV_CONTROL_s109": {
+      "n": 2828,
+      "PBE_mean": 48.98831581968229,
+      "P_residual": 28.895385800864773,
+      "dc_P_residual": 0.09775136610556061,
+      "V_error": 0.0237064696766062
+    },
+    "S2_MATCHED_PV_CONTROL_s110": {
+      "n": 2828,
+      "PBE_mean": 48.98813678924906,
+      "P_residual": 28.89509050782027,
+      "dc_P_residual": 0.09775361881738857,
+      "V_error": 0.02370754731858552
+    }
+  },
+  "topology_poor": true,
+  "weather_gap_material": false,
+  "decision": [
+    "B_TOPOLOGY_SHIFT_DOMINATES",
+    "D_NO_MATERIAL_WEATHER_GAP"
+  ],
+  "primary_gap_S1_vs_S2": {
+    "metric": "PBE_mean",
+    "comparison": "S1 \u2212 S2_MATCHED_PV_CONTROL (paired; mean over 10 seeds)",
+    "metric_a": 48.98822412666202,
+    "metric_control": 48.988328028602005,
+    "difference": -0.00010390193998688346,
+    "relative": -2.120952973251505e-06,
+    "diff_ci": [
+      -0.004482147570696604,
+      0.0038635569460128073
+    ],
+    "rel_ci": [
+      -9.14502364305153e-05,
+      7.897402525979247e-05
+    ],
+    "material": false,
+    "n_pairs": 2828.0,
+    "blocks": 136.0
+  },
+  "s0_vs_s1_PBE": {
+    "metric": "PBE_mean",
+    "comparison": "S1 \u2212 S0_STANDARD_SYNTHETIC (operating distribution incl. topology/admittance perturbation)",
+    "metric_a": 48.98778518428647,
+    "metric_control": 45.289581050133776,
+    "difference": 3.6982041341526966,
+    "relative": 0.0816568413397097,
+    "diff_ci": [
+      0.8642350769580153,
+      6.551538173825832
+    ],
+    "rel_ci": [
+      0.01799060301020562,
+      0.15439049714785125
+    ],
+    "material": false,
+    "n_pairs": NaN,
+    "blocks": NaN
+  },
+  "detection": {
+    "S0_STANDARD_SYNTHETIC": {
+      "overload_tp": 2292,
+      "overload_fn": 0,
+      "overload_fp": 5,
+      "vlim_tp": 846,
+      "vlim_fn": 1217,
+      "vlim_fp": 73
+    },
+    "S1_WEATHER_ALIGNED": {
+      "overload_tp": 69,
+      "overload_fn": 0,
+      "overload_fp": 2760,
+      "vlim_tp": 0,
+      "vlim_fn": 417,
+      "vlim_fp": 0
+    },
+    "S1_WEATHER_ALIGNED_BASE_LTDS": {
+      "overload_tp": 158,
+      "overload_fn": 0,
+      "overload_fp": 2671,
+      "vlim_tp": 0,
+      "vlim_fn": 446,
+      "vlim_fp": 0
+    },
+    "E4D_TIMELINE": {
+      "overload_tp": 133,
+      "overload_fn": 0,
+      "overload_fp": 5534,
+      "vlim_tp": 0,
+      "vlim_fn": 835,
+      "vlim_fp": 0
+    },
+    "S1_WEATHER_ALIGNED_ownnorm": {
+      "overload_tp": 69,
+      "overload_fn": 0,
+      "overload_fp": 2760,
+      "vlim_tp": 0,
+      "vlim_fn": 417,
+      "vlim_fp": 0
+    },
+    "S2_MATCHED_PV_CONTROL": {
+      "overload_tp": 690,
+      "overload_fn": 0,
+      "overload_fp": 27590,
+      "vlim_tp": 0,
+      "vlim_fn": 3940,
+      "vlim_fp": 0
+    }
+  },
+  "transitions": {
+    "all_pairs": 5396,
+    "within_halfhour": 2739,
+    "dP_err_within": 0.05912123993039131,
+    "dP_ac_within": 0.06205063685774803,
+    "dP_err_crossing": 0.8143389821052551,
+    "dP_ac_crossing": 0.7318387031555176,
+    "pairs_with_branch_set_change": 2
+  },
+  "hero_not_evaluable": {
+    "A01_20240916T1145": "no complete E2 base state in the event window"
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+    "working_tree_dirty": true
+  },
+  "s1_vs_s1_base_ltds_PBE": [
+    48.98778518428647,
+    48.93416960882441
+  ]
+}

@@ -1,0 +1,59 @@
+# SATELLITE EXPERIMENT SUITABILITY ANALYSIS (E3 preparation).
+# NOT a new E0 ranking: E0's ranking, rule and result are unchanged. This compares the E0
+# shortlist for the satellite stage only. Written BEFORE computing the geometry of Histon and
+# Canterbury South (Sundon's geometry was already reported in E1).
+# No satellite data, weather data or GENCO output is used.
+
+regions:
+  - "BSP:EPN:Sundon 33kV"
+  - "BSP:SPN:Canterbury South 33kV"
+  - "BSP:EPN:Histon Grid 132kV +1"
+
+assets:
+  scope: "connected solar attributed to the region's nodes by identifiers (E0-D method)"
+  major_share: 0.95          # "major assets" = smallest set holding >= 95% of capacity
+  share_levels: [0.5, 0.8, 0.9, 0.95]
+
+# Approximate pixel footprint of the planned quantitative product. LSA SAF MDSSFTD (LSA-207)
+# is on the MSG/SEVIRI grid: nominal 3 km sampling at the sub-satellite point (0°E, 0°N).
+# Off-nadir footprint approximated as dx = 3 km × (slant range / 35,786 km) (E–W) and
+# dy = dx / cos(viewing zenith) (N–S). APPROXIMATION: actual grid geometry, resampling and
+# product effective resolution must be checked on real files later.
+pixel_model:
+  nominal_km: 3.0
+  sub_satellite_lon_deg: 0.0
+  grid_offset_draws: 500        # Monte Carlo over unknown grid phase
+  seed: 20261002
+
+# Cloud propagation (approximation): typical low/mid cloud advection 5–15 m/s, mostly
+# westerly over England; product sampling every 15 min.
+propagation:
+  speeds_ms: [5, 10, 15]
+  sampling_min: 15
+
+# H2 (spatial correlation matters) classification — pre-defined criteria. ALL conditions of a
+# level must hold; otherwise the next level is tested.
+h2_criteria:
+  STRONG:
+    effective_independent_pixels_min: 4.0   # capacity-weighted, mean over grid offsets
+    weighted_mean_pairwise_km_min: 10.0     # major assets, capacity-pair-weighted
+    major_ew_span_km_min: 9.0               # ≈ one 15-min frame at 10 m/s
+    normalised_hhi_max: 0.15
+    p_capable_circuits_min: 3
+  PLAUSIBLE:
+    effective_independent_pixels_min: 2.0
+    weighted_mean_pairwise_km_min: 5.0
+    major_ew_span_km_min: 4.5               # ≈ half a frame at 10 m/s
+    normalised_hhi_max: 0.35
+    p_capable_circuits_min: 1
+  WEAK: "anything that does not meet PLAUSIBLE"
+
+# Experiment-structure decision rule (README §46 order; avoid moving for marginal gains):
+decision_rule:
+  option_A_if: "Sundon H2 >= PLAUSIBLE"
+  option_C_if: >-
+    another region is STRONG for H2 while Sundon is WEAK, AND that region has >= 3
+    P-capable circuits (sufficient electrical observability to justify repeating E1/E2),
+    AND its overall advantage is not marginal (>= 2 classification levels or Sundon WEAK on
+    observability too)
+  option_B_otherwise: "Sundon primary (temporal/generalisation); best H2 region secondary"

@@ -1,0 +1,5 @@
+candidate_region,level,overall_score,rank_equal_weights,p_top1,p_top3,median_rank,worst_rank_leave_one_out
+BSP:EPN:Sundon 33kV,bsp_subtree,0.7679,1,0.4355,0.971,2.0,2
+BSP:SPN:Canterbury South 33kV,bsp_subtree,0.7548,2,0.3625,0.987,2.0,3
+BSP:EPN:Histon Grid 132kV +1,bsp_subtree,0.732,3,0.1915,0.7775,3.0,4
+BSP:EPN:Fulbourn Grid 33kV,bsp_subtree,0.6781,4,0.0105,0.2645,4.0,4

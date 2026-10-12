@@ -1,0 +1,129 @@
+# E5d — physics-response-aware training (training OBJECTIVE intervention; data envelope unchanged).
+# PRE-REGISTERED 2026-10-09 before any E5d pair generation, training or evaluation.
+# Parents: E4 0f3101b, E5 acda62c (D), E5b 4569a81 (E5B-C), E5c 5bf4f4d (E5C-B, frozen, unmodified).
+# Starting commit: 7176b91 (demo release cloud2grid-demo-v1.4; working tree clean).
+# Gates, selection, transfer criteria, verdicts, weather rule: configs/experiments/e5d_selection.yaml.
+# This is the FINAL planned model-training experiment. No E5e / further loss search follows
+# automatically, whatever the result.
+
+experiment_id: e5d_response_training
+question: >-
+  Can physics-response-aware training teach GENCO the correct sensitivity to small generation
+  perturbations while preserving its absolute state accuracy and generalisation to real operation?
+  NOT weather fitting. Training, validation, normalisation, loss design, λ and checkpoint selection
+  use static network / asset metadata + synthetic states + AC solutions of those states ONLY.
+
+intervention:
+  changed_relative_to_e5c: >-
+    The training objective only: L_total = L_original + λ · κ · L_response, where L_response
+    supervises the change of GENCO's outputs between paired synthetic AC states that differ in ONE
+    controllable input (PV generation, CHAP31 battery, or one primary load).
+  unchanged_relative_to_e5c:
+    - generator-aware representation (explicit LBUZ31/32/33 gen nodes; src/cloud2grid/genco/generator_aware.py)
+    - E5c operating envelope (E5b loads + CHAP31 ±49.5 MW + zero-inflated generation mixture)
+    - absolute training data: the E5c pool and the EXACT E5c 10k training / validation / test splits per seed
+    - normalizer rule: graphkit fit_on_train on the run's 10k E5c training split only
+    - >-
+      official recipe — gridfm/genco-pf-transfer@e7a98e9 pretrained init, finetune/case118_1000
+      (lr 5e-4, ReduceLROnPlateau 0.7 / 5, batch 64, 200 epochs, early-stopping patience 100,
+      L_original = 0.1 · LayeredWeightedPhysics + 0.9 · MaskedBusMSE)
+    - topology / admittance methodology (pairs: E1 planning case, as the E5c physics probes)
+  implementation: >-
+    graphkit plugin task `PowerFlowResponse` (src/cloud2grid/genco/response_task.py) loaded with
+    `gridfm_graphkit finetune --plugins cloud2grid.genco.response_task`. It subclasses graphkit's
+    PowerFlowTask; the original loss, model, transforms and physics decoder are graphkit's own.
+    No parameter is added, so checkpoints load into the unchanged PowerFlow task for `predict`.
+
+response_pairs:           # scripts/build_e5d_pairs.py; sampler src/cloud2grid/scenarios/response_pairs_e5d.py
+  network: "E1 planning case (LTDS topology, unperturbed admittances, intact), A1 slack ±270 — as E5c probes"
+  solver: "pandapower AC + PowerModels AC reference + E4 AC gates (export_stream), then generator-aware re-encode"
+  base_states: "E5c envelope sampler E5cLoadGenerator (static metadata only)"
+  sets:                   # independent base states per set (different sampler seeds); disjointness tested
+    train:      {sampler_seed: 9700, n_base: 3000}
+    validation: {sampler_seed: 9800, n_base: 500}
+    test:       {sampler_seed: 9900, n_base: 500}
+  pair_rng: "numpy default_rng([sampler_seed, 7_000_002])"
+  pairs_per_base: "exactly one pv, one battery and one load pair"
+  one_variable_rule: "B equals A in every injection except the perturbed element (P, and Q at fixed power factor for load)"
+  magnitudes:             # from STATIC capacities / envelope bounds; never from real 2024 ramps
+    pv:                   # total LBUZ generation G ∈ [0, 7.5] MW (ECR 6 solar + 1.5 wind), equal split over 3 buses, Q = 0
+      capacity_mw: 7.5
+      classes:            # class drawn per pair with these probabilities
+        small:    {p: 0.30, abs_delta_mw: [0.05, 0.375]}   # ≤ 5 % of capacity
+        moderate: {p: 0.30, abs_delta_mw: [0.375, 1.5]}    # 5–20 %
+        large:    {p: 0.25, abs_delta_mw: [1.5, 7.5]}      # 20–100 %
+        on_off:   {p: 0.15, rule: "G_A > 0 → G_B = 0 (switch off); G_A = 0 → G_B ~ U(0.05, 7.5) (switch on)"}
+    battery:              # CHAP31 ∈ [−49.5, +49.5] MW (ECR), unity pf
+      capacity_mw: 49.5
+      classes:
+        small:    {p: 0.3333, abs_delta_mw: [0.25, 2.5]}
+        moderate: {p: 0.3333, abs_delta_mw: [2.5, 10.0]}
+        large:    {p: 0.3334, abs_delta_mw: [10.0, 49.5]}
+    load:                 # ONE primary node, uniform over the 8; bounds = E5b envelope [min_mw, max_mw] of that node
+      reference: "node envelope max_mw (LTDS 3a winter MD / 2029-30 forecast × E1 node share)"
+      classes:
+        small:    {p: 0.3333, abs_delta_frac_of_max: [0.01, 0.05]}
+        moderate: {p: 0.3333, abs_delta_frac_of_max: [0.05, 0.20]}
+        large:    {p: 0.3334, abs_delta_frac_of_max: [0.20, 0.60]}
+      min_abs_delta_mw: 0.05
+      reactive: "Q_B = P_B × (Q_A / P_A) (state power factor kept; Q/P = 0.29 if |P_A| < 1e-9, as E5c)"
+  direction: >-
+    up / down with probability ½ each. If the chosen direction would leave the element's bounds,
+    the other direction is used; if both would, the chosen direction is clipped to the bound
+    (for pv this yields 0 ↔ full transitions). Exact-zero ↔ non-zero transitions arise from the
+    pv on_off class and from exact-zero base states (E5c mixture: 6.25 %).
+  x_definition: "Δ net withdrawal at the perturbed node, B − A (MW): +load, −generation, +battery charging (as E5c)"
+  incomplete_pairs: "dropped if either member fails an AC gate (reported per set)"
+  use:
+    train: "response term of the training loss (+ the per-family scales σ)"
+    validation: "Validation total loss (best epoch, early stopping, LR plateau) and the synthetic response gate"
+    test: "reporting and the synthetic part of the verdict only"
+  also_held_out: "E5c physics probes (validation seed 9500, test seed 9600): reporting only, never trained on"
+
+response_loss:            # src/cloud2grid/genco/response_loss.py — exact formula
+  outputs:                # o ∈ families; all in graphkit's normalised units (Pg, flows / baseMVA; Va rad; Vm pu)
+    import: "REF-bus active generation (decoded PG output at the REF bus) — 1 element per graph"
+    branch_P: "sending-end active flow of every directed branch, ComputeBranchFlow on the clamped prediction (as graphkit test/predict)"
+    branch_Q: "sending-end reactive flow of every directed branch, same"
+    Vm: "every bus whose Vm is unknown in the PF task (PQ buses)"
+    Va: "every bus whose Va is unknown (all non-REF buses)"
+  deltas: "Δŷ = ŷ(B) − ŷ(A) (GENCO, both members forward, gradients through both);  Δy = y_AC(B) − y_AC(A)"
+  scale: >-
+    σ_{k,o} = sqrt( mean over TRAINING pairs p of type k and elements j of family o of (Δy_{p,j} / x_p)² )
+    — the RMS AC sensitivity of output family o to perturbation type k, per MW, from the E5d
+    training pairs' AC solutions only, in the run's normalised units; computed once at fit start and
+    stored with the run.
+  residual: "r_{p,j} = (Δŷ_{p,j} − Δy_{p,j}) / (|x_p| · σ_{k(p),o(j)})   (dimensionless; a response-blind model has RMS |r| = 1)"
+  element_penalty: "Huber h_δ(r) = r²/(2δ) if |r| ≤ δ else |r| − δ/2, δ = 0.1 (bounded gradient; relative-L1 above 10 % error)"
+  aggregation: "L_response = (1/3) Σ_k∈{pv,battery,load} (1/5) Σ_o mean_{p∈B_k, j∈o} h_δ(r_{p,j})   (explicit equal balance of types and families)"
+  batch: "every optimizer step: graphkit's ordinary batch (64 states) + one response batch of 24 pairs = 8 pv + 8 battery + 8 load (48 graphs); each type cycles through a seed-shuffled permutation of its training pairs"
+  total: "L_total = L_original + λ · κ · L_response"
+  kappa:
+    rule: "κ = L̄_orig(E5c) / h_δ(τ), τ = 0.25 (the RS2 response tolerance), h_δ(0.25) = 0.20"
+    L_orig_E5c: 0.003503713135917933   # mean best synthetic validation loss of e5c_ft_n10000_s0/s1/s2 (run records)
+    value: 0.017518565679589665
+    meaning: >-
+      at λ = 1 a model whose every normalised response error equals the 25 % response tolerance pays
+      exactly E5c's absolute validation loss in response loss; a response-blind model pays ≈ 4–5 × it.
+      No real-state quantity enters κ, σ or λ.
+  validation_monitor: >-
+    "Validation total loss" = graphkit's Validation loss (E5c validation subset, unchanged) + λ · κ ·
+    L_response over the FULL E5d validation pair set (exact per-type, per-family means). It is the
+    monitor of the best-epoch checkpoint, early stopping and the LR plateau scheduler. For λ = 0 it
+    equals graphkit's Validation loss (the E5c rule).
+
+runs:                     # pre-registered; nothing is added after seeing results
+  primary:     {lambda: 1.0, seeds: [0, 1, 2]}
+  sensitivity: {lambda: [0.3, 3.0], seeds: [0]}     # bracket of the anchored scale; no further weights
+  control_code_path: {lambda: 0.0, seeds: [0]}      # same plugin code, response weight 0 (not selectable)
+  baseline_control: >-
+    frozen E5c e5c_ft_n10000_s0 / s1 / s2 (identical data, splits, seeds, recipe; ordinary loss),
+    re-scored on every E5d synthetic set. The λ = 0 run checks that the plugin path reproduces them.
+  n_train: 10000
+  splits: "the E5c n10000 split files of the same seed (train / val / test sha256 must match E5c's)"
+  optional_50k: "not planned in this cycle"
+  run_name: "e5d_l{λ}_s{seed}  (λ written as 1, 0.3, 3, 0)"
+  scale_inspection: >-
+    before training, L_original and L_response of zero-shot and the frozen E5c n10000 checkpoints on
+    the E5d training pairs are computed and reported (reports/experiments/e5d/scale_inspection.json).
+    Report only: the λ set above is fixed and is not changed by it.

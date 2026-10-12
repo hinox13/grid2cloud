@@ -1,0 +1,13 @@
+{
+  "family": "E4D_TIMELINE",
+  "interpretation": "sundon_capacity_scaled_with_outages",
+  "generated": 5667,
+  "ac_attempted": 5667,
+  "converged": 5667,
+  "accepted": 5667,
+  "rejected": {},
+  "days": 136,
+  "wall_s": 548.596158914268,
+  "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+  "working_tree_dirty": true
+}

@@ -1,0 +1,32 @@
+series_id,rows,active_power_completeness,current_completeness,first,last,class,source_id,requested
+CHAU_SU33_1,48347.0,1.0,0.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_CHAU_2,51002.0,1.0,0.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_CHAU_3,50959.0,1.0,0.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_LBUZT_1,49338.0,1.0,0.0,2023-01-01 00:00:00+00:00,2025-12-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_LBUZT_2_(1),16261.0,1.0,0.0,2023-01-01 00:00:00+00:00,2025-12-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_LEWS_1,50858.0,1.0,0.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_LEWS_2,50907.0,1.0,0.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_SU11_1,49221.0,1.0,0.0,2023-01-16 14:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_SU11_2,51161.0,0.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,current_only,ukpn_33kv_operational_half_hourly_epn,True
+SU33_SU11_3,50203.0,1.0,0.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SU33_SU11_4,28643.0,1.0,0.0,2023-12-01 14:30:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SUND_LBUZ_3(1),45084.0,1.0,0.0,2023-03-27 13:30:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+lne_SUND_CHAP,37131.0,1.0,0.0,2023-10-12 07:30:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_33kv_operational_half_hourly_epn,True
+SUG1_SUG1_1,53995.0,0.9997407167330309,0.9943328085933882,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_132kv_operational_half_hourly,True
+SUG1_SUG1_2,53952.0,0.9997034400948992,0.994476571767497,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_132kv_operational_half_hourly,True
+SUG1_SUG1_3,53906.0,0.9997773902719549,0.9939709865321115,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_132kv_operational_half_hourly,True
+sundon_33kv_gt1,46751.0,1.0,0.9999786100832068,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_grid_transformer_half_hourly,True
+sundon_33kv_gt2,46751.0,1.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_grid_transformer_half_hourly,True
+sundon_33kv_gt3,46751.0,1.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_grid_transformer_half_hourly,True
+chaul_end_primary_11kv_t1,49788.0,0.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,current_only,ukpn_primary_transformer_half_hourly_epn,True
+chaul_end_primary_11kv_t2,53621.0,0.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,current_only,ukpn_primary_transformer_half_hourly_epn,True
+chaul_end_primary_11kv_t3,53186.0,0.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,current_only,ukpn_primary_transformer_half_hourly_epn,True
+leighton_buzzard_primary_11kv_t1,41707.0,0.9998801160476659,1.0,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_primary_transformer_half_hourly_epn,True
+leighton_buzzard_primary_11kv_t2,39925.0,0.9999749530369443,0.9999499060738886,2023-01-01 00:00:00+00:00,2026-08-31 19:00:00+00:00,active_power,ukpn_primary_transformer_half_hourly_epn,True
+leighton_buzzard_primary_11kv_t3,51109.0,0.9904126474789177,0.7572834530121897,2023-01-01 00:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_primary_transformer_half_hourly_epn,True
+lewsey_primary_11kv_t1,51244.0,0.0,1.0,2023-01-03 23:30:00+00:00,2026-08-31 23:30:00+00:00,current_only,ukpn_primary_transformer_half_hourly_epn,True
+lewsey_primary_11kv_t2,53485.0,0.0,1.0,2023-01-01 00:00:00+00:00,2026-08-31 22:30:00+00:00,current_only,ukpn_primary_transformer_half_hourly_epn,True
+sundon_11kv_t1,51268.0,0.9956503081844426,0.996079425762659,2023-02-21 11:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_primary_transformer_half_hourly_epn,True
+sundon_11kv_t2,51515.0,0.9947588081141415,0.9962729302145006,2023-02-15 20:00:00+00:00,2026-08-31 23:30:00+00:00,active_power,ukpn_primary_transformer_half_hourly_epn,True
+sundon_11kv_t3,,,,,,absent_from_dataset,ukpn_primary_transformer_half_hourly_epn,True
+sundon_11kv_t4,,,,,,absent_from_dataset,ukpn_primary_transformer_half_hourly_epn,True

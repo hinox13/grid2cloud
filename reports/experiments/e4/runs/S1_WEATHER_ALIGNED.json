@@ -1,0 +1,63 @@
+{
+  "family": "S1_WEATHER_ALIGNED",
+  "n_scenarios": 2829,
+  "normalizer": "S0 fixed",
+  "run": {
+    "command": [
+      ".venv/bin/python3",
+      "-m",
+      "gridfm_graphkit",
+      "predict",
+      "--config",
+      "data/interim/e4/configs/S1_WEATHER_ALIGNED.yaml",
+      "--config_conversion",
+      "auto_inline",
+      "--data_path",
+      "data/interim/e4/datasets/S1_WEATHER_ALIGNED",
+      "--model_path",
+      "data/raw/opengridfm/checkpoints/genco-pf-transfer/pretraining/best_model_state_dict.pt",
+      "--log_dir",
+      "data/interim/e4/mlruns",
+      "--exp_name",
+      "e4_predict",
+      "--run_name",
+      "S1_WEATHER_ALIGNED",
+      "--output_path",
+      "data/interim/e4/predictions/S1_WEATHER_ALIGNED",
+      "--normalizer_stats",
+      "data/interim/e4/normalizer/S0_normalizer_stats.pt"
+    ],
+    "wall_s": 19.644712904002517,
+    "log": "data/interim/e4/logs/predict_S1_WEATHER_ALIGNED.log"
+  },
+  "seconds_per_scenario": 0.006944048393072647,
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+    "working_tree_dirty": true
+  },
+  "model": {
+    "source_id": "genco_pf_transfer_checkpoints",
+    "repo_id": "gridfm/genco-pf-transfer",
+    "revision": "e7a98e99221ba8241385e491787aedb0940d5130",
+    "weights": "pretraining/best_model_state_dict.pt",
+    "pretrain_config": "pretraining/HGNS_PreTrain_subnets_100.yaml",
+    "rationale": "The official checkpoint intended for transfer to unseen grids (GENCO paper \u00a75.5.3); its zero-shot use (no grid-specific training) is the paper's `finetune_case118_0_eval` run. The case14 checkpoint of E0 is grid-specific and is NOT used on Sundon."
+  },
+  "output": "data/interim/e4/predictions/S1_WEATHER_ALIGNED"
+}

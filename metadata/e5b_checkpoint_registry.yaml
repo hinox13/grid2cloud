@@ -1,0 +1,223 @@
+schema: cloud2grid E5b checkpoint registry v1
+frozen: true
+frozen_before_real_state_evaluation: true
+selection_basis: 'synthetic only: synthetic gate on the E5b held-out test, then lowest
+  PBE_mean on the FULL E5b validation pool, tie (< 1 %) → smaller N'
+selected: e5b_ft_n10000_s2
+selected_without_gate_pass: true
+evaluable_on_real:
+- e5b_ft_n10000_s2
+- e5b_ft_n10000_s0
+- e5b_ft_n10000_s1
+- e5b_ft_n1000_s0
+- e5b_ft_n1000_s1
+- e5b_ft_n1000_s2
+- e5b_ft_n100_s0
+- e5b_ft_n100_s1
+- e5b_ft_n100_s2
+- e5b_ft_n50000_s0
+- ft_n10000_s0
+- ft_n10000_s1
+- ft_n10000_s2
+- ft_n1000_s0
+- ft_n1000_s1
+- ft_n1000_s2
+- ft_n100_s0
+- ft_n100_s1
+- ft_n100_s2
+- ft_n50000_s0
+checkpoints:
+  e5b_ft_n10000_s2:
+    n_train: 10000
+    seed: 2
+    init: pretrained
+    recipe: E5b envelope (configs/experiments/e5b_operating_envelope.yaml)
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s2/best_model_state_dict.pt
+      sha256: ca653efe7e8596f296858038af9cfc3c30585e1445119912471851d741d495aa
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s2/normalizer_stats.pt
+      sha256: 39a6fc0f975cdddabcebb4311a398616cca8f73521240a462e246abada81adda
+      baseMVA_orig: 100.0
+      baseMVA: 34.8628044128418
+      vn_kv_max: 132.0
+    normalizer_fitted_on: training split only (10000 synthetic states)
+    training_split_sha256:
+      train: a59219316fa3216af86f3de9fac8a455a4aab508f7d4e2bce1f4c0d51c753891
+      val: b56b94411ca9302e267a3137ac21f428f01d661d9e0710453fb5df61547972ad
+      test: 0873e88f18979b4f2d0c368557601e84d63c01c3c4f372520f622630d6a00055
+    best_epoch: 197
+    epochs_run: 200
+    best_validation_loss: 0.0023633372038602
+    val_pool_PBE_mean: 0.5838885756504936
+    held_out_synthetic_test:
+      PBE_mean: 0.5864485019383022
+      P_residual: 0.5002017616696862
+      dc_P_residual: 0.1180519002335959
+    graphkit_config: data/interim/e5b/configs/e5b_ft_n10000_s2.yaml
+    mlflow_run: data/interim/e5b/mlruns/194905020701702348/9a94dc1098b54e1f8628e7a6e0e3f156
+post_freeze_curve_runs:
+  e5b_ft_n10000_s0:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s0/best_model_state_dict.pt
+      sha256: b2e7657be9b059708c91062c7e10ba7d5c4311448418eb508589132724fbd2af
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s0/normalizer_stats.pt
+      sha256: 1d8022129c655629c831ee8f4e0d580a46963395b0207b78f3a4aecdf1af7810
+      baseMVA: 35.076416015625
+  e5b_ft_n10000_s1:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s1/best_model_state_dict.pt
+      sha256: 64a309010d44177ab0b4ebbec5bb50177439ced2894fd82f2add7cf8c4bf24ba
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s1/normalizer_stats.pt
+      sha256: b24eb17c297c1df2659566f87e9156e56d9c0b80dbce2165de98464d8712f43b
+      baseMVA: 35.14299011230469
+  e5b_ft_n10000_s2:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s2/best_model_state_dict.pt
+      sha256: ca653efe7e8596f296858038af9cfc3c30585e1445119912471851d741d495aa
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n10000_s2/normalizer_stats.pt
+      sha256: 39a6fc0f975cdddabcebb4311a398616cca8f73521240a462e246abada81adda
+      baseMVA: 34.8628044128418
+  e5b_ft_n1000_s0:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n1000_s0/best_model_state_dict.pt
+      sha256: 9e7a66c79f7f1fe640cdec765d07b599f09c492c7f902a6977cc3cbe0b65b8c5
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n1000_s0/normalizer_stats.pt
+      sha256: eef3ac542defcb89785111c2f561d42fe6ecc561fcb95a539ca80ec863b133c2
+      baseMVA: 35.11493682861328
+  e5b_ft_n1000_s1:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n1000_s1/best_model_state_dict.pt
+      sha256: 9dd51a73026a590562be1001ae5ee29c5e6f766ce060a1843a2e08ab59aab474
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n1000_s1/normalizer_stats.pt
+      sha256: dd5bf69a8b415aa05e841cba1184e658c6015ba7ed14ef3cd825cabbf8314c60
+      baseMVA: 35.23214340209961
+  e5b_ft_n1000_s2:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n1000_s2/best_model_state_dict.pt
+      sha256: e3fcc7d9c3bbc4db0c123fc6dc68953449f2a0303c8708317378ad545e8b0123
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n1000_s2/normalizer_stats.pt
+      sha256: a410bdda5a76e385e72c369c7164a49d0539efcd051a8ee1378e996ee5417f6f
+      baseMVA: 36.58513641357422
+  e5b_ft_n100_s0:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n100_s0/best_model_state_dict.pt
+      sha256: 4acffc16f587b8deccade404dfeb8cd1e5aefc56f8f14b6c9d78fe1c6233196a
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n100_s0/normalizer_stats.pt
+      sha256: 1bc5902956f9367a30ffe9195beb4f67e82f4762f0c4569026f186a3f164c850
+      baseMVA: 38.011268615722656
+  e5b_ft_n100_s1:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n100_s1/best_model_state_dict.pt
+      sha256: 1ce9be3f4648108f272f5f4c920690006fc6e7ff7745a4ea0f9092f5b8bb78b3
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n100_s1/normalizer_stats.pt
+      sha256: cea581bbc75144e644f8df0f02ee340851d745073fe6221120d77ee5c013a892
+      baseMVA: 33.61735153198242
+  e5b_ft_n100_s2:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n100_s2/best_model_state_dict.pt
+      sha256: a6d4135667bcd334ecc55efc767a4a883aab1f8e71f0c591d92ad3a5baaeecb0
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n100_s2/normalizer_stats.pt
+      sha256: 893d21ad00fc6e8e99c2382059a0c37cdc0fcad01c75df4b310ffb29b2301613
+      baseMVA: 35.31774139404297
+  e5b_ft_n50000_s0:
+    checkpoint:
+      path: data/interim/e5b/checkpoints/e5b_ft_n50000_s0/best_model_state_dict.pt
+      sha256: f801bb18899887a6dec25743af646e6240555d0942da26b5fa651153e576363f
+    normalizer:
+      path: data/interim/e5b/checkpoints/e5b_ft_n50000_s0/normalizer_stats.pt
+      sha256: d5b0a6d17c21927aa0efdd095b4c8fa095f8bf92e009cffa99e9ca0037ec26a1
+      baseMVA: 35.00324630737305
+  ft_n10000_s0:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n10000_s0/best_model_state_dict.pt
+      sha256: b6997dbe866d22d16b9c6c4521fdd68a80b32e3710d6ff7bed1aa33350a01815
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n10000_s0/normalizer_stats.pt
+      sha256: 5ab89f9b636c8472305875d92d51c412f16c0100a2b3c89c72f6aa2390c204e9
+      baseMVA: 113.85028076171875
+  ft_n10000_s1:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n10000_s1/best_model_state_dict.pt
+      sha256: d3045a6bb83d040670d82573c0a8434eaa41a79b538871a427764ae3ce825b35
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n10000_s1/normalizer_stats.pt
+      sha256: 0933acb20eb320730188db60e85187ba90b29f2fbe876a6ab57e822bf6a5ac75
+      baseMVA: 113.6539535522461
+  ft_n10000_s2:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n10000_s2/best_model_state_dict.pt
+      sha256: 22ddb5343cfdc642df9de4eb9a52e5ab7d70720b06da4dd90c916678d698b6b5
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n10000_s2/normalizer_stats.pt
+      sha256: d685a4546314da52d710775e214486b6775bc2d0b892f4dd9c81c21201fc1968
+      baseMVA: 113.83879852294922
+  ft_n1000_s0:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n1000_s0/best_model_state_dict.pt
+      sha256: a74bb37633fe83b40099d34e444f878e2e43eeb904279a07109fb38fb0ae04c2
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n1000_s0/normalizer_stats.pt
+      sha256: 89893efbb7449915b3d42e1f1b2744481309c8ddeeab1aba6d3bc128be4db797
+      baseMVA: 113.8514633178711
+  ft_n1000_s1:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n1000_s1/best_model_state_dict.pt
+      sha256: d07af09f03c5360ac0e343b86461834c7ef1edda7327d0a2e38d98e3648911fa
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n1000_s1/normalizer_stats.pt
+      sha256: bda223c1651d37d032160434afbded155ad18c8c37bf2ab2ad0b8f8f5042c840
+      baseMVA: 112.91827392578125
+  ft_n1000_s2:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n1000_s2/best_model_state_dict.pt
+      sha256: 82785db0f3511d038d78591daa6db65be32994e375768800021c27891a9533b7
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n1000_s2/normalizer_stats.pt
+      sha256: 06dcfda88d8aa33c4a8e8d39ffafd4ffdca9e4587eea26b3eef97eae2ba944a5
+      baseMVA: 113.90399932861328
+  ft_n100_s0:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n100_s0/best_model_state_dict.pt
+      sha256: 1d15c555d8275a8beda562713dcedf4a693b8d9c99d86b75a68ae7cbbe037554
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n100_s0/normalizer_stats.pt
+      sha256: 337ed11d9a88206b29d3954cd127cf1db445b0322040e80afb20d69429534183
+      baseMVA: 115.57054901123047
+  ft_n100_s1:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n100_s1/best_model_state_dict.pt
+      sha256: d29321017f2ebf90d26590106e8c23dea306da97b366d6f798b5dfe2cc874db2
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n100_s1/normalizer_stats.pt
+      sha256: 97e77f283be44ee43ca06eeb0f34fa6f4463e83809f0e5b522d43010582a761e
+      baseMVA: 112.79393768310547
+  ft_n100_s2:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n100_s2/best_model_state_dict.pt
+      sha256: e5750cd71799a8bdf17220fdf268b9cb6247efff06a69120743dbd921454b50f
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n100_s2/normalizer_stats.pt
+      sha256: eae88495f290e746be3508d2bbda3e991b510c8d25596f14ff6fac340490119d
+      baseMVA: 115.00399780273438
+  ft_n50000_s0:
+    checkpoint:
+      path: data/interim/e5/checkpoints/ft_n50000_s0/best_model_state_dict.pt
+      sha256: be88790a54b9391238f6d402ed637bd217b8229d2e733b18ccf67f8ec2cf6061
+    normalizer:
+      path: data/interim/e5/checkpoints/ft_n50000_s0/normalizer_stats.pt
+      sha256: abeeb82c8cca56e85992f182b63cad0feea79d2cf4d3a24443b58cd7ddc0a888
+      baseMVA: 113.84051513671875
+post_freeze_curve_note: every E5/E5b fine-tuned ladder checkpoint, scored on S1 AFTER
+  this freeze for the combined learning-curve figure only
+git_commit: 14ccda83aa52128dbd3ee16a728ae796909fbd9c
+working_tree_dirty: true

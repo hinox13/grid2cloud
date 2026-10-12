@@ -1,0 +1,91 @@
+schema: cloud2grid scenario registry v1
+genco_checkpoint:
+  source_id: genco_pf_transfer_checkpoints
+  repo_id: gridfm/genco-pf-transfer
+  revision: e7a98e99221ba8241385e491787aedb0940d5130
+  weights: pretraining/best_model_state_dict.pt
+  pretrain_config: pretraining/HGNS_PreTrain_subnets_100.yaml
+  rationale: The official checkpoint intended for transfer to unseen grids (GENCO
+    paper §5.5.3); its zero-shot use (no grid-specific training) is the paper's `finetune_case118_0_eval`
+    run. The case14 checkpoint of E0 is grid-specific and is NOT used on Sundon.
+  graphkit_revision: f104900245cba26d1380037eea562cf633a97484
+normalizer: fixed_reference (fitted on S0_STANDARD_SYNTHETIC)
+slack_limits_mva: 270
+commit_at_evaluation: 6df2ae87e8d1558b1c9dac8f4dba097e0d901278
+families:
+  S0_STANDARD_SYNTHETIC:
+    definition: gridfm-datakit official pf_small recipe on the E1 Sundon case (LTDS
+      planning peak)
+    config: configs/experiments/e4_zero_shot.yaml#s0_standard_synthetic
+    source_data: data/interim/e4/network/sundon_33kv.m
+    seed:
+    - 0
+    - 1
+    - 2
+    scenario_count: 2297
+    pv_treatment: none (synthetic load scaling; no PV)
+    load_treatment: agg_load_profile × feasible scaling (1.2–2.0 × planning peak),
+      N-1 + admittance perturbations
+    commit: 6df2ae87e8d1558b1c9dac8f4dba097e0d901278
+  S1_WEATHER_ALIGNED:
+    definition: B(T) + HV PV of slot T (synchronous); embedded PV left inside observed
+      loads
+    config: configs/experiments/e4_matched_control.yaml
+    source_data:
+    - data/processed/satellite/sundon/pv_by_asset.parquet
+    - UKPN half-hourly operational data (E2)
+    seed: null
+    scenario_count: 2829
+    pv_treatment: HV (6 MW) explicit sgen from slot T; embedded PV inside observed
+      loads
+    load_treatment: observed half-hour T (E2 construction, interpretation sundon_capacity_scaled_with_outages)
+    commit: 6df2ae87e8d1558b1c9dac8f4dba097e0d901278
+  S1_WEATHER_ALIGNED_BASE_LTDS:
+    definition: S1 on the preserved sundon_base_ltds reference
+    scenario_count: 2829
+    commit: 6df2ae87e8d1558b1c9dac8f4dba097e0d901278
+  S2_MATCHED_PV_CONTROL:
+    definition: B(T) + PV of a donor slot T' from a DIFFERENT day in the same stratum
+      (calendar month, UTC time of day), via the documented transplant (HV sgen from
+      T'; embedded grossed up at T, replaced by T'). Donors = random derangement within
+      each stratum → PV marginal preserved exactly per stratum; season, solar-time
+      regime and active capacity matched.
+    name_in_reports: stratified PV–load reassignment control
+    config: configs/experiments/e4_matched_control.yaml
+    seed:
+    - 101
+    - 102
+    - 103
+    - 104
+    - 105
+    - 106
+    - 107
+    - 108
+    - 109
+    - 110
+    scenario_count:
+      101: 2828
+      102: 2828
+      103: 2828
+      104: 2828
+      105: 2828
+      106: 2828
+      107: 2828
+      108: 2828
+      109: 2828
+      110: 2828
+    pv_treatment: donor slot PV (same month × UTC time of day, other day); HV sgen
+      + embedded transplant
+    load_treatment: observed half-hour T (same base states as S1)
+    commit: 6df2ae87e8d1558b1c9dac8f4dba097e0d901278
+  E4D_TIMELINE:
+    definition: every usable 15-min slot s (Apr–Sep 2024, E3 QC) whose half-hour T
+      = floor(s, 30 min) has a complete E2 base state; state = B(T) + HV PV of s (synchronous).
+      Slots :00/:30 coincide with S1 states; :15/:45 use the SAME half-hour average
+      load (no interpolation).
+    scenario_count: 5667
+    commit: 6df2ae87e8d1558b1c9dac8f4dba097e0d901278
+not_created:
+  spatial_shuffle: not performed — H2 not evaluated on Sundon (2024 ≥1 MW PV in one
+    native pixel)
+  overcast_control: No valid overcast control under E3-v1 criteria

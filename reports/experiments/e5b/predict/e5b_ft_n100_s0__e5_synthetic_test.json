@@ -1,0 +1,31 @@
+{
+  "run": "e5b_ft_n100_s0",
+  "target": "e5_synthetic_test",
+  "n_scenarios": 2256,
+  "normalizer": "data/interim/e5b/checkpoints/e5b_ft_n100_s0/normalizer_stats.pt",
+  "normalizer_sha256": "1bc5902956f9367a30ffe9195beb4f67e82f4762f0c4569026f186a3f164c850",
+  "weights_sha256": "4acffc16f587b8deccade404dfeb8cd1e5aefc56f8f14b6c9d78fe1c6233196a",
+  "wall_s": 11.321196055039763,
+  "seconds_per_scenario": 0.00501826066269493,
+  "output": "data/interim/e5b/predictions/e5b_ft_n100_s0/e5_synthetic_test",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "14ccda83aa52128dbd3ee16a728ae796909fbd9c",
+    "working_tree_dirty": true
+  }
+}

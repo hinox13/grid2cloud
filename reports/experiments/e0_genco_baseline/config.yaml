@@ -1,0 +1,88 @@
+experiment:
+  experiment_id: e0_genco_baseline
+  source_ids:
+    model: genco_pf_datakit_checkpoints
+    dataset: opengridfm_pf_small_case14_ieee
+    code: gridfm_graphkit
+  model:
+    repo_id: gridfm/genco-pf-datakit
+    revision: 7014f145635f26fa29e9e003f0dc33f689d615da
+    subfolder: case14_ieee/base/seed0
+    config_file: case14_ieee_base_seed0.yaml
+    weights_file: best_model_state_dict.pt
+    normalizer_stats_file: normalizer_stats.pt
+  dataset:
+    repo_id: gridfm/pf_small_case14_ieee
+    revision: 5669b8cec913ce1a1ef174d0283c6f6949135455
+    network: case14_ieee
+  paths:
+    data_root: data/raw/opengridfm/datasets
+    checkpoint_root: data/raw/opengridfm/checkpoints/genco-pf-datakit
+    work_dir: data/interim/e0_genco_baseline
+    output_dir: reports/experiments/e0_genco_baseline
+  evaluate:
+    config_conversion: auto_inline
+    cuda_visible_devices: '0'
+    extra_args: []
+  reference:
+    description: "GENCO paper \xA75.4.2 saved results, row grid=case14, size=base,\
+      \ seed=seed1 (the repro guide maps CSV seed1 to YAML seed 0)."
+    metrics_url: https://raw.githubusercontent.com/gridfm/gridfm-graphkit/genco-paper-repro/scripts/datakit_pf/results/pf_eval_combined_eval_metrics.csv
+    split_url: https://huggingface.co/gridfm/genco-pf-datakit/resolve/7014f145635f26fa29e9e003f0dc33f689d615da/mlflow/eval/case14_ieee/base/seed0/de1f9248e80f4d2eb92e055927e80a6d/artifacts/stats/case14_ieee_scenario_splits.json
+    metrics:
+      Avg. active res. (MW): 0.0021052041556686
+      Avg. reactive res. (MVar): 0.0011385377729311
+      PBE Mean: 0.0026822725776582
+      PBE Max: 0.5725455284118652
+    rel_tolerance: 0.05
+gridfm_model_config:
+  task:
+    task_name: PowerFlow
+  data:
+    baseMVA: 100
+    mask_value: 0.0
+    normalization: HeteroDataMVANormalizer
+    networks:
+    - case14_ieee
+    scenarios:
+    - 250000
+    test_ratio: 0.1
+    val_ratio: 0.1
+    workers: 32
+    split_by_load_scenario_idx: true
+  model:
+    attention_head: 8
+    edge_dim: 10
+    hidden_size: 48
+    input_bus_dim: 15
+    input_gen_dim: 6
+    output_bus_dim: 2
+    output_gen_dim: 1
+    num_layers: 12
+    type: GNS_heterogeneous
+  optimizer:
+    beta1: 0.9
+    beta2: 0.999
+    learning_rate: 0.0005
+    lr_decay: 0.7
+    lr_patience: 5
+  training:
+    batch_size: 64
+    epochs: 200
+    loss_weights:
+    - 0.1
+    - 0.9
+    losses:
+    - LayeredWeightedPhysics
+    - MaskedBusMSE
+    loss_args:
+    - base_weight: 0.5
+    - {}
+    accelerator: auto
+    devices: auto
+    strategy: auto
+  seed: 0
+  verbose: true
+  callbacks:
+    patience: 100
+    tol: 0

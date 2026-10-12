@@ -1,0 +1,35 @@
+Cloud2Grid — licensing notice
+=============================
+
+Project software
+----------------
+No project-level software licence has been selected for this repository yet. Until a LICENSE
+file is added by the copyright holder(s), no licence to the Cloud2Grid source code is granted
+by this repository beyond what applicable law and the hosting platform's terms provide.
+
+Any future project software licence applies to the Cloud2Grid source code only. It does NOT
+relicense, and cannot relicense, any of the third-party material below.
+
+Third-party data, imagery, models and software
+----------------------------------------------
+This repository and its demo bundles (data/demo/) contain material derived from third-party
+sources, each under its own licence and attribution requirements, including:
+
+  - EUMETSAT Meteosat imagery (E-View RGB) and EUMETSAT LSA SAF satellite products;
+  - UK Power Networks open data (which itself includes ONS data under OGL v3.0 and
+    Ordnance Survey data, © Crown copyright);
+  - GENCO / gridfm model checkpoints and gridfm-datakit / gridfm-graphkit software;
+  - pandapower, pvlib and other open-source dependencies.
+
+Derived results (simulated power flows, model predictions, metrics, figures and the demo
+bundles) remain subject to the licences and attribution obligations of the sources they were
+derived from. No model weights and no raw third-party data are committed to this repository.
+
+For the licence, evidence and required attribution text of every source, see:
+
+  docs/DATA_LICENSES.md
+  metadata/data_sources.yaml
+  data/demo/attribution.json   (sources and licence-gate decisions for the public demo)
+
+The Cloud2Grid Explorer shows the required attribution on every page and in full on its
+"Data & attribution" page. Keep that attribution if you reuse or restyle the demo.

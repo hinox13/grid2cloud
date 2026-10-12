@@ -1,0 +1,19 @@
+{
+  "family": "S0_STANDARD_SYNTHETIC",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "requested_max": 2838,
+  "generated_by_datakit": 2671,
+  "not_returned_by_datakit": 167,
+  "accepted": 2297,
+  "rejected": {
+    "voltage_sanity": 374
+  },
+  "topology_intact_accepted": 0,
+  "wall_s": 112.49137527728453,
+  "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+  "working_tree_dirty": true
+}

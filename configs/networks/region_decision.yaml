@@ -1,0 +1,34 @@
+# Post-audit study-region decision (E1 entry point).
+#
+# The E0-D robustness rule (configs/networks/candidate_regions.yaml → selection) selected NO
+# region: the best eligible region ranked first in 43.5% of weight draws (threshold 50%).
+# The ranking, weights and robustness analysis are NOT modified by this file.
+#
+# This file records an explicit ENGINEERING decision by the project owner to proceed with one
+# shortlisted region. scripts/audit_ukpn.py --write-study-region reads it ONLY when the
+# original rule fails, and labels the output `selection_mode: post_audit_manual`.
+
+region_id: "BSP:EPN:Sundon 33kV"
+decided_on: "2026-10-02"
+decided_by: project owner (Cloud2Grid)
+selection_mode: post_audit_manual
+passed_original_robustness_rule: false
+
+rationale:
+  - "Compact network: 28 nodes / 26 circuits in the E0-D BSP subtree."
+  - "Complete published electrical parameters (R, X, B, ratings) for all region branches."
+  - "Strongest active-power observation coverage among eligible candidates: 9 circuits with
+     half-hourly active power (direction-capable validation for E2)."
+  - "About 43.9 MW of connected solar, attributed through identifiers, not proximity."
+
+known_weaknesses:
+  - "9 junction nodes have no defensible geographic location."
+  - ">95% of connected solar capacity is in four large farms (limits H2 spatial structure)."
+  - "LTDS is planning topology, not guaranteed operational topology."
+  - "Many 33 kV circuits publish current but not active power."
+
+why_active_power_matters: >-
+  E2 compares simulated and observed branch flows. Only active power carries a sign, so only
+  P-capable circuits can test flow DIRECTION (README §20 E2 "direction agreement") and detect
+  reverse power flow from embedded generation — the mechanism through which satellite-driven
+  PV changes will act on this network. Current magnitude cannot distinguish import from export.

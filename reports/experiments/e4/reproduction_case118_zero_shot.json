@@ -1,0 +1,78 @@
+{
+  "pass": true,
+  "comparison": {
+    "Avg. active res. (MW)": {
+      "ours": 11.078253746032717,
+      "paper": 11.078252792358398,
+      "rel_diff": 8.608526417093823e-08
+    },
+    "Avg. reactive res. (MVar)": {
+      "ours": 1.2550547122955322,
+      "paper": 1.255051851272583,
+      "rel_diff": 2.2796053775130988e-06
+    },
+    "PBE Mean": {
+      "ours": 11.443975448608398,
+      "paper": 11.4439697265625,
+      "rel_diff": 5.000053333902228e-07
+    },
+    "PBE Max": {
+      "ours": 197.3897705078125,
+      "paper": 197.44113159179688,
+      "rel_diff": -0.0002601336589306142
+    }
+  },
+  "run": {
+    "command": [
+      ".venv/bin/python3",
+      "-m",
+      "gridfm_graphkit",
+      "evaluate",
+      "--config",
+      "data/interim/e4/configs/case118_eval_local.yaml",
+      "--config_conversion",
+      "auto_inline",
+      "--data_path",
+      "data/raw/opengridfm/checkpoints/genco-pf-transfer/data",
+      "--model_path",
+      "data/raw/opengridfm/checkpoints/genco-pf-transfer/pretraining/best_model_state_dict.pt",
+      "--log_dir",
+      "data/interim/e4/mlruns",
+      "--exp_name",
+      "e4_reproduce",
+      "--run_name",
+      "zero_shot_case118"
+    ],
+    "wall_s": 62.548424382228404,
+    "log": "data/interim/e4/logs/reproduce_case118.log"
+  },
+  "mlflow_run": "data/interim/e4/mlruns/556439819542022683/a7c634f7e973444dac7bfdcf8c64cc3b",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "6ebb60eccca59285027b1fa309c8efe322c7af27",
+    "working_tree_dirty": true
+  },
+  "model": {
+    "source_id": "genco_pf_transfer_checkpoints",
+    "repo_id": "gridfm/genco-pf-transfer",
+    "revision": "e7a98e99221ba8241385e491787aedb0940d5130",
+    "weights": "pretraining/best_model_state_dict.pt",
+    "pretrain_config": "pretraining/HGNS_PreTrain_subnets_100.yaml",
+    "rationale": "The official checkpoint intended for transfer to unseen grids (GENCO paper \u00a75.5.3); its zero-shot use (no grid-specific training) is the paper's `finetune_case118_0_eval` run. The case14 checkpoint of E0 is grid-specific and is NOT used on Sundon."
+  }
+}

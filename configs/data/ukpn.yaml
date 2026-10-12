@@ -1,0 +1,108 @@
+# UKPN Open Data Portal acquisition config for the E0-D feasibility audit.
+#
+# Every dataset is checked by the licence gate (source_id → metadata/data_sources.yaml)
+# before download. Records require a registered UKPN account: create an API key at
+# https://ukpowernetworks.opendatasoft.com (profile → API keys) and export it as the
+# environment variable named in `portal.api_key_env`. Without it the audit runs in
+# metadata-only mode.
+
+portal:
+  base_url: https://ukpowernetworks.opendatasoft.com/api/explore/v2.1
+  api_key_env: UKPN_API_KEY
+  timeout_s: 600
+
+raw_dir: data/raw/ukpn
+
+datasets:
+  # mode: full            → export every record (small/medium tables)
+  # mode: region_extract  → never exported in bulk; only the selected study region's series are
+  #                         retrieved by scripts/download_region_timeseries.py
+  # mode: coverage  → server-side aggregation per circuit only (multi-million-row time series);
+  #                   the full half-hourly series is NOT downloaded in Phase 0. Fetched as a
+  #                   JSON export (Parquet exports reject group_by: AggregationNotSupported)
+  #                   and stored locally as Parquet. `covers` says which circuits it can check;
+  #                   half-hourly rows carry no licence-area field, so lines are matched by
+  #                   LTDS line name (verified unique across areas in the monthly index).
+  grid_and_primary_sites:
+    source_id: ukpn_grid_and_primary_sites
+    dataset_id: grid-and-primary-sites
+    mode: full
+  ltds_circuits:
+    source_id: ukpn_ltds_table_1_circuit_data
+    dataset_id: ukpn-ltds-table-1-circuit-data
+    mode: full
+  ltds_transformers_2w:
+    source_id: ukpn_ltds_table_2a_transformer_2w
+    dataset_id: ukpn-ltds-table-2a-transformer-2w
+    mode: full
+  ltds_transformers_3w:
+    source_id: ukpn_ltds_table_2b_transformer_3w
+    dataset_id: ukpn-ltds-table-2b-transformer-data-3w
+    mode: full
+  ecr_1mw_and_above:
+    source_id: ukpn_ecr_1mw_and_above
+    dataset_id: ukpn-embedded-capacity-register
+    mode: full
+  ecr_under_1mw:
+    source_id: ukpn_ecr_under_1mw
+    dataset_id: ukpn-embedded-capacity-register-1-under-1mw
+    mode: full
+  op_132kv_monthly:
+    source_id: ukpn_132kv_operational_monthly
+    dataset_id: ukpn-132kv-circuit-operational-data-monthly
+    mode: full
+  op_33kv_monthly:
+    source_id: ukpn_33kv_operational_monthly
+    dataset_id: ukpn-33kv-circuit-operational-data-monthly
+    mode: full
+  op_132kv_half_hourly:
+    source_id: ukpn_132kv_operational_half_hourly
+    dataset_id: ukpn-132kv-circuit-operational-data-half-hourly
+    mode: coverage
+    covers: {areas: [EPN, LPN, SPN], kv: 132}
+  op_33kv_spn_half_hourly:
+    source_id: ukpn_33kv_operational_half_hourly_spn
+    dataset_id: ukpn-33kv-circuit-operational-data-half-hourly-spn
+    mode: coverage
+    covers: {areas: [SPN], kv: 33}
+  op_33kv_epn_half_hourly:
+    source_id: ukpn_33kv_operational_half_hourly_epn
+    dataset_id: ukpn-33kv-circuit-operational-data-half-hourly-epn
+    mode: coverage
+    covers: {areas: [EPN], kv: 33}
+  # ---- added in E1 (network reconstruction / operational validation)
+  grid_tx_monthly:
+    source_id: ukpn_grid_transformer_monthly
+    dataset_id: ukpn-grid-transformer-operational-data-monthly
+    mode: full
+  primary_tx_monthly:
+    source_id: ukpn_primary_transformer_monthly
+    dataset_id: ukpn-primary-transformer-power-flow-historic-monthly
+    mode: full
+  ltds_demand_3a:
+    source_id: ukpn_ltds_table_3a_observed_demand
+    dataset_id: ukpn-ltds-table-3a-load-data-observed
+    mode: full
+  ltds_generation_5:
+    source_id: ukpn_ltds_table_5_generation
+    dataset_id: ukpn-ltds-table-5-generation
+    mode: full
+  grid_tx_half_hourly:
+    source_id: ukpn_grid_transformer_half_hourly
+    dataset_id: ukpn-grid-transformer-operational-data-half-hourly
+    mode: region_extract
+  primary_tx_half_hourly_epn:
+    source_id: ukpn_primary_transformer_half_hourly_epn
+    dataset_id: ukpn-primary-transformer-power-flow-historic-half-hourly-epn
+    mode: region_extract
+
+# ODSQL aggregation used for `mode: coverage` (count(field) counts non-null values).
+coverage_query:
+  select: >-
+    ltds_line_name,
+    count(*) as n_rows,
+    count(active_power_mw) as n_active_power,
+    count(current_amps) as n_current,
+    min(timestamp) as first_timestamp,
+    max(timestamp) as last_timestamp
+  group_by: ltds_line_name

@@ -1,0 +1,12 @@
+column,n_null,n_blank,n_placeholder,n_missing,frac_missing
+gridsupplypoint,0,0,0,0,0.0
+substation,0,0,1,1,0.001358695652173913
+connection_voltage_kv,0,0,0,0,0.0
+installedcapacity_mva,0,0,0,0,0.0
+fuel_type,0,0,0,0,0.0
+connected_accepted,0,0,0,0,0.0
+spatial_coordinates,156,0,0,156,0.21195652173913043
+sitefunctionallocation,151,0,0,151,0.20516304347826086
+licencearea,0,0,0,0,0.0
+id,0,0,0,0,0.0
+substation_mrid,157,0,0,157,0.21331521739130435

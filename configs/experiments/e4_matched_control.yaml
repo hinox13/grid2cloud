@@ -1,0 +1,47 @@
+# E4-B / E4-C — weather-driven states and matched controls on Sundon.
+# PRE-REGISTERED 2026-10-06 before any GENCO inference on Sundon (E3 commit 55ba739).
+
+network:
+  interpretation: configs/networks/sundon_capacity_scaled_with_outages.yaml
+  baseline_reference: configs/networks/sundon_base_ltds.yaml   # reported alongside (S1 only)
+  unobserved_injection: V0_none
+
+forcing:
+  pv_series: data/processed/satellite/sundon/pv_by_asset.parquet   # E3, frozen QC
+  pv_model: configs/experiments/e3_pv_model.yaml
+  construction: docs/SATELLITE_SCENARIO_CONSTRUCTION.md             # not redesigned
+
+timestamps:
+  convention: "UKPN half-hourly = 30-min average labelled by period START: B(T) covers [T, T+30)"
+  evidence: "every month runs day 1 00:00 → last day 23:30 in all half-hourly series"
+  pairing: "base half-hour T ↔ satellite slot T (acquired over Sundon at T+11.6 min, inside [T,T+30))"
+
+primary_population:      # E4-B / E4-C — no events, no visual selection, no 15-min interpolation
+  period: ["2024-04-01T00:00Z", "2024-09-30T23:30Z"]
+  include: half-hours T with (a) satellite slot T usable (every active asset GOOD, E3 QC) and
+           (b) every E2 base-state input present (E2 'all inputs' rule)
+  expected_count: 2829     # computed from data availability only (136 days)
+
+families:
+  S1_WEATHER_ALIGNED:
+    definition: "B(T) + HV PV of slot T (synchronous); embedded PV left inside observed loads"
+  S2_MATCHED_PV_CONTROL:
+    name_in_reports: "stratified PV–load reassignment control"
+    definition: >-
+      B(T) + PV of a donor slot T' from a DIFFERENT day in the same stratum (calendar month,
+      UTC time of day), via the documented transplant (HV sgen from T'; embedded grossed up at T,
+      replaced by T'). Donors = random derangement within each stratum → PV marginal preserved
+      exactly per stratum; season, solar-time regime and active capacity matched.
+    seeds: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+    singleton_strata: excluded and reported
+    what_it_tests: >-
+      whether the joint relation (real electrical state × its real weather) changes the state
+      distribution GENCO sees. NOT temporal order: GENCO is steady-state.
+
+spatial_shuffle: "not performed — H2 not evaluated on Sundon (2024 ≥1 MW PV in one native pixel)"
+
+conditioning_variables:  # fixed before any GENCO result; no others
+  fleet_cf: "satellite-driven fleet capacity factor"
+  mean_kc: "mean clear-sky index at active assets (known limitation: ≈1.16 on clear days, E3)"
+  abs_hv_ramp_mw: "|P_HV(T) − P_HV(T−15 min)| (model-relevant injection change)"
+  bins: quartiles of each variable over the S1 population

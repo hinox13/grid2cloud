@@ -1,0 +1,59 @@
+# Candidate study-region ranking (E0-D, Workstream G).
+#
+# Region units (both ranked, see src/cloud2grid/network/ukpn_regions.py):
+#   gsp          all 132/33 kV LTDS branches under one LTDS `gridsupplypoint`
+#   bsp_subtree  one grid-fed connected 33 kV network + its 132/33 kV grid transformers —
+#                the electrically meaningful split of GSP groups that exceed the size band.
+# Nodes are licence-area-scoped LTDS node IDs (raw codes collide across EPN/LPN/SPN).
+# Ranking inputs: topology, coordinates, operational-measurement publication status, ECR
+# solar assets, identifier consistency and size. NOT used: GENCO results, weather/satellite.
+# Score definitions: src/cloud2grid/network/ukpn_regions.py::score_regions.
+
+region_levels: [gsp, bsp_subtree]
+
+size:
+  min_nodes: 10
+  max_nodes: 50
+  # Multiplier applied to overall_score when the node count is outside the band. Regions are
+  # penalised, not excluded, so naturally larger/smaller networks remain visible.
+  out_of_band_penalty: 0.5
+
+measurement:
+  # A circuit counts as "usable" if it is published (not redacted) in at least this share of
+  # the months for which it appears in the monthly operational index.
+  min_public_fraction: 0.9
+  # Where a half-hourly dataset exists for the circuit's area/voltage, the share of its
+  # half-hourly rows with a non-null value (server-side count) must reach this — for current
+  # OR active power ("usable"), and for active power alone ("usable_active_power").
+  # measurement_score = mean of the two shares. Set after observing that most 33 kV lines
+  # publish current_amps but not active_power_mw (E0-D, 2 Oct 2026).
+  min_half_hourly_completeness: 0.8
+
+solar:
+  # solar_score = min(1, CONNECTED solar MW attributed to region nodes / solar_mw_target).
+  # Transparent saturation point, not a physical threshold. "Accepted to Connect" assets are
+  # excluded (not built). Attribution uses identifiers only, never geographic proximity.
+  solar_mw_target: 50.0
+
+# Equal weights: no criterion is privileged before data has been inspected.
+weights:
+  topology_score: 1.0
+  measurement_score: 1.0
+  solar_score: 1.0
+  coordinate_score: 1.0
+  identifier_score: 1.0
+
+# Study-region selection (E0-D §9). A region is only selected if it passes every hard
+# requirement AND is robustly top-ranked when the (arbitrary) equal weights are replaced by
+# random weights. Thresholds were fixed after inspecting the first equal-weight ranking and
+# BEFORE running the sensitivity analysis; rationale per item:
+selection:
+  require_size_in_band: true
+  min_usable_measured_circuits: 5        # enough OBSERVED flows for E2 validation
+  min_usable_active_power_circuits: 1    # E2 "direction agreement" needs signed P
+  min_connected_solar_mw: 10.0           # PV must be a material injection, not noise
+  min_coordinate_score: 0.6              # satellite→asset mapping needs located nodes
+  robustness:
+    n_weight_draws: 2000                 # Dirichlet(1,…,1) weights over the 5 scores
+    seed: 20261002
+    min_top1_share: 0.5                  # selected region must rank first in ≥ half of draws

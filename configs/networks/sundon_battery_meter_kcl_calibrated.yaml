@@ -1,0 +1,29 @@
+# VARIANT of sundon_base_ltds — CALIBRATION EXPERIMENT (not eligible to replace the baseline).
+extends: sundon_base_ltds.yaml
+validation_timestamps: reports/tables/e2_timestamps.csv
+
+scenario:
+  name: sundon_battery_meter_kcl_calibrated
+  calibration: true
+  description: >-
+    lne_SUND_CHAP readings rescaled by the coefficient of that circuit in an observed power
+    balance at the Sundon 33 kV busbar, fitted ONLY on timestamps outside the 200 validation
+    timestamps (held-out calibration).
+  changes:
+    - type: measurement_scale
+      series: lne_SUND_CHAP
+      method: kcl_regression_heldout
+      regressors:
+        - name: other_metered_outflows
+          sum_lines: {CHAU_SU33_1: -1, SU33_CHAU_2: 1, SU33_CHAU_3: 1, SU33_LBUZT_1: -1,
+                      SU33_LEWS_1: -1, SU33_LEWS_2: 1, SU33_SU11_1: 1, SU33_SU11_3: 1,
+                      SU33_SU11_4: -1, SUND_LBUZ_3(1): 1}
+        - {line: SU33_LBUZT_2_(1), sign: 1}
+        - {transformer: sundon_11kv_t2, positive: hv_to_lv}   # proxy for current-only SU33_SU11_2
+        - {line: lne_SUND_CHAP, sign: 1}
+  reason: "Quantifies how much of the import error the battery-meter interpretation can explain."
+  evidence:
+    - "Exploratory KCL fits: lne_SUND_CHAP coefficient 0.66-0.74 across 2023/2024/2025, night and midday; other metered outflows ≈ 0.95 when the tee circuit is included."
+    - "No metered 33 kV circuit co-moves with lne_SUND_CHAP (night slopes |s| <= 0.008)."
+  affected_elements:
+    - "load EPN:CHAP31 (input derived from lne_SUND_CHAP)"

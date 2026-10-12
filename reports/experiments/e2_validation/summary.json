@@ -1,0 +1,388 @@
+{
+  "variant": {
+    "name": "sundon_base_ltds",
+    "description": "LTDS planning topology; all metered inputs used as published.",
+    "changes": [],
+    "calibration": false
+  },
+  "measurement_scales": {},
+  "observed_outages": [],
+  "selection": {
+    "timestamps_with_all_inputs": 15343,
+    "eligible_with_min_targets": 15343,
+    "selected": 200,
+    "months_covered": 18
+  },
+  "data_quality_dropped_or_flagged": {
+    "CHAU_SU33_1": 0,
+    "SU33_CHAU_2": 0,
+    "SU33_CHAU_3": 0,
+    "SU33_LEWS_1": 0,
+    "SU33_LEWS_2": 0,
+    "SU33_LBUZT_1": 0,
+    "SUND_LBUZ_3(1)": 0,
+    "SU33_LBUZT_2_(1)": 0,
+    "SU33_SU11_1": 0,
+    "SUG1_SUG1_1": 0,
+    "SUG1_SUG1_2": 0,
+    "SUG1_SUG1_3": 0,
+    "lne_SUND_CHAP (input) beyond 1.5x rating": 272,
+    "lne_SUND_CHAP (input) beyond 1.0x rating": 1787
+  },
+  "sign_conventions": [
+    {
+      "tx_id": "sundon_33kv_gt1",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_1",
+      "r": 0.9661759204351914,
+      "expected_sign": 1,
+      "n": 46645,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt2",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_2",
+      "r": 0.9795769737935835,
+      "expected_sign": 1,
+      "n": 46601,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt3",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_3",
+      "r": 0.9757625924931066,
+      "expected_sign": 1,
+      "n": 46559,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t1",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_2_(1)",
+      "r": -0.9317794821312055,
+      "expected_sign": -1,
+      "n": 13890,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t2",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_1",
+      "r": 0.9574659194138065,
+      "expected_sign": 1,
+      "n": 36922,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t3",
+      "declared": "lv_to_hv",
+      "evidence": "SUND_LBUZ_3(1)",
+      "r": -0.8613002590013266,
+      "expected_sign": -1,
+      "n": 44299,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t1",
+      "declared": "hv_to_lv",
+      "evidence": "SU33_SU11_1",
+      "r": 0.7462902464098687,
+      "expected_sign": 1,
+      "n": 47016,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t2",
+      "declared": "hv_to_lv",
+      "evidence": "same_as sundon_11kv_t1",
+      "r": 0.940331679940806,
+      "expected_sign": 1,
+      "n": 50767,
+      "ok": true,
+      "class": "ASSUMED"
+    }
+  ],
+  "meter_mapping": {
+    "CHAU_SU33_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_CHAU_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_CHAU_3": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LEWS_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LEWS_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LBUZT_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUND_LBUZ_3(1)": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LBUZT_2_(1)": {
+      "mapping": "node_path",
+      "end": "from",
+      "note": "metered composite circuit = LTDS sections EPN:SUND31 -> EPN:GFSF3A -> EPN:MRFM3C; meter assumed at EPN:SUND31"
+    },
+    "SU33_SU11_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_3": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_SU11_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    }
+  },
+  "flagged_circuits": {
+    "SU33_SU11_1": "Observed P \u2248 0.25 \u00d7 Sundon Primary T1 P (r = 0.75) although LTDS shows it as T1's only feeder, while its twin SU33_SU11_2 matches T2 in apparent power. Unresolved measurement/mapping inconsistency."
+  },
+  "core_circuits": [
+    "CHAU_SU33_1",
+    "SU33_CHAU_2",
+    "SU33_CHAU_3",
+    "SU33_LEWS_1",
+    "SU33_LEWS_2",
+    "SU33_LBUZT_1",
+    "SUND_LBUZ_3(1)",
+    "SU33_LBUZT_2_(1)",
+    "SUG1_SUG1_1",
+    "SUG1_SUG1_2",
+    "SUG1_SUG1_3"
+  ],
+  "convergence": {
+    "V0_none": 1.0,
+    "V1_lbuz_33kv_busbars": 1.0,
+    "V1_tee_customer_nodes": 1.0
+  },
+  "v0_residual_mw": {
+    "count": 200.0,
+    "mean": -0.144,
+    "std": 8.156,
+    "min": -44.484,
+    "25%": -2.565,
+    "50%": -0.009,
+    "75%": 2.739,
+    "max": 39.533
+  },
+  "state_ranges": {
+    "V0_none": {
+      "vm_min|min": 0.9123,
+      "vm_min|max": 0.9805,
+      "vm_max|min": 1.0,
+      "vm_max|max": 1.0476,
+      "max_line_loading|min": 31.1501,
+      "max_line_loading|max": 170.928,
+      "max_trafo_loading|min": 37.4915,
+      "max_trafo_loading|max": 90.8173
+    },
+    "V1_lbuz_33kv_busbars": {
+      "vm_min|min": 0.9115,
+      "vm_min|max": 0.9807,
+      "vm_max|min": 1.0,
+      "vm_max|max": 1.047,
+      "max_line_loading|min": 30.7417,
+      "max_line_loading|max": 171.1363,
+      "max_trafo_loading|min": 37.4853,
+      "max_trafo_loading|max": 90.8651
+    },
+    "V1_tee_customer_nodes": {
+      "vm_min|min": 0.9112,
+      "vm_min|max": 0.9807,
+      "vm_max|min": 1.0,
+      "vm_max|max": 1.0469,
+      "max_line_loading|min": 30.7419,
+      "max_line_loading|max": 202.9386,
+      "max_trafo_loading|min": 37.4857,
+      "max_trafo_loading|max": 90.8658
+    }
+  },
+  "aggregate": {
+    "V0_none": {
+      "core_p_circuits": {
+        "n": 2046,
+        "mae": 0.9354046930864879,
+        "rmse": 1.8396175129034094,
+        "bias": -0.04938963433657707,
+        "obs_mean_abs": 9.530650048875854,
+        "r": 0.984985364100289,
+        "nmae": 0.0981469981889451,
+        "direction_n": 2041,
+        "direction_agreement": 0.9970602645761881
+      },
+      "all_p_circuits": {
+        "n": 2245,
+        "mae": 1.0016317196314388,
+        "rmse": 1.8329854127576275,
+        "bias": 0.10328471173298506,
+        "obs_mean_abs": 8.743086859688194,
+        "r": 0.9841302237782598,
+        "nmae": 0.11456270945330173,
+        "direction_n": 2169,
+        "direction_agreement": 0.9972337482710927
+      },
+      "import": {
+        "n": 200,
+        "mae": 4.5972580945432755,
+        "rmse": 8.137332181127126,
+        "bias": -0.144372405309197,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.8875510144403735,
+        "nmae": 0.08389065255751353,
+        "direction_n": 200,
+        "direction_agreement": 0.99
+      }
+    },
+    "V1_tee_customer_nodes": {
+      "core_p_circuits": {
+        "n": 2046,
+        "mae": 0.8389365242789762,
+        "rmse": 1.666734320559537,
+        "bias": -0.03568113936472644,
+        "obs_mean_abs": 9.530650048875854,
+        "r": 0.987686069058128,
+        "nmae": 0.08802511056188968,
+        "direction_n": 2041,
+        "direction_agreement": 0.9985301322880941
+      },
+      "all_p_circuits": {
+        "n": 2245,
+        "mae": 0.913714673405705,
+        "rmse": 1.675523771964022,
+        "bias": 0.11577811284311629,
+        "obs_mean_abs": 8.743086859688194,
+        "r": 0.9867841876355958,
+        "nmae": 0.10450710236204733,
+        "direction_n": 2169,
+        "direction_agreement": 0.9986168741355463
+      },
+      "import": {
+        "n": 200,
+        "mae": 0.0004400451336912159,
+        "rmse": 0.003008109943552732,
+        "bias": 0.00043834352590288895,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9999999817588141,
+        "nmae": 8.02993276882399e-06,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    },
+    "V1_lbuz_33kv_busbars": {
+      "core_p_circuits": {
+        "n": 2046,
+        "mae": 0.9858445975038175,
+        "rmse": 1.7716756756956353,
+        "bias": -0.06305935018954349,
+        "obs_mean_abs": 9.530650048875854,
+        "r": 0.98610245232581,
+        "nmae": 0.10343938686743602,
+        "direction_n": 2041,
+        "direction_agreement": 0.9960803527682509
+      },
+      "all_p_circuits": {
+        "n": 2245,
+        "mae": 1.0476005815119867,
+        "rmse": 1.770939471876375,
+        "bias": 0.090826721534972,
+        "obs_mean_abs": 8.743086859688194,
+        "r": 0.985218966327745,
+        "nmae": 0.119820447666163,
+        "direction_n": 2169,
+        "direction_agreement": 0.9963116643614569
+      },
+      "import": {
+        "n": 200,
+        "mae": 4.238104255343877e-05,
+        "rmse": 0.00028652006866962203,
+        "bias": -4.009067523308652e-05,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9999999998342655,
+        "nmae": 7.733682213960938e-07,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    }
+  },
+  "verdict": {
+    "primary_scenario": "V0_none",
+    "level": "B_USABLE_WITH_LIMITATIONS",
+    "A": {
+      "passed": false,
+      "checks": {
+        "structural": true,
+        "convergence": true,
+        "share_fit": false,
+        "direction": true,
+        "import": true
+      },
+      "share_fit": 0.6363636363636364,
+      "circuits_failing_fit": [
+        "SUG1_SUG1_1",
+        "SUG1_SUG1_2",
+        "SUG1_SUG1_3",
+        "SUND_LBUZ_3(1)"
+      ],
+      "circuits_failing_direction": []
+    },
+    "B": {
+      "passed": true,
+      "checks": {
+        "structural": true,
+        "convergence": true,
+        "share_fit": true,
+        "direction": true,
+        "import": true
+      },
+      "share_fit": 1.0,
+      "circuits_failing_fit": [],
+      "circuits_failing_direction": []
+    },
+    "pf_convergence_rate": 1.0,
+    "import_nmae": 0.08389065255751353
+  }
+}

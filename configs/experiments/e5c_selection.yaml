@@ -1,0 +1,79 @@
+# E5c — synthetic gates (static + physical response), robustness-aware checkpoint selection,
+# real-transfer criteria, verdicts and the weather rule.
+# PRE-REGISTERED 2026-10-08 before any E5c data generation, training or evaluation.
+# Everything used for selection is SYNTHETIC. Real states are evaluation-only, after freeze.
+
+experiment_id: e5c_selection
+no_real_selection_data: >-
+  No real state from any year (2023–2026), night-time or no-PV period is used for checkpoint
+  selection. Claim preserved: training and model selection used synthetic states and static
+  metadata only.
+
+synthetic_gate:
+  static:                 # on the E5c held-out synthetic test (zero-shot re-scored on it)
+    ST1_pbe: "PBE_mean <= 0.10 × zero-shot PBE_mean"
+    ST2_active_vs_dc: "P_residual <= 5 × DC-PF P_residual (same states)"
+    ST3_import_sign: "REF import sign correct on >= 99 % of states with |AC import| >= 5 MW"
+    ST4_import_mae: "REF import MAE <= 5 MW over ALL states (near-zero states judged by error)"
+    ST5_voltage: "Vm MAE <= 0.015 pu"
+    sign_threshold_rationale: >-
+      5 MW = twice the largest single-bus generation capacity (2.5 MW) and 5 × the battery idle
+      band (1 MW): below it the import sign is not physically meaningful. Fixed before any result.
+  response:               # on the VALIDATION physics probes (AC-derived targets)
+    RS1_slope: "GENCO / AC import-response slope in [0.8, 1.2] for EACH of pv, battery, load"
+    RS2_mae: "mean |ΔI_GENCO − ΔI_AC| / mean |ΔI_AC| <= 0.25 for EACH of pv, battery, load"
+    slope: "Σ(ΔI · x) / Σ x² over pairs (regression through the origin), x = Δ net withdrawal"
+  pass: ALL static AND ALL response criteria
+  key_requirement: a model with low PBE but near-zero generator response cannot pass (RS1 pv)
+
+retention:                # no material regression on earlier synthetic regimes (re-encoded pools)
+  reference: E5b frozen checkpoint e5b_ft_n10000_s2 (E5 test PBE 1.2697, E5b test PBE 0.5864)
+  RT1_e5_narrow: "PBE on the E5 test pool <= 2.0 × 1.2697 = 2.539 MVA"
+  RT2_e5b_broad: "PBE on the E5b test pool <= 2.0 × 0.5864 = 1.173 MVA"
+
+checkpoint_selection:     # hierarchical; synthetic only; frozen before training
+  step_1: "eligible = synthetic_gate.pass AND retention RT1 AND RT2"
+  step_2: "among eligible, rank by PBE on the FULL E5c validation pool"
+  step_3: >-
+    tie range = within 10 % of the best → prefer the training size whose seeds are most stable
+    (smallest coefficient of variation of validation-pool PBE across its seeds; single-seed sizes
+    rank after multi-seed sizes), then the smaller N, then the lower validation PBE
+  fallback_if_none_eligible: >-
+    rank ALL fine-tuned runs by the number of the 13 criteria passed (ST1–5, RS1–2 × 3 probe types,
+    RT1–2), then validation-pool PBE; the selection is FLAGGED and the verdict is at most E5C-C
+  then: >-
+    FREEZE (sha256 weights + normalizer + configs + selection table) in
+    metadata/e5c_checkpoint_registry.yaml and COMMIT before any real-state file is opened
+
+real_transfer:            # S1 (2,829 states, identical to E4/E5/E5b), re-encoded generator-aware
+  compare: ["zero-shot (E4)", "E5 ft_n50000_s0", "E5b e5b_ft_n10000_s2", "E5c (frozen)", DC-PF, AC]
+  encodings: "zero-shot / E5 / E5b on the original S1 export (their training encoding); E5c on the
+    re-encoded S1 (same states, same AC solution)"
+  REAL_TRANSFER_SUCCESS:  # ALL of
+    R1_active: "mean active residual <= 2.885 MW"
+    R2_pbe: "PBE mean <= 3.318 MVA AND PBE p95 <= 10 MVA"
+    R3_import: "sign >= 99 % on |AC import| >= 5 MW; MAE <= 5 MW; Pearson r >= 0.9; σ_pred/σ_AC in [0.75, 1.33]"
+    R4_voltage: "median per-bus r(Vm_pred, Vm_AC) >= 0.8 AND Vm MAE <= 0.01 pu"
+    R5_pv_response: >-
+      PV slope of predicted import (OLS on primary load, CHAP31, PV injection — the E5b
+      regression) within [0.8, 1.2] × the AC PV slope on the same states
+  pv_response_report:
+    - "import slope (AC / E5 / E5b / E5c) and PV-slope error"
+    - "branch-level PV slopes for every branch (AC vs model), median |branch slope error|"
+
+verdict:                  # exactly one
+  E5C-A_REAL_TRANSFER_SUCCESSFUL: "REAL_TRANSFER_SUCCESS"
+  E5C-B_GENERATOR_AWARE_SYNTHETIC_ADAPTATION_STILL_INSUFFICIENT: >-
+    not A AND R5 fails AND |slope_E5c − slope_AC| > 0.5 × |slope_E5b − slope_AC|
+    (PV response not substantially recovered — the E5c question answered negatively)
+  E5C-C_PARTIAL_OR_INCONCLUSIVE: "anything else (incl. a flagged selection that is not A)"
+
+weather_rule:
+  only_if: E5C-A
+  then: >-
+    rerun the frozen S1, S2 (10 seeds, E4 donors), E4D timeline, heroes D01/B02, C01, A02 with
+    identical timestamps, donors, seeds, bootstrap and materiality (|rel| >= 10 % AND CI excludes 0)
+  ramps: >-
+    per bin BOTH tracking ratio AND absolute ΔP error, ΔVm, ΔVa, branch-flow response;
+    a ratio closer to 1 with a larger absolute error is NOT an improvement
+  otherwise: "STOP — weather remains unresolved; no real example is inspected to change E5c"

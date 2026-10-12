@@ -1,0 +1,103 @@
+# E5d — synthetic gates (static + response + retention), checkpoint selection, freeze, real-transfer
+# criteria, verdicts and the weather rule.
+# PRE-REGISTERED 2026-10-09 before any E5d pair generation, training or evaluation.
+# Everything used for selection is SYNTHETIC. Real states are evaluation-only, after freeze.
+
+experiment_id: e5d_selection
+no_real_selection_data: >-
+  No real UKPN 2024 value, S1 / S2 state, satellite-derived PV, LSA SAF radiation, hero event, real
+  PV ramp, real import response or real PV-response slope (incl. AC −1.02 and E5c −0.04) is used
+  for training, validation, normalisation, loss design, λ or checkpoint selection.
+
+synthetic_gate:
+  static:                 # E5c held-out synthetic test (2,804 states); identical to E5c ST1–ST5
+    ST1_pbe: "PBE_mean <= 0.10 × zero-shot PBE_mean (same states)"
+    ST2_active_vs_dc: "P_residual <= 5 × DC-PF P_residual (same states)"
+    ST3_import_sign: "REF import sign correct on >= 99 % of states with |AC import| >= 5 MW"
+    ST4_import_mae: "REF import MAE <= 5 MW over all states"
+    ST5_voltage: "Vm MAE <= 0.015 pu"
+  response:               # E5d VALIDATION pairs; for EACH k in {pv, battery, load}
+    RS1_import_slope: "GENCO / AC import-response slope in [0.8, 1.2]; slope = Σ(ΔI·x)/Σx² (through origin)"
+    RS2_import_mae: "mean |ΔI_GENCO − ΔI_AC| / mean |ΔI_AC| <= 0.25"
+    RS3_branch_P: "Σ |ΔP_GENCO − ΔP_AC| / Σ |ΔP_AC| over pairs × directed branches <= 0.50"
+    RS4_Vm: "Σ |ΔVm_GENCO − ΔVm_AC| / Σ |ΔVm_AC| over pairs × PQ buses <= 0.50"
+    RS5_Va: "Σ |ΔVa_GENCO − ΔVa_AC| / Σ |ΔVa_AC| over pairs × non-REF buses <= 0.50"
+  retention:              # no material regression on earlier synthetic regimes (re-encoded pools)
+    RT1_e5_narrow: "PBE on the E5 test pool <= 2.539 MVA (E5c rule: 2 × E5b frozen)"
+    RT2_e5b_broad: "PBE on the E5b test pool <= 1.173 MVA (E5c rule)"
+    RT3_e5c_test: "PBE on the E5c test pool <= 1.5 × 0.6136 = 0.920 MVA (frozen E5c checkpoint)"
+  n_criteria: 23          # 5 static + 15 response + 3 retention
+  pass: "ALL static AND ALL response AND ALL retention"
+  key_requirement: >-
+    a model with excellent state PBE but near-zero PV response fails (RS1–RS5 pv); a model with
+    good PV response but poor absolute accuracy fails (ST1–ST5, RT1–RT3).
+
+response_metrics_reported:   # every held-out set (E5d validation + test pairs, E5c validation + test probes)
+  per_type: [pv, battery, load]
+  per_magnitude_class: true
+  outputs: [REF import, branch P, branch Q, Vm, Va]
+  metrics: >-
+    response slope (GENCO, AC, ratio), response correlation (Pearson over pairs × elements),
+    absolute Δ-output error (MW / MVAr / pu / degrees), relative Δ-output error (Σ|err| / Σ|Δ_AC|).
+    A ratio is never reported without the absolute error.
+
+checkpoint_selection:     # hierarchical; synthetic only
+  candidates: "λ ∈ {0.3, 1, 3} runs (the λ = 0 code-path control is reported, not selectable)"
+  step_1: "eligible = synthetic_gate.pass"
+  step_2: "among eligible, lowest PBE on the FULL E5c validation pool (9,353 states)"
+  step_3: >-
+    tie range = within 10 % of the best → prefer the λ configuration whose seeds are most stable
+    (smallest CV of validation-pool PBE; single-seed configurations rank after the 3-seed λ = 1),
+    then λ closest to 1 (|log λ|), then the lower validation-pool PBE
+  fallback_if_none_eligible: >-
+    rank all candidates lexicographically by (static pass, pv response pass [RS1–RS5 pv],
+    battery + load response pass, retention pass, number of the 23 criteria passed) descending,
+    then validation-pool PBE ascending. The selection is FLAGGED and the verdict cannot be E5D-A.
+  then: >-
+    FREEZE (sha256 of weights, normalizer, response-loss scales, graphkit configs, E5d configs, pair
+    manifests, selection table) in metadata/e5d_checkpoint_registry.yaml and COMMIT before any
+    real-state file is opened. predict on real targets is refused by code until then.
+
+real_transfer:            # S1 (2,829 states, identical to E4 / E5 / E5b / E5c), E5c's re-encoded copy
+  compare: ["zero-shot (E4)", "E5 ft_n50000_s0", "E5b e5b_ft_n10000_s2", "E5c e5c_ft_n10000_s2", "E5d (frozen)", DC-PF, AC]
+  encodings: "zero-shot / E5 / E5b on the original S1 export; E5c and E5d on S1_WEATHER_ALIGNED_GENAWARE (same states, same AC)"
+  population_check: "scenario ids, slots and AC targets identical to the E5c evaluation (tested)"
+  report: >-
+    PBE mean / median / p95 / max, active and reactive residual, branch P / Q MAE, Vm / Va MAE,
+    voltage tracking (median per-bus r), REF import MAE / bias / r / spread ratio / sign accuracy,
+    import slopes on primary load, CHAP31 and PV (E5b regression), PV→import response error,
+    branch-level PV slopes (median |error|)
+  pv_response_error_mw: "|β_pv(model) − β_pv(AC)| × mean PV injection over S1 (MW of import mis-attributed)"
+  REAL_TRANSFER_SUCCESS:  # ALL of
+    R1_active: "mean active residual <= 2.885 MW"
+    R2_pbe: "PBE mean <= 3.318 MVA AND PBE p95 <= 10 MVA"
+    R3_import: "sign >= 99 % on |AC import| >= 5 MW; MAE <= 5 MW; Pearson r >= 0.9; σ_pred/σ_AC in [0.75, 1.33]"
+    R4_voltage: "median per-bus r(Vm_pred, Vm_AC) >= 0.8 AND Vm MAE <= 0.01 pu"
+    R5_pv_response: "PV slope of predicted import (E5b regression) within [0.8, 1.2] × the AC PV slope"
+    R6_battery_no_regression: >-
+      |β_CHAP31(E5d)/β_CHAP31(AC) − 1| <= |β_CHAP31(E5c)/β_CHAP31(AC) − 1| + 0.10
+    R7_load_no_regression: >-
+      |β_load(E5d)/β_load(AC) − 1| <= |β_load(E5c)/β_load(AC) − 1| + 0.10
+  note: "R1–R5 are the E5c criteria unchanged; R6–R7 add the 'no severe regression' requirement"
+
+verdict:                  # exactly one, evaluated in this order
+  E5D-A_RESPONSE_AWARE_TRAINING_SOLVES_THE_PV_BLIND_SPOT: "REAL_TRANSFER_SUCCESS AND selection not flagged"
+  E5D-C_RESPONSE_AWARE_TRAINING_FAILS_EVEN_SYNTHETICALLY: >-
+    NOT SYN_PV_LEARNED, where SYN_PV_LEARNED = the selected checkpoint passes RS1 and RS2 for pv on
+    the held-out E5d TEST pairs
+  E5D-B_SYNTHETIC_RESPONSE_LEARNED_BUT_DOES_NOT_TRANSFER: "SYN_PV_LEARNED AND R5 fails"
+  E5D-D_PARTIAL_OR_OTHER: "anything else"
+
+weather_rule:
+  only_if: E5D-A
+  then: >-
+    re-encode (generator-aware) and rerun EXACTLY the frozen S1_WEATHER_ALIGNED, S2_MATCHED_PV_CONTROL
+    (10 seeds, E4 donors), 15-minute E4D timeline and heroes D01/B02, C01, A02 with identical
+    timestamps, donors, seeds, bootstrap (B = 2,000, seed 20261006), materiality (|rel| >= 10 % AND
+    CI excludes 0) and ramp bins (frozen E4 edges). Report S1 − S2 with CI; ramps per bin with
+    tracking ratio AND absolute ΔP, ΔVm, ΔVa errors for zero-shot, E5, E5b, E5c, E5d. Then add E5d
+    to the demo bundles as an optional, configuration-driven model entry.
+  otherwise: >-
+    STOP. No S1 / S2, ramp or hero rerun. "Weather remains unresolved because the model does not
+    satisfy the transfer gate." Model development for the hackathon closes.
+final_experiment: "No E5e, E5f, weather fine-tuning or further loss search is started automatically."

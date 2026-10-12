@@ -1,0 +1,67 @@
+{
+  "experiment_id": "e0_genco_baseline",
+  "run_name": "run_20261002T163105Z",
+  "provenance_class": "PREDICTED (GENCO) vs SIMULATED (datakit AC power flow)",
+  "network": "case14_ieee",
+  "split": "test",
+  "n_scenarios": {
+    "train": 175713,
+    "val": 21947,
+    "test": 21946
+  },
+  "metrics": {
+    "Avg. active res. (MW)": 0.002108086599037,
+    "Avg. reactive res. (MVar)": 0.0011574977543205,
+    "PBE Mean": 0.0026973732747137,
+    "PBE Max": 0.5725060701370239
+  },
+  "rmse": {
+    "RMSE-PQ": {
+      "Pg (MW)": 0.0,
+      "Qg (MVar)": 0.0,
+      "Vm (p.u.)": 0.000116009971876,
+      "Va (radians)": 0.0010310741068762
+    },
+    "RMSE-PV": {
+      "Pg (MW)": 0.0,
+      "Qg (MVar)": 0.5788850942599391,
+      "Vm (p.u.)": 0.0,
+      "Va (radians)": 0.0011099691088764
+    },
+    "RMSE-REF": {
+      "Pg (MW)": 0.1596911818869311,
+      "Qg (MVar)": 1.1962680363266998,
+      "Vm (p.u.)": 0.0006116675461467,
+      "Va (radians)": 0.0
+    }
+  },
+  "reference_comparison": {
+    "Avg. active res. (MW)": {
+      "ours": 0.002108086599037,
+      "paper": 0.0021052041556686,
+      "rel_diff": 0.0013691989732391371,
+      "within_tolerance": true
+    },
+    "Avg. reactive res. (MVar)": {
+      "ours": 0.0011574977543205,
+      "paper": 0.0011385377729311,
+      "rel_diff": 0.016652922582083965,
+      "within_tolerance": true
+    },
+    "PBE Mean": {
+      "ours": 0.0026973732747137,
+      "paper": 0.0026822725776582,
+      "rel_diff": 0.005629814501807316,
+      "within_tolerance": true
+    },
+    "PBE Max": {
+      "ours": 0.5725060701370239,
+      "paper": 0.5725455284118652,
+      "rel_diff": -6.891727012654959e-05,
+      "within_tolerance": true
+    }
+  },
+  "rel_tolerance": 0.05,
+  "split_matches_paper_eval": true,
+  "reproduced_within_tolerance": true
+}

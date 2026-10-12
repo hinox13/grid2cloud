@@ -1,0 +1,93 @@
+{
+  "set": "test",
+  "sampler_seed": 9900,
+  "base_states": 500,
+  "pairs_requested": 1500,
+  "states_requested": 3000,
+  "states_accepted": 3000,
+  "states_written": 3000,
+  "rejected": {},
+  "complete_pairs": {
+    "pv": 500,
+    "battery": 500,
+    "load": 500
+  },
+  "complete_pairs_by_class": [
+    {
+      "probe_type": "battery",
+      "magnitude_class": "large",
+      "n": 167
+    },
+    {
+      "probe_type": "battery",
+      "magnitude_class": "moderate",
+      "n": 167
+    },
+    {
+      "probe_type": "battery",
+      "magnitude_class": "small",
+      "n": 166
+    },
+    {
+      "probe_type": "load",
+      "magnitude_class": "large",
+      "n": 161
+    },
+    {
+      "probe_type": "load",
+      "magnitude_class": "moderate",
+      "n": 169
+    },
+    {
+      "probe_type": "load",
+      "magnitude_class": "small",
+      "n": 170
+    },
+    {
+      "probe_type": "pv",
+      "magnitude_class": "large",
+      "n": 114
+    },
+    {
+      "probe_type": "pv",
+      "magnitude_class": "moderate",
+      "n": 166
+    },
+    {
+      "probe_type": "pv",
+      "magnitude_class": "on_off",
+      "n": 60
+    },
+    {
+      "probe_type": "pv",
+      "magnitude_class": "small",
+      "n": 160
+    }
+  ],
+  "x_mw_abs_range": {
+    "pv": [
+      0.05283230728687438,
+      7.5
+    ],
+    "battery": [
+      0.2665842866295449,
+      49.05490298983138
+    ],
+    "load": [
+      0.11669836055479443,
+      15.442093322964878
+    ]
+  },
+  "zero_nonzero_pv_pairs": 107,
+  "chunks": 2,
+  "wall_s": 135.84956376301125,
+  "sources_read": [
+    "configs/experiments/e5b_operating_envelope.yaml",
+    "configs/experiments/e5c_generator_aware.yaml",
+    "configs/experiments/e5d_response_training.yaml",
+    "configs/networks/study_region.yaml",
+    "data/raw/ukpn/ltds_demand_3a.parquet"
+  ],
+  "git_commit": "80515b9a4474d7123f40a6bc3edb9c9b2cc9b9ad",
+  "working_tree_dirty": true
+}

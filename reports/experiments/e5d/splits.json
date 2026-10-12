@@ -1,0 +1,69 @@
+{
+  "e5c_splits": {
+    "0": {
+      "train": "fa85fc6a2e8dff9d69a6c508de0053e627991331bca123034fb4b107ab710855",
+      "val": "23ddc479b2a91f72be748ae7c27eb6891fc991e880567ac28c2ac511a916e0a1",
+      "test": "2b869eb5977c38c6d54e654e3fe1af1790a2f4a64c8e76cea263d1d026f3efef"
+    },
+    "1": {
+      "train": "6c30a2fb3966232da3af9662cb651e06350c3cf0f55767a85ec59159c7303308",
+      "val": "23ddc479b2a91f72be748ae7c27eb6891fc991e880567ac28c2ac511a916e0a1",
+      "test": "2b869eb5977c38c6d54e654e3fe1af1790a2f4a64c8e76cea263d1d026f3efef"
+    },
+    "2": {
+      "train": "09a776fb61532e877bfd9703438e84d304f8e52fbf1158d77920f826e54a6ee2",
+      "val": "23ddc479b2a91f72be748ae7c27eb6891fc991e880567ac28c2ac511a916e0a1",
+      "test": "2b869eb5977c38c6d54e654e3fe1af1790a2f4a64c8e76cea263d1d026f3efef"
+    }
+  },
+  "pair_sets": {
+    "train": {
+      "complete_pairs": {
+        "pv": 3000,
+        "battery": 3000,
+        "load": 3000
+      },
+      "states": 18000,
+      "manifest_sha256": "1fa65d518e70cee2476cb042873455673a815754575f2bbd360bf72f840194ba"
+    },
+    "validation": {
+      "complete_pairs": {
+        "pv": 500,
+        "battery": 500,
+        "load": 500
+      },
+      "states": 3000,
+      "manifest_sha256": "3ee5d40d54a8c61b68e63361ead56942cc662a4bd1e7d397b0a755f9efd0291d"
+    },
+    "test": {
+      "complete_pairs": {
+        "pv": 500,
+        "battery": 500,
+        "load": 500
+      },
+      "states": 3000,
+      "manifest_sha256": "72c4d050a5f908e82419ce55b8a85d2cd8a8a6ceb66d86829df09f009534e62e"
+    }
+  },
+  "base_overlap": {
+    "train|validation": 0,
+    "train|test": 0,
+    "train|e5c_probes_validation": 0,
+    "train|e5c_probes_test": 0,
+    "validation|test": 0,
+    "validation|e5c_probes_validation": 0,
+    "validation|e5c_probes_test": 0,
+    "test|e5c_probes_validation": 0,
+    "test|e5c_probes_test": 0,
+    "e5c_probes_validation|e5c_probes_test": 0
+  },
+  "n_base": {
+    "train": 3000,
+    "validation": 500,
+    "test": 500,
+    "e5c_probes_validation": 300,
+    "e5c_probes_test": 300
+  },
+  "git_commit": "88ef4cf62bc49fa4fbdb5fc7fdd47b66bfb9eda6",
+  "working_tree_dirty": true
+}

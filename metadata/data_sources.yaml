@@ -1,0 +1,733 @@
+# Cloud2Grid — machine-readable source registry.
+#
+# Canonical entries follow README §1 "Authoritative source registry". Sources added beyond
+# that registry are flagged with `added_beyond_readme: true` and justified in `notes`.
+#
+# Licence fields are fail-closed:
+#   - `licence: UNVERIFIED` and `licence_verified: null` whenever the licence could not be
+#     confirmed from the authoritative source itself. The licence gate rejects these.
+#   - `licence_verified` holds the ISO date on which the licence was confirmed, and
+#     `licence_evidence` says exactly where it was read.
+#   - `licence` values must match a key in metadata/licence_manifest.yaml.
+#
+# Per-source flags (`redistribution_allowed`, `derivatives_allowed`) can only *restrict*
+# what the licence permits; they never widen it. `null` means "unknown" and is treated as
+# "not allowed" by the gate.
+#
+# Raw third-party data is never committed (README §40): `raw_data_committed` is false for all.
+
+schema_version: 1
+
+sources:
+
+  # --------------------------------------------------------------------- GENCO / OpenGridFM
+  genco_paper:
+    kind: paper
+    provider: GridFM / arXiv
+    name: "GENCO — A Unified Neural Solver Embedded in a Development Framework for Steady-State Grid Analysis"
+    identifier: "arXiv:2608.09921"
+    source_url: https://arxiv.org/abs/2608.09921
+    documentation_url: https://arxiv.org/pdf/2608.09921
+    licence: CC-BY-4.0
+    licence_url: http://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "arXiv abstract page links the CC BY 4.0 licence for this submission."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Puech et al. (2026), GENCO - A Unified Neural Solver Embedded in a Development Framework for Steady-State Grid Analysis, arXiv:2608.09921."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "Main architectural and scientific reference for GENCO."
+
+  genco_challenge:
+    kind: web_page
+    provider: GridFM (Hugging Face Space)
+    name: "The GENCO Challenge — GridFM Porto 2026"
+    identifier: "huggingface.co/spaces/gridfm/genco-challenge"
+    source_url: https://huggingface.co/spaces/gridfm/genco-challenge
+    documentation_url: https://huggingface.co/spaces/gridfm/genco-challenge/discussions/1
+    licence: UNVERIFIED
+    licence_url: null
+    licence_evidence: "The Space declares no licence in its card metadata or page text (checked 2026-10-02)."
+    redistribution_allowed: null
+    derivatives_allowed: null
+    attribution_required: null
+    attribution: null
+    raw_data_committed: false
+    licence_verified: null
+    notes: >-
+      Challenge rules/context only, not a data source. Rules state submissions must use GENCO and
+      the OpenGridFM toolkits; deadline 25 Oct 2026 (AoE). Nothing from this page is redistributed.
+
+  gridfm_datakit:
+    kind: software
+    provider: GridFM
+    name: gridfm-datakit
+    identifier: "gridfm-datakit==1.1.0 (PyPI; pulled in by gridfm-graphkit)"
+    source_url: https://github.com/gridfm/gridfm-datakit
+    documentation_url: https://gridfm.github.io/gridfm-datakit/
+    licence: Apache-2.0
+    licence_url: https://github.com/gridfm/gridfm-datakit/blob/main/LICENSE
+    licence_evidence: "LICENSE file in repository and pyproject `license = \"Apache-2.0\"`; GitHub licence API reports Apache-2.0."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "gridfm-datakit (Puech et al., 2025, arXiv:2512.14658), Apache-2.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "PF/OPF dataset generation and perturbations (S0 baseline in later cycles)."
+
+  gridfm_graphkit:
+    kind: software
+    provider: GridFM
+    name: gridfm-graphkit
+    identifier: "git commit f104900245cba26d1380037eea562cf633a97484 (version string 0.9.0.3)"
+    source_url: https://github.com/gridfm/gridfm-graphkit
+    documentation_url: https://gridfm.github.io/gridfm-graphkit/
+    licence: Apache-2.0
+    licence_url: https://github.com/gridfm/gridfm-graphkit/blob/main/LICENSE
+    licence_evidence: "LICENSE file in repository; GitHub licence API reports Apache-2.0."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "gridfm-graphkit (GridFM), Apache-2.0. Cite Puech et al. (2026), arXiv:2608.09921."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      GENCO inference/evaluation. Pinned to the commit at which the gridfm/genco-pf-datakit model
+      card states `main` reproduced the paper numbers.
+
+  genco_pf_datakit_checkpoints:
+    kind: model
+    provider: GridFM (Hugging Face)
+    name: "GENCO power-flow checkpoints on datakit grids"
+    identifier: "huggingface.co/gridfm/genco-pf-datakit"
+    source_url: https://huggingface.co/gridfm/genco-pf-datakit
+    documentation_url: https://github.com/gridfm/gridfm-paper-genco/blob/main/repro_instructions/5.4.2_PF_on_datakit.md
+    licence: Apache-2.0
+    licence_url: https://www.apache.org/licenses/LICENSE-2.0
+    licence_evidence: "Model card front matter `license: apache-2.0`."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "GENCO checkpoints, gridfm/genco-pf-datakit (Apache-2.0); Puech et al. (2026), arXiv:2608.09921."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Official GENCO checkpoints referenced from the GENCO paper reproduction guide. Needed to run
+      the E0 baseline without retraining; README §1 points to gridfm-graphkit for checkpoints and
+      these are the checkpoints that library documents.
+
+  genco_pf_transfer_checkpoints:
+    kind: model
+    provider: GridFM (Hugging Face)
+    name: "GENCO transfer checkpoints (subgrid-pretrained model; IEEE 118 zero-shot eval set)"
+    identifier: "huggingface.co/gridfm/genco-pf-transfer"
+    source_url: https://huggingface.co/gridfm/genco-pf-transfer
+    documentation_url: https://github.com/gridfm/gridfm-paper-genco/blob/main/repro_instructions/5.5.3_PF_transfer.md
+    licence: Apache-2.0
+    licence_url: https://www.apache.org/licenses/LICENSE-2.0
+    licence_evidence: "Model card front matter `license: apache-2.0` (Hub API cardData, revision e7a98e9, read 2026-10-06)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "GENCO transfer checkpoints, gridfm/genco-pf-transfer (Apache-2.0); Puech et al. (2026), arXiv:2608.09921."
+    raw_data_committed: false
+    licence_verified: "2026-10-06"
+    added_beyond_readme: true
+    notes: >-
+      E4 zero-shot model: `pretraining/best_model_state_dict.pt` (run 1_h_100_32, pretrained on
+      100 subgrids), the checkpoint the GENCO paper §5.5.3 evaluates zero-shot on an unseen grid
+      (row n_scenarios=0). Also provides the IEEE 118 evaluation set used to reproduce that
+      zero-shot number. No normalizer stats are shipped with the pretrained model.
+
+  opengridfm_pf_small_case14_ieee:
+    kind: dataset
+    provider: GridFM (Hugging Face)
+    name: "gridfm-datakit case14_ieee power flow (small)"
+    identifier: "huggingface.co/datasets/gridfm/pf_small_case14_ieee"
+    source_url: https://huggingface.co/datasets/gridfm/pf_small_case14_ieee
+    documentation_url: https://huggingface.co/datasets/gridfm/pf_small_case14_ieee/blob/main/args.log
+    licence: Apache-2.0
+    licence_url: https://www.apache.org/licenses/LICENSE-2.0
+    licence_evidence: "Dataset card front matter `license: apache-2.0`."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "gridfm/pf_small_case14_ieee, generated with gridfm-datakit (Apache-2.0)."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Official OpenGridFM dataset used in GENCO paper §5.4.2; test split for the E0 baseline.
+      Synthetic (SIMULATED) power-flow states on the IEEE 14-bus case.
+
+  # ---------------------------------------------------------------------------- EUMETSAT
+  eumetsat_eview:
+    kind: dataset
+    provider: EUMETSAT
+    name: "European HRV RGB - 0 degree (E-View)"
+    identifier: "EO:EUM:DAT:MSG:EVIEW"
+    source_url: https://user.eumetsat.int/catalogue/EO%3AEUM%3ADAT%3AMSG%3AEVIEW
+    documentation_url: https://api.eumetsat.int/data/browse/collections/EO%3AEUM%3ADAT%3AMSG%3AEVIEW?format=json
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: >-
+      EUMETSAT Data Policy ("Last amended on 01 January 2025"; PDF
+      https://www-cdn.eumetsat.int/files/2025-02/45173%20-%20Data_Policy(1442019%20V1).pdf,
+      sha256 7198d34b3818af972b35053c7bda44b001369f37d232c5e8d34ee2bc7d5859c3):
+      Annex I lists "All SEVIRI, FCI, IRS and LI Advanced Image Products" as "Core"; Annex II
+      defines an Advanced Image Product as "the combination of different channels allocating a
+      colour to each channel (i.e. RGB) … do not contain the original numerical data";
+      Art. 5.1: Core access is "Free and Unrestricted basis under a CC-BY-4.0 licence,
+      regardless of when and how these are made available"; Art. 6.1: "Users may redistribute
+      all Core Data and Products"; Art. 6.3 attribution wording. The Data Store collection
+      abstract confirms this collection is an RGB composite of SEVIRI channels, and its
+      `rights: NoConditions` is consistent with "Free and Unrestricted". Abstract: "an RGB (Red, Green, Blue) composite based upon data from the
+      SEVIRI instrument … HRV channel combined with … IR10.8".
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: >-
+      "Contains modified EUMETSAT Meteosat data [year]" (EUMETSAT Data Policy Art. 6.3, adapted:
+      E-View / European HRV RGB, EO:EUM:DAT:MSG:EVIEW).
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      Visual layer candidate. Previously UNVERIFIED (2 Oct 2026, Phase 0): resolved in E3 prep
+      from the authoritative Data Policy classification, not from the README example.
+      Access (corrected 2 Oct 2026, E3 satellite ingestion): the catalogue record
+      (https://user.eumetsat.int/catalogue/es/csw/_doc/EO:EUM:DAT:MSG:EVIEW, digitalTransfers)
+      lists a single distribution channel, EUMETView (WMS layer msg_fes:rgb_eview; GeoTIFF),
+      with dataPolicies "Free and unrestricted - CC-BY-4.0"; the Data Store OpenSearch returns
+      "Not found" for the collection. EUMETView WMS is anonymous — no credentials needed. The
+      earlier note that Data Store API credentials are required was wrong.
+
+  eumetsat_ncl_enh:
+    kind: dataset
+    provider: EUMETSAT
+    name: "Natural Colour Enhanced RGB - MSG - 0 degree"
+    identifier: "EO:EUM:DAT:MSG:NCL_ENH"
+    source_url: https://user.eumetsat.int/catalogue/EO%3AEUM%3ADAT%3AMSG%3ANCL_ENH
+    documentation_url: https://api.eumetsat.int/data/browse/collections/EO%3AEUM%3ADAT%3AMSG%3ANCL_ENH?format=json
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: >-
+      EUMETSAT Data Policy ("Last amended on 01 January 2025"; PDF
+      https://www-cdn.eumetsat.int/files/2025-02/45173%20-%20Data_Policy(1442019%20V1).pdf,
+      sha256 7198d34b3818af972b35053c7bda44b001369f37d232c5e8d34ee2bc7d5859c3):
+      Annex I lists "All SEVIRI, FCI, IRS and LI Advanced Image Products" as "Core"; Annex II
+      defines an Advanced Image Product as "the combination of different channels allocating a
+      colour to each channel (i.e. RGB) … do not contain the original numerical data";
+      Art. 5.1: Core access is "Free and Unrestricted basis under a CC-BY-4.0 licence,
+      regardless of when and how these are made available"; Art. 6.1: "Users may redistribute
+      all Core Data and Products"; Art. 6.3 attribution wording. The Data Store collection
+      abstract confirms this collection is an RGB composite of SEVIRI channels, and its
+      `rights: NoConditions` is consistent with "Free and Unrestricted". Abstract: "an RGB which utilises three SEVIRI solar channels: NIR1.6, VIS0.8
+      and VIS0.6".
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: >-
+      "Contains modified EUMETSAT Meteosat data [year]" (EUMETSAT Data Policy Art. 6.3, adapted:
+      Natural Colour Enhanced RGB, EO:EUM:DAT:MSG:NCL_ENH).
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      Alternative visual layer (solar channels only: daytime imagery). Access as for
+      eumetsat_eview: EUMETView only (WMS layer msg_fes:rgb_naturalenhncd), anonymous; catalogue
+      dataPolicies "Free and unrestricted - CC-BY-4.0" (read 2 Oct 2026).
+
+  # ----------------------------------------------------------------------------- LSA SAF
+  lsa_saf_mdssftd:
+    kind: dataset
+    provider: EUMETSAT LSA SAF
+    name: "MSG Total and Diffuse Downward Surface Shortwave Flux (MDSSFTD)"
+    identifier: "LSA-207"
+    source_url: https://lsa-saf.eumetsat.int/en/data/products/radiation/
+    documentation_url: https://lsa-saf.eumetsat.int/en/data/data-access/
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: >-
+      LSA SAF "Data usage policy and acknowledgement" (re-read 2026-10-02): "The LSA SAF
+      products are licensed under the Creative Commons Attribution 4.0 International License
+      (CC BY 4.0) by EUMETSAT … You may share … and adapt … for any purpose, even
+      commercially. You must provide attribution and cannot apply additional restrictions."
+      Corroborated by the EUMETSAT Data Policy (amended 2025-01-01), Annex I: all SEVIRI
+      Derived Products — which per Annex II include all products generated by the SAFs — are
+      "Core" (Art. 5.1: CC-BY-4.0; Art. 6.1: redistribution allowed).
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: >-
+      Figures: "EUMETSAT LSA SAF [MDSSFTD, LSA-207]". Text: "Data source: EUMETSAT LSA SAF, MSG
+      Total and Diffuse Downward Surface Shortwave Flux, MDSSFTD, LSA-207." Papers: cite Carrer
+      et al. (2019a, Remote Sens. 11, 2532; 2019b, Remote Sens. 11, 2630) and Trigo et al. (2011).
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      Primary quantitative satellite forcing. Archive verified available 2004-2026 in NetCDF and
+      HDF5 under https://datalsasaf.lsasvcs.ipma.pt/PRODUCTS/MSG/MDSSFTD/ (all 12 months of
+      2024 listed). Access: "restricted to registered users" (free signup at
+      https://mokey.lsasvcs.ipma.pt/auth/signup), HTTP basic auth; THREDDS/OpenDAP allows
+      server-side spatial subsetting. Not downloaded yet.
+
+  lsa_saf_msg_static:
+    kind: dataset
+    provider: EUMETSAT LSA SAF
+    name: "LSA SAF MSG static data: native-grid latitude/longitude and land/water mask"
+    identifier: "hdf5_lsasaf_msg_lat/lon_msg-disk; NETCDF_LSASAF_USGS-IGBP_LWMASK_MSG-Disk"
+    source_url: https://nextcloud.lsasvcs.ipma.pt/s/JasGNSPSTms4Gsi
+    documentation_url: https://datalsasaf.lsasvcs.ipma.pt/PRODUCTS/MSG/MDSSFTD/Readme.md
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: >-
+      Distributed by the LSA SAF data service as auxiliary data of its products (linked from
+      the MDSSFTD PUM §6.2 and the official tutorials). The LSA SAF data-service README states
+      "The LSA SAF products are licensed under the Creative Commons Attribution 4.0
+      International License (CC BY 4.0) by EUMETSAT"; EUMETSAT Data Policy Annex I/II classes
+      all SAF-generated products as Core (CC-BY-4.0). Used only to verify product geometry;
+      the raw files are never redistributed.
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: >-
+      "EUMETSAT LSA SAF (static MSG grid and land/water mask)".
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      Public Nextcloud shares (no credentials). Native lat/lon at 2-byte precision
+      (~1 MB + 2 MB bz2) and the regular-grid NetCDF land/water mask (~0.2 MB).
+
+  # ------------------------------------------------------------------------------- UKPN
+  # Licence of every UKPN dataset is read from the Opendatasoft catalogue API field
+  # `metas.default.license` (the dataset "Information" tab). All UKPN datasets below are
+  # `visibility: domain` / `data_visible: false`: records are only returned to a logged-in
+  # account (API key). See docs/DATA_LICENSES.md and reports/e0_data_audit.md.
+
+  ukpn_grid_and_primary_sites:
+    kind: dataset
+    provider: UK Power Networks
+    name: "UK Power Networks Grid and Primary Sites"
+    identifier: "grid-and-primary-sites"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/grid-and-primary-sites/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/grid-and-primary-sites/information/
+    api_dataset_id: grid-and-primary-sites
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: >-
+      Contains UK Power Networks data (Grid and Primary Sites), licensed under CC BY 4.0.
+      Contains data from Office for National Statistics licensed under the Open Government
+      Licence v.3.0. Contains OS data © Crown copyright and database right [2019-].
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      Third-party attributions (ONS, OGL v3; Ordnance Survey) are declared in the dataset
+      metadata and must be carried with any derived output. Login required for records.
+
+  ukpn_ltds_table_1_circuit_data:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Long Term Development Statement (LTDS) Table 1 Circuit data"
+    identifier: "ukpn-ltds-table-1-circuit-data"
+    source_url: https://ukpowernetworks.opendatasoft.com/pages/long-term-development-statement/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-1-circuit-data/information/
+    api_dataset_id: ukpn-ltds-table-1-circuit-data
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (LTDS Table 1 Circuit data), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      The README's canonical LTDS link is the landing page; the LTDS is published as separate
+      tables. Table 1 = circuits (from/to node, impedance, ratings). Planning topology — do not
+      assume it equals operational topology. Login required for records.
+
+  ukpn_ltds_table_2a_transformer_2w:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Long Term Development Statement (LTDS) Table 2a Transformer Data - 2W"
+    identifier: "ukpn-ltds-table-2a-transformer-2w"
+    source_url: https://ukpowernetworks.opendatasoft.com/pages/long-term-development-statement/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-2a-transformer-2w/information/
+    api_dataset_id: ukpn-ltds-table-2a-transformer-2w
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (LTDS Table 2a Transformer Data - 2W), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "Two-winding transformers (132/33 kV links between circuit levels). Login required."
+
+  ukpn_ltds_table_2b_transformer_3w:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Long Term Development Statement (LTDS) Table 2b Transformer Data - 3W"
+    identifier: "ukpn-ltds-table-2b-transformer-data-3w"
+    source_url: https://ukpowernetworks.opendatasoft.com/pages/long-term-development-statement/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-2b-transformer-data-3w/information/
+    api_dataset_id: ukpn-ltds-table-2b-transformer-data-3w
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (LTDS Table 2b Transformer Data - 3W), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "Three-winding transformers. Login required."
+
+  ukpn_ltds_cim:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Long Term Development Statement - Common Information Model (CIM)"
+    identifier: "ukpn-ltds-cim"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-cim/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-cim/information/
+    api_dataset_id: ukpn-ltds-cim
+    licence: UNVERIFIED
+    licence_url: null
+    licence_evidence: >-
+      Catalogue metadata declares a bespoke licence, "UK Power Networks Shared Data Licence -
+      Common Information Model", whose terms are a PDF on UKPN SharePoint that could not be
+      retrieved anonymously. Terms not reviewed.
+    redistribution_allowed: null
+    derivatives_allowed: null
+    attribution_required: null
+    attribution: null
+    raw_data_committed: false
+    licence_verified: null
+    added_beyond_readme: true
+    notes: >-
+      Registered only to block it explicitly: it is the one LTDS product NOT under CC BY 4.0
+      (README §1: do not assume all UKPN data is CC BY 4.0). Do not use until terms are reviewed.
+
+  ukpn_ecr_1mw_and_above:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Embedded Capacity Register 2 - 1MW and above"
+    identifier: "ukpn-embedded-capacity-register"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-embedded-capacity-register/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-embedded-capacity-register/information/
+    api_dataset_id: ukpn-embedded-capacity-register
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: >-
+      Contains UK Power Networks data (Embedded Capacity Register, 1 MW and above), licensed
+      under CC BY 4.0. Contains data from Office for National Statistics licensed under the Open
+      Government Licence v.3.0. Contains OS data © Crown copyright and database right [2019-].
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      Contains customer names/addresses/MPANs. Cloud2Grid only needs technology, capacity,
+      coordinates and connection substation; customer-identifying columns must not be carried
+      into derived/demo outputs. Login required.
+
+  ukpn_ecr_under_1mw:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Embedded Capacity Register 1 - under 1MW"
+    identifier: "ukpn-embedded-capacity-register-1-under-1mw"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-embedded-capacity-register-1-under-1mw/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-embedded-capacity-register-1-under-1mw/information/
+    api_dataset_id: ukpn-embedded-capacity-register-1-under-1mw
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Embedded Capacity Register, under 1 MW), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "Same customer-data caveat as ukpn_ecr_1mw_and_above. Login required."
+
+  ukpn_132kv_operational_half_hourly:
+    kind: dataset
+    provider: UK Power Networks
+    name: "132kV Circuit Operational Data Half Hourly"
+    identifier: "ukpn-132kv-circuit-operational-data-half-hourly"
+    source_url: https://open-data.org.uk/dataset/ukpowernetworks/ukpn-132kv-circuit-operational-data-half-hourly
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-132kv-circuit-operational-data-half-hourly/information/
+    api_dataset_id: ukpn-132kv-circuit-operational-data-half-hourly
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: >-
+      Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'; the README's canonical
+      open-data.org.uk index page also lists CC-BY-4.0 and links back to the UKPN portal.
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (132kV Circuit Operational Data Half Hourly), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: >-
+      OBSERVED half-hourly active power (MW) and current (A) per LTDS line name, 2021 to previous
+      month. ~22M records. Some circuits redacted (Utilities Act 2000 s.105). Login required.
+
+  ukpn_132kv_operational_monthly:
+    kind: dataset
+    provider: UK Power Networks
+    name: "132kV Circuit Operational Data Monthly"
+    identifier: "ukpn-132kv-circuit-operational-data-monthly"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-132kv-circuit-operational-data-monthly/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-132kv-circuit-operational-data-monthly/information/
+    api_dataset_id: ukpn-132kv-circuit-operational-data-monthly
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (132kV Circuit Operational Data Monthly), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      The half-hourly dataset's own description names this as the index of which circuits were
+      triaged and `redacted`, with from/to LTDS nodes and GSP. Needed for the redaction audit
+      without downloading 22M half-hourly rows. Login required.
+
+  ukpn_33kv_operational_half_hourly_spn:
+    kind: dataset
+    provider: UK Power Networks
+    name: "33kV Circuit Operational Data Half Hourly - South Eastern Power Networks (SPN)"
+    identifier: "ukpn-33kv-circuit-operational-data-half-hourly-spn"
+    source_url: https://open-data.org.uk/dataset/ukpowernetworks/ukpn-33kv-circuit-operational-data-half-hourly-spn
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-33kv-circuit-operational-data-half-hourly-spn/information/
+    api_dataset_id: ukpn-33kv-circuit-operational-data-half-hourly-spn
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (33kV Circuit Operational Data Half Hourly - SPN), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "OBSERVED half-hourly MW and A for SPN 33 kV circuits. ~23.9M records. Login required."
+
+  ukpn_33kv_operational_half_hourly_epn:
+    kind: dataset
+    provider: UK Power Networks
+    name: "33kV Circuit Operational Data Half Hourly - Eastern Power Networks (EPN)"
+    identifier: "ukpn-33kv-circuit-operational-data-half-hourly-epn"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-33kv-circuit-operational-data-half-hourly-epn/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-33kv-circuit-operational-data-half-hourly-epn/information/
+    api_dataset_id: ukpn-33kv-circuit-operational-data-half-hourly-epn
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (33kV Circuit Operational Data Half Hourly - EPN), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      EPN counterpart of the README's SPN 33 kV dataset. Registered in E0-D because most
+      grid-fed 33 kV networks with published monthly data are in EPN. ~29.9M records; only a
+      server-side per-circuit aggregate is retrieved in Phase 0. Login required.
+
+  ukpn_33kv_operational_monthly:
+    kind: dataset
+    provider: UK Power Networks
+    name: "33kV Circuit Operational Data Monthly"
+    identifier: "ukpn-33kv-circuit-operational-data-monthly"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-33kv-circuit-operational-data-monthly/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-33kv-circuit-operational-data-monthly/information/
+    api_dataset_id: ukpn-33kv-circuit-operational-data-monthly
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0'."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (33kV Circuit Operational Data Monthly), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: "Redaction index for 33 kV circuits (all licence areas); same justification as the 132 kV monthly entry."
+
+  ukpn_grid_transformer_monthly:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Grid Transformer Power Flow Historic Monthly"
+    identifier: "ukpn-grid-transformer-operational-data-monthly"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-grid-transformer-operational-data-monthly/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-grid-transformer-operational-data-monthly/information/
+    api_dataset_id: ukpn-grid-transformer-operational-data-monthly
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Grid Transformer Power Flow Historic Monthly), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Registered in E1. Links half-hourly grid-transformer tx_id to LTDS hv/lv nodes (identifier join) and gives the redaction status per month. Needed to observe the Sundon 132/33 kV import.
+
+  ukpn_grid_transformer_half_hourly:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Grid Transformer Power Flow Historic Half Hourly"
+    identifier: "ukpn-grid-transformer-operational-data-half-hourly"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-grid-transformer-operational-data-half-hourly/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-grid-transformer-operational-data-half-hourly/information/
+    api_dataset_id: ukpn-grid-transformer-operational-data-half-hourly
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Grid Transformer Power Flow Historic Half Hourly), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Registered in E1. OBSERVED half-hourly P and I per grid transformer. Only the study region's transformers are retrieved (server-side tx_id filter); ~10.9M rows in total.
+
+  ukpn_primary_transformer_monthly:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Primary Transformer Power Flow Historic Monthly"
+    identifier: "ukpn-primary-transformer-power-flow-historic-monthly"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-primary-transformer-power-flow-historic-monthly/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-primary-transformer-power-flow-historic-monthly/information/
+    api_dataset_id: ukpn-primary-transformer-power-flow-historic-monthly
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Primary Transformer Power Flow Historic Monthly), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Registered in E1. Links half-hourly primary-transformer tx_id to LTDS hv/lv nodes and gives the redaction status per month.
+
+  ukpn_primary_transformer_half_hourly_epn:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Primary Transformer Power Flow Historic Half Hourly - Eastern Power Networks"
+    identifier: "ukpn-primary-transformer-power-flow-historic-half-hourly-epn"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-primary-transformer-power-flow-historic-half-hourly-epn/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-primary-transformer-power-flow-historic-half-hourly-epn/information/
+    api_dataset_id: ukpn-primary-transformer-power-flow-historic-half-hourly-epn
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Primary Transformer Power Flow Historic Half Hourly - Eastern Power Networks), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Registered in E1. OBSERVED half-hourly P and I per 33/11 kV primary transformer: the strongest available nodal-demand source (net of embedded generation below each primary). Only the study region's transformers are retrieved; ~47M rows in total.
+
+  ukpn_ltds_table_3a_observed_demand:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Long Term Development Statement (LTDS) Table 3a Observed Peak Demand"
+    identifier: "ukpn-ltds-table-3a-load-data-observed"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-3a-load-data-observed/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-3a-load-data-observed/information/
+    api_dataset_id: ukpn-ltds-table-3a-load-data-observed
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Long Term Development Statement (LTDS) Table 3a Observed Peak Demand), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Registered in E1. PUBLISHED planning peak demand and power factor per substation; used for the planning-peak sanity case and the load power factor.
+
+  ukpn_ltds_table_5_generation:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Long Term Development Statement (LTDS) Table 5 Generation"
+    identifier: "ukpn-ltds-table-5-generation"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-5-generation/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-ltds-table-5-generation/information/
+    api_dataset_id: ukpn-ltds-table-5-generation
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-02)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Long Term Development Statement (LTDS) Table 5 Generation), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    added_beyond_readme: true
+    notes: >-
+      Registered in E1. PUBLISHED distributed-generation capacity per Primary/Grid substation; cross-check for the ECR.
+
+  # ------------------------------------------------------------------------- Software
+  pvlib:
+    kind: software
+    provider: pvlib developers
+    name: pvlib-python
+    identifier: "pvlib (PyPI)"
+    source_url: https://github.com/pvlib/pvlib-python
+    documentation_url: https://pvlib-python.readthedocs.io/en/latest/user_guide/
+    licence: BSD-3-Clause
+    licence_url: https://github.com/pvlib/pvlib-python/blob/main/LICENSE
+    licence_evidence: "GitHub licence API reports BSD-3-Clause for pvlib/pvlib-python."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "pvlib python (Anderson et al., 2023, JOSS 8(92), 5994), BSD-3-Clause."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "PV modelling. Not installed in Phase 0 (out of scope)."
+
+  pandapower:
+    kind: software
+    provider: University of Kassel / Fraunhofer IEE
+    name: pandapower
+    identifier: "pandapower (PyPI)"
+    source_url: https://github.com/e2nIEE/pandapower
+    documentation_url: https://pandapower.readthedocs.io/en/latest/powerflow.html
+    licence: BSD-3-Clause
+    licence_url: https://github.com/e2nIEE/pandapower/blob/develop/LICENSE
+    licence_evidence: >-
+      LICENSE file text is the BSD 3-Clause License (GitHub's licence API reports NOASSERTION
+      because of the multi-holder copyright header; the clauses themselves are standard BSD-3).
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "pandapower (Thurner et al., 2018, IEEE Trans. Power Syst. 33(6)), BSD-3-Clause."
+    raw_data_committed: false
+    licence_verified: "2026-10-02"
+    notes: "Independent AC power-flow reference. Not installed in Phase 0 (out of scope)."

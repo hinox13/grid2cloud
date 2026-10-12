@@ -1,0 +1,29 @@
+{
+  "run_at": "2026-10-06T13:05:40+00:00",
+  "config_hash": "90825a9180e792ed",
+  "status": "OK",
+  "slots": 9040,
+  "valid_slots": 7985,
+  "windows": 4710,
+  "class_counts": {
+    "A": 277,
+    "B": 322,
+    "C": 225,
+    "D": 1,
+    "E": 0
+  },
+  "selected": 10,
+  "asset_set": [
+    "ECR:1063",
+    "ECR:1363",
+    "ECR:1703",
+    "ECR:1726",
+    "ECR:2498",
+    "ECR:3556",
+    "ECR:4879",
+    "ECR:5059",
+    "ECR:526",
+    "ECR:955"
+  ],
+  "asset_set_hash": "4b3ca8309397bdbb"
+}

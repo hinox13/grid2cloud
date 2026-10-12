@@ -1,0 +1,37 @@
+{
+  "selected": "e5d_l1_s0",
+  "criteria": {
+    "R1_active": true,
+    "R2_pbe": true,
+    "R3_import": false,
+    "R4_voltage": false,
+    "R5_pv_response": true,
+    "R6_battery_no_regression": false,
+    "R7_load_no_regression": true
+  },
+  "REAL_TRANSFER_SUCCESS": false,
+  "selected_flagged": true,
+  "SYN_PV_LEARNED": true,
+  "verdict": "E5D-D_PARTIAL_OR_OTHER",
+  "weather_rule": "STOP \u2014 weather remains unresolved",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "1c4cc938acc94246096ca81fca7586c4ca09139b",
+    "working_tree_dirty": true
+  }
+}

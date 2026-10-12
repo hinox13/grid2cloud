@@ -1,0 +1,70 @@
+{
+  "bands": [
+    {
+      "label": "132 kV",
+      "y0": 2.75,
+      "y1": 4.45
+    },
+    {
+      "label": "33 kV",
+      "y0": -0.45,
+      "y1": 2.75
+    },
+    {
+      "label": "11 kV",
+      "y0": -1.45,
+      "y1": -0.45
+    }
+  ],
+  "groups": [
+    {
+      "label": "Sundon<br>primary",
+      "x": -5.6,
+      "y": -1.33
+    },
+    {
+      "label": "Lewsey<br>primary",
+      "x": -3.5,
+      "y": -1.33
+    },
+    {
+      "label": "Chaul End<br>primary",
+      "x": -1.65,
+      "y": -1.33
+    },
+    {
+      "label": "Leighton Buzzard<br>primary",
+      "x": 1.65,
+      "y": -1.33
+    },
+    {
+      "label": "Battery<br>CHAP31",
+      "x": -0.35,
+      "y": -0.12
+    },
+    {
+      "label": "Grid supply \u00b7 Sundon 132 kV",
+      "x": 0.0,
+      "y": 4.3
+    },
+    {
+      "label": "Sundon 33 kV busbar",
+      "x": -6.75,
+      "y": 1.62,
+      "anchor": "left"
+    },
+    {
+      "label": "33 kV ring",
+      "x": 3.25,
+      "y": 1.25
+    }
+  ],
+  "busbars": {
+    "EPN:SUND11": {
+      "y": 4.0
+    },
+    "EPN:SUND31": {
+      "y": 1.45
+    }
+  }
+}

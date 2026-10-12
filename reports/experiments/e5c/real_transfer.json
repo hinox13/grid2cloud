@@ -1,0 +1,37 @@
+{
+  "selected": "e5c_ft_n10000_s2",
+  "criteria": {
+    "R1_active": true,
+    "R2_pbe": true,
+    "R3_import": false,
+    "R4_voltage": false,
+    "R5_pv_response": false
+  },
+  "REAL_TRANSFER_SUCCESS": false,
+  "pv_slope_gap": {
+    "E5c": 0.982848548185297,
+    "E5b": 0.9567034970478964
+  },
+  "verdict": "E5C-B_GENERATOR_AWARE_SYNTHETIC_ADAPTATION_STILL_INSUFFICIENT",
+  "selected_flagged": true,
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "67a286030c0989ae3f0c5df4b6468c9d229ec90c",
+    "working_tree_dirty": true
+  }
+}

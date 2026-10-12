@@ -1,0 +1,78 @@
+{
+  "sources_read": [
+    "configs/experiments/e5b_operating_envelope.yaml",
+    "configs/networks/study_region.yaml",
+    "data/raw/ukpn/ltds_demand_3a.parquet"
+  ],
+  "allowed_sources": [
+    "configs/experiments/e5b_operating_envelope.yaml",
+    "configs/networks/study_region.yaml",
+    "data/raw/ukpn/ltds_demand_3a.parquet"
+  ],
+  "sites": [
+    {
+      "site": "CHAU",
+      "functional_location": "EPN-S0000000H8072",
+      "winter_md_mw": 31.3,
+      "forecast_md_29_30_mw": 37.3,
+      "published_min_load_factor": 0.256,
+      "lambda_lo": 0.0,
+      "lambda_hi": 1.191693290734824,
+      "pf_lo": 0.92,
+      "pf_hi": 0.96
+    },
+    {
+      "site": "LBUZ",
+      "functional_location": "EPN-S0000000H8037",
+      "winter_md_mw": 30.0,
+      "forecast_md_29_30_mw": 35.0,
+      "published_min_load_factor": 0.23800000000000002,
+      "lambda_lo": 0.0,
+      "lambda_hi": 1.1666666666666667,
+      "pf_lo": 0.92,
+      "pf_hi": 0.96
+    },
+    {
+      "site": "LEWS",
+      "functional_location": "EPN-S0000000H8123",
+      "winter_md_mw": 15.5,
+      "forecast_md_29_30_mw": 16.4,
+      "published_min_load_factor": 0.293,
+      "lambda_lo": 0.0,
+      "lambda_hi": 1.058064516129032,
+      "pf_lo": 0.96,
+      "pf_hi": 0.96
+    },
+    {
+      "site": "SUPR",
+      "functional_location": "EPN-S0000000H8086",
+      "winter_md_mw": 12.5,
+      "forecast_md_29_30_mw": 33.400000000000006,
+      "published_min_load_factor": -0.098,
+      "lambda_lo": -0.098,
+      "lambda_hi": 2.6720000000000006,
+      "pf_lo": 0.96,
+      "pf_hi": 0.96
+    }
+  ],
+  "hv_generation": [
+    {
+      "ecr_row": 187,
+      "technology": "Wind",
+      "registered_capacity_mw": 1.5,
+      "date_connected": "2014-12-17"
+    },
+    {
+      "ecr_row": 955,
+      "technology": "Solar",
+      "registered_capacity_mw": 6.0,
+      "date_connected": "2015-03-30"
+    }
+  ],
+  "storage": {
+    "ecr_row": 447,
+    "registered_capacity_mw": 49.5,
+    "technology": "Stored Energy (all stored energy irrespective of the original energy source)",
+    "date_connected": "2023-04-14"
+  }
+}

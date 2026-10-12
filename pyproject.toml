@@ -1,0 +1,89 @@
+[project]
+name = "cloud2grid"
+version = "0.1.0"
+description = "Satellite-driven stress testing and interactive visualisation for GENCO"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+    "requests>=2.32",
+    # E1/E2 network reconstruction, AC power flow and diagnostic figures
+    "pandapower>=3.1",
+    "matplotlib>=3.9",
+    "networkx>=3.3",
+    # E3 satellite pipeline: LSA SAF NetCDF/HDF5, OpenDAP subsetting, PV modelling
+    "xarray>=2024.6",
+    "netCDF4>=1.7",
+    "h5py>=3.11",
+    "pydap>=3.5",
+    "pvlib>=0.11",
+]
+
+[project.optional-dependencies]
+# GENCO / OpenGridFM stack (Phase 0, Workstream E). Heavy: pulls PyTorch + CUDA.
+genco = [
+    "gridfm-graphkit",
+    "torch==2.11.0",
+    "torchvision==0.26.0",
+    "torchaudio==2.11.0",
+    "torch-scatter",
+    "huggingface-hub>=0.34",
+]
+
+[dependency-groups]
+demo = [
+    "plotly>=5.24",
+    "streamlit>=1.40",
+]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cloud2grid"]
+
+# --------------------------------------------------------------------------- uv
+[tool.uv]
+# The GENCO stack depends on Linux x86_64 wheels (PyTorch cu126 + PyG torch-scatter).
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+
+[tool.uv.sources]
+# Pinned to the commit at which the gridfm/genco-pf-datakit model card states that
+# `main` reproduces the GENCO paper numbers (1 October 2026).
+gridfm-graphkit = { git = "https://github.com/gridfm/gridfm-graphkit", rev = "f104900245cba26d1380037eea562cf633a97484" }
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }
+torchaudio = { index = "pytorch-cu126" }
+# Prebuilt PyG wheel matching torch 2.11.0 + CUDA 12.6 (gridfm-graphkit README: torch-scatter
+# must be installed from data.pyg.org because the wheel depends on the torch/CUDA build).
+torch-scatter = { url = "https://data.pyg.org/whl/torch-2.11.0%2Bcu126/torch_scatter-2.1.2%2Bpt211cu126-cp311-cp311-linux_x86_64.whl" }
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+# ------------------------------------------------------------------------ tools
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "scripts", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "ANN"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

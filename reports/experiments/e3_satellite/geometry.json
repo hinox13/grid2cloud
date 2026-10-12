@@ -1,0 +1,713 @@
+{
+  "projection_validation": {
+    "pixels_compared": 6258,
+    "max_abs_dlat_deg": 0.004998467407951068,
+    "max_abs_dlon_deg": 0.004999698044189094,
+    "official_precision_deg": 0.01,
+    "pass": true
+  },
+  "regular_grid": {
+    "lat_first": 80.0,
+    "lat_step": -0.0500030517578125,
+    "lon_first": -80.0,
+    "lon_step": 0.0500030517578125,
+    "n": [
+      3201,
+      3201
+    ],
+    "matches_expected": true,
+    "history": "2021-01-28T11:26:47Z - NetCDF reprojected product ; 2020-01-27T09:18:29Z Original product file created: HDF5_LSASAF_USGS-IGBP_LWMASK_MSG-Disk_202001270900",
+    "license_attribute": "Data is freely available for users registered at the LSA SAF website - lsa-saf.eumetsat.int"
+  },
+  "reference_time_2024": "2024-06-15 12:00:00+00:00",
+  "summaries": [
+    {
+      "region": "BSP:EPN:Sundon 33kV",
+      "fleet": "current_major_95pct",
+      "n_assets": 4,
+      "capacity_mw": 43.0,
+      "native_distinct_pixels": 2,
+      "native_effective_independent_pixels": 1.8325074331020812,
+      "native_shared_pixels": {
+        "n1844_306": [
+          "ECR:526",
+          "ECR:953",
+          "ECR:955"
+        ]
+      },
+      "sampled_distinct_native_pixels": 3,
+      "sampled_effective_independent_pixels": 2.0430939226519342,
+      "regular_distinct_cells": 3,
+      "regular_effective_independent_cells": 2.0430939226519342,
+      "regular_shared_cells": {
+        "r561c1588": [
+          "ECR:953",
+          "ECR:955"
+        ]
+      },
+      "pairs_same_native_pixel": 3,
+      "pairs_adjacent_native_pixel": 3,
+      "pairs_separated_ge2_native_pixels": 0,
+      "assets_within_georef_uncertainty_of_edge": 4,
+      "ew_span_native_columns": 1,
+      "ew_span_km": 3.9365666413626386,
+      "transit_min": {
+        "5ms": 13.12188880454213,
+        "10ms": 6.560944402271065,
+        "15ms": 4.373962934847376
+      },
+      "frames_to_cross_at_10ms": 0.43739629348473763,
+      "native_footprint_km": {
+        "dx_km": 3.1948748410426324,
+        "dy_km": 6.345341216319521,
+        "area_km2": 20.272571009850093
+      },
+      "acquisition_offset_min": 11.646666666666667,
+      "pair_separations": [
+        {
+          "asset_a": "ECR:953",
+          "asset_b": "ECR:449",
+          "d_row": 0,
+          "d_col": 1,
+          "chebyshev": 1,
+          "distance_km": 4.108
+        },
+        {
+          "asset_a": "ECR:953",
+          "asset_b": "ECR:955",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 1.086
+        },
+        {
+          "asset_a": "ECR:953",
+          "asset_b": "ECR:526",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 2.009
+        },
+        {
+          "asset_a": "ECR:449",
+          "asset_b": "ECR:955",
+          "d_row": 0,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 3.315
+        },
+        {
+          "asset_a": "ECR:449",
+          "asset_b": "ECR:526",
+          "d_row": 0,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 5.344
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:526",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 3.03
+        }
+      ]
+    },
+    {
+      "region": "BSP:EPN:Sundon 33kV",
+      "fleet": "active_2024",
+      "n_assets": 10,
+      "capacity_mw": 8.944735999999999,
+      "native_distinct_pixels": 6,
+      "native_effective_independent_pixels": 1.227525770563347,
+      "native_shared_pixels": {
+        "n1844_306": [
+          "ECR:3556",
+          "ECR:526",
+          "ECR:955"
+        ],
+        "n1847_307": [
+          "ECR:1726",
+          "ECR:2498",
+          "ECR:5059"
+        ]
+      },
+      "sampled_distinct_native_pixels": 6,
+      "sampled_effective_independent_pixels": 1.9759289871944596,
+      "regular_distinct_cells": 6,
+      "regular_effective_independent_cells": 1.9759289871944596,
+      "regular_shared_cells": {
+        "r562c1587": [
+          "ECR:1363",
+          "ECR:1703"
+        ],
+        "r562c1591": [
+          "ECR:1063",
+          "ECR:1726",
+          "ECR:2498",
+          "ECR:5059"
+        ]
+      },
+      "pairs_same_native_pixel": 6,
+      "pairs_adjacent_native_pixel": 14,
+      "pairs_separated_ge2_native_pixels": 25,
+      "assets_within_georef_uncertainty_of_edge": 9,
+      "ew_span_native_columns": 5,
+      "ew_span_km": 13.821606654843368,
+      "transit_min": {
+        "5ms": 46.072022182811224,
+        "10ms": 23.036011091405612,
+        "15ms": 15.357340727603743
+      },
+      "frames_to_cross_at_10ms": 1.535734072760374,
+      "native_footprint_km": {
+        "dx_km": 3.1944162588102225,
+        "dy_km": 6.332881874913141,
+        "area_km2": 20.229860826347103
+      },
+      "acquisition_offset_min": 11.644666666666666,
+      "pair_separations": [
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:526",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 3.03
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:5059",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 12.028
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:1363",
+          "d_row": 1,
+          "d_col": 0,
+          "chebyshev": 1,
+          "distance_km": 3.525
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:1726",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 10.366
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:4879",
+          "d_row": 0,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 9.261
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:1063",
+          "d_row": 1,
+          "d_col": 4,
+          "chebyshev": 4,
+          "distance_km": 12.363
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:1703",
+          "d_row": 1,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 2.442
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:2498",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 11.122
+        },
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:3556",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 0.684
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:5059",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 13.908
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:1363",
+          "d_row": 1,
+          "d_col": 0,
+          "chebyshev": 1,
+          "distance_km": 6.378
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:1726",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 12.105
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:4879",
+          "d_row": 0,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 10.504
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:1063",
+          "d_row": 1,
+          "d_col": 4,
+          "chebyshev": 4,
+          "distance_km": 14.236
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:1703",
+          "d_row": 1,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 4.306
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:2498",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 13.107
+        },
+        {
+          "asset_a": "ECR:526",
+          "asset_b": "ECR:3556",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 3.528
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:1363",
+          "d_row": 0,
+          "d_col": -3,
+          "chebyshev": 3,
+          "distance_km": 12.162
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:1726",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 1.876
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:4879",
+          "d_row": -1,
+          "d_col": 0,
+          "chebyshev": 1,
+          "distance_km": 4.168
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:1063",
+          "d_row": 0,
+          "d_col": 1,
+          "chebyshev": 1,
+          "distance_km": 0.336
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:1703",
+          "d_row": 0,
+          "d_col": -4,
+          "chebyshev": 4,
+          "distance_km": 13.832
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:2498",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 1.023
+        },
+        {
+          "asset_a": "ECR:5059",
+          "asset_b": "ECR:3556",
+          "d_row": -1,
+          "d_col": -3,
+          "chebyshev": 3,
+          "distance_km": 12.218
+        },
+        {
+          "asset_a": "ECR:1363",
+          "asset_b": "ECR:1726",
+          "d_row": 0,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 10.846
+        },
+        {
+          "asset_a": "ECR:1363",
+          "asset_b": "ECR:4879",
+          "d_row": -1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 10.507
+        },
+        {
+          "asset_a": "ECR:1363",
+          "asset_b": "ECR:1063",
+          "d_row": 0,
+          "d_col": 4,
+          "chebyshev": 4,
+          "distance_km": 12.487
+        },
+        {
+          "asset_a": "ECR:1363",
+          "asset_b": "ECR:1703",
+          "d_row": 0,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 2.708
+        },
+        {
+          "asset_a": "ECR:1363",
+          "asset_b": "ECR:2498",
+          "d_row": 0,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 11.156
+        },
+        {
+          "asset_a": "ECR:1363",
+          "asset_b": "ECR:3556",
+          "d_row": -1,
+          "d_col": 0,
+          "chebyshev": 1,
+          "distance_km": 2.896
+        },
+        {
+          "asset_a": "ECR:1726",
+          "asset_b": "ECR:4879",
+          "d_row": -1,
+          "d_col": 0,
+          "chebyshev": 1,
+          "distance_km": 2.405
+        },
+        {
+          "asset_a": "ECR:1726",
+          "asset_b": "ECR:1063",
+          "d_row": 0,
+          "d_col": 1,
+          "chebyshev": 1,
+          "distance_km": 2.179
+        },
+        {
+          "asset_a": "ECR:1726",
+          "asset_b": "ECR:1703",
+          "d_row": 0,
+          "d_col": -4,
+          "chebyshev": 4,
+          "distance_km": 12.297
+        },
+        {
+          "asset_a": "ECR:1726",
+          "asset_b": "ECR:2498",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 1.484
+        },
+        {
+          "asset_a": "ECR:1726",
+          "asset_b": "ECR:3556",
+          "d_row": -1,
+          "d_col": -3,
+          "chebyshev": 3,
+          "distance_km": 10.609
+        },
+        {
+          "asset_a": "ECR:4879",
+          "asset_b": "ECR:1063",
+          "d_row": 1,
+          "d_col": 1,
+          "chebyshev": 1,
+          "distance_km": 4.42
+        },
+        {
+          "asset_a": "ECR:4879",
+          "asset_b": "ECR:1703",
+          "d_row": 1,
+          "d_col": -4,
+          "chebyshev": 4,
+          "distance_km": 11.455
+        },
+        {
+          "asset_a": "ECR:4879",
+          "asset_b": "ECR:2498",
+          "d_row": 1,
+          "d_col": 0,
+          "chebyshev": 1,
+          "distance_km": 3.884
+        },
+        {
+          "asset_a": "ECR:4879",
+          "asset_b": "ECR:3556",
+          "d_row": 0,
+          "d_col": -3,
+          "chebyshev": 3,
+          "distance_km": 9.637
+        },
+        {
+          "asset_a": "ECR:1063",
+          "asset_b": "ECR:1703",
+          "d_row": 0,
+          "d_col": -5,
+          "chebyshev": 5,
+          "distance_km": 14.166
+        },
+        {
+          "asset_a": "ECR:1063",
+          "asset_b": "ECR:2498",
+          "d_row": 0,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 1.336
+        },
+        {
+          "asset_a": "ECR:1063",
+          "asset_b": "ECR:3556",
+          "d_row": -1,
+          "d_col": -4,
+          "chebyshev": 4,
+          "distance_km": 12.554
+        },
+        {
+          "asset_a": "ECR:1703",
+          "asset_b": "ECR:2498",
+          "d_row": 0,
+          "d_col": 4,
+          "chebyshev": 4,
+          "distance_km": 12.87
+        },
+        {
+          "asset_a": "ECR:1703",
+          "asset_b": "ECR:3556",
+          "d_row": -1,
+          "d_col": 1,
+          "chebyshev": 1,
+          "distance_km": 1.875
+        },
+        {
+          "asset_a": "ECR:2498",
+          "asset_b": "ECR:3556",
+          "d_row": -1,
+          "d_col": -3,
+          "chebyshev": 3,
+          "distance_km": 11.287
+        }
+      ]
+    },
+    {
+      "region": "BSP:EPN:Sundon 33kV",
+      "fleet": "active_2024_ge1mw",
+      "n_assets": 2,
+      "capacity_mw": 8.0,
+      "native_distinct_pixels": 1,
+      "native_effective_independent_pixels": 1.0,
+      "native_shared_pixels": {
+        "n1844_306": [
+          "ECR:526",
+          "ECR:955"
+        ]
+      },
+      "sampled_distinct_native_pixels": 2,
+      "sampled_effective_independent_pixels": 1.6,
+      "regular_distinct_cells": 2,
+      "regular_effective_independent_cells": 1.6,
+      "regular_shared_cells": {},
+      "pairs_same_native_pixel": 1,
+      "pairs_adjacent_native_pixel": 0,
+      "pairs_separated_ge2_native_pixels": 0,
+      "assets_within_georef_uncertainty_of_edge": 2,
+      "ew_span_native_columns": 0,
+      "ew_span_km": 0.6890576767094833,
+      "transit_min": {
+        "5ms": 2.2968589223649447,
+        "10ms": 1.1484294611824724,
+        "15ms": 0.7656196407883147
+      },
+      "frames_to_cross_at_10ms": 0.07656196407883148,
+      "native_footprint_km": {
+        "dx_km": 3.1948748410426324,
+        "dy_km": 6.345341216319521,
+        "area_km2": 20.272571009850093
+      },
+      "acquisition_offset_min": 11.646666666666667,
+      "pair_separations": [
+        {
+          "asset_a": "ECR:955",
+          "asset_b": "ECR:526",
+          "d_row": 0,
+          "d_col": 0,
+          "chebyshev": 0,
+          "distance_km": 3.03
+        }
+      ]
+    },
+    {
+      "region": "BSP:SPN:Canterbury South 33kV",
+      "fleet": "current_major_95pct",
+      "n_assets": 4,
+      "capacity_mw": 37.5,
+      "native_distinct_pixels": 4,
+      "native_effective_independent_pixels": 3.055404671374253,
+      "native_shared_pixels": {},
+      "sampled_distinct_native_pixels": 3,
+      "sampled_effective_independent_pixels": 2.934272300469483,
+      "regular_distinct_cells": 3,
+      "regular_effective_independent_cells": 2.934272300469483,
+      "regular_shared_cells": {
+        "r575c1625": [
+          "ECR:617",
+          "ECR:913"
+        ]
+      },
+      "pairs_same_native_pixel": 0,
+      "pairs_adjacent_native_pixel": 2,
+      "pairs_separated_ge2_native_pixels": 4,
+      "assets_within_georef_uncertainty_of_edge": 2,
+      "ew_span_native_columns": 4,
+      "ew_span_km": 10.99837166466724,
+      "transit_min": {
+        "5ms": 36.661238882224126,
+        "10ms": 18.330619441112063,
+        "15ms": 12.220412960741376
+      },
+      "frames_to_cross_at_10ms": 1.2220412960741376,
+      "native_footprint_km": {
+        "dx_km": 3.191038748345468,
+        "dy_km": 6.202927431744722,
+        "area_km2": 19.793781787872444
+      },
+      "acquisition_offset_min": 11.606666666666666,
+      "pair_separations": [
+        {
+          "asset_a": "ECR:308",
+          "asset_b": "ECR:130",
+          "d_row": -1,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 5.783
+        },
+        {
+          "asset_a": "ECR:308",
+          "asset_b": "ECR:913",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 10.27
+        },
+        {
+          "asset_a": "ECR:308",
+          "asset_b": "ECR:617",
+          "d_row": 0,
+          "d_col": 2,
+          "chebyshev": 2,
+          "distance_km": 6.295
+        },
+        {
+          "asset_a": "ECR:130",
+          "asset_b": "ECR:913",
+          "d_row": 2,
+          "d_col": 4,
+          "chebyshev": 4,
+          "distance_km": 14.574
+        },
+        {
+          "asset_a": "ECR:130",
+          "asset_b": "ECR:617",
+          "d_row": 1,
+          "d_col": 3,
+          "chebyshev": 3,
+          "distance_km": 10.077
+        },
+        {
+          "asset_a": "ECR:913",
+          "asset_b": "ECR:617",
+          "d_row": -1,
+          "d_col": -1,
+          "chebyshev": 1,
+          "distance_km": 4.508
+        }
+      ]
+    }
+  ],
+  "h2_update": {
+    "BSP:EPN:Sundon 33kV": {
+      "h2_class_real_geometry": "WEAK",
+      "checks": {
+        "STRONG": {
+          "effective_independent_pixels": false,
+          "weighted_mean_pairwise_km": false,
+          "major_ew_span_km": false,
+          "normalised_hhi": false,
+          "p_capable_circuits": true
+        },
+        "PLAUSIBLE": {
+          "effective_independent_pixels": false,
+          "weighted_mean_pairwise_km": false,
+          "major_ew_span_km": false,
+          "normalised_hhi": true,
+          "p_capable_circuits": true
+        }
+      },
+      "effective_independent_pixels_real": 1.8325074331020812,
+      "note": "same pre-declared criteria (configs/experiments/e3_satellite_suitability.yaml); only the pixel count is replaced by real native geometry"
+    },
+    "BSP:SPN:Canterbury South 33kV": {
+      "h2_class_real_geometry": "PLAUSIBLE",
+      "checks": {
+        "STRONG": {
+          "effective_independent_pixels": false,
+          "weighted_mean_pairwise_km": false,
+          "major_ew_span_km": true,
+          "normalised_hhi": false,
+          "p_capable_circuits": true
+        },
+        "PLAUSIBLE": {
+          "effective_independent_pixels": true,
+          "weighted_mean_pairwise_km": true,
+          "major_ew_span_km": true,
+          "normalised_hhi": true,
+          "p_capable_circuits": true
+        }
+      },
+      "effective_independent_pixels_real": 3.055404671374253,
+      "note": "same pre-declared criteria (configs/experiments/e3_satellite_suitability.yaml); only the pixel count is replaced by real native geometry"
+    }
+  },
+  "georeference_uncertainty_px": 0.33
+}

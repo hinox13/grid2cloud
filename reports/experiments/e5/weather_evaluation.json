@@ -1,0 +1,87 @@
+{
+  "selected_checkpoint": "ft_n50000_s0",
+  "primary_gap_S1_vs_S2_adapted": {
+    "checkpoint": "adapted",
+    "metric": "PBE_mean",
+    "comparison": "S1 \u2212 S2_MATCHED_PV_CONTROL (paired; mean over 10 seeds)",
+    "metric_a": 33.18534355504172,
+    "metric_control": 33.260099907828526,
+    "difference": -0.0747563527868067,
+    "relative": -0.002247628629919151,
+    "diff_ci": [
+      -0.4786773208830068,
+      0.2565180457406361
+    ],
+    "rel_ci": [
+      -0.014098271930959244,
+      0.007880893126037103
+    ],
+    "n_pairs": 2828.0,
+    "blocks": 136.0,
+    "material": false
+  },
+  "material_weather_gap": false,
+  "ramp_tracking_median": {
+    "zero_shot": {
+      "low": 1.1416922807693481,
+      "medium": 0.6233078241348267,
+      "high": 0.5015483498573303,
+      "extreme": 0.455850213766098
+    },
+    "adapted": {
+      "low": 1.9099122285842896,
+      "medium": 1.470662236213684,
+      "high": 1.3657095432281494,
+      "extreme": 1.3689512014389038
+    }
+  },
+  "ramp_improved_high_extreme": {
+    "high": true,
+    "extreme": true
+  },
+  "ramp_acceptable_extreme": false,
+  "outcome": "A_TOPOLOGY_ADAPTATION_SUFFICIENT_WEATHER_ROBUST",
+  "detection_S1": {
+    "zero_shot": {
+      "overload_tp": 69,
+      "overload_fn": 0,
+      "overload_fp": 2760,
+      "vlim_tp": 0,
+      "vlim_fn": 417,
+      "vlim_fp": 0
+    },
+    "adapted": {
+      "overload_tp": 69,
+      "overload_fn": 0,
+      "overload_fp": 2760,
+      "vlim_tp": 331,
+      "vlim_fn": 86,
+      "vlim_fp": 265
+    }
+  },
+  "hero_not_evaluable": {},
+  "zero_shot_check_vs_E4": {
+    "S1_PBE": 48.98778518428647,
+    "S1_minus_S2_PBE": -0.00010390193998688346
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "61a4fbdcb2f330aafdd1c90e4d832d4f9ca46746",
+    "working_tree_dirty": true
+  }
+}

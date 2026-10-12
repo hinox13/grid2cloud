@@ -1,0 +1,145 @@
+{
+  "note": "report only \u2014 the pre-registered \u03bb set is not changed by this inspection",
+  "kappa": 0.017518565679589666,
+  "huber_delta": 0.1,
+  "models": {
+    "zero_shot": {
+      "L_original_on_pair_states": 0.05690798760784997,
+      "L_response": 0.9583203196525574,
+      "lambda_kappa_L_response_at_lambda_1": 0.01678839746191869,
+      "ratio_kappa_L_response_to_L_original": 0.29500950864062664,
+      "import_slope_ratios": {
+        "pv import slope ratio": 0.0009838915896664905,
+        "battery import slope ratio": 0.02238250770279353,
+        "load import slope ratio": 0.0053848365569451
+      },
+      "sigma": {
+        "pv": {
+          "import": 0.008756955516259414,
+          "branch_P": 0.0018094222231839507,
+          "branch_Q": 0.0003092423959228964,
+          "Vm": 0.0003174849577886782,
+          "Va": 0.001234596396833403
+        },
+        "battery": {
+          "import": 0.008640553554231328,
+          "branch_P": 0.0018394705458211237,
+          "branch_Q": 0.00013455008602175208,
+          "Vm": 7.723143538456848e-05,
+          "Va": 0.0008551838919217077
+        },
+        "load": {
+          "import": 0.00872347144208127,
+          "branch_P": 0.002135885159606978,
+          "branch_Q": 0.0010441675153359763,
+          "Vm": 0.0009285075591824552,
+          "Va": 0.0016941805881271086
+        }
+      }
+    },
+    "e5c_ft_n10000_s0": {
+      "L_original_on_pair_states": 0.005361574444919825,
+      "L_response": 0.630324125289917,
+      "lambda_kappa_L_response_at_lambda_1": 0.011042374588321316,
+      "ratio_kappa_L_response_to_L_original": 2.059539544169556,
+      "import_slope_ratios": {
+        "pv import slope ratio": 0.00047981851231152997,
+        "battery import slope ratio": 0.36127852378300274,
+        "load import slope ratio": 0.022423259473757517
+      },
+      "sigma": {
+        "pv": {
+          "import": 0.027645268855149285,
+          "branch_P": 0.005709215785386531,
+          "branch_Q": 0.0008849235006800339,
+          "Vm": 0.0003174849577886782,
+          "Va": 0.001234596396833403
+        },
+        "battery": {
+          "import": 0.027277792064010882,
+          "branch_P": 0.00580693529651712,
+          "branch_Q": 0.0004196050908297615,
+          "Vm": 7.723143538456848e-05,
+          "Va": 0.0008551838919217077
+        },
+        "load": {
+          "import": 0.0275395549740154,
+          "branch_P": 0.0067418694769621704,
+          "branch_Q": 0.0032912930002226806,
+          "Vm": 0.0009285075591824552,
+          "Va": 0.0016941805881271086
+        }
+      }
+    },
+    "e5c_ft_n10000_s1": {
+      "L_original_on_pair_states": 0.0019051052706523075,
+      "L_response": 0.4941312074661255,
+      "lambda_kappa_L_response_at_lambda_1": 0.008656470012330266,
+      "ratio_kappa_L_response_to_L_original": 4.5438276538735805,
+      "import_slope_ratios": {
+        "pv import slope ratio": 0.0022470081706704084,
+        "battery import slope ratio": 0.7010068826943427,
+        "load import slope ratio": 0.53690080339104
+      },
+      "sigma": {
+        "pv": {
+          "import": 0.028077934875841825,
+          "branch_P": 0.0057996441375199855,
+          "branch_Q": 0.0010135756088414986,
+          "Vm": 0.0003174849577886782,
+          "Va": 0.001234596396833403
+        },
+        "battery": {
+          "import": 0.027704715627683608,
+          "branch_P": 0.005898154870266867,
+          "branch_Q": 0.0004332470861340196,
+          "Vm": 7.723143538456848e-05,
+          "Va": 0.0008551838919217077
+        },
+        "load": {
+          "import": 0.027970575130920043,
+          "branch_P": 0.006846801621437561,
+          "branch_Q": 0.003345719945578876,
+          "Vm": 0.0009285075591824552,
+          "Va": 0.0016941805881271086
+        }
+      }
+    },
+    "e5c_ft_n10000_s2": {
+      "L_original_on_pair_states": 0.0016694410035593642,
+      "L_response": 0.4802974462509155,
+      "lambda_kappa_L_response_at_lambda_1": 0.00841412235788585,
+      "ratio_kappa_L_response_to_L_original": 5.040083680672966,
+      "import_slope_ratios": {
+        "pv import slope ratio": 0.014518757494938828,
+        "battery import slope ratio": 0.7282115033215956,
+        "load import slope ratio": 0.6073208815624521
+      },
+      "sigma": {
+        "pv": {
+          "import": 0.027659740506561312,
+          "branch_P": 0.005714414009407156,
+          "branch_Q": 0.0008908524476488742,
+          "Vm": 0.0003174849577886782,
+          "Va": 0.001234596396833403
+        },
+        "battery": {
+          "import": 0.027292080551774116,
+          "branch_P": 0.005810120150853566,
+          "branch_Q": 0.0004200171770870191,
+          "Vm": 7.723143538456848e-05,
+          "Va": 0.0008551838919217077
+        },
+        "load": {
+          "import": 0.02755398297213327,
+          "branch_P": 0.00674495379261884,
+          "branch_Q": 0.0032910363628833447,
+          "Vm": 0.0009285075591824552,
+          "Va": 0.0016941805881271086
+        }
+      }
+    }
+  },
+  "git_commit": "88ef4cf62bc49fa4fbdb5fc7fdd47b66bfb9eda6",
+  "working_tree_dirty": true
+}

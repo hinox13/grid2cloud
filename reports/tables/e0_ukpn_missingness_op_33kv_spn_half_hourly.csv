@@ -1,0 +1,7 @@
+column,n_null,n_blank,n_placeholder,n_missing,frac_missing
+ltds_line_name,1,0,0,1,0.00202020202020202
+n_rows,0,0,0,0,0.0
+n_active_power,0,0,0,0,0.0
+n_current,0,0,0,0,0.0
+first_timestamp,0,0,0,0,0.0
+last_timestamp,0,0,0,0,0.0

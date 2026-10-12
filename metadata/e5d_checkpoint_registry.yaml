@@ -1,0 +1,171 @@
+schema: cloud2grid E5d checkpoint registry v1
+frozen: true
+frozen_before_real_state_evaluation: true
+selection_rule:
+  candidates: λ ∈ {0.3, 1, 3} runs (the λ = 0 code-path control is reported, not selectable)
+  step_1: eligible = synthetic_gate.pass
+  step_2: among eligible, lowest PBE on the FULL E5c validation pool (9,353 states)
+  step_3: tie range = within 10 % of the best → prefer the λ configuration whose seeds
+    are most stable (smallest CV of validation-pool PBE; single-seed configurations
+    rank after the 3-seed λ = 1), then λ closest to 1 (|log λ|), then the lower validation-pool
+    PBE
+  fallback_if_none_eligible: rank all candidates lexicographically by (static pass,
+    pv response pass [RS1–RS5 pv], battery + load response pass, retention pass, number
+    of the 23 criteria passed) descending, then validation-pool PBE ascending. The
+    selection is FLAGGED and the verdict cannot be E5D-A.
+  then: FREEZE (sha256 of weights, normalizer, response-loss scales, graphkit configs,
+    E5d configs, pair manifests, selection table) in metadata/e5d_checkpoint_registry.yaml
+    and COMMIT before any real-state file is opened. predict on real targets is refused
+    by code until then.
+selected: e5d_l1_s0
+selected_flagged: true
+selection_trace:
+  eligible: []
+  fallback_rank:
+  - e5d_l1_s0
+  - e5d_l0.3_s0
+  - e5d_l3_s0
+  - e5d_l1_s2
+  - e5d_l1_s1
+SYN_PV_LEARNED_selected_on_test_pairs: true
+evaluable_on_real:
+- e5d_l1_s0
+- e5d_l0.3_s0
+- e5d_l0_s0
+- e5d_l1_s1
+- e5d_l1_s2
+- e5d_l3_s0
+checkpoints:
+  e5d_l1_s0:
+    lambda: 1.0
+    seed: 0
+    role: primary
+    checkpoint:
+      path: data/interim/e5d/checkpoints/e5d_l1_s0/best_model_state_dict.pt
+      sha256: 45ab82525da00844a82a9526bc814de9290efc776159f0d8818703d5e9647435
+    normalizer:
+      path: data/interim/e5d/checkpoints/e5d_l1_s0/normalizer_stats.pt
+      sha256: 9ae23c469edd4fe5cf894e2e02264d801013015fe5dcd170c7d35d18f69f5cec
+      baseMVA: 36.741424560546875
+    response_sigma_sha256: 6c87e81b28a05e9db182c5e9c9531a3ec188955835c44ef0ac13fa936c3f59fd
+    normalizer_fitted_on: training split only (10000 E5c synthetic states)
+    training_split_sha256:
+      train: fa85fc6a2e8dff9d69a6c508de0053e627991331bca123034fb4b107ab710855
+      val: 23ddc479b2a91f72be748ae7c27eb6891fc991e880567ac28c2ac511a916e0a1
+      test: 2b869eb5977c38c6d54e654e3fe1af1790a2f4a64c8e76cea263d1d026f3efef
+    best_epoch: 198
+    epochs_run: 200
+    graphkit_config: data/interim/e5d/configs/e5d_l1_s0.yaml
+    graphkit_config_sha256: fe52747b900e396439487a20cb35ad1bf49f799dd4e56fbc4baa8ccfd231216e
+    mlflow_run: data/interim/e5d/mlruns/624402504272055089/674e277698754e1586c46d803a097d60
+    response_sigma:
+      pv:
+        import: 0.027645268855149285
+        branch_P: 0.005709215785386531
+        branch_Q: 0.0008849235006800339
+        Vm: 0.0003174849577886782
+        Va: 0.001234596396833403
+      battery:
+        import: 0.027277792064010882
+        branch_P: 0.00580693529651712
+        branch_Q: 0.0004196050908297615
+        Vm: 7.723143538456848e-05
+        Va: 0.0008551838919217077
+      load:
+        import: 0.0275395549740154
+        branch_P: 0.0067418694769621704
+        branch_Q: 0.0032912930002226806
+        Vm: 0.0009285075591824552
+        Va: 0.0016941805881271086
+    synthetic_evidence:
+      PBE_mean: 0.7951054568967109
+      P_residual: 0.6715251278775225
+      import_mae_mw: 14.21360683441162
+      import_sign_accuracy_big: 0.9495982468955442
+      V_error: 0.0125272000704134
+      synthetic_val_PBE_mean: 0.7495041367610126
+      e5_test_ga_PBE_mean: 1.4372889936393034
+      e5b_test_ga_PBE_mean: 0.758189980498521
+      val_pv_slope_ratio: 0.9974954254484284
+      val_battery_slope_ratio: 0.996673489361262
+      val_load_slope_ratio: 0.9475874118122164
+      val_pv_import_rel_mae: 0.0239029563963413
+      val_battery_import_rel_mae: 0.0090001812204718
+      val_load_import_rel_mae: 0.0564793795347213
+      test_pv_slope_ratio: 0.9971785692119975
+      test_battery_slope_ratio: 0.9980493436506188
+      test_load_slope_ratio: 0.9621174989937452
+      n_criteria_passed: 20.0
+      eligible: false
+post_freeze_runs:
+  e5d_l0.3_s0:
+    lambda: 0.3
+    seed: 0
+    role: sensitivity
+    checkpoint:
+      path: data/interim/e5d/checkpoints/e5d_l0.3_s0/best_model_state_dict.pt
+      sha256: 0940529b4b11d970c7fdf4f3d6ae4f42b09781536d430b79738f0e0b74bb803a
+    normalizer:
+      path: data/interim/e5d/checkpoints/e5d_l0.3_s0/normalizer_stats.pt
+      sha256: 9ae23c469edd4fe5cf894e2e02264d801013015fe5dcd170c7d35d18f69f5cec
+      baseMVA: 36.741424560546875
+    response_sigma_sha256: e55e09d65c7ea90907254f291f86b6088d2171985793e32fdc4b316ec0e6538b
+  e5d_l0_s0:
+    lambda: 0.0
+    seed: 0
+    role: control
+    checkpoint:
+      path: data/interim/e5d/checkpoints/e5d_l0_s0/best_model_state_dict.pt
+      sha256: 7b5c0585aca74ef19dbf92b8d1a9ac6eeff5568f51110413cba7e067c260155a
+    normalizer:
+      path: data/interim/e5d/checkpoints/e5d_l0_s0/normalizer_stats.pt
+      sha256: 9ae23c469edd4fe5cf894e2e02264d801013015fe5dcd170c7d35d18f69f5cec
+      baseMVA: 36.741424560546875
+    response_sigma_sha256: dc0266cc655575657813df65fef18db0020f847b5e238d9a39fd2c474870484e
+  e5d_l1_s1:
+    lambda: 1.0
+    seed: 1
+    role: primary
+    checkpoint:
+      path: data/interim/e5d/checkpoints/e5d_l1_s1/best_model_state_dict.pt
+      sha256: c07bc6acf5b22b19b54118aacb56c96c2ce11fc4299a019e8c19431e6c5c0e59
+    normalizer:
+      path: data/interim/e5d/checkpoints/e5d_l1_s1/normalizer_stats.pt
+      sha256: 6e48014942a120e1cfe32add708a3f2b3e6a34cf05fd12836996e5ed2448079c
+      baseMVA: 36.17524719238281
+    response_sigma_sha256: 4e43605a3d027cff5c7f7ec6bab9e64299db66575c0a515e80627f7ecc992091
+  e5d_l1_s2:
+    lambda: 1.0
+    seed: 2
+    role: primary
+    checkpoint:
+      path: data/interim/e5d/checkpoints/e5d_l1_s2/best_model_state_dict.pt
+      sha256: 848b9bcd5a1b9914bc8b6d0051377a6967a9e25711985c3f0ab9b36a8944597c
+    normalizer:
+      path: data/interim/e5d/checkpoints/e5d_l1_s2/normalizer_stats.pt
+      sha256: bb34d0b741d4715e1a4a9c133e291fbe1962237d1eaa4e855d7dc420c35d3f3e
+      baseMVA: 36.72218704223633
+    response_sigma_sha256: 10d438ceedc96d2d729751202c2794c94092fc0cdbb8dfaab877c3ffe63f1eaf
+  e5d_l3_s0:
+    lambda: 3.0
+    seed: 0
+    role: sensitivity
+    checkpoint:
+      path: data/interim/e5d/checkpoints/e5d_l3_s0/best_model_state_dict.pt
+      sha256: bf99af47caacf2b73a1c7382475aa41e4dea33cf16aa570035d97cece7265878
+    normalizer:
+      path: data/interim/e5d/checkpoints/e5d_l3_s0/normalizer_stats.pt
+      sha256: 9ae23c469edd4fe5cf894e2e02264d801013015fe5dcd170c7d35d18f69f5cec
+      baseMVA: 36.741424560546875
+    response_sigma_sha256: a30ed7da4ddab4bcd272bc037f34358adafde0c567b907ebaf74b8f4cc10ca79
+config_sha256:
+  configs/experiments/e5d_response_training.yaml: 751861a8cebe5b29e80a207628ebaae536c70ed89b2f23db8537fdfb8ab42e5a
+  configs/experiments/e5d_selection.yaml: 3b21ee4018eaa723f068b3172a6e35dee3ef7811be44af9fe3eef4952416377b
+pair_manifest_sha256:
+  train: 1fa65d518e70cee2476cb042873455673a815754575f2bbd360bf72f840194ba
+  validation: 3ee5d40d54a8c61b68e63361ead56942cc662a4bd1e7d397b0a755f9efd0291d
+  test: 72c4d050a5f908e82419ce55b8a85d2cd8a8a6ceb66d86829df09f009534e62e
+selection_table_sha256: f720cbc70f72448866049353c08e214a66b7c040a839f79120bfdb14aecc29ec
+response_table_sha256: 4f04988f1501e59ff530b792a04a1dcd386da7bc5f786a16544621d98857c26e
+git_commit: 496e1bed6636f7f9c9795726380874926413c7c0
+working_tree_dirty: true

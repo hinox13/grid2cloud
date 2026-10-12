@@ -1,0 +1,31 @@
+{
+  "run": "ft_n100_s0",
+  "target": "S1_WEATHER_ALIGNED",
+  "n_scenarios": 2829,
+  "normalizer": "data/interim/e5/checkpoints/ft_n100_s0/normalizer_stats.pt",
+  "normalizer_sha256": "337ed11d9a88206b29d3954cd127cf1db445b0322040e80afb20d69429534183",
+  "weights_sha256": "1d15c555d8275a8beda562713dcedf4a693b8d9c99d86b75a68ae7cbbe037554",
+  "wall_s": 9.02352602314204,
+  "seconds_per_scenario": 0.0031896521820933333,
+  "output": "data/interim/e5b/predictions/ft_n100_s0/S1_WEATHER_ALIGNED",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "e7c4abbab381fb367ab176da9829859070f88db0",
+    "working_tree_dirty": true
+  }
+}

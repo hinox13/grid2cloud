@@ -1,0 +1,57 @@
+# Cloud2Grid — licence manifest.
+#
+# Maps each licence identifier used in metadata/data_sources.yaml to the *intended uses* that
+# licence permits, and to the obligations it imposes. The licence gate
+# (src/cloud2grid/licensing) reads this file.
+#
+# Intended uses (closed vocabulary, checked by the gate):
+#   download              fetch the source to local, gitignored storage
+#   process               transform locally (filtering, joins, modelling)
+#   derive                create derived products (e.g. PV estimates, network models, metrics)
+#   redistribute_derived  publish derived products (figures, demo bundles, tables)
+#   redistribute_raw      publish the raw third-party files themselves
+#
+# Note: README §40 keeps raw data out of Git regardless of what a licence permits.
+#
+# `UNVERIFIED` is deliberately absent: any source whose licence is not listed here is
+# rejected by the gate.
+
+schema_version: 1
+
+uses:
+  - download
+  - process
+  - derive
+  - redistribute_derived
+  - redistribute_raw
+
+licences:
+  CC-BY-4.0:
+    name: Creative Commons Attribution 4.0 International
+    url: https://creativecommons.org/licenses/by/4.0/
+    # Public demo packaging (cropped/processed satellite values, derived PV, imagery frames) is
+    # covered by `redistribute_derived`, provided attribution + licence link + "modified" notice
+    # accompany the bundle and no additional restrictions are imposed on recipients.
+    permits: [download, process, derive, redistribute_derived, redistribute_raw]
+    obligations:
+      - Give appropriate credit (attribution text from the source registry).
+      - Provide a link to the licence.
+      - Indicate if changes were made.
+      - No additional legal or technological restrictions on recipients.
+
+  Apache-2.0:
+    name: Apache License 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+    permits: [download, process, derive, redistribute_derived, redistribute_raw]
+    obligations:
+      - Retain copyright, patent, trademark and attribution notices.
+      - Include a copy of the licence when redistributing.
+      - State significant changes made to redistributed files.
+
+  BSD-3-Clause:
+    name: BSD 3-Clause License
+    url: https://opensource.org/license/bsd-3-clause
+    permits: [download, process, derive, redistribute_derived, redistribute_raw]
+    obligations:
+      - Retain the copyright notice and licence text when redistributing.
+      - Do not use contributors' names to endorse derived products.

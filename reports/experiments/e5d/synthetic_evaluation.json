@@ -1,0 +1,23 @@
+{
+  "zero_shot_on_e5c_test": {
+    "PBE_mean": 49.15584848474674,
+    "P_residual": 35.877786514932524,
+    "dc_P_residual": 0.1322133035045666
+  },
+  "eligible_runs": [],
+  "selected": "e5d_l1_s0",
+  "selected_flagged": true,
+  "selection_trace": {
+    "eligible": [],
+    "fallback_rank": [
+      "e5d_l1_s0",
+      "e5d_l0.3_s0",
+      "e5d_l3_s0",
+      "e5d_l1_s2",
+      "e5d_l1_s1"
+    ]
+  },
+  "SYN_PV_LEARNED_selected_on_test_pairs": true,
+  "git_commit": "496e1bed6636f7f9c9795726380874926413c7c0",
+  "working_tree_dirty": true
+}

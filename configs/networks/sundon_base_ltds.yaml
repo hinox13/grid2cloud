@@ -1,0 +1,142 @@
+# BASELINE: sundon_base_ltds — LTDS planning topology exactly as reconstructed in E1/E2.
+# Operating-state reconstruction and E2 validation design for Sundon 33 kV.
+# This file is never modified by topology-sensitivity work: alternatives are separate files
+# that `extends:` it and declare their changes (see reports/e2_topology_sensitivity.md).
+# Read by scripts/build_network.py (E1) and scripts/validate_operational.py (E2).
+# No GENCO output and no weather/satellite data are used anywhere in this file's pipeline.
+
+scenario:
+  name: sundon_base_ltds
+  description: "LTDS planning topology; all metered inputs used as published."
+  changes: []
+  calibration: false
+
+region: configs/networks/study_region.yaml
+measurements_dir: data/interim/bsp_epn_sundon_33kv
+
+network:
+  slack_node: "EPN:SUND11"                    # A05_external_grid_sundon_gis_132kv
+  coupled_nodes: [["EPN:SUND11", "EPN:SUND12"]]  # A06_sundon_132kv_coupler_closed
+  slack_vm_pu: 1.0
+  # LTDS writes the Sundon Primary T1/T2 LV nodes as SURP5B/SURP5A; the transformer index
+  # writes SUPR5B/SUPR5A. Same transformers (linked by unique HV node). Model uses LTDS keys.
+
+# Sign conventions. Circuits: P > 0 from the monthly index's from_ltds_node to to_ltds_node
+# (verified on 7 radial feeders whose direction is physically known). Transformers: declared
+# per series below and VERIFIED by scripts against an independently metered circuit on the
+# same path (the build fails if the evidence disagrees).
+transformer_series:
+  sundon_33kv_gt1: {positive: lv_to_hv, evidence: {circuit: SUG1_SUG1_1, circuit_positive_into_transformer: false}}
+  sundon_33kv_gt2: {positive: lv_to_hv, evidence: {circuit: SUG1_SUG1_2, circuit_positive_into_transformer: false}}
+  sundon_33kv_gt3: {positive: lv_to_hv, evidence: {circuit: SUG1_SUG1_3, circuit_positive_into_transformer: false}}
+  leighton_buzzard_primary_11kv_t1: {positive: lv_to_hv, evidence: {circuit: SU33_LBUZT_2_(1), circuit_positive_into_transformer: true}}
+  leighton_buzzard_primary_11kv_t2: {positive: lv_to_hv, evidence: {circuit: SU33_LBUZT_1, circuit_positive_into_transformer: false}}
+  leighton_buzzard_primary_11kv_t3: {positive: lv_to_hv, evidence: {circuit: SUND_LBUZ_3(1), circuit_positive_into_transformer: true}}
+  sundon_11kv_t1: {positive: hv_to_lv, evidence: {circuit: SU33_SU11_1, circuit_positive_into_transformer: true}}
+  # No P-metered circuit on T2's path (SU33_SU11_2 publishes current only): convention taken
+  # from T1 at the same site (ASSUMED; T1 and T2 P series correlate at r > 0.99).
+  sundon_11kv_t2: {positive: hv_to_lv, evidence: {same_as: sundon_11kv_t1}}
+
+# Nodal demand (positive = consumption). Each node lists exactly which observations define it.
+loads:
+  - node: "EPN:CHAU51"
+    method: transformer_current          # A10_current_derived_load
+    series: [chaul_end_primary_11kv_t1, chaul_end_primary_11kv_t2]
+    current_kv: 11.0
+    pf_site_floc: EPN-S0000000H8072
+  - node: "EPN:CHAU52"
+    method: transformer_current
+    series: [chaul_end_primary_11kv_t3]
+    current_kv: 11.0
+    pf_site_floc: EPN-S0000000H8072
+  - node: "EPN:LEWS51"
+    method: transformer_current
+    series: [lewsey_primary_11kv_t1, lewsey_primary_11kv_t2]
+    current_kv: 11.0
+    pf_site_floc: EPN-S0000000H8123
+  - node: "EPN:LBUZ51"
+    method: transformer_active_power      # OBSERVED
+    series: [leighton_buzzard_primary_11kv_t1, leighton_buzzard_primary_11kv_t2]
+    pf_site_floc: EPN-S0000000H8037
+  - node: "EPN:LBUZ5A"
+    method: transformer_active_power
+    series: [leighton_buzzard_primary_11kv_t3]
+    pf_site_floc: EPN-S0000000H8037
+  - node: "EPN:SURP5B"
+    method: transformer_active_power
+    series: [sundon_11kv_t1]
+    pf_site_floc: EPN-S0000000H8086
+  - node: "EPN:SURP5A"
+    method: transformer_active_power
+    series: [sundon_11kv_t2]
+    pf_site_floc: EPN-S0000000H8086
+  - node: "EPN:SUPR52"                    # T3/T4 publish nothing: use their 33 kV feeders
+    method: circuit_active_power          # DERIVED from OBSERVED circuits (inputs, not validated)
+    circuits: [{line: SU33_SU11_3, positive_into_node: true}, {line: SU33_SU11_4, positive_into_node: false}]
+    pf_site_floc: EPN-S0000000H8086
+  - node: "EPN:CHAP31"                    # customer on lne_SUND_CHAP, metered at Sundon
+    method: circuit_active_power
+    circuits: [{line: lne_SUND_CHAP, positive_into_node: true}]
+    pf_site_floc: EPN-S0000000D8086
+
+import_series: [sundon_33kv_gt1, sundon_33kv_gt2, sundon_33kv_gt3]
+
+# Unobserved 33 kV customers (A09). V0 sets them to zero. V1 places the residual
+# (observed import − modelled import) at the candidate nodes, split equally.
+unobserved_injection_scenarios:
+  V0_none: []
+  V1_tee_customer_nodes: ["EPN:GFSF31", "EPN:MFES31"]        # LTDS generic customer tees
+  V1_lbuz_33kv_busbars: ["EPN:LBUZ31", "EPN:LBUZ32", "EPN:LBUZ33"]  # ECR site FLOC route
+
+# Validation targets (never used as inputs above).
+validation:
+  active_power: [CHAU_SU33_1, SU33_CHAU_2, SU33_CHAU_3, SU33_LEWS_1, SU33_LEWS_2,
+                 SU33_LBUZT_1, SUND_LBUZ_3(1), SU33_LBUZT_2_(1), SU33_SU11_1,
+                 SUG1_SUG1_1, SUG1_SUG1_2, SUG1_SUG1_3]
+  current: [SU33_SU11_2]
+  # Measurement → model branch mapping is derived from identifiers (exact LTDS name + nodes,
+  # name with node mismatch, or LTDS node path for composite metered circuits).
+
+timestamp_selection:
+  seed: 20261002
+  per_month_per_6h_block: 3      # stratified sample: (calendar month × 6-hour block)
+  min_validation_circuits_present: 6
+  max_abs_flow_rating_multiple: 1.5   # drop observations > 1.5 × summer rating (malformed)
+  required_inputs: all            # every load-defining series must be present
+
+planning_peak_case:
+  description: "LTDS Table 3a winter 2024/25 maximum demand at every primary (PUBLISHED), unobserved customers = 0"
+  season: Winter
+
+# E1/E2 verdict criteria — fixed BEFORE the full E2 run (only one probe timestamp had been
+# inspected). "Core P circuits" = active-power validation targets whose flow is determined
+# by OBSERVED/DERIVED loads (excludes circuits flagged as measurement-inconsistent in E1
+# diagnostics, which are reported separately and never silently dropped).
+verdict_criteria:
+  A_strong:
+    structural_checks: all_pass
+    pf_convergence_rate: 1.0
+    share_core_circuits_meeting_fit: 0.8   # fit: r >= 0.9 and NMAE <= 0.15
+    direction_agreement_min: 0.95          # every core P circuit, |obs| >= 0.5 MW
+    import_nmae_max: 0.10                  # V0 total-import NMAE
+  B_usable_with_limitations:
+    structural_checks: all_pass
+    pf_convergence_rate: 0.99
+    share_core_circuits_meeting_fit: 0.6   # fit: r >= 0.8 and NMAE <= 0.30
+    direction_agreement_min: 0.90
+    import_nmae_max: 0.25
+  C_not_defensible: "anything that does not meet B"
+direction_threshold_mw: 0.5
+
+# Measurement flags fixed from OBSERVATION-ONLY evidence (meter vs meter, no model) before the
+# full E2 run. Flagged circuits stay in every table and figure but are excluded from the
+# "core" set used by the verdict criteria.
+flagged_circuits:
+  SU33_SU11_1: >-
+    Observed P ≈ 0.25 × Sundon Primary T1 P (r = 0.75) although LTDS shows it as T1's only
+    feeder, while its twin SU33_SU11_2 matches T2 in apparent power. Unresolved
+    measurement/mapping inconsistency.
+
+# Primary E2 analysis = V0 (uncalibrated: every input is an observation or an LTDS value).
+# V1 placements use the observed import as an input and are reported as diagnostics only.
+primary_scenario: V0_none

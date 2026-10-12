@@ -1,0 +1,92 @@
+# LSA SAF MDSSFTD (LSA-207) — quantitative satellite forcing (README §8, Source Registry).
+# Credentials: LSASAF_USERNAME / LSASAF_PASSWORD from .env (never in this file).
+
+source_id: lsa_saf_mdssftd
+provider: EUMETSAT LSA SAF
+product:
+  name: MSG Total and Diffuse Downward Surface Shortwave Flux
+  acronym: MDSSFTD
+  identifier: LSA-207
+  step_minutes: 15
+  documentation:
+    pum: "SAF/LAND/MF/PUM_MDSSFTD/1.0 issue 3 (29 Jan 2020), LSA_207_MDSSFTD_PUM_v1.0_issue3.pdf"
+    pum_url: https://nextcloud.lsasvcs.ipma.pt/s/bA9gYoa5mQX2yJw   # public share (PUM, ATBD, VR)
+    pum_sha256: 0db9d4f12e0c0642adc77178af597d268427d76246cf48245a2b1c37f96e611f
+    algorithm_change_record: "v1.0.11 (2022-01-05): dssf_glo = 0 at night; v1.0.12 (2022-02-15): SZA limit 90"
+    access_guide: https://gitlab.com/helpdesk.landsaf/lsasaf_data_access
+
+# Format decision (reports/e3_satellite_ingestion.md §2): NETCDF.
+#   NETCDF4 "MSG-Disk": regular 0.05° lat/lon grid (lat 80→-80, lon -80→80, 3201×3201), CF-1.6,
+#     variables DSSF_TOT, FRACTION_DIFFUSE, quality_flag; ~5.4 MB per midday file; THREDDS
+#     subsetting available. Asset sampling = direct lat/lon lookup.
+#   HDF5: native geostationary 3712×3712, needs separate lat/lon files and reprojection;
+#     ~15.6 MB per midday file. Not used for sampling; its geometry IS used (see native_grid)
+#     because it bounds the independent information of the NetCDF resampling.
+access:
+  format: NETCDF
+  https_base: https://datalsasaf.lsasvcs.ipma.pt/PRODUCTS/MSG/MDSSFTD
+  opendap_base: https://thredds.lsasvcs.ipma.pt/thredds/dodsC/MSG/MDSSFTD
+  netcdf_dir: NETCDF
+  filename: "NETCDF4_LSASAF_MSG_MDSSFTD_MSG-Disk_{slot}.nc"
+  listing_public: true          # directory index readable anonymously (catalog)
+  files_require_auth: true      # HTTP 401 "Restricted" without credentials (2 Oct 2026)
+  credentials_env: {user: LSASAF_USERNAME, secret: LSASAF_PASSWORD}
+  bulk_mode: dap_ascii         # dap_ascii (1 request/slot, ~6 KB) | opendap (pydap, ~7 req/slot)
+                               # | https_full (download + crop). NCSS: not enabled (HTTP 404).
+  politeness:                  # account was disabled once — keep load low
+    pause_s: 1.0               # minimum spacing between requests (sequential, one session)
+    backoff_s: [60, 300]       # on HTTP 429/5xx; then stop
+    max_consecutive_failures: 3
+    abort_on_auth_failure: true   # 401/403 → stop at once, never retried
+
+# Documented structure (PUM Table 3/4 + official tutorial outputs). The first-file gate checks
+# the real file against this and stops if it differs.
+expected:
+  variables: {total: DSSF_TOT, diffuse_fraction: FRACTION_DIFFUSE, quality: quality_flag}
+  grid: {lat_first: 80.0, lat_step: -0.05, lon_first: -80.0, lon_step: 0.05, n: 3201}
+  pum_hdf5: {DSSF_TOT: {scale: 10, missing: -1, units: W/m2, range: [0, 1500]},
+             FRACTION_DIFFUSE: {scale: 100, missing: -1, range: [0, 1]},
+             Q_FLAG: {dtype: uint8}}
+
+# Verified on the real first-file-gate file (2026-10-06, NETCDF4_…_202406151200.nc,
+# algorithm_version 2.0.0): CF attributes of the stored integers.
+verified_packing:
+  DSSF_TOT: {scale: 0.1, fill: -1}          # int16, units 'W m-2', valid 0..15000
+  FRACTION_DIFFUSE: {scale: 0.01, fill: -1}  # int16, valid 0..100
+  quality_flag: {scale: 1.0, fill: 255}      # uint8 (DAP 'Byte'), _FillValue 255
+
+native_grid:   # PUM §6.2 (identical constants for the full MSG disk)
+  coff: 1857
+  loff: 1857
+  cfac: 13642337
+  lfac: 13642337
+  n: 3712
+  sub_lon: 0.0
+  georeference_uncertainty_pixels: 0.33   # "about 1/3 of a pixel"
+
+quality:
+  allow_low_quality: false     # PUM algorithm codes 001/010 excluded from forcing by default
+  # Statuses (src/cloud2grid/satellite/quality.py): GOOD, LOW_QUALITY, NIGHT, INVALID, MISSING,
+  # OUT_OF_RANGE. Only GOOD and NIGHT drive PV unless allow_low_quality.
+
+static_geometry:   # public LSA SAF static files (no credentials) — used to verify geometry
+  share: https://nextcloud.lsasvcs.ipma.pt/s/JasGNSPSTms4Gsi
+  native_lat: hdf5_lsasaf_msg_lat_msg-disk.bz2
+  native_lon: hdf5_lsasaf_msg_lon_msg-disk.bz2
+  regular_grid_share: https://nextcloud.lsasvcs.ipma.pt/s/jgqdHFd5ARKjogp
+  regular_grid_mask: NETCDF_LSASAF_USGS-IGBP_LWMASK_MSG-Disk_202001270900.nc
+
+# Study area. Context box: all Sundon and Canterbury South assets with ~200 km of weather
+# upstream (prevailing westerlies) and ~150 km downstream, for the future animation.
+# Analysis box: Sundon assets ± ~0.3° for event search (small, cheap).
+study_area:
+  context_bbox: {lat_min: 50.5, lat_max: 53.5, lon_min: -3.5, lon_max: 2.0}
+  analysis_bbox: {lat_min: 51.65, lat_max: 52.25, lon_min: -1.05, lon_max: -0.15}
+
+first_file_gate:
+  slot: "2024-06-15T12:00:00Z"   # mid-June midday; fleet active state known (see e3_pv_forcing)
+
+storage:
+  raw_dir: data/raw/satellite/lsasaf          # full files (gitignored), regenerable from URL
+  crop_dir: data/interim/satellite/lsasaf     # cropped NetCDF (gitignored), regenerable
+  keep_raw_full_files: first_file_only        # bulk downloads are cropped then deleted

@@ -1,0 +1,30 @@
+# Default configuration for satellite-driven Sundon scenarios (E4 and later). DESIGN ONLY in E3:
+# no scenario has been generated and GENCO has not been run. See
+# docs/SATELLITE_SCENARIO_CONSTRUCTION.md for the construction rules.
+
+network:
+  # Recommended operating interpretation (reports/e2_topology_sensitivity.md §5).
+  interpretation: configs/networks/sundon_capacity_scaled_with_outages.yaml
+  # Preserved planning-topology reference; every reported Sundon result is accompanied by it.
+  baseline_reference: configs/networks/sundon_base_ltds.yaml
+  verdict: "B — usable with limitations"
+  unobserved_injection_scenario: V0_none   # E2 primary scenario
+
+forcing:
+  pv_model: configs/experiments/e3_pv_model.yaml
+  events: configs/experiments/e3_event_discovery.yaml
+  satellite: configs/data/lsasaf.yaml
+  label: satellite-driven estimated PV generation
+
+construction:
+  # Family names follow README §17; the rules are in the design note.
+  synchronous_replay:            # S1 on Sundon: base state and weather from the SAME timestamp
+    base_state: observed_at_event_time
+    hv_pv_injection: explicit_sgen          # 33 kV farms: not in E2 loads → add as sgen
+    embedded_pv: already_in_observed_load   # ≤11 kV assets: inside primary-transformer flows
+  transplant:                    # weather from event e applied to base state from t0
+    base_state: observed_at_t0
+    hv_pv_injection: explicit_sgen
+    embedded_pv: gross_up_then_replace      # L(t0) + PV_emb(t0) − PV_emb(e)
+  sign_convention: "sgen p_mw >= 0 = injection into the bus (pandapower generator convention)"
+  active_capacity: at_event_time            # solar.capacity.active_capacity

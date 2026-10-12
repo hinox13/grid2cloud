@@ -1,0 +1,27 @@
+# VARIANT of sundon_base_ltds — measurement interpretation only (topology unchanged).
+extends: sundon_base_ltds.yaml
+validation_timestamps: reports/tables/e2_timestamps.csv
+
+scenario:
+  name: sundon_battery_meter_capacity_scaled
+  calibration: false
+  description: >-
+    lne_SUND_CHAP readings rescaled so that its observed symmetric operating ceiling equals the
+    published capacity of the connected storage asset.
+  changes:
+    - type: measurement_scale
+      series: lne_SUND_CHAP
+      method: capacity_ratio
+      published_capacity_mw: 49.5
+  reason: >-
+    The circuit's readings are inconsistent with published capacities and with independent
+    meters; scaling the input is the minimal interpretation that does not alter topology.
+  evidence:
+    - "Monthly index: |P| ceiling ≈ ±63 MW in every published month since Oct 2023 (symmetric, battery-like)."
+    - "Published capacities below that ceiling: ECR Stored Energy 49.5 MW connected 2023-04-14 (registered and export capacity); LTDS Table 5 storage at Sundon 33 kV 52.1 MVA."
+    - "LTDS rating of lne_SUND_CHAP is 670 A (38.3 MVA): readings exceed it in 1,787 half-hours."
+    - "Independent of this variant's targets: the factor uses only published capacity and the circuit's own monthly statistics, no import or circuit validation series."
+  affected_elements:
+    - "load EPN:CHAP31 (input derived from lne_SUND_CHAP)"
+  open_questions:
+    - "Whether the ceiling corresponds to rated power (assumed) and which published capacity (49.5 MW ECR vs 52.1 MVA LTDS T5) applies."

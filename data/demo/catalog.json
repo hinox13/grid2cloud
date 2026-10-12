@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.3",
+  "events": [
+    {
+      "event_id": "jun15_cloud_clearing",
+      "title": "15 June 2024 \u2014 cloud clearing",
+      "story": "A cloud deck over Bedfordshire breaks up through the late morning (satellite cloudy fraction 74 % \u2192 2 %). Satellite-derived PV at the 6 MW Leighton Buzzard 33 kV solar connection rises from about 1 MW to its 6 MW export limit.",
+      "source_events": [
+        "B02_20240615T0845",
+        "D01_20240615T0930"
+      ],
+      "class_name": [
+        "coherent_transition",
+        "fast_ramp"
+      ],
+      "time_start_utc": "2024-06-15T08:45:00+00:00",
+      "time_end_utc": "2024-06-15T12:15:00+00:00",
+      "n_frames": 15,
+      "n_grid_slots": 7
+    },
+    {
+      "event_id": "apr15_broken_cumulus",
+      "title": "15 April 2024 \u2014 broken cumulus",
+      "story": "Broken cumulus drifts across the region: PV is mostly high but drops sharply whenever a cloud shadow crosses the Leighton Buzzard solar connection.",
+      "source_events": [
+        "C01_20240415T1215"
+      ],
+      "class_name": [
+        "broken_cloud"
+      ],
+      "time_start_utc": "2024-04-15T12:15:00+00:00",
+      "time_end_utc": "2024-04-15T15:00:00+00:00",
+      "n_frames": 12,
+      "n_grid_slots": 6
+    },
+    {
+      "event_id": "aug23_clear_control",
+      "title": "23 August 2024 \u2014 clear-sky control",
+      "story": "A cloudless day: PV sits at its export limit, so every change in grid flow comes from load and the battery. This is the control case.",
+      "source_events": [
+        "A02_20240823T1045"
+      ],
+      "class_name": [
+        "clear_sky_control"
+      ],
+      "time_start_utc": "2024-08-23T10:45:00+00:00",
+      "time_end_utc": "2024-08-23T13:30:00+00:00",
+      "n_frames": 12,
+      "n_grid_slots": 6
+    }
+  ],
+  "models": [
+    "zero_shot",
+    "E5",
+    "E5b",
+    "E5c",
+    "E5d"
+  ],
+  "ols_coefficients_s1": {
+    "AC": {
+      "intercept": 3.8006194031059777,
+      "load": 0.9333969222659532,
+      "chap31": 1.0020241291206835,
+      "pv": -1.020124078256962
+    },
+    "zero_shot": {
+      "intercept": -204.4933628384848,
+      "load": -0.1340767841017592,
+      "chap31": 0.022821009389018713,
+      "pv": -0.05762061148943498
+    },
+    "E5": {
+      "intercept": 129.13528899641682,
+      "load": -0.24365641623197337,
+      "chap31": 2.4266167770381797,
+      "pv": -0.6609186677019856
+    },
+    "E5b": {
+      "intercept": 24.80965169064596,
+      "load": 0.557110898041656,
+      "chap31": 0.5057354393236498,
+      "pv": -0.06342054635248313
+    },
+    "E5c": {
+      "intercept": 25.110860780328135,
+      "load": 0.6092102270231059,
+      "chap31": 0.9410684845633498,
+      "pv": -0.03727549521508256
+    },
+    "E5d": {
+      "intercept": 17.304737989919666,
+      "load": 0.9260156970244453,
+      "chap31": 1.17483606123889,
+      "pv": -1.0701026008009564
+    }
+  },
+  "published_tables": {
+    "reports/tables/e5d_real_transfer.csv": "c62f7cc5185426aa387eac5d2a53cb54b607eef7bdf15e0dd95e2ffe60a8765a",
+    "reports/tables/e5d_response_transfer.csv": "d94eba3c4748aa4472a61a4cdba03e1105498967cb7d3b8de5428ce44e9ec699"
+  },
+  "git_commit": "d2f841547858941e0b97ee0c4806883ebd5f4c64",
+  "working_tree_dirty": false
+}

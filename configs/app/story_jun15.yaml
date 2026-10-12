@@ -1,0 +1,93 @@
+# Cloud2Grid Explorer — guided story for the frozen 15 June 2024 clearing (B02 + D01).
+# Copied into data/demo/story_jun15.json by scripts/build_demo_events.py.
+#
+# Captions are templates. Every number is filled at run time from the frozen bundle or the
+# published S1 coefficients (catalog.json); no number is typed in here. Variables:
+#   {time} {pv} {pv_cap} {ac} {model} {err} {pbe}              at the beat's time / grid state
+#   {cloudy_start}                                             E3 field cloud fraction, event start
+#   {ac_a} {ac_b} {hv_a} {hv_b} {dhv} {ac_pv_term}             at the grid slots refs.a / refs.b
+#   {s_ac_pv} {s_e5c_pv} {s_ac_bat} {s_e5c_bat} {pct_e5c_pv}   published S1 slopes
+#   {pbe_zs} {pbe_e5b} {pbe_e5c} {pbe_cut_e5b}                 published S1 PBE means
+#   {s_e5d_pv} {s_e5d_load} {s_ac_load} {bias_e5d}              published E5d slopes / import bias
+# hold = seconds on that beat; t = 15-minute frame index (0 = 08:45 UTC).
+# highlight = optional label of a timeline band over refs a → b (no numbers).
+
+event: jun15_cloud_clearing
+refs: {a: "2024-06-15T11:00:00+00:00", b: "2024-06-15T11:30:00+00:00"}
+
+scenes:
+  - title: A real cloud field over Sundon
+    watch: satellite
+    caption: >-
+      Meteosat E-View imagery, 15 June 2024, {time} UTC. Observed weather, not a synthetic
+      scenario: about {cloudy_start} of the area around Sundon is cloud-covered as the event begins.
+    beats:
+      - {t: 0, model: AC, hold: 5}
+      - {t: 1, model: AC, hold: 2}
+      - {t: 2, model: AC, hold: 2}
+
+  - title: Satellite observations become PV forcing
+    watch: timeline
+    caption: >-
+      EUMETSAT LSA SAF surface radiation is sampled at every registered PV asset and converted to
+      estimated PV with pvlib. At {time} UTC the {pv_cap} MW fleet produces {pv} MW.
+    beats:
+      - {t: 3, model: AC, hold: 2}
+      - {t: 4, model: AC, hold: 2}
+      - {t: 5, model: AC, hold: 2}
+      - {t: 6, model: AC, hold: 2}
+      - {t: 7, model: AC, hold: 2}
+      - {t: 8, model: AC, hold: 2}
+
+  - title: The physical grid responds
+    watch: network
+    highlight: "cloud field clears"
+    caption: >-
+      The cloud field begins to clear. Between 11:00 and 11:30 HV-connected PV rises {hv_a} → {hv_b} MW, and in
+      the AC reference the grid import falls {ac_a} → {ac_b} MW. Load and the battery moved too;
+      the published regression attributes {ac_pv_term} MW of that change to PV.
+    beats:
+      - {t: 9, model: AC, hold: 4}
+      - {t: 10, model: AC, hold: 2}
+      - {t: 11, model: AC, hold: 6}
+
+  - title: GENCO transfer
+    watch: network
+    caption_by_model:
+      zero_shot: >-
+        Off-the-shelf GENCO, never trained on this grid, predicts {model} MW for the same state at
+        {time} UTC: an export where AC imports {ac} MW. Topology transfer fails.
+      E5b: >-
+        Envelope-tuned GENCO, fine-tuned on synthetic states spanning the real operating range:
+        {model} MW against AC {ac} MW. Across all real states, power-balance error falls
+        {pbe_zs} → {pbe_e5b} MVA.
+      E5c: >-
+        Generator-aware GENCO, which also represents PV as explicit generators: {model} MW against
+        AC {ac} MW (power-balance error {pbe_e5c} MVA across all real states).
+    beats:
+      - {t: 11, model: zero_shot, hold: 5}
+      - {t: 11, model: E5b, hold: 5}
+      - {t: 11, model: E5c, hold: 5}
+
+  - title: The blind spot
+    watch: timeline
+    highlight: "PV step"
+    caption: >-
+      Each MW of PV lowers the AC import by {s_ac_pv} MW; for the generator-aware model it moves by
+      {s_e5c_pv} MW, about {pct_e5c_pv} of the physical response. It tracks the battery
+      ({s_e5c_bat} vs {s_ac_bat}) but barely responds to PV.
+    beats:
+      - {t: 9, model: E5c, hold: 3}
+      - {t: 11, model: E5c, hold: 4}
+
+  - title: Learning the response
+    watch: timeline
+    highlight: "PV step"
+    caption: >-
+      The response-aware model was also trained on pairs of synthetic AC states that differ in one
+      input. On real states its import now moves {s_e5d_pv} MW per MW of PV (AC {s_ac_pv}) and
+      {s_e5d_load} per MW of load (AC {s_ac_load}): the sensitivity transferred. But its import
+      sits about {bias_e5d} MW too high: correct sensitivity, not yet calibrated (verdict partial).
+    beats:
+      - {t: 9, model: E5d, hold: 4}
+      - {t: 11, model: E5d, hold: 0}   # final beat: the story stops here

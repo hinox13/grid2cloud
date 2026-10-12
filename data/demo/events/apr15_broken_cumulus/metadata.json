@@ -1,0 +1,83 @@
+{
+  "schema_version": "0.3",
+  "event_id": "apr15_broken_cumulus",
+  "title": "15 April 2024 \u2014 broken cumulus",
+  "story": "Broken cumulus drifts across the region: PV is mostly high but drops sharply whenever a cloud shadow crosses the Leighton Buzzard solar connection.",
+  "source_events": [
+    "C01_20240415T1215"
+  ],
+  "event_class": [
+    "C"
+  ],
+  "class_name": [
+    "broken_cloud"
+  ],
+  "selection_criteria": "frozen E3 meteorological ranking (configs/experiments/e3_event_discovery.yaml); frozen E4 hero list \u2014 never selected on GENCO behaviour",
+  "time_start_utc": "2024-04-15T12:15:00+00:00",
+  "time_end_utc": "2024-04-15T15:00:00+00:00",
+  "satellite_step_minutes": 15,
+  "grid_step_minutes": 30,
+  "grid_slots_utc": [
+    "2024-04-15T12:30:00+00:00",
+    "2024-04-15T13:00:00+00:00",
+    "2024-04-15T13:30:00+00:00",
+    "2024-04-15T14:00:00+00:00",
+    "2024-04-15T14:30:00+00:00",
+    "2024-04-15T15:00:00+00:00"
+  ],
+  "grid_population": "S1_WEATHER_ALIGNED",
+  "grid_scenarios": [
+    275,
+    276,
+    277,
+    278,
+    279,
+    280
+  ],
+  "network_config": "configs/networks/sundon_capacity_scaled_with_outages.yaml",
+  "network_variant": "sundon_capacity_scaled_with_outages",
+  "active_pv_capacity_mw": 8.944736,
+  "event_metrics": [
+    {
+      "event_id": "C01_20240415T1215",
+      "mean_kc": 0.8282059489104903,
+      "std_kc_time": 0.1761346787913731,
+      "max_abs_ramp": 0.4973518444631951,
+      "field_frac_cloudy_start": 0.0020242914979757,
+      "field_frac_cloudy_end": 0.219269743298296
+    }
+  ],
+  "models": [
+    "zero_shot",
+    "E5",
+    "E5b",
+    "E5c",
+    "E5d"
+  ],
+  "provenance": {
+    "satellite_frame": "OBSERVED (EUMETSAT E-View RGB imagery)",
+    "irradiance": "DERIVED (LSA SAF MDSSFTD retrieval sampled at assets)",
+    "pv": "DERIVED (satellite-driven ESTIMATED PV, never measured)",
+    "loads": "OBSERVED or DERIVED per node (UKPN operational data)",
+    "ac_reference": "SIMULATED (AC power flow on the reconstructed network)",
+    "genco": "PREDICTED (frozen GENCO checkpoints)",
+    "errors": "DERIVED (GENCO \u2212 AC)"
+  },
+  "git_commit": "d2f841547858941e0b97ee0c4806883ebd5f4c64",
+  "working_tree_dirty": false,
+  "source_hashes": {
+    "data/interim/e4/predictions/S1_WEATHER_ALIGNED/sundon_33kv_predictions.parquet": "7a0f585dc1c332a0b20c85ac61f9125fdb35470eddc984a949f3dde161b64bae",
+    "data/interim/e4/predictions/S1_WEATHER_ALIGNED/sundon_33kv_branch_predictions.parquet": "c6166957145a8c679a2733179548992bfc25f52c6c0eff25f649e8a7a7cd464e",
+    "data/interim/e5/predictions/ft_n50000_s0/S1_WEATHER_ALIGNED/sundon_33kv_predictions.parquet": "86ee3d3a20cd00b86ca4402d8943b78ba1217d1e500cb404a5c015832a5e6d46",
+    "data/interim/e5/predictions/ft_n50000_s0/S1_WEATHER_ALIGNED/sundon_33kv_branch_predictions.parquet": "68df4185204641886707d3b451d5f03c4c8e5ad6372d99d93a1ed7399c127804",
+    "data/interim/e5b/predictions/e5b_ft_n10000_s2/S1_WEATHER_ALIGNED/sundon_33kv_predictions.parquet": "2913e8f7ecb075a33e8ed6726987d9e479db29d7f9660fa6086a275d9a553adb",
+    "data/interim/e5b/predictions/e5b_ft_n10000_s2/S1_WEATHER_ALIGNED/sundon_33kv_branch_predictions.parquet": "945be8be48e59ef24b9fe878ffd772497d0005f961ce91074be1fb8e77991913",
+    "data/interim/e5c/predictions/e5c_ft_n10000_s2/S1_WEATHER_ALIGNED_GENAWARE/sundon_33kv_predictions.parquet": "1aade3888cb145c11f5dd1dfd105b105f4ad522b84de82b97e91a3f53247c9d9",
+    "data/interim/e5c/predictions/e5c_ft_n10000_s2/S1_WEATHER_ALIGNED_GENAWARE/sundon_33kv_branch_predictions.parquet": "636b52203598c9337566bf036c9c4ddf1d19f3ac34bbc8aedbdc8cb3881ca107",
+    "data/interim/e5d/predictions/e5d_l1_s0/S1_WEATHER_ALIGNED_GENAWARE/sundon_33kv_predictions.parquet": "75f26da024c9799748c97404149feacd119a86b9e020649cbe9a8fc28b623b69",
+    "data/interim/e5d/predictions/e5d_l1_s0/S1_WEATHER_ALIGNED_GENAWARE/sundon_33kv_branch_predictions.parquet": "cafd8a4c9644ef57857e30600493206a5b7e47d37de097eba504f0a8811f57c2",
+    "data/processed/satellite/sundon/pv_by_asset.parquet": "83837eae5832e63db4cea828e683dc5bf6551f5b79f18f78e9afc600afb83ce5",
+    "data/processed/satellite/sundon/pv_by_bus.parquet": "de0b9d8297006cf57598ab229ed86aa46067a4cf708c60f428b6e00f6df3b96c",
+    "reports/experiments/e4/families/S1_WEATHER_ALIGNED_gates.parquet": "0f7188bb6684cc544139bd1dd10e581aef4f4e8e9d3c60a93b6303dda921a05c"
+  }
+}

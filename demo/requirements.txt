@@ -1,0 +1,6 @@
+# Cloud2Grid Explorer — deployment dependencies (CPU only; no GENCO / torch / pandapower).
+streamlit>=1.40
+plotly>=5.24
+pandas>=2.2
+pyarrow>=17
+numpy>=1.26

@@ -1,0 +1,117 @@
+# E5b — topology adaptation on a BROAD physics-informed synthetic operating envelope, then a
+# held-out REAL-STATE TRANSFER test, then (only if transfer succeeds) the E4 weather question.
+# PRE-REGISTERED 2026-10-07 before any E5b data generation, training or evaluation.
+# Parents: E4 0f3101b (B → D), E5 acda62c (D — OTHER; erratum reports/e5_verdict_erratum.md).
+# E4 / E5 outputs, checkpoints, verdicts and pre-registrations are never modified.
+
+experiment_id: e5b_adaptation
+hypothesis_under_test: >-
+  E5 failed on real states primarily because the original synthetic operating envelope did not
+  cover realistic Sundon operation (a hypothesis, not an established conclusion).
+difference_from_e5: >-
+  ONLY the load-scenario generator changes (configs/experiments/e5b_operating_envelope.yaml):
+  datakit's agg_load_profile (one global multiplier on the planning case, 1.2–2× peak, zero-load
+  nodes stay zero) → the static-metadata envelope (near-zero to planning / forecast demand,
+  hierarchical site variation, ±49.5 MW battery at CHAP31, 0–7.5 MW 33 kV generation export).
+  Network file, N-1 topology variants, admittance perturbation, OPF/PF solves, AC gates, GENCO
+  checkpoint, official fine-tuning recipe, ladder, seeds and selection rule are as in E5.
+
+concepts_kept_separate:   # the E5 verdict bug (erratum) conflated these
+  SYNTHETIC_ADAPTATION_SUCCESS: synthetic gate below (held-out E5b synthetic test)
+  REAL_STATE_TRANSFER_SUCCESS: real-transfer criterion below (frozen checkpoint, S1 states)
+  WEATHER_GAP_TEST: S1 − S2, run ONLY if real transfer succeeds
+
+isolation:                # training / validation / normalizer / hyper-parameters / selection
+  may_use: [static network and asset metadata (envelope sources), synthetic power-flow states]
+  may_not_use: [real 2024 UKPN operating states, S1, S2, E4D timeline, real PV time series,
+                LSA SAF irradiance, weather events, hero events, real 2024 load / CHAP31 /
+                import / ramp distributions]
+  allowed_training_root: data/interim/e5b/synthetic
+  real_states_hidden_until: metadata/e5b_checkpoint_registry.yaml is frozen and committed
+
+model_and_recipe:         # identical to E5 (configs/experiments/e5_topology_adaptation.yaml)
+  init: gridfm/genco-pf-transfer@e7a98e99221ba8241385e491787aedb0940d5130 pretraining/best_model_state_dict.pt
+  command: gridfm_graphkit finetune (official), recipe finetune/case118_1000/case118_1000.yaml unchanged
+  normalizer: graphkit fit_on_train on the run's E5b training split only; stored with the checkpoint;
+    the SAME normalizer for synthetic and real evaluation; never target-fitted
+  best_epoch: graphkit SaveBestModelStateDict on synthetic "Validation loss"
+
+synthetic_data:
+  generator: cloud2grid.scenarios.envelope.EnvelopeLoadGenerator (datakit load generator)
+  pools:                  # disjoint datakit seeds, none used in E4 / E5
+    test:  {datakit_seeds: [7000, 7001, 7002]}
+    val:   {datakit_seeds: "7100–7109"}
+    train: {datakit_seeds: "8000–8069", minimum_accepted: 50000,
+            if_short: "extend with consecutive seeds 8070, 8071, … until >= 50,000 accepted"}
+  splits: as E5 (training subset first N of default_rng(seed) permutation, nested; validation first
+    ceil(N/8) of one fixed permutation, rng 20261007; held-out test identical for every run)
+  also_evaluated: E5's held-out synthetic test (2,256 states, sha256 fb59e6f7…) — retention
+
+ladder:
+  training_states: [100, 1000, 10000, 50000]     # 0 = E4 zero-shot
+  seeds: {100: [0, 1, 2], 1000: [0, 1, 2], 10000: [0, 1, 2], 50000: [0]}
+  order: ascending
+  saturation_rule: as E5 (50k skipped only if 1k→10k improves both PBE and P_residual by < 5 %)
+  scratch_optional: {10000: [0]}    # after the main ladder, only if it does not delay the primary result
+
+synthetic_gate:           # = E5 gate, on the E5b held-out synthetic test (zero-shot re-scored on it)
+  G1_pbe: "PBE_mean <= 0.10 × zero-shot PBE_mean"
+  G2_active: "P_residual <= 0.10 × zero-shot P_residual"
+  G3_import_sign: "REF import sign correct on >= 99 % of test states"
+  G4_vs_dc: "P_residual <= 5 × DC-PF P_residual (same states)"
+  report: first E5b training size at which all seeds pass
+
+checkpoint_selection:     # synthetic validation ONLY (no real-state validation set)
+  candidates: gate-passing fine-tuned E5b runs; if none pass, all fine-tuned E5b runs (flagged)
+  criterion: lowest PBE_mean on the FULL E5b validation pool, tie (< 1 %) → smaller N
+  then: FREEZE (sha256 weights + normalizer) in metadata/e5b_checkpoint_registry.yaml and commit
+    BEFORE any real-state inference
+
+real_transfer:            # the transfer TEST (never a selection gate). Population = the E4/E5 S1
+  population: S1_WEATHER_ALIGNED (2,829 states, data/interim/e4/datasets, identical to E4/E5)
+  compare: [zero-shot (E4), E5 adapted (ft_n50000_s0), E5b adapted (frozen), DC-PF, AC reference]
+  e5_reference_on_S1: {PBE_mean: 33.181, P_residual: 28.845, import_mae_mw: 70.665, vm_mae_pu: 0.03155}
+  REAL_TRANSFER_SUCCESS:  # ALL of
+    R1_active: "S1 mean active residual <= 0.10 × E5 (<= 2.885 MW)"
+    R2_pbe: "S1 PBE mean <= 0.10 × E5 (<= 3.318 MVA) AND S1 PBE 95th percentile <= 10 MVA"
+    R3_import: "REF import sign >= 99 %, MAE <= 5 MW, Pearson r >= 0.9, σ_pred/σ_AC in [0.75, 1.33]"
+    R4_voltage: "median per-bus Pearson r(Vm_pred, Vm_AC) >= 0.8 AND Vm MAE <= 0.01 pu"
+  PARTIAL_TRANSFER:       # all of (and not SUCCESS)
+    P1: "S1 mean active residual <= 0.5 × E5 (<= 14.42 MW)"
+    P2: "S1 PBE mean <= 0.5 × E5 (<= 16.59 MVA)"
+    P3: "REF import Pearson r >= 0.5"
+  report: [PBE mean, median, p90, p95, p99, max, active, reactive, Vm/Va MAE, branch P/Q MAE,
+           REF import sign / MAE / bias / r / σ_pred / σ_AC / spread ratio, voltage tracking,
+           sensitivity of predicted import to load, CHAP31 and PV injections (regression slopes)]
+  post_freeze_diagnostic_curve: >-
+    every E5 and E5b fine-tuned ladder checkpoint is ALSO scored on S1 after the E5b freeze, for
+    the combined learning-curve figure only (never used for selection or the verdict)
+
+coverage:                 # explanatory; computed AFTER recipe + checkpoint freeze; never feeds back
+  variables: [total net load, slack import, each 11 kV primary load, CHAP31 injection,
+              LBUZ31/32/33 injection, min / max bus Vm, branch P range]
+  coverage_of_real: "share of S1 states inside the [min, max] of the E5b (and E5) training pool, per variable"
+  coverage_achieved: "share >= 95 % for EVERY variable above"
+  joint_check_reported: "nearest-neighbour distance real → training pool in standardised injections"
+
+weather_and_ramps:        # ONLY if REAL_TRANSFER_SUCCESS; otherwise weather remains unresolved
+  populations: [S1, S2 (10 fixed seeds, E4 donors), E4D timeline, heroes D01/B02/C01/A02]
+  gap: S1 − S2 paired day-block bootstrap (B 2000, seed 20261006); material = |rel| >= 10 % AND CI excludes 0
+  ramp_bins: E4 frozen edges [0.0, 0.32592431591982063, 0.6728673498590775, 1.4023915421511415, 4.197577445533432]
+  ramp_report: [tracking ratio Σ|ΔP_G|/Σ|ΔP_AC|, absolute ΔP error, Vm transition error, Va transition error]
+  ramp_physically_improved: >-
+    absolute ΔP transition error below BOTH zero-shot and E5 in the high and extreme bins AND
+    median tracking ratio within [0.8, 1.25] there (ratio alone never counts as improvement)
+  heroes_compare: [AC, zero-shot, E5, E5b]
+
+verdict:                  # exactly one
+  E5B-A_SYNTHETIC_COVERAGE_FIXES_REAL_TRANSFER: REAL_TRANSFER_SUCCESS
+  E5B-B_BROADER_SYNTHETIC_COVERAGE_STILL_DOES_NOT_TRANSFER: neither SUCCESS nor PARTIAL
+  E5B-C_PARTIAL_OR_INCONCLUSIVE: PARTIAL_TRANSFER, or no E5b run passes the synthetic gate
+coverage_hypothesis:      # for the claim "E5 failed primarily because of envelope coverage"
+  SUPPORTED: E5B-A
+  NOT_SUPPORTED: E5B-B AND coverage_achieved (real states inside the E5b envelope, still no transfer)
+  INCONCLUSIVE: E5B-C, or E5B-B without coverage_achieved
+  note: causal language limited to "supported by this intervention"; one network, one envelope
+
+out_of_scope: [weather / satellite / real-state training (E6), Canterbury, Streamlit]

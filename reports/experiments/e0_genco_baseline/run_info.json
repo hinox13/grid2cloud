@@ -1,0 +1,63 @@
+{
+  "started_at": "2026-10-02T16:31:05+00:00",
+  "runtime_s": {
+    "download_and_hash": 9.8,
+    "evaluate": 33.6
+  },
+  "command": [
+    ".venv/bin/python3",
+    "-m",
+    "gridfm_graphkit",
+    "evaluate",
+    "--config_conversion",
+    "auto_inline",
+    "--config",
+    "data/raw/opengridfm/checkpoints/genco-pf-datakit/case14_ieee/base/seed0/case14_ieee_base_seed0.yaml",
+    "--data_path",
+    "data/raw/opengridfm/datasets",
+    "--model_path",
+    "data/raw/opengridfm/checkpoints/genco-pf-datakit/case14_ieee/base/seed0/best_model_state_dict.pt",
+    "--normalizer_stats",
+    "data/raw/opengridfm/checkpoints/genco-pf-datakit/case14_ieee/base/seed0/normalizer_stats.pt",
+    "--log_dir",
+    "data/interim/e0_genco_baseline/mlruns",
+    "--exp_name",
+    "e0_genco_baseline",
+    "--run_name",
+    "run_20261002T163105Z"
+  ],
+  "mlflow_run_dir": "data/interim/e0_genco_baseline/mlruns/377051507094773868/1f16463e3bd94620aca841ad8e0db352",
+  "split_sha256": {
+    "train": "deedd8de335d2fc7fc1297c62886349a7ea3a0e4b980dca0515c6bb24fc1cb22",
+    "val": "6668395fe9808923cb144a7acf09249b2b8b4c12ea7c8d0ace6e3c34d086c3d3",
+    "test": "b3687d5305f50b1057f7f25edcc6707c2793d89235651033ec320d8f863e6ae3"
+  },
+  "environment": {
+    "git_commit": "1bf4c9e8a0c3a7e018713d64f74e8792f74befc4",
+    "git_dirty": true,
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "cuda_available": true,
+    "torch_cuda": "12.6",
+    "gpus_on_host": [
+      "GPU",
+      "GPU"
+    ],
+    "evaluate_cuda_visible_devices": "0",
+    "evaluate_gpus": [
+      "GPU"
+    ],
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "mlflow": "3.16.1",
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "huggingface-hub": "2.1.1"
+    }
+  }
+}

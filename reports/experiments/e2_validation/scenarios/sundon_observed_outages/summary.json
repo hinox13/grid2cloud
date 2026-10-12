@@ -1,0 +1,433 @@
+{
+  "variant": {
+    "name": "sundon_observed_outages",
+    "calibration": false,
+    "description": "General rule (all core metered circuits, not only Chaul End): at a timestamp where a metered circuit reads |P| < 0.05 MW while the all-closed planning model carries > 1 MW through it, the circuit is taken out of service for that timestamp. Its zero reading is then an input and is NOT scored for that circuit/timestamp.",
+    "changes": [
+      {
+        "type": "observed_outages",
+        "max_abs_observed_mw": 0.05,
+        "min_abs_model_mw": 1.0
+      }
+    ],
+    "reason": "LTDS is planning topology; switching states are not published.",
+    "evidence": [
+      "E2 baseline: CHAU_SU33_1 reads ~0 MW in 5/193 sampled states while the model carries 3-4 MW; at the same states SU33_CHAU_2 reads above the model by a similar amount (load carried through the shared Chaul End 11 kV busbar CHAU51)."
+    ],
+    "affected_elements": [
+      "any core metered 33/132 kV line meeting the rule (expected: CHAU_SU33_1)"
+    ]
+  },
+  "measurement_scales": {},
+  "observed_outages": [
+    {
+      "timestamp": "2024-12-10 14:00:00+00:00",
+      "line": "CHAU_SU33_1",
+      "observed_mw": 0.0,
+      "model_all_closed_mw": -4.059915797108629
+    },
+    {
+      "timestamp": "2024-12-10 23:30:00+00:00",
+      "line": "CHAU_SU33_1",
+      "observed_mw": 0.0,
+      "model_all_closed_mw": -2.9475338066991803
+    },
+    {
+      "timestamp": "2024-12-11 05:30:00+00:00",
+      "line": "CHAU_SU33_1",
+      "observed_mw": 0.0,
+      "model_all_closed_mw": -2.85473594228111
+    },
+    {
+      "timestamp": "2024-12-11 06:00:00+00:00",
+      "line": "CHAU_SU33_1",
+      "observed_mw": 0.0,
+      "model_all_closed_mw": -3.014013259324189
+    },
+    {
+      "timestamp": "2024-12-11 14:30:00+00:00",
+      "line": "CHAU_SU33_1",
+      "observed_mw": 0.0,
+      "model_all_closed_mw": -4.04313676984327
+    }
+  ],
+  "selection": {
+    "timestamps_with_all_inputs": 15343,
+    "eligible_with_min_targets": 15343,
+    "selected": 200,
+    "months_covered": 18,
+    "timestamps_source": "reports/tables/e2_timestamps.csv"
+  },
+  "data_quality_dropped_or_flagged": {
+    "CHAU_SU33_1": 0,
+    "SU33_CHAU_2": 0,
+    "SU33_CHAU_3": 0,
+    "SU33_LEWS_1": 0,
+    "SU33_LEWS_2": 0,
+    "SU33_LBUZT_1": 0,
+    "SUND_LBUZ_3(1)": 0,
+    "SU33_LBUZT_2_(1)": 0,
+    "SU33_SU11_1": 0,
+    "SUG1_SUG1_1": 0,
+    "SUG1_SUG1_2": 0,
+    "SUG1_SUG1_3": 0,
+    "lne_SUND_CHAP (input) beyond 1.5x rating": 272,
+    "lne_SUND_CHAP (input) beyond 1.0x rating": 1787
+  },
+  "sign_conventions": [
+    {
+      "tx_id": "sundon_33kv_gt1",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_1",
+      "r": 0.9661759204351914,
+      "expected_sign": 1,
+      "n": 46645,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt2",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_2",
+      "r": 0.9795769737935835,
+      "expected_sign": 1,
+      "n": 46601,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt3",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_3",
+      "r": 0.9757625924931066,
+      "expected_sign": 1,
+      "n": 46559,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t1",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_2_(1)",
+      "r": -0.9317794821312055,
+      "expected_sign": -1,
+      "n": 13890,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t2",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_1",
+      "r": 0.9574659194138065,
+      "expected_sign": 1,
+      "n": 36922,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t3",
+      "declared": "lv_to_hv",
+      "evidence": "SUND_LBUZ_3(1)",
+      "r": -0.8613002590013266,
+      "expected_sign": -1,
+      "n": 44299,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t1",
+      "declared": "hv_to_lv",
+      "evidence": "SU33_SU11_1",
+      "r": 0.7462902464098687,
+      "expected_sign": 1,
+      "n": 47016,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t2",
+      "declared": "hv_to_lv",
+      "evidence": "same_as sundon_11kv_t1",
+      "r": 0.940331679940806,
+      "expected_sign": 1,
+      "n": 50767,
+      "ok": true,
+      "class": "ASSUMED"
+    }
+  ],
+  "meter_mapping": {
+    "CHAU_SU33_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_CHAU_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_CHAU_3": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LEWS_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LEWS_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LBUZT_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUND_LBUZ_3(1)": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LBUZT_2_(1)": {
+      "mapping": "node_path",
+      "end": "from",
+      "note": "metered composite circuit = LTDS sections EPN:SUND31 -> EPN:GFSF3A -> EPN:MRFM3C; meter assumed at EPN:SUND31"
+    },
+    "SU33_SU11_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_3": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_SU11_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    }
+  },
+  "flagged_circuits": {
+    "SU33_SU11_1": "Observed P \u2248 0.25 \u00d7 Sundon Primary T1 P (r = 0.75) although LTDS shows it as T1's only feeder, while its twin SU33_SU11_2 matches T2 in apparent power. Unresolved measurement/mapping inconsistency."
+  },
+  "core_circuits": [
+    "CHAU_SU33_1",
+    "SU33_CHAU_2",
+    "SU33_CHAU_3",
+    "SU33_LEWS_1",
+    "SU33_LEWS_2",
+    "SU33_LBUZT_1",
+    "SUND_LBUZ_3(1)",
+    "SU33_LBUZT_2_(1)",
+    "SUG1_SUG1_1",
+    "SUG1_SUG1_2",
+    "SUG1_SUG1_3"
+  ],
+  "convergence": {
+    "V0_none": 1.0,
+    "V1_lbuz_33kv_busbars": 1.0,
+    "V1_tee_customer_nodes": 1.0
+  },
+  "v0_residual_mw": {
+    "count": 200.0,
+    "mean": -0.144,
+    "std": 8.156,
+    "min": -44.484,
+    "25%": -2.548,
+    "50%": -0.009,
+    "75%": 2.739,
+    "max": 39.533
+  },
+  "state_ranges": {
+    "V0_none": {
+      "vm_min|min": 0.9013,
+      "vm_min|max": 0.9805,
+      "vm_max|min": 1.0,
+      "vm_max|max": 1.0476,
+      "max_line_loading|min": 31.1501,
+      "max_line_loading|max": 170.928,
+      "max_trafo_loading|min": 37.4915,
+      "max_trafo_loading|max": 90.8173
+    },
+    "V1_lbuz_33kv_busbars": {
+      "vm_min|min": 0.9011,
+      "vm_min|max": 0.9807,
+      "vm_max|min": 1.0,
+      "vm_max|max": 1.047,
+      "max_line_loading|min": 30.7417,
+      "max_line_loading|max": 171.1363,
+      "max_trafo_loading|min": 37.4853,
+      "max_trafo_loading|max": 90.8651
+    },
+    "V1_tee_customer_nodes": {
+      "vm_min|min": 0.901,
+      "vm_min|max": 0.9807,
+      "vm_max|min": 1.0,
+      "vm_max|max": 1.0469,
+      "max_line_loading|min": 30.7419,
+      "max_line_loading|max": 202.9386,
+      "max_trafo_loading|min": 37.4857,
+      "max_trafo_loading|max": 90.8658
+    }
+  },
+  "aggregate": {
+    "V0_none": {
+      "core_p_circuits": {
+        "n": 2041,
+        "mae": 0.9210575038976891,
+        "rmse": 1.8236931446108522,
+        "bias": -0.03291167012729234,
+        "obs_mean_abs": 9.553998040176383,
+        "r": 0.985275665121394,
+        "nmae": 0.09640545246340504,
+        "direction_n": 2041,
+        "direction_agreement": 0.9970602645761881
+      },
+      "all_p_circuits": {
+        "n": 2240,
+        "mae": 0.9887069594857092,
+        "rmse": 1.8184135385962055,
+        "bias": 0.11863958320359248,
+        "obs_mean_abs": 8.762602678571428,
+        "r": 0.9844415161095109,
+        "nmae": 0.11283256764608876,
+        "direction_n": 2169,
+        "direction_agreement": 0.9972337482710927
+      },
+      "import": {
+        "n": 200,
+        "mae": 4.596887969073521,
+        "rmse": 8.137114286953455,
+        "bias": -0.14400227983944228,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.8875576833318042,
+        "nmae": 0.08388389851705129,
+        "direction_n": 200,
+        "direction_agreement": 0.99
+      }
+    },
+    "V1_tee_customer_nodes": {
+      "core_p_circuits": {
+        "n": 2041,
+        "mae": 0.8243212277834996,
+        "rmse": 1.648636574867736,
+        "bias": -0.01916231195958718,
+        "obs_mean_abs": 9.553998040176383,
+        "r": 0.9879788554427493,
+        "nmae": 0.0862802383166787,
+        "direction_n": 2041,
+        "direction_agreement": 0.9985301322880941
+      },
+      "all_p_circuits": {
+        "n": 2240,
+        "mae": 0.9005647117425343,
+        "rmse": 1.6591489375000448,
+        "bias": 0.1311675049902438,
+        "obs_mean_abs": 8.762602678571428,
+        "r": 0.9870974578953019,
+        "nmae": 0.10277365581630524,
+        "direction_n": 2169,
+        "direction_agreement": 0.9986168741355463
+      },
+      "import": {
+        "n": 200,
+        "mae": 0.00044004798592642833,
+        "rmse": 0.0030081102495643918,
+        "bias": 0.0004383463781381014,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9999999817588142,
+        "nmae": 8.029984816341944e-06,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    },
+    "V1_lbuz_33kv_busbars": {
+      "core_p_circuits": {
+        "n": 2041,
+        "mae": 0.9715914136335783,
+        "rmse": 1.7549616959555991,
+        "bias": -0.04659124765535623,
+        "obs_mean_abs": 9.553998040176383,
+        "r": 0.9863916038419418,
+        "nmae": 0.10169474701039828,
+        "direction_n": 2041,
+        "direction_agreement": 0.9960803527682509
+      },
+      "all_p_circuits": {
+        "n": 2240,
+        "mae": 1.0347514953143235,
+        "rmse": 1.7557087548172274,
+        "bias": 0.10617531218041214,
+        "obs_mean_abs": 8.762602678571428,
+        "r": 0.9855289926466414,
+        "nmae": 0.1180872319869945,
+        "direction_n": 2169,
+        "direction_agreement": 0.9963116643614569
+      },
+      "import": {
+        "n": 200,
+        "mae": 4.238174064082223e-05,
+        "rmse": 0.0002865200884122465,
+        "bias": -4.008997714570306e-05,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9999999998342661,
+        "nmae": 7.733809600774851e-07,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    }
+  },
+  "verdict": {
+    "primary_scenario": "V0_none",
+    "level": "B_USABLE_WITH_LIMITATIONS",
+    "A": {
+      "passed": false,
+      "checks": {
+        "structural": true,
+        "convergence": true,
+        "share_fit": false,
+        "direction": true,
+        "import": true
+      },
+      "share_fit": 0.6363636363636364,
+      "circuits_failing_fit": [
+        "SUG1_SUG1_1",
+        "SUG1_SUG1_2",
+        "SUG1_SUG1_3",
+        "SUND_LBUZ_3(1)"
+      ],
+      "circuits_failing_direction": []
+    },
+    "B": {
+      "passed": true,
+      "checks": {
+        "structural": true,
+        "convergence": true,
+        "share_fit": true,
+        "direction": true,
+        "import": true
+      },
+      "share_fit": 1.0,
+      "circuits_failing_fit": [],
+      "circuits_failing_direction": []
+    },
+    "pf_convergence_rate": 1.0,
+    "import_nmae": 0.08388389851705129
+  }
+}

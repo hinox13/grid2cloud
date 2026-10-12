@@ -1,0 +1,19 @@
+# VARIANT of sundon_base_ltds — combination of two independently evidenced changes.
+extends: sundon_base_ltds.yaml
+validation_timestamps: reports/tables/e2_timestamps.csv
+
+scenario:
+  name: sundon_capacity_scaled_with_outages
+  calibration: false
+  description: "sundon_battery_meter_capacity_scaled + sundon_observed_outages (no new assumption)."
+  changes:
+    - type: measurement_scale
+      series: lne_SUND_CHAP
+      method: capacity_ratio
+      published_capacity_mw: 49.5
+    - type: observed_outages
+      max_abs_observed_mw: 0.05
+      min_abs_model_mw: 1.0
+  reason: "Both changes are evidenced independently; tested jointly to check additivity."
+  evidence: ["See the two component variant files."]
+  affected_elements: ["load EPN:CHAP31", "lines meeting the outage rule"]

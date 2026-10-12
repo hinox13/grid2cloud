@@ -1,0 +1,13 @@
+{
+  "family": "S1_WEATHER_ALIGNED",
+  "interpretation": "sundon_capacity_scaled_with_outages",
+  "generated": 2829,
+  "ac_attempted": 2829,
+  "converged": 2829,
+  "accepted": 2829,
+  "rejected": {},
+  "days": 136,
+  "wall_s": 276.57808981323615,
+  "git_commit": "6df2ae87e8d1558b1c9dac8f4dba097e0d901278",
+  "working_tree_dirty": true
+}

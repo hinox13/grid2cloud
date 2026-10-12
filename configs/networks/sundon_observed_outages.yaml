@@ -1,0 +1,21 @@
+# VARIANT of sundon_base_ltds — time-varying topology from observed outage evidence.
+extends: sundon_base_ltds.yaml
+validation_timestamps: reports/tables/e2_timestamps.csv
+
+scenario:
+  name: sundon_observed_outages
+  calibration: false
+  description: >-
+    General rule (all core metered circuits, not only Chaul End): at a timestamp where a
+    metered circuit reads |P| < 0.05 MW while the all-closed planning model carries > 1 MW
+    through it, the circuit is taken out of service for that timestamp. Its zero reading is
+    then an input and is NOT scored for that circuit/timestamp.
+  changes:
+    - type: observed_outages
+      max_abs_observed_mw: 0.05
+      min_abs_model_mw: 1.0
+  reason: "LTDS is planning topology; switching states are not published."
+  evidence:
+    - "E2 baseline: CHAU_SU33_1 reads ~0 MW in 5/193 sampled states while the model carries 3-4 MW; at the same states SU33_CHAU_2 reads above the model by a similar amount (load carried through the shared Chaul End 11 kV busbar CHAU51)."
+  affected_elements:
+    - "any core metered 33/132 kV line meeting the rule (expected: CHAU_SU33_1)"

@@ -1,0 +1,189 @@
+{
+  "replacement_rule": {
+    "evidence_independent_of_improved_targets": true,
+    "no_parameters_fitted_to_operational_targets": true,
+    "import_nmae_must_decrease": true,
+    "share_core_fit_must_not_decrease": true,
+    "max_core_circuit_nmae_worsening": 0.02,
+    "min_direction_agreement_core": 0.95,
+    "min_core_circuits_improved_nmae": 2
+  },
+  "not_implemented": {
+    "sundon_coupler_open": "Observed battery-circuit swings are shared equally by all three grid transformers (night slopes 0.209 / 0.223 / 0.215 per MW), including GT2 on the SUND12 section. With both 132 kV sections supplied at equal voltage (A05) an open coupler yields the same solution as a closed one; no voltage/angle measurements exist to distinguish them.",
+    "sundon_secondary_path": "Contradicted by data: no metered 33 kV circuit co-moves with lne_SUND_CHAP (all night slopes |s| <= 0.008 MW/MW, n > 3,000 each); the only unmetered outlet of SUND31 (SU33_SU11_2, ~2 MVA) cannot carry the missing ~30% of \u00b163 MW swings."
+  },
+  "variants": [
+    {
+      "variant": "sundon_base_ltds",
+      "calibration": false,
+      "changes": "none (baseline)",
+      "scale_factor": null,
+      "outage_exclusions": 0,
+      "pf_convergence": 1.0,
+      "import_nmae": 0.08389065255751353,
+      "import_rmse_mw": 8.137332181127126,
+      "import_mae_mw": 4.5972580945432755,
+      "import_r": 0.8875510144403735,
+      "core_mae_mw": 0.9354046930864879,
+      "core_nmae": 0.0981469981889451,
+      "core_mean_r": 0.9193427408914011,
+      "share_core_r_ge_0.9": 0.6363636363636364,
+      "share_core_fit_A": 0.6363636363636364,
+      "min_core_direction_agreement": 0.98989898989899,
+      "current_SU33_SU11_2_mae_a": 2.956146139027517,
+      "current_SU33_SU11_2_r": 0.9589899100561388,
+      "verdict": "B_USABLE_WITH_LIMITATIONS"
+    },
+    {
+      "variant": "sundon_battery_meter_capacity_scaled",
+      "calibration": false,
+      "changes": "measurement_scale:lne_SUND_CHAP",
+      "scale_factor": 0.8007765105556904,
+      "outage_exclusions": 0,
+      "pf_convergence": 1.0,
+      "import_nmae": 0.0575098577703713,
+      "import_rmse_mw": 6.5240365348045,
+      "import_mae_mw": 3.1515747117310093,
+      "import_r": 0.9108877974984464,
+      "core_mae_mw": 0.8233313223913068,
+      "core_nmae": 0.0863877404131966,
+      "core_mean_r": 0.9250908765413292,
+      "share_core_r_ge_0.9": 0.6363636363636364,
+      "share_core_fit_A": 0.6363636363636364,
+      "min_core_direction_agreement": 1.0,
+      "current_SU33_SU11_2_mae_a": 2.963323933974064,
+      "current_SU33_SU11_2_r": 0.9589063009020584,
+      "verdict": "B_USABLE_WITH_LIMITATIONS"
+    },
+    {
+      "variant": "sundon_observed_outages",
+      "calibration": false,
+      "changes": "observed_outages",
+      "scale_factor": null,
+      "outage_exclusions": 5,
+      "pf_convergence": 1.0,
+      "import_nmae": 0.08388389851705129,
+      "import_rmse_mw": 8.137114286953455,
+      "import_mae_mw": 4.596887969073521,
+      "import_r": 0.8875576833318042,
+      "core_mae_mw": 0.9210575038976891,
+      "core_nmae": 0.09640545246340504,
+      "core_mean_r": 0.9255132655434225,
+      "share_core_r_ge_0.9": 0.6363636363636364,
+      "share_core_fit_A": 0.6363636363636364,
+      "min_core_direction_agreement": 0.98989898989899,
+      "current_SU33_SU11_2_mae_a": 2.9565837444711973,
+      "current_SU33_SU11_2_r": 0.958980990635917,
+      "verdict": "B_USABLE_WITH_LIMITATIONS"
+    },
+    {
+      "variant": "sundon_capacity_scaled_with_outages",
+      "calibration": false,
+      "changes": "measurement_scale:lne_SUND_CHAP; observed_outages",
+      "scale_factor": 0.8007765105556904,
+      "outage_exclusions": 5,
+      "pf_convergence": 1.0,
+      "import_nmae": 0.057503099793063554,
+      "import_rmse_mw": 6.523816634483466,
+      "import_mae_mw": 3.1512043705197583,
+      "import_r": 0.9108932292410066,
+      "core_mae_mw": 0.8087168015954342,
+      "core_nmae": 0.08464695075241024,
+      "core_mean_r": 0.9312604806525159,
+      "share_core_r_ge_0.9": 0.6363636363636364,
+      "share_core_fit_A": 0.6363636363636364,
+      "min_core_direction_agreement": 1.0,
+      "current_SU33_SU11_2_mae_a": 2.963761750908712,
+      "current_SU33_SU11_2_r": 0.9588974419762984,
+      "verdict": "B_USABLE_WITH_LIMITATIONS"
+    },
+    {
+      "variant": "sundon_battery_meter_kcl_calibrated",
+      "calibration": true,
+      "changes": "measurement_scale:lne_SUND_CHAP",
+      "scale_factor": 0.7141008546169318,
+      "outage_exclusions": 0,
+      "pf_convergence": 1.0,
+      "import_nmae": 0.05757738602184296,
+      "import_rmse_mw": 6.242896617688638,
+      "import_mae_mw": 3.155275300428607,
+      "import_r": 0.9172112160797937,
+      "core_mae_mw": 0.8168559150136593,
+      "core_nmae": 0.08570831064246326,
+      "core_mean_r": 0.9265379261384491,
+      "share_core_r_ge_0.9": 0.7272727272727273,
+      "share_core_fit_A": 0.7272727272727273,
+      "min_core_direction_agreement": 1.0,
+      "current_SU33_SU11_2_mae_a": 2.9667530027469518,
+      "current_SU33_SU11_2_r": 0.9588637275862004,
+      "verdict": "B_USABLE_WITH_LIMITATIONS"
+    }
+  ],
+  "decisions": [
+    {
+      "variant": "sundon_battery_meter_capacity_scaled",
+      "eligible_to_replace_baseline": true,
+      "checks": {
+        "not_a_calibration_experiment": true,
+        "import_nmae_decreases": true,
+        "share_core_fit_not_decreased": true,
+        "no_core_circuit_nmae_worse_than_tolerance": true,
+        "direction_agreement_ok": true,
+        "improvement_generalises": true
+      },
+      "core_circuits_improved": 2,
+      "max_core_nmae_worsening": 8.04464682449546e-06,
+      "worst_circuit": "SU33_CHAU_2"
+    },
+    {
+      "variant": "sundon_observed_outages",
+      "eligible_to_replace_baseline": true,
+      "checks": {
+        "not_a_calibration_experiment": true,
+        "import_nmae_decreases": true,
+        "share_core_fit_not_decreased": true,
+        "no_core_circuit_nmae_worse_than_tolerance": true,
+        "direction_agreement_ok": true,
+        "improvement_generalises": true
+      },
+      "core_circuits_improved": 2,
+      "max_core_nmae_worsening": 2.5937599896913577e-06,
+      "worst_circuit": "SUG1_SUG1_3"
+    },
+    {
+      "variant": "sundon_capacity_scaled_with_outages",
+      "eligible_to_replace_baseline": true,
+      "checks": {
+        "not_a_calibration_experiment": true,
+        "import_nmae_decreases": true,
+        "share_core_fit_not_decreased": true,
+        "no_core_circuit_nmae_worse_than_tolerance": true,
+        "direction_agreement_ok": true,
+        "improvement_generalises": true
+      },
+      "core_circuits_improved": 4,
+      "max_core_nmae_worsening": 5.1359398105937926e-06,
+      "worst_circuit": "SUND_LBUZ_3(1)"
+    },
+    {
+      "variant": "sundon_battery_meter_kcl_calibrated",
+      "eligible_to_replace_baseline": false,
+      "checks": {
+        "not_a_calibration_experiment": false,
+        "import_nmae_decreases": true,
+        "share_core_fit_not_decreased": true,
+        "no_core_circuit_nmae_worse_than_tolerance": true,
+        "direction_agreement_ok": true,
+        "improvement_generalises": true
+      },
+      "core_circuits_improved": 2,
+      "max_core_nmae_worsening": 1.1358492079296956e-05,
+      "worst_circuit": "SU33_CHAU_2"
+    }
+  ],
+  "baseline_replaced_by": [
+    "sundon_battery_meter_capacity_scaled",
+    "sundon_observed_outages",
+    "sundon_capacity_scaled_with_outages"
+  ]
+}

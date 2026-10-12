@@ -1,0 +1,17 @@
+column,n_null,n_blank,n_placeholder,n_missing,frac_missing
+gridsupplypoint,0,0,0,0,0.0
+fromsubstation,0,0,0,0,0.0
+fromnode,0,0,0,0,0.0
+tonode,0,0,0,0,0.0
+tosubstation,0,0,0,0,0.0
+linename,0,0,0,0,0.0
+operating_voltage,0,0,0,0,0.0
+positive_sequence_impedance_r_percent,1,0,0,1,0.00019700551615445234
+positive_sequence_impedance_x_percent,1,0,0,1,0.00019700551615445234
+susceptance_b_percent,1,0,0,1,0.00019700551615445234
+rating_amps_summer,0,0,1,1,0.00019700551615445234
+rating_amps_winter,0,0,1,1,0.00019700551615445234
+circuit_length,0,0,1,1,0.00019700551615445234
+fromsubstation_sitefunctionallocation,1346,0,0,1346,0.2651694247438928
+licencearea,0,0,0,0,0.0
+id,0,0,0,0,0.0

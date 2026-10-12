@@ -1,0 +1,46 @@
+{
+  "zero_shot_reference_on_test": {
+    "PBE_mean": 44.799535884502085,
+    "P_residual": 32.850040645675456,
+    "dc_P_residual": 0.2253483886214449
+  },
+  "gate": {
+    "per_checkpoint": {
+      "G1_pbe": "PBE_mean <= 0.10 \u00d7 zero-shot PBE_mean (same test states)",
+      "G2_active": "P_residual <= 0.10 \u00d7 zero-shot P_residual",
+      "G3_import_sign": "REF import sign correct on >= 99 % of test states",
+      "G4_vs_dc": "P_residual <= 5 \u00d7 DC-PF P_residual on the same states. 5\u00d7 \u2248 the ratio the GENCO paper itself reports for this checkpoint ZERO-SHOT on its unseen-grid benchmark (IEEE 118: 11.08 / 2.30 = 4.8\u00d7); E4 Sundon zero-shot was 149\u00d7. The paper's fine-tuned 100 / 1k reach 2.4\u00d7 / 0.84\u00d7."
+    },
+    "tier_reported": "DC_PARITY if additionally P_residual <= DC-PF P_residual (not required)",
+    "ladder_pass_size": "first N at which ALL seeds of that N pass",
+    "if_none_pass": "STOP \u2014 E5-C topology adaptation insufficient; S1/S2 are NOT evaluated"
+  },
+  "runs_passing_gate": [
+    "ft_n10000_s0",
+    "ft_n10000_s1",
+    "ft_n10000_s2",
+    "ft_n50000_s0",
+    "scratch_n10000_s0"
+  ],
+  "first_size_all_seeds_pass": 10000,
+  "saturation_rule": {
+    "improvement_1k_to_10k": {
+      "PBE_mean": 0.5854182040062358,
+      "P_residual": 0.6018499003058018
+    },
+    "saturated": false
+  },
+  "selection_rule": "lowest PBE_mean on the FULL validation pool (all val seeds), tie (< 1 %) \u2192 smaller N",
+  "selected": "ft_n50000_s0",
+  "outcome_if_none": null,
+  "test_pool": {
+    "n": 2256,
+    "sha256": "fb59e6f77d1faa4a129c695ddccfc3f8f2d9f50dd3ecb6e91921f5c5fd57f757"
+  },
+  "val_pool": {
+    "n": 7642,
+    "sha256": "ff774bfc2643ad925523903a8641add4e9581a55afa2b44e5684aa6ebf85f24a"
+  },
+  "git_commit": "cb5b11d803c5a8d2f2106006e908a13c015b6321",
+  "working_tree_dirty": true
+}

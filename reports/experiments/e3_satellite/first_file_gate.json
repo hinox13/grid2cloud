@@ -1,0 +1,416 @@
+{
+  "run_at": "2026-10-06T07:38:57+00:00",
+  "git_commit": "9a5c46d7ae87dcd063faaa2562839b036297caa4",
+  "working_tree_dirty": true,
+  "static_geometry": {
+    "hdf5_lsasaf_msg_lat_msg-disk.bz2": {
+      "size_bytes": 968258,
+      "sha256": "cf3de86d55b26f581b30a03076a6f9d2b7107525e3c0907b39362266559d6581",
+      "local_path": "data/raw/satellite/lsasaf/static/hdf5_lsasaf_msg_lat_msg-disk.bz2"
+    },
+    "hdf5_lsasaf_msg_lon_msg-disk.bz2": {
+      "size_bytes": 2055817,
+      "sha256": "d2ce49a3cfe1a2da1165c4da304cf06c75e701fa5b026aa3ab7e0f19903b9495",
+      "local_path": "data/raw/satellite/lsasaf/static/hdf5_lsasaf_msg_lon_msg-disk.bz2"
+    },
+    "NETCDF_LSASAF_USGS-IGBP_LWMASK_MSG-Disk_202001270900.nc": {
+      "size_bytes": 216904,
+      "sha256": "50b3cb15d17106df0037ea04d2d0089ba96bd8d9065b88da0ee1f86ed8cf8f21",
+      "local_path": "data/raw/satellite/lsasaf/static/NETCDF_LSASAF_USGS-IGBP_LWMASK_MSG-Disk_202001270900.nc"
+    }
+  },
+  "lsasaf_catalog": {
+    "day_url": "https://datalsasaf.lsasvcs.ipma.pt/PRODUCTS/MSG/MDSSFTD/NETCDF/2024/06/15/",
+    "files_listed_for_day": 96,
+    "first_slot": "2024-06-15 00:00:00+00:00",
+    "last_slot": "2024-06-15 23:45:00+00:00",
+    "gate_file": "NETCDF4_LSASAF_MSG_MDSSFTD_MSG-Disk_202406151200.nc",
+    "gate_file_listed": true,
+    "gate_file_size_listed": "5446 KB",
+    "listing_public": true
+  },
+  "lsasaf_mdssftd": {
+    "status": "OK",
+    "download": {
+      "local_path": "data/raw/satellite/lsasaf/netcdf/NETCDF4_LSASAF_MSG_MDSSFTD_MSG-Disk_202406151200.nc",
+      "url": "https://datalsasaf.lsasvcs.ipma.pt/PRODUCTS/MSG/MDSSFTD/NETCDF/2024/06/15/NETCDF4_LSASAF_MSG_MDSSFTD_MSG-Disk_202406151200.nc",
+      "size_bytes": "5446485",
+      "sha256": "0e95c4f207d606204039c4275324ace2d443f039b9ebec3bad9794581d9ba7cb"
+    },
+    "inspection": {
+      "dims": {
+        "time": 1,
+        "lat": 3201,
+        "lon": 3201
+      },
+      "variables": {
+        "DSSF_TOT": {
+          "dims": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "stored_dtype": "int16",
+          "attrs": {
+            "long_name": "DSSF_TOT",
+            "scale_factor": 0.1,
+            "units": "W m-2",
+            "grid_mapping": "crs",
+            "_FillValue": -1,
+            "valid_min": 0,
+            "valid_max": 15000
+          }
+        },
+        "FRACTION_DIFFUSE": {
+          "dims": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "stored_dtype": "int16",
+          "attrs": {
+            "scale_factor": 0.01,
+            "grid_mapping": "crs",
+            "long_name": "FRACTION_DIFFUSE",
+            "_FillValue": -1,
+            "valid_min": 0,
+            "valid_max": 100
+          }
+        },
+        "crs": {
+          "dims": [],
+          "stored_dtype": "|S1",
+          "attrs": {
+            "grid_mapping_name": "latitude_longitude",
+            "longitude_of_prime_meridian": 0.0,
+            "semi_major_axis": 6378137.0,
+            "inverse_flattening": 298.257223563
+          }
+        },
+        "quality_flag": {
+          "dims": [
+            "time",
+            "lat",
+            "lon"
+          ],
+          "stored_dtype": "uint8",
+          "attrs": {
+            "long_name": "Q_FLAG",
+            "scale_factor": 1.0,
+            "grid_mapping": "crs",
+            "_FillValue": 255,
+            "valid_min": 0,
+            "valid_max": 255
+          }
+        }
+      },
+      "coords": {
+        "lat": {
+          "first": 80.0,
+          "last": -80.0,
+          "step": -0.05000000074505806,
+          "n": 3201,
+          "attrs": {
+            "units": "degrees_north",
+            "standard_name": "latitude",
+            "long_name": "latitude",
+            "axis": "Y"
+          }
+        },
+        "lon": {
+          "first": -80.0,
+          "last": 80.0,
+          "step": 0.05000000074505806,
+          "n": 3201,
+          "attrs": {
+            "units": "degrees_east",
+            "standard_name": "longitude",
+            "long_name": "longitude",
+            "axis": "X"
+          }
+        }
+      },
+      "time_values": [
+        "2024-06-15 12:00:00"
+      ],
+      "time_attrs": {
+        "units": "seconds since 2024-06-15T12:00:00Z",
+        "long_name": "time",
+        "calendar": "standard",
+        "axis": "T"
+      },
+      "global_attrs": {
+        "date_created": "2024-06-15T12:20:09Z",
+        "algorithm_version": "2.0.0",
+        "base_algorithm_version": "v1.0.1",
+        "processing_level": "03",
+        "platform": "MSG3",
+        "sensor": "SEVI",
+        "parent_product_name": "CMa;ALBEDO;WV;SZA/SAA",
+        "time_coverage_start": "2024-06-15T12:00:00Z",
+        "image_reference_time": "2024-06-15T12:00:00Z",
+        "name": "MDSSFTD",
+        "region_name": "MSG-Disk",
+        "institution": "IM-PT",
+        "archive_facility": "IPMA",
+        "license": "Data is freely available for users registered at the LSA SAF website - lsa-saf.eumetsat.int",
+        "history": "2024-06-15T12:20:09Z - NetCDF reprojected product ; 2024-06-15T12:20:04Z Original product file created: HDF5_LSASAF_MSG_MDSSFTD_MSG-Disk_202406151200",
+        "geospatial_lat_resolution": " 0.05",
+        "geospatial_lon_resolution": " 0.05",
+        "northernmost_latitude": 80.0,
+        "southernmost_latitude": -80.0,
+        "references": "Data provided by the EUMETSAT Satellite Application Facility on Land Surface Analysis (LSA SAF; Trigo et al., 2011) http://lsa-saf.eumetsat.int Trigo, I. F., C. C. DaCamara, P. Viterbo, J.-L. Roujean, F. Olesen, C. Barroso, F. Camacho-de Coca, D. Carrer, S. C. Freitas, J. Garc\u00eda-Haro, B. Geiger, F. Gellens-Meulenberghs, N. Ghilain, J. Meli\u00e1, L. Pessanha, N. Siljamo, and A. Arboleda, 2011: The Satellite Application Facility on Land Surface Analysis. Int. J. Remote Sens., 32, 2725-2744, doi: 10.1080/01431161003743199",
+        "easternmost_longitude": -80.0,
+        "westernmost_longitude": 80.0,
+        "spatial_resolution": " 0.05x 0.05",
+        "geospatial_lat_units": "degrees_north",
+        "geospatial_lon_units": "degrees_east",
+        "Conventions": "CF-1.6",
+        "netcdf_version_id": "netCDF4"
+      }
+    },
+    "checks": [
+      {
+        "check": "variable total = DSSF_TOT",
+        "ok": true,
+        "found": [
+          "DSSF_TOT",
+          "FRACTION_DIFFUSE",
+          "crs",
+          "quality_flag"
+        ]
+      },
+      {
+        "check": "variable diffuse_fraction = FRACTION_DIFFUSE",
+        "ok": true,
+        "found": [
+          "DSSF_TOT",
+          "FRACTION_DIFFUSE",
+          "crs",
+          "quality_flag"
+        ]
+      },
+      {
+        "check": "variable quality = quality_flag",
+        "ok": true,
+        "found": [
+          "DSSF_TOT",
+          "FRACTION_DIFFUSE",
+          "crs",
+          "quality_flag"
+        ]
+      },
+      {
+        "check": "total flux units are W m-2",
+        "ok": true,
+        "found": "W m-2"
+      },
+      {
+        "check": "lat step -0.05",
+        "ok": true,
+        "found": -0.05000000074505806
+      },
+      {
+        "check": "lon step 0.05",
+        "ok": true,
+        "found": 0.05000000074505806
+      }
+    ],
+    "product_version": {
+      "algorithm_version": "2.0.0",
+      "base_algorithm_version": "v1.0.1",
+      "platform": "MSG3",
+      "processing_level": "03",
+      "date_created": "2024-06-15T12:20:09Z"
+    },
+    "crop": {
+      "path": "data/interim/satellite/lsasaf/gate/MDSSFTD_context_202406151200.nc",
+      "size_bytes": 78673,
+      "dims": {
+        "time": 1,
+        "lat": 61,
+        "lon": 111
+      }
+    },
+    "context_status_counts": {
+      "GOOD": 5195,
+      "LOW_QUALITY": 5,
+      "MISSING": 1571
+    },
+    "context_flag_counts": {
+      "0 (ocean|unprocessed|cloudy_ok)": 1571,
+      "9 (land|contaminated|cloudy_ok)": 1164,
+      "11 (continental_water|contaminated|cloudy_ok)": 25,
+      "13 (land|cloud_filled|cloudy_ok)": 3659,
+      "15 (continental_water|cloud_filled|cloudy_ok)": 118,
+      "75 (continental_water|contaminated|cloudy_atoa_out_of_limits)": 3,
+      "79 (continental_water|cloud_filled|cloudy_atoa_out_of_limits)": 2,
+      "133 (land|clear|clear_ok)": 192,
+      "135 (continental_water|clear|clear_ok)": 37
+    },
+    "grid_from_file": {
+      "lat0": 80.0,
+      "lon0": -80.0,
+      "dlat": -0.0500030517578125,
+      "dlon": 0.0500030517578125,
+      "nlat": 3201,
+      "nlon": 3201
+    }
+  },
+  "rgb_frames": {
+    "eview@1200": {
+      "provider": "EUMETSAT",
+      "product": "EO:EUM:DAT:MSG:EVIEW",
+      "wms_layer": "msg_fes:rgb_eview",
+      "source_id": "eumetsat_eview",
+      "source_url": "https://view.eumetsat.int/geoserver/ows?service=WMS&version=1.3.0&request=GetMap&layers=msg_fes%3Argb_eview&styles=&crs=EPSG%3A4326&bbox=50.5%2C-3.5%2C53.5%2C2.0&width=1100&height=600&format=image%2Fpng&time=2024-06-15T12%3A00%3A00Z",
+      "requested_time": "2024-06-15T12:00:00Z",
+      "served_time": "2024-06-15T12:00:00Z",
+      "bbox_wgs84": [
+        -3.5,
+        50.5,
+        2.0,
+        53.5
+      ],
+      "crs": "EPSG:4326",
+      "width": 1100,
+      "height": 600,
+      "format": "image/png",
+      "local_path": "data/interim/satellite/eumetsat/eview/eview_20240615T1200_context.png",
+      "size_bytes": 174650,
+      "sha256": "677ac871aeb4a7b4fea88625abe1f2d548d9cf7160f6dc914645cd745b22e2c1",
+      "processing_level": "Visualisation (RGB Advanced Image Product), server-side crop"
+    },
+    "eview@1215": {
+      "provider": "EUMETSAT",
+      "product": "EO:EUM:DAT:MSG:EVIEW",
+      "wms_layer": "msg_fes:rgb_eview",
+      "source_id": "eumetsat_eview",
+      "source_url": "https://view.eumetsat.int/geoserver/ows?service=WMS&version=1.3.0&request=GetMap&layers=msg_fes%3Argb_eview&styles=&crs=EPSG%3A4326&bbox=50.5%2C-3.5%2C53.5%2C2.0&width=1100&height=600&format=image%2Fpng&time=2024-06-15T12%3A15%3A00Z",
+      "requested_time": "2024-06-15T12:15:00Z",
+      "served_time": "2024-06-15T12:15:00Z",
+      "bbox_wgs84": [
+        -3.5,
+        50.5,
+        2.0,
+        53.5
+      ],
+      "crs": "EPSG:4326",
+      "width": 1100,
+      "height": 600,
+      "format": "image/png",
+      "local_path": "data/interim/satellite/eumetsat/eview/eview_20240615T1215_context.png",
+      "size_bytes": 174713,
+      "sha256": "39248d011fd382de1e246ecf45aaf4abdfaddd984ef9a26baa6f302fe55b7b00",
+      "processing_level": "Visualisation (RGB Advanced Image Product), server-side crop"
+    },
+    "ncl_enh@1200": {
+      "provider": "EUMETSAT",
+      "product": "EO:EUM:DAT:MSG:NCL_ENH",
+      "wms_layer": "msg_fes:rgb_naturalenhncd",
+      "source_id": "eumetsat_ncl_enh",
+      "source_url": "https://view.eumetsat.int/geoserver/ows?service=WMS&version=1.3.0&request=GetMap&layers=msg_fes%3Argb_naturalenhncd&styles=&crs=EPSG%3A4326&bbox=50.5%2C-3.5%2C53.5%2C2.0&width=1100&height=600&format=image%2Fpng&time=2024-06-15T12%3A00%3A00Z",
+      "requested_time": "2024-06-15T12:00:00Z",
+      "served_time": "2024-06-15T12:00:00Z",
+      "bbox_wgs84": [
+        -3.5,
+        50.5,
+        2.0,
+        53.5
+      ],
+      "crs": "EPSG:4326",
+      "width": 1100,
+      "height": 600,
+      "format": "image/png",
+      "local_path": "data/interim/satellite/eumetsat/ncl_enh/ncl_enh_20240615T1200_context.png",
+      "size_bytes": 60695,
+      "sha256": "6b13bd2535f5f9c1e151840db544216e65aeb6b7a400163e0f132b2736221093",
+      "processing_level": "Visualisation (RGB Advanced Image Product), server-side crop"
+    },
+    "ncl_enh@1215": {
+      "provider": "EUMETSAT",
+      "product": "EO:EUM:DAT:MSG:NCL_ENH",
+      "wms_layer": "msg_fes:rgb_naturalenhncd",
+      "source_id": "eumetsat_ncl_enh",
+      "source_url": "https://view.eumetsat.int/geoserver/ows?service=WMS&version=1.3.0&request=GetMap&layers=msg_fes%3Argb_naturalenhncd&styles=&crs=EPSG%3A4326&bbox=50.5%2C-3.5%2C53.5%2C2.0&width=1100&height=600&format=image%2Fpng&time=2024-06-15T12%3A15%3A00Z",
+      "requested_time": "2024-06-15T12:15:00Z",
+      "served_time": "2024-06-15T12:15:00Z",
+      "bbox_wgs84": [
+        -3.5,
+        50.5,
+        2.0,
+        53.5
+      ],
+      "crs": "EPSG:4326",
+      "width": 1100,
+      "height": 600,
+      "format": "image/png",
+      "local_path": "data/interim/satellite/eumetsat/ncl_enh/ncl_enh_20240615T1215_context.png",
+      "size_bytes": 60131,
+      "sha256": "b22f0c151631adc6caadbd4a9155e574c22101d1b32db304708a733623d9b352",
+      "processing_level": "Visualisation (RGB Advanced Image Product), server-side crop"
+    }
+  },
+  "time_matching": [
+    {
+      "requested_time": "2024-06-15T12:00:00Z",
+      "radiation_slot": "2024-06-15T12:00:00Z",
+      "radiation_time": "2024-06-15T12:11:38Z",
+      "rgb_time": "2024-06-15T12:00:00Z",
+      "rgb_acquisition_time": "2024-06-15T12:11:38Z",
+      "time_delta_min": 0.0,
+      "max_delta_min": 7.5,
+      "accepted": true,
+      "product": "EO:EUM:DAT:MSG:EVIEW",
+      "radiation_slot_listed": true
+    },
+    {
+      "requested_time": "2024-06-15T12:15:00Z",
+      "radiation_slot": "2024-06-15T12:15:00Z",
+      "radiation_time": "2024-06-15T12:26:38Z",
+      "rgb_time": "2024-06-15T12:15:00Z",
+      "rgb_acquisition_time": "2024-06-15T12:26:38Z",
+      "time_delta_min": 0.0,
+      "max_delta_min": 7.5,
+      "accepted": true,
+      "product": "EO:EUM:DAT:MSG:EVIEW",
+      "radiation_slot_listed": true
+    },
+    {
+      "requested_time": "2024-06-15T12:00:00Z",
+      "radiation_slot": "2024-06-15T12:00:00Z",
+      "radiation_time": "2024-06-15T12:11:38Z",
+      "rgb_time": "2024-06-15T12:00:00Z",
+      "rgb_acquisition_time": "2024-06-15T12:11:38Z",
+      "time_delta_min": 0.0,
+      "max_delta_min": 7.5,
+      "accepted": true,
+      "product": "EO:EUM:DAT:MSG:NCL_ENH",
+      "radiation_slot_listed": true
+    },
+    {
+      "requested_time": "2024-06-15T12:15:00Z",
+      "radiation_slot": "2024-06-15T12:15:00Z",
+      "radiation_time": "2024-06-15T12:26:38Z",
+      "rgb_time": "2024-06-15T12:15:00Z",
+      "rgb_acquisition_time": "2024-06-15T12:26:38Z",
+      "time_delta_min": 0.0,
+      "max_delta_min": 7.5,
+      "accepted": true,
+      "product": "EO:EUM:DAT:MSG:NCL_ENH",
+      "radiation_slot_listed": true
+    },
+    {
+      "requested_time": "2024-06-15T12:00:00Z",
+      "radiation_slot": "2024-06-15T12:00:00Z",
+      "radiation_time": "2024-06-15T12:11:38Z",
+      "rgb_time": "2024-06-15T12:15:00Z",
+      "rgb_acquisition_time": "2024-06-15T12:26:38Z",
+      "time_delta_min": 15.0,
+      "max_delta_min": 7.5,
+      "accepted": false,
+      "product": "rejection-rule demonstration (frame 15 min later)",
+      "radiation_slot_listed": true
+    }
+  ]
+}

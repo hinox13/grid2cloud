@@ -1,0 +1,448 @@
+{
+  "variant": {
+    "name": "sundon_battery_meter_kcl_calibrated",
+    "calibration": true,
+    "description": "lne_SUND_CHAP readings rescaled by the coefficient of that circuit in an observed power balance at the Sundon 33 kV busbar, fitted ONLY on timestamps outside the 200 validation timestamps (held-out calibration).",
+    "changes": [
+      {
+        "type": "measurement_scale",
+        "series": "lne_SUND_CHAP",
+        "method": "kcl_regression_heldout",
+        "regressors": [
+          {
+            "name": "other_metered_outflows",
+            "sum_lines": {
+              "CHAU_SU33_1": -1,
+              "SU33_CHAU_2": 1,
+              "SU33_CHAU_3": 1,
+              "SU33_LBUZT_1": -1,
+              "SU33_LEWS_1": -1,
+              "SU33_LEWS_2": 1,
+              "SU33_SU11_1": 1,
+              "SU33_SU11_3": 1,
+              "SU33_SU11_4": -1,
+              "SUND_LBUZ_3(1)": 1
+            }
+          },
+          {
+            "line": "SU33_LBUZT_2_(1)",
+            "sign": 1
+          },
+          {
+            "transformer": "sundon_11kv_t2",
+            "positive": "hv_to_lv"
+          },
+          {
+            "line": "lne_SUND_CHAP",
+            "sign": 1
+          }
+        ]
+      }
+    ],
+    "reason": "Quantifies how much of the import error the battery-meter interpretation can explain.",
+    "evidence": [
+      "Exploratory KCL fits: lne_SUND_CHAP coefficient 0.66-0.74 across 2023/2024/2025, night and midday; other metered outflows \u2248 0.95 when the tee circuit is included.",
+      "No metered 33 kV circuit co-moves with lne_SUND_CHAP (night slopes |s| <= 0.008)."
+    ],
+    "affected_elements": [
+      "load EPN:CHAP31 (input derived from lne_SUND_CHAP)"
+    ]
+  },
+  "measurement_scales": {
+    "lne_SUND_CHAP": {
+      "factor": 0.7141008546169318,
+      "method": "kcl_regression_heldout",
+      "evidence": {
+        "coefficients": {
+          "other_metered_outflows": 0.9515,
+          "SU33_LBUZT_2_(1)": 1.5485,
+          "sundon_11kv_t2": 1.3333,
+          "lne_SUND_CHAP": 0.7141,
+          "intercept": 0.2927
+        },
+        "n_fit": 5348,
+        "fit_excludes_validation_timestamps": true,
+        "factor": 0.7141008546169318
+      }
+    }
+  },
+  "observed_outages": [],
+  "selection": {
+    "timestamps_with_all_inputs": 15343,
+    "eligible_with_min_targets": 15343,
+    "selected": 200,
+    "months_covered": 18,
+    "timestamps_source": "reports/tables/e2_timestamps.csv"
+  },
+  "data_quality_dropped_or_flagged": {
+    "CHAU_SU33_1": 0,
+    "SU33_CHAU_2": 0,
+    "SU33_CHAU_3": 0,
+    "SU33_LEWS_1": 0,
+    "SU33_LEWS_2": 0,
+    "SU33_LBUZT_1": 0,
+    "SUND_LBUZ_3(1)": 0,
+    "SU33_LBUZT_2_(1)": 0,
+    "SU33_SU11_1": 0,
+    "SUG1_SUG1_1": 0,
+    "SUG1_SUG1_2": 0,
+    "SUG1_SUG1_3": 0,
+    "lne_SUND_CHAP (input) beyond 1.5x rating": 272,
+    "lne_SUND_CHAP (input) beyond 1.0x rating": 1787
+  },
+  "sign_conventions": [
+    {
+      "tx_id": "sundon_33kv_gt1",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_1",
+      "r": 0.9661759204351914,
+      "expected_sign": 1,
+      "n": 46645,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt2",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_2",
+      "r": 0.9795769737935835,
+      "expected_sign": 1,
+      "n": 46601,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_33kv_gt3",
+      "declared": "lv_to_hv",
+      "evidence": "SUG1_SUG1_3",
+      "r": 0.9757625924931066,
+      "expected_sign": 1,
+      "n": 46559,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t1",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_2_(1)",
+      "r": -0.9317794821312055,
+      "expected_sign": -1,
+      "n": 13890,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t2",
+      "declared": "lv_to_hv",
+      "evidence": "SU33_LBUZT_1",
+      "r": 0.9574659194138065,
+      "expected_sign": 1,
+      "n": 36922,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "leighton_buzzard_primary_11kv_t3",
+      "declared": "lv_to_hv",
+      "evidence": "SUND_LBUZ_3(1)",
+      "r": -0.8613002590013266,
+      "expected_sign": -1,
+      "n": 44299,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t1",
+      "declared": "hv_to_lv",
+      "evidence": "SU33_SU11_1",
+      "r": 0.7462902464098687,
+      "expected_sign": 1,
+      "n": 47016,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "sundon_11kv_t2",
+      "declared": "hv_to_lv",
+      "evidence": "same_as sundon_11kv_t1",
+      "r": 0.940331679940806,
+      "expected_sign": 1,
+      "n": 50767,
+      "ok": true,
+      "class": "ASSUMED"
+    }
+  ],
+  "meter_mapping": {
+    "CHAU_SU33_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_CHAU_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_CHAU_3": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LEWS_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LEWS_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LBUZT_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUND_LBUZ_3(1)": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_LBUZT_2_(1)": {
+      "mapping": "node_path",
+      "end": "from",
+      "note": "metered composite circuit = LTDS sections EPN:SUND31 -> EPN:GFSF3A -> EPN:MRFM3C; meter assumed at EPN:SUND31"
+    },
+    "SU33_SU11_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_1": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SUG1_SUG1_3": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    },
+    "SU33_SU11_2": {
+      "mapping": "exact",
+      "end": "from",
+      "note": ""
+    }
+  },
+  "flagged_circuits": {
+    "SU33_SU11_1": "Observed P \u2248 0.25 \u00d7 Sundon Primary T1 P (r = 0.75) although LTDS shows it as T1's only feeder, while its twin SU33_SU11_2 matches T2 in apparent power. Unresolved measurement/mapping inconsistency."
+  },
+  "core_circuits": [
+    "CHAU_SU33_1",
+    "SU33_CHAU_2",
+    "SU33_CHAU_3",
+    "SU33_LEWS_1",
+    "SU33_LEWS_2",
+    "SU33_LBUZT_1",
+    "SUND_LBUZ_3(1)",
+    "SU33_LBUZT_2_(1)",
+    "SUG1_SUG1_1",
+    "SUG1_SUG1_2",
+    "SUG1_SUG1_3"
+  ],
+  "convergence": {
+    "V0_none": 1.0,
+    "V1_lbuz_33kv_busbars": 1.0,
+    "V1_tee_customer_nodes": 1.0
+  },
+  "v0_residual_mw": {
+    "count": 200.0,
+    "mean": -0.787,
+    "std": 6.209,
+    "min": -40.482,
+    "25%": -2.194,
+    "50%": -0.884,
+    "75%": 0.792,
+    "max": 35.302
+  },
+  "state_ranges": {
+    "V0_none": {
+      "vm_min|min": 0.9135,
+      "vm_min|max": 0.9804,
+      "vm_max|min": 1.0013,
+      "vm_max|max": 1.0432,
+      "max_line_loading|min": 31.2438,
+      "max_line_loading|max": 122.7455,
+      "max_trafo_loading|min": 37.4533,
+      "max_trafo_loading|max": 90.8317
+    },
+    "V1_lbuz_33kv_busbars": {
+      "vm_min|min": 0.9116,
+      "vm_min|max": 0.9807,
+      "vm_max|min": 1.0006,
+      "vm_max|max": 1.0434,
+      "max_line_loading|min": 30.7483,
+      "max_line_loading|max": 122.7233,
+      "max_trafo_loading|min": 37.4558,
+      "max_trafo_loading|max": 90.8737
+    },
+    "V1_tee_customer_nodes": {
+      "vm_min|min": 0.9114,
+      "vm_min|max": 0.9807,
+      "vm_max|min": 1.0006,
+      "vm_max|max": 1.0434,
+      "max_line_loading|min": 30.7486,
+      "max_line_loading|max": 186.2617,
+      "max_trafo_loading|min": 37.4559,
+      "max_trafo_loading|max": 90.8741
+    }
+  },
+  "aggregate": {
+    "V0_none": {
+      "core_p_circuits": {
+        "n": 2046,
+        "mae": 0.8168559150136593,
+        "rmse": 1.5947061327988559,
+        "bias": 0.011932432873779394,
+        "obs_mean_abs": 9.530650048875854,
+        "r": 0.9888963702424666,
+        "nmae": 0.08570831064246326,
+        "direction_n": 2041,
+        "direction_agreement": 1.0
+      },
+      "all_p_circuits": {
+        "n": 2245,
+        "mae": 0.893591203018253,
+        "rmse": 1.6103686213013548,
+        "bias": 0.15917103256784024,
+        "obs_mean_abs": 8.743086859688194,
+        "r": 0.9877862035510157,
+        "nmae": 0.10220545870799244,
+        "direction_n": 2169,
+        "direction_agreement": 1.0
+      },
+      "import": {
+        "n": 200,
+        "mae": 3.155275300428607,
+        "rmse": 6.242896617688638,
+        "bias": -0.7874489890613663,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9172112160797937,
+        "nmae": 0.05757738602184296,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    },
+    "V1_tee_customer_nodes": {
+      "core_p_circuits": {
+        "n": 2046,
+        "mae": 0.8083724872026001,
+        "rmse": 1.4869649473417357,
+        "bias": -0.025470975291527316,
+        "obs_mean_abs": 9.530650048875854,
+        "r": 0.9901946285253747,
+        "nmae": 0.08481819005598135,
+        "direction_n": 2041,
+        "direction_agreement": 1.0
+      },
+      "all_p_circuits": {
+        "n": 2245,
+        "mae": 0.8858598169136581,
+        "rmse": 1.5135043504320684,
+        "bias": 0.1250831743924804,
+        "obs_mean_abs": 8.743086859688194,
+        "r": 0.9892193633396533,
+        "nmae": 0.10132117307424882,
+        "direction_n": 2169,
+        "direction_agreement": 1.0
+      },
+      "import": {
+        "n": 200,
+        "mae": 0.00022617507954364235,
+        "rmse": 0.00182996425959728,
+        "bias": 0.00022506888650419832,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9999999934011404,
+        "nmae": 4.127237284694737e-06,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    },
+    "V1_lbuz_33kv_busbars": {
+      "core_p_circuits": {
+        "n": 2046,
+        "mae": 0.8892847020587809,
+        "rmse": 1.5726020692596943,
+        "bias": -0.05603537235558762,
+        "obs_mean_abs": 9.530650048875854,
+        "r": 0.9890461074227653,
+        "nmae": 0.0933078748562038,
+        "direction_n": 2041,
+        "direction_agreement": 0.9980401763841255
+      },
+      "all_p_circuits": {
+        "n": 2245,
+        "mae": 0.9595998443180165,
+        "rmse": 1.5904347585365992,
+        "bias": 0.09722803565424053,
+        "obs_mean_abs": 8.743086859688194,
+        "r": 0.9880765526062029,
+        "nmae": 0.10975526833005052,
+        "direction_n": 2169,
+        "direction_agreement": 0.9981558321807285
+      },
+      "import": {
+        "n": 200,
+        "mae": 2.2380982157059748e-05,
+        "rmse": 0.0001745404965281401,
+        "bias": -1.9204437668207673e-05,
+        "obs_mean_abs": 54.800599999999996,
+        "r": 0.9999999999392468,
+        "nmae": 4.084076115418399e-07,
+        "direction_n": 200,
+        "direction_agreement": 1.0
+      }
+    }
+  },
+  "verdict": {
+    "primary_scenario": "V0_none",
+    "level": "B_USABLE_WITH_LIMITATIONS",
+    "A": {
+      "passed": false,
+      "checks": {
+        "structural": true,
+        "convergence": true,
+        "share_fit": false,
+        "direction": true,
+        "import": true
+      },
+      "share_fit": 0.7272727272727273,
+      "circuits_failing_fit": [
+        "SUG1_SUG1_2",
+        "SUG1_SUG1_3",
+        "SUND_LBUZ_3(1)"
+      ],
+      "circuits_failing_direction": []
+    },
+    "B": {
+      "passed": true,
+      "checks": {
+        "structural": true,
+        "convergence": true,
+        "share_fit": true,
+        "direction": true,
+        "import": true
+      },
+      "share_fit": 1.0,
+      "circuits_failing_fit": [],
+      "circuits_failing_direction": []
+    },
+    "pf_convergence_rate": 1.0,
+    "import_nmae": 0.05757738602184296
+  }
+}

@@ -1,0 +1,133 @@
+# Cloud2Grid Explorer — demo bundle configuration (read by scripts/build_demo_events.py).
+#
+# The demo REPLAYS frozen results. Nothing here selects events, checkpoints or states:
+#   - hero events are the frozen E4 heroes (configs/experiments/e5_topology_adaptation.yaml);
+#   - checkpoints are the frozen registry selections (metadata/e5*_checkpoint_registry.yaml);
+#   - grid states are the S1_WEATHER_ALIGNED real-2024 states every published metric used.
+# No AC solve, GENCO inference, download or training happens when building or serving the demo.
+
+bundle_schema_version: "0.3"
+out_dir: data/demo
+
+grid_population:
+  family: S1_WEATHER_ALIGNED       # half-hourly real 2024 states (UKPN load + LSA SAF PV forcing)
+  gates: reports/experiments/e4/families/S1_WEATHER_ALIGNED_gates.parquet
+  dataset: data/interim/e4/datasets/S1_WEATHER_ALIGNED
+  note: >-
+    Grid states are half-hourly (UKPN half-hourly operational data). Satellite frames and
+    satellite-derived PV are 15-minute. The app holds the latest half-hourly grid state between
+    grid slots and labels it; nothing is interpolated.
+
+# Frozen hero events. D01 and B02 are two frozen E3 events that overlap on 15 June 2024; the demo
+# shows their union as one replay and keeps both ids.
+events:
+  - bundle_id: jun15_cloud_clearing
+    title: "15 June 2024 — cloud clearing"
+    story: >-
+      A cloud deck over Bedfordshire breaks up through the late morning (satellite cloudy fraction
+      74 % → 2 %). Satellite-derived PV at the 6 MW Leighton Buzzard 33 kV solar connection rises
+      from about 1 MW to its 6 MW export limit.
+    source_events: [B02_20240615T0845, D01_20240615T0930]
+  - bundle_id: apr15_broken_cumulus
+    title: "15 April 2024 — broken cumulus"
+    story: >-
+      Broken cumulus drifts across the region: PV is mostly high but drops sharply whenever a
+      cloud shadow crosses the Leighton Buzzard solar connection.
+    source_events: [C01_20240415T1215]
+  - bundle_id: aug23_clear_control
+    title: "23 August 2024 — clear-sky control"
+    story: >-
+      A cloudless day: PV sits at its export limit, so every change in grid flow comes from load
+      and the battery. This is the control case.
+    source_events: [A02_20240823T1045]
+
+frames:
+  index: reports/tables/e3_event_frames.csv
+  context_bbox: {lat_min: 50.5, lat_max: 53.5, lon_min: -3.5, lon_max: 2.0}   # lsasaf.yaml
+  crop_bbox: {lat_min: 50.5, lat_max: 53.5, lon_min: -3.5, lon_max: 2.0}      # = full served frame
+  webp_quality: 82
+
+# Models are listed generically: the app renders whatever is listed here, in this order.
+# `source` names a frozen prediction set on the grid population; `registry` is its frozen record.
+models:
+  - id: zero_shot
+    label: Off-the-shelf GENCO
+    short: Off-the-shelf
+    experiment: E4
+    registry: null
+    checkpoint: GENCO PF transfer checkpoint (OpenGridFM, unchanged)
+    predictions: data/interim/e4/predictions/S1_WEATHER_ALIGNED
+    dataset: data/interim/e4/datasets/S1_WEATHER_ALIGNED
+    finding: "Zero-shot topology transfer fails: predicts ~211 MW export where AC gives ~49 MW import."
+  - id: E5
+    label: Grid-tuned GENCO
+    short: Grid-tuned
+    experiment: E5
+    registry: metadata/e5_checkpoint_registry.yaml
+    predictions_template: data/interim/e5/predictions/{selected}/S1_WEATHER_ALIGNED
+    dataset: data/interim/e4/datasets/S1_WEATHER_ALIGNED
+    finding: "Fits synthetic Sundon states but not real operation (heavy-tailed real-state error)."
+  - id: E5b
+    label: Envelope-tuned GENCO
+    short: Envelope-tuned
+    experiment: E5b
+    registry: metadata/e5b_checkpoint_registry.yaml
+    predictions_template: data/interim/e5b/predictions/{selected}/S1_WEATHER_ALIGNED
+    dataset: data/interim/e4/datasets/S1_WEATHER_ALIGNED
+    finding: "Broad synthetic envelope cuts real-state power-balance error by ~99 %."
+  - id: E5c
+    label: Generator-aware GENCO
+    short: Generator-aware
+    experiment: E5c
+    registry: metadata/e5c_checkpoint_registry.yaml
+    predictions_template: data/interim/e5c/predictions/{selected}/S1_WEATHER_ALIGNED_GENAWARE
+    dataset: data/interim/e5c/datasets/S1_WEATHER_ALIGNED_GENAWARE
+    finding: >-
+      Better load and battery tracking, but import is almost insensitive to PV
+      (slope −0.04 vs AC −1.02). Verdict E5C-B.
+  - id: E5d
+    label: Response-aware GENCO
+    short: Response-aware
+    experiment: E5d
+    registry: metadata/e5d_checkpoint_registry.yaml
+    # the frozen real-transfer predictions (scripts/evaluate_e5d.py transfer): no new inference
+    predictions_template: data/interim/e5d/predictions/{selected}/S1_WEATHER_ALIGNED_GENAWARE
+    dataset: data/interim/e5c/datasets/S1_WEATHER_ALIGNED_GENAWARE
+    finding: >-
+      Trained on paired synthetic AC states: the PV response transfers to real operation
+      (slope −1.07 vs AC −1.02), but import sits ~13 MW too high, Vm MAE misses its limit and
+      the battery response overshoots. Verdict E5D-D (partial).
+
+# Frozen published tables the model-evolution panel copies verbatim (sha256 recorded).
+# E5d's tables hold every model on the same S1 states; for zero-shot / E5 / E5b / E5c they equal
+# the E5c tables value for value (checked when E5d was added to the demo).
+published_tables:
+  real_transfer: reports/tables/e5d_real_transfer.csv
+  pv_response: reports/tables/e5d_response_transfer.csv
+  verdicts:
+    E4: reports/e4_zero_shot.md
+    E5: reports/e5_topology_adaptation.md
+    E5b: reports/e5b_real_transfer.md
+    E5c: reports/experiments/e5c/real_transfer.json
+    E5d: reports/experiments/e5d/real_transfer.json
+
+# Every source whose values or imagery end up in a bundle; each must pass the licence gate for
+# `redistribute_derived` or the build stops.
+sources:
+  - eumetsat_eview
+  - lsa_saf_mdssftd
+  - lsa_saf_msg_static
+  - ukpn_grid_and_primary_sites
+  - ukpn_ltds_table_1_circuit_data
+  - ukpn_ltds_table_2a_transformer_2w
+  - ukpn_ltds_table_3a_observed_demand
+  - ukpn_ecr_1mw_and_above
+  - ukpn_ecr_under_1mw
+  - ukpn_33kv_operational_half_hourly_epn
+  - ukpn_33kv_operational_monthly
+  - genco_paper
+  - genco_pf_transfer_checkpoints
+  - gridfm_datakit
+  - gridfm_graphkit
+  - pandapower
+  - pvlib

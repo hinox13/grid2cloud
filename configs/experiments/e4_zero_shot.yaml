@@ -1,0 +1,114 @@
+# E4 — GENCO zero-shot on Sundon (E4-A) + shared analysis rules for E4-B/C/D.
+# PRE-REGISTERED 2026-10-06, before any GENCO inference on Sundon. E3 baseline commit 55ba739.
+# No GENCO weights change anywhere in E4 (no train / finetune / adapt / calibrate).
+
+experiment_id: e4_zero_shot
+
+model:
+  source_id: genco_pf_transfer_checkpoints
+  repo_id: gridfm/genco-pf-transfer
+  revision: e7a98e99221ba8241385e491787aedb0940d5130
+  weights: pretraining/best_model_state_dict.pt       # run 1_h_100_32: pretrained on 100 subgrids
+  pretrain_config: pretraining/HGNS_PreTrain_subnets_100.yaml
+  rationale: >-
+    The official checkpoint intended for transfer to unseen grids (GENCO paper §5.5.3); its
+    zero-shot use (no grid-specific training) is the paper's `finetune_case118_0_eval` run.
+    The case14 checkpoint of E0 is grid-specific and is NOT used on Sundon.
+
+graphkit:
+  package_revision: f104900245cba26d1380037eea562cf633a97484     # pinned in pyproject (E0)
+  eval_config_repo: gridfm/gridfm-graphkit
+  eval_config_revision: 95b90eecc7f5c2c86a9dd776f0c3f40434def22f  # branch genco-paper-repro
+  eval_config_path: scripts/pretraining_advantage/case118_eval.yaml
+  model_section_from: eval_config       # GNS_heterogeneous, hidden 48, 12 layers, 8 heads
+  config_conversion: auto_inline
+
+reproduction:            # environment check before Sundon, as E0 did for case14
+  data: data/case118_ieee/raw            # in the model repo (9,952 IEEE 118 eval scenarios)
+  reference_run: mlflow/eval/finetune_case118_0_eval/artifacts/test/case118_ieee_metrics.csv
+  reference:
+    "Avg. active res. (MW)": 11.078252792358398
+    "Avg. reactive res. (MVar)": 1.255051851272583
+    "PBE Mean": 11.4439697265625
+    "PBE Max": 197.44113159179688
+  rel_tolerance: 0.05     # regression guard (E0 precedent), not a statistical criterion
+
+normalizer:              # graphkit HeteroDataMVANormalizer (per-unit base from data, no weights)
+  policy: fixed_reference
+  reference_family: S0_STANDARD_SYNTHETIC
+  fit_on: all S0 scenarios (graphkit's own HeteroDataMVANormalizer.fit)
+  applied_to: [S0_STANDARD_SYNTHETIC, S1_WEATHER_ALIGNED, S2_MATCHED_PV_CONTROL, E4D_TIMELINE]
+  rationale: >-
+    The official zero-shot protocol fits the per-unit power base on the target data. Fitting it
+    per family would give each family a different scale and confound the comparison, so one
+    scale (fitted on the conventional synthetic family) is reused for all families.
+  sensitivity: S1 re-run with its own fitted normalizer (official per-dataset protocol); reported,
+    not used for the verdict.
+
+s0_standard_synthetic:   # gridfm-datakit, the OFFICIAL pf_small recipe (case14 args.log), unchanged
+  network_file: data/interim/e4/network/sundon_33kv.m   # E1 planning-peak case + slack limits (A1)
+  seeds: [0, 1, 2]
+  load_scenarios_per_seed: 43          # × 22 topology variants ≈ 2,838 ≈ S1 primary (2,829)
+  recipe:
+    load: {generator: agg_load_profile, agg_profile: default, change_reactive_power: true,
+           global_range: 0.4, max_scaling_factor: 4.0, sigma: 0.2, start_scaling_factor: 1.0,
+           step_size: 0.1}
+    admittance_perturbation: {type: random_perturbation, sigma: 0.2}
+    generation_perturbation: {type: cost_permutation, sigma: 1.0}
+    topology_perturbation: {type: random, k: 1, n_topology_variants: 22, elements: [branch, gen]}
+    settings: {mode: pf, include_dc_res: true, dcpf_fast: true, pf_fast: true, max_iter: 50}
+  note: >-
+    Datakit perturbs topology (N-1), admittances and loads — the conventional GridFM
+    distribution. Intact-topology S0 scenarios are reported as a secondary breakdown.
+
+ac_reference_gates:      # applied to EVERY family before GENCO is evaluated (opengridfm_export)
+  solvers: [pandapower AC PF, PowerModels AC PF (datakit run_pf), PowerModels DC PF (baseline)]
+  max_power_mismatch_mva: 1.0e-3
+  vm_sanity_pu: [0.8, 1.2]
+  max_solver_disagreement_vm_pu: 1.0e-3
+  report: [generated, converged, rejected, rejection_reason]   # never silently dropped
+
+metrics:                 # per scenario, from graphkit `predict` outputs (its residual definitions)
+  graphkit: [PBE_mean, PBE_max, P_residual_mean_abs, Q_residual_mean_abs]
+  vs_ac: [vm_mae_pu, va_mae_deg, branch_p_mae_mw, branch_q_mae_mvar, max_loading_error_pct]
+  operational: [overload_detection, voltage_limit_detection]   # only if any occur in AC
+  dc_baseline: [dc_active_residual_mean_abs]    # graphkit pf_ac_dc_baseline on the same states
+  primary: PBE_mean
+
+statistics:
+  bootstrap: {unit: day, resamples: 2000, seed: 20261006, ci: 0.95}
+  s0_bootstrap_unit: load_scenario      # S0 has no days: resample datakit load scenarios
+  paired: S1 vs S2 paired by base timestamp; gap averaged over control seeds per base timestamp
+  report: [absolute, difference, relative_difference, ci95, per_control_seed_distribution]
+
+decision:                # applied to the PRIMARY metric (PBE_mean); written before any Sundon run
+  topology_poor: "GENCO active residual on S0 > DC-PF active residual on S0 (paper §5.5.3 criterion)"
+  material_weather_gap: "|relative gap S1 vs S2| >= 10% AND its 95% CI excludes 0"
+  outcomes:
+    A_ZERO_SHOT_SUFFICIENT: "not topology_poor AND no material_weather_gap"
+    B_TOPOLOGY_SHIFT_DOMINATES: "topology_poor (then repeat E4 after E5 topology-only adaptation)"
+    C_WEATHER_SPECIFIC_GAP: "material_weather_gap (interpreted only after the topology result)"
+    D_NO_MATERIAL_WEATHER_GAP: "not material_weather_gap"
+  note: More than one may apply (e.g. B then D). S1 vs S0 differences are reported as
+    operating-distribution generalisation, never as a weather effect on their own.
+
+runtime:
+  measure: [genco_predict_wall_s_per_scenario, ac_powermodels_s, ac_pandapower_s, dc_s]
+  repeats_for_run_to_run_spread: 2       # GPU inference is not bit-reproducible (E0)
+
+record: [checkpoint, checkpoint_revision, graphkit_revision, datakit_version, torch_version,
+         hardware, seed, git_commit]
+
+amendments:              # logged changes after pre-registration (6ebb60e); none after Sundon inference
+  - id: A1
+    date: "2026-10-06"
+    before_any_sundon_genco_inference: true
+    change: "slack_limits_mva: 270 for ALL families (S0, S1, S1_BASE_LTDS, S2, E4D_TIMELINE)"
+    reason: >-
+      The E1 MATPOWER case carries the external grid with Qmin = Qmax = 0 (pandapower internal
+      case), so datakit's OPF (needed to dispatch S0 scenarios) was LOCALLY_INFEASIBLE for every
+      scenario. The slack now gets ±270 MW/MVAr = the 3 × 90 MVA Sundon 132/33 kV grid
+      transformers. Generator limits are GENCO input features, so the same value is used in
+      every family. Branch RATE_A stays at the case's uniform 100 MVA in every family (ratings
+      are not passed to GENCO; loading errors are computed with the LTDS ratings in E4 metrics).
+slack_limits_mva: 270

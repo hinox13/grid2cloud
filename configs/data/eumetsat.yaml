@@ -1,0 +1,39 @@
+# EUMETSAT RGB imagery — visual layer (README §7, Source Registry).
+#
+# Distribution channel: the EUMETSAT catalogue records of both collections list ONLY
+# "EUMETView" (WMS GetMap; GeoTIFF/PNG) with policy "Free and unrestricted - CC-BY-4.0"
+# (https://user.eumetsat.int/catalogue/es/csw/_doc/<id>, field digitalTransfers, read 2 Oct 2026).
+# The Data Store OpenSearch returns "Not found" for both collections, so EUMETSAT_CONSUMER_KEY /
+# EUMETSAT_CONSUMER_SECRET are NOT needed for these products. No credentials are used here.
+
+wms:
+  endpoint: https://view.eumetsat.int/geoserver/ows
+  capabilities: https://view.eumetsat.int/geoserver/ows?service=WMS&version=1.3.0&request=GetCapabilities
+  crs: EPSG:4326            # plate carrée, same lat/lon frame as the MDSSFTD NetCDF grid
+  served_time_header: "Warning: 99 Nearest value used: time=<ISO8601>"
+
+products:
+  eview:
+    collection_id: EO:EUM:DAT:MSG:EVIEW
+    source_id: eumetsat_eview
+    wms_layer: msg_fes:rgb_eview
+    time_extent: "2022-03-29/…/PT15M"     # WMS GetCapabilities
+    channels: HRV + IR10.8 (blue)          # day and night (IR); HRV ~1 km sampling
+  ncl_enh:
+    collection_id: EO:EUM:DAT:MSG:NCL_ENH
+    source_id: eumetsat_ncl_enh
+    wms_layer: msg_fes:rgb_naturalenhncd
+    time_extent: "2020-09-01/…/PT15M"
+    channels: NIR1.6 / VIS0.8 / VIS0.6     # daytime only; 3 km sampling
+
+sample:
+  width_px: 1100            # context box 5.5° × 3.0° → 1100 × 600 (0.005°/px)
+  format: image/png
+  slots: ["2024-06-15T12:00:00Z", "2024-06-15T12:15:00Z"]
+
+matching:
+  rule: same_nominal_slot   # both products label frames by SEVIRI scan start
+  max_delta_min: 7.5        # half a repeat cycle; pairs beyond this are rejected
+
+storage:
+  frame_dir: data/interim/satellite/eumetsat   # gitignored, regenerable from WMS URL

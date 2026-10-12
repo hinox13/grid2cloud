@@ -1,0 +1,23 @@
+{
+  "zero_shot_on_e5c_test": {
+    "PBE_mean": 49.15584848474674,
+    "P_residual": 35.877786514932524,
+    "dc_P_residual": 0.1322133035045666
+  },
+  "eligible_runs": [],
+  "selected": "e5c_ft_n10000_s2",
+  "selected_flagged": true,
+  "selection_trace": {
+    "eligible": [],
+    "fallback_rank": [
+      "e5c_ft_n10000_s2",
+      "e5c_ft_n10000_s1",
+      "e5c_ft_n50000_s0",
+      "e5c_ft_n10000_s0",
+      "e5c_ft_n1000_s0",
+      "e5c_ft_n1000_s2"
+    ]
+  },
+  "git_commit": "5819a0c9458ade5902fcf2f750c54ae3b9ac6f1b",
+  "working_tree_dirty": true
+}

@@ -1,0 +1,39 @@
+# --- Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+build/
+dist/
+
+# --- Secrets
+.env
+.env.*
+!.env.example
+
+# --- Data: third-party/raw data is never committed (README §40)
+data/raw/*
+data/interim/*
+data/processed/*
+data/demo/*
+# public demo bundles: derived, licence-gated (redistribute_derived), built by
+# scripts/build_demo_events.py — committed so the Streamlit app can be deployed
+!data/demo/
+!data/demo/**
+!data/*/.gitkeep
+
+# --- Tool outputs
+mlruns/
+mlartifacts/
+lightning_logs/
+*.ckpt
+*.pt
+*.part
+
+# --- Editors / OS
+.vscode/
+.idea/
+.DS_Store

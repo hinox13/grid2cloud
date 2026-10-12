@@ -1,0 +1,142 @@
+# Cloud2Grid Explorer — demo checkpoints (provenance of the deployed demo).
+# bundle_tree_sha256 = sha256 of the sorted "sha256  ./path" listing of every file in data/demo.
+schema: cloud2grid demo checkpoint registry v1
+checkpoints:
+  - id: demo-v1
+    description: first complete demo (functionally complete, before the UI polish cycle)
+    checkpoint_commit: eac5932c23b53a9f0220b3827ee06b0c1a85306b
+    bundles_built_at_commit: c2552642f931b3d7f452b272a81a46cdd6fa7ad7   # provenance fix only (c255264); content identical
+    bundle_schema_version: "0.3"
+    bundle_files: 98
+    bundle_tree_sha256: d77448ba9147f4eb5cbbd164f05f15275fb7a7ee2a5282f38b27bc9743d0abe0
+    reproducibility: from-scratch rebuild reproduced all files byte-for-byte (2026-10-09)
+    validation: {tests: 186 passed, ruff: clean, secret_scan: clean (false positives only), renders: "390/390 event x model x timestep x colour-mode"}
+
+  - id: cloud2grid-demo-v1
+    description: >-
+      Public demo release candidate (local only; not pushed or deployed). Polish cycle (story
+      mode, manual schematic, first screen) plus the scene-3 wording fix; bundles rebuilt from
+      a clean tree.
+    final_source_commit: e394f29d2f437b19c9b16285af04445092b985cf
+    final_bundle_commit: 6ddc5c84706e4555c421b26de291f0ac824574b9
+    bundles_built_at_commit: e394f29d2f437b19c9b16285af04445092b985cf   # working_tree_dirty: false
+    bundle_schema_version: "0.3"
+    bundle_files: 100
+    bundle_size_kb: 3180
+    bundle_tree_sha256: a1a7f7c857b7c325f354f260afd1e0e8be1c613cb0198a8583bb5ba2d583d1e5
+    reproducibility: >-
+      rebuild from the release tree changes only the four git_commit fields (catalog.json and
+      three metadata.json) to the rebuilding commit; every other file byte-identical (2026-10-09)
+    validation:
+      tests: 188 passed (8 demo-bundle tests)
+      ruff: clean (check + format)
+      secret_scan: detect-secrets; no unreviewed findings (hashes, paths, env-var names, test fixture)
+      renders: 390/390 event x model x 15-min step x colour mode (repo env and minimal deploy env)
+      browser: 5 pages, 3 events, 5 models, 2 colour modes, story 5/5 scenes, 0 external requests
+    scientific_baseline:
+      E4: {pre_registration: 6ebb60e, results: 0f3101b}
+      E5: {pre_registration: cb5b11d, frozen: 61a4fbd, verdict: acda62c}
+      E5b: {pre_registration: 14ccda8, frozen: e7c4abb, verdict: 4569a81}
+      E5c: {pre_registration: 5819a0c, frozen: 67a2860, verdict: 5bf4f4d}
+    app_entry_point: demo/streamlit_app.py
+    deploy_dependencies: demo/requirements.txt
+    run_locally: uv sync --group demo && uv run --group demo streamlit run demo/streamlit_app.py
+    deploy: >-
+      Streamlit Community Cloud, main file demo/streamlit_app.py, Python 3.11, no secrets
+      (docs/DEMO.md)
+
+  - id: cloud2grid-demo-v1.1
+    description: >-
+      UX cycle on top of demo-v1 (local only; not pushed or deployed): cross-fading satellite
+      playback, cinema story mode with timeline highlights, verdict tags, network legend.
+    final_source_commit: bea6846   # f558552 + timeline-band fix
+    final_bundle_commit: 31da04a
+    bundles_built_at_commit: bea6846   # working_tree_dirty: false
+    bundle_files: 100
+    bundle_size_kb: 3180
+    bundle_tree_sha256: 1c6ce67b27efa0d6940c6e7da1ba3c07d6fc528983dd8d2f51fcf7ab04fb1ebf
+    scientific_content: unchanged from demo-v1 (only provenance and story highlight labels differ)
+    validation:
+      tests: 190 passed (10 demo tests)
+      ruff: clean
+      secret_scan: no unreviewed findings
+      renders: 390/390 event x model x 15-min step x colour mode
+      browser: 5 pages, 3 events, 5 models, 2 colour modes, story 5/5 scenes, 0 external requests
+      playback: 77 % of display frames mid-cross-fade during Play, 0 frames without an image
+
+  - id: cloud2grid-demo-v1.2
+    description: >-
+      "Night sky" theme on top of v1.1 (local only; not pushed or deployed): navy gradient
+      surfaces, amber brand accent, card depth. Data-series colours unchanged.
+    final_source_commit: 4b7935d
+    final_bundle_commit: 56b75a9
+    bundles_built_at_commit: 4b7935d   # working_tree_dirty: false
+    bundle_tree_sha256: 65a8e43697c9c483ae84c19a2211b408aa474f3ad7b3182defbb5cead148ee2a
+    scientific_content: unchanged (bundles differ from v1.1 only in git_commit)
+    validation:
+      tests: 190 passed
+      ruff: clean
+      renders: 390/390 event x model x 15-min step x colour mode
+      browser: 5 pages, 3 events, 5 models, 2 colour modes, story 5/5 scenes, 0 external requests
+      playback: 77 % of display frames mid-cross-fade, 0 frames without an image
+      contrast: every series >= 4.4:1 on the card surface; primary button text 9.1:1
+
+  - id: cloud2grid-demo-v1.3
+    description: >-
+      Light "daylight sky" theme as default with a per-session Dark switch (?theme=dark starts
+      dark); local only, not pushed or deployed. Data-series identities unchanged.
+    final_source_commit: 65f8c25
+    final_bundle_commit: 5e513a6
+    bundles_built_at_commit: 65f8c25   # working_tree_dirty: false
+    bundle_tree_sha256: ccfeca3027df4fed479456da6b209983a25476ceb374921b2ff9ba4ad06756ed
+    scientific_content: unchanged (bundles differ from v1.2 only in git_commit)
+    validation:
+      tests: 191 passed
+      ruff: clean
+      renders: 390/390 in light and 390/390 in dark
+      browser: 5 pages, 3 events, 5 models, 2 colour modes, story 5/5, dark across pages, 0 external requests
+      playback: 77 % of display frames mid-cross-fade, 0 frames without an image
+      contrast: text >= 4.5:1 in both palettes; E5 / E5b < 3:1 on white carry labels (relief rule)
+
+  - id: cloud2grid-demo-v1.4
+    description: >-
+      Descriptive model names in the UI (Off-the-shelf / Grid-tuned / Envelope-tuned /
+      Generator-aware, experiment codes kept as tags); local only, not pushed or deployed.
+    final_source_commit: fe0e345
+    final_bundle_commit: e887802
+    bundles_built_at_commit: fe0e345   # working_tree_dirty: false
+    bundle_tree_sha256: 8ed9c2fdfc989923afde0fdc5c9213a71d08ee035d5d506316faef29920cc327
+    scientific_content: unchanged (bundles differ from v1.3 in git_commit, models.json display labels and story captions)
+    validation:
+      tests: 191 passed
+      ruff: clean
+      renders: 390/390 in light and 390/390 in dark
+      browser: 5 pages, 3 events, 5 named models, 2 colour modes, story 5/5, 0 external requests
+      playback: 77 % of display frames mid-cross-fade, 0 frames without an image
+
+  - id: cloud2grid-submission-v1
+    description: >-
+      Final hackathon submission state (local only; not pushed or deployed). Adds E5d
+      (response-aware, verdict E5D-D partial) as an optional Explorer model replayed from its
+      frozen real-transfer predictions (no new inference), the PV-response page "the PV blind spot
+      and what closed it" with the immediate calibration limits, the "What did we learn?"
+      ladder (E4 -> E5d), a sixth story scene, and Future Work. Research phase closed.
+    final_source_commit: d2f8415
+    final_bundle_commit: 37d905d
+    bundles_built_at_commit: d2f8415   # working_tree_dirty: false
+    bundle_files: 100
+    bundle_size_kb: 3320
+    bundle_tree_sha256: 1ea660c6cf147ddc608ff9ece8801f707809d18dfe5b63806dd7a0fc366ae7e6
+    scientific_content: >-
+      frozen E4-E5d results only; E5d from metadata/e5d_checkpoint_registry.yaml (freeze 1c4cc93,
+      verdict 8f25648). Published tables switched to e5d_real_transfer / e5d_response_transfer,
+      equal to the E5c tables for earlier models (0 mismatches). Weather: unresolved.
+    validation:
+      tests: 211 passed
+      ruff: clean
+      secret_scan: no unreviewed findings (prediction paths and hashes only)
+      renders: 526/526 (468 explorer = 3 events x 6 grid views x steps x 2 colour modes; 38 story beats; 20 pages)
+      without_e5d: stripped bundle renders all pages and a 5-scene story (E5d optional)
+      browser: 5 pages x 2 colour modes, E5d selectable, story 6/6 in 58 s, 0 external requests, selector fits at 1366 and 1440 px
+      deployment_copy: demo/ + data/demo/ + .streamlit (114 files, 3.4 MB) runs with demo/requirements.txt only
+      e5d_colour: plum #751e5f / #e39ecc; worst simulated-CVD dE 11.7 vs every series, normal-vision >= 15

@@ -1,0 +1,78 @@
+# E5b — physics-informed synthetic OPERATING ENVELOPE for Sundon (static / planning metadata only).
+# PRE-REGISTERED 2026-10-07 before any E5b data generation, training or real-state coverage check.
+# Bounds are computed by src/cloud2grid/scenarios/envelope.py from the sources named here and
+# written to reports/tables/e5b_operating_envelope.csv. NO real 2024 operating value (UKPN
+# half-hourly, S1/S2, satellite PV, weather, events, CHAP31 or import series) is used anywhere.
+
+experiment_id: e5b_operating_envelope
+
+# --- primary 11 kV net demand (LTDS Table 3a, planning data) ------------------------------------
+# lambda = net demand / winter maximum demand (24/25) of the site:
+#   lambda_lo = min(0, published minimum-load scaling factor)  → reaches near-zero (or export where
+#               LTDS itself publishes a negative minimum, e.g. Sundon Primary T1&T2 −9.8 %)
+#   lambda_hi = max(winter MD 24/25, forecast MD 29/30) / winter MD  → planning / high-load
+# node_shares = E1 split of the site demand over its 11 kV load nodes (by transformer rating),
+#               the same split as the E1 planning case and the E4 network file.
+primary_sites:
+  CHAU: {functional_location: EPN-S0000000H8072, node_shares: {"EPN:CHAU51": 0.705879, "EPN:CHAU52": 0.294121}}
+  LBUZ: {functional_location: EPN-S0000000H8037, node_shares: {"EPN:LBUZ51": 0.655172, "EPN:LBUZ5A": 0.344828}}
+  LEWS: {functional_location: EPN-S0000000H8123, node_shares: {"EPN:LEWS51": 1.0}}
+  SUPR: {functional_location: EPN-S0000000H8086, node_shares: {"EPN:SUPR52": 0.365040, "EPN:SURP5A": 0.317480, "EPN:SURP5B": 0.317480}}
+
+hierarchy:                 # documented correlation structure (no time / weather information)
+  global_level: "G ~ U(0, 1): one network-wide demand driver shared by all sites"
+  site_deviation: 0.15     # site level = clip(G + U(−0.15, 0.15), 0, 1) → sites co-move, not identical
+  node_jitter: 0.10        # node share × (1 + U(−0.10, 0.10)), renormalised within the site
+  power_factor: "per site per state U(pf_lo, pf_hi) from the LTDS 3a published pfs (0.92–0.96)"
+  independence: "demand level, solar level, wind level and battery are sampled independently"
+
+# --- 33 kV generation (ECR, registered capacity) ------------------------------------------------
+hv_generation:
+  nodes: ["EPN:LBUZ31", "EPN:LBUZ32", "EPN:LBUZ33"]     # E0 attribution (site FLOC), equal split (E3 rule)
+  connected_on_or_before: "2024-09-30"                    # E3 capacity rule: dated, connected assets only
+  expected: {Solar: 6.0, Wind: 1.5}                       # ECR rows 955 (2015) and 187 (2014); verified in code
+  excluded_and_why: >-
+    ECR row 953 (Solar 20 MW, undated) and 449 (Solar 15 MW, connected 2026-02-25) fail the dated /
+    cutoff rule; 445/686 are "Accepted to Connect"; 447 is storage (below). Same rule as E3.
+  sampling: "S ~ U(0,1) × 6.0 MW solar + W ~ U(0,1) × 1.5 MW wind, injected (negative net load), Q = 0"
+
+# --- bidirectional storage / customer node -------------------------------------------------------
+storage:
+  node: "EPN:CHAP31"          # customer node behind lne_SUND_CHAP (E2: battery-like metered circuit)
+  ecr_row: 447                # Stored Energy, registered AND export capacity 49.5 MW, connected 2023-04-14
+  bound_mw: 49.5              # ±49.5 MW; LTDS T5 lists the same plant as 52.1 MVA (= 49.5 / 0.95)
+  bound_choice: >-
+    ECR registered/export capacity (MW, the active-power quantity GENCO sees). Not the observed
+    metered range. The lne_SUND_CHAP circuit rating (670 A ≈ 38.3 MVA) is NOT imposed: states
+    above it are physically solvable overload states and the AC gates decide feasibility.
+  idle_probability: 0.20      # explicit near-zero mode: U(−1, +1) MW
+  idle_band_mw: 1.0
+  power_factor: 1.0
+
+# --- everything else -----------------------------------------------------------------------------
+other_nodes: "zero injection (no load or generation in the E1 planning case or the static registers)"
+
+# --- datakit bus index of each envelope node (E1 ppc order = E4 network file order) -------------
+datakit_bus_index:
+  "EPN:CHAP31": 0
+  "EPN:CHAU51": 4
+  "EPN:CHAU52": 5
+  "EPN:LBUZ31": 8
+  "EPN:LBUZ32": 9
+  "EPN:LBUZ33": 10
+  "EPN:LBUZ51": 13
+  "EPN:LBUZ5A": 14
+  "EPN:LEWS51": 17
+  "EPN:SUPR52": 34
+  "EPN:SURP5A": 35
+  "EPN:SURP5B": 36
+
+# --- unchanged from E5 (held constant so only the operating envelope differs) -------------------
+held_constant_from_e5:
+  network_file: data/interim/e4/network/sundon_33kv.m          # E1 case + A1 slack limits
+  topology_perturbation: {type: random, k: 1, n_topology_variants: 22, elements: [branch, gen]}
+  admittance_perturbation: {type: random_perturbation, sigma: 0.2}
+  generation_perturbation: {type: cost_permutation, sigma: 1.0}
+  settings: {mode: pf, include_dc_res: true, dcpf_fast: true, pf_fast: true, max_iter: 50}
+  load_scenarios_per_seed: 43
+  ac_gates: e4_zero_shot.yaml#ac_reference_gates

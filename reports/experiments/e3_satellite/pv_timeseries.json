@@ -1,0 +1,148 @@
+{
+  "run_at": "2026-10-06T13:01:16+00:00",
+  "inventory": {
+    "assets": 18,
+    "connected_mw_today": 43.944736000000006,
+    "active_mw_search_period": 8.944735999999999,
+    "ltds_reconciliation": [
+      {
+        "group": "Sundon 33kV PV at 33 kV",
+        "ltds_snapshot": "2026-05-29",
+        "ltds_connected_mw": 20.999999579999972,
+        "dated_connected_before_snapshot_mw": 21.0,
+        "dated_assets": [
+          "ECR:449",
+          "ECR:955"
+        ],
+        "undated_assets": [
+          "ECR:953"
+        ],
+        "undated_mw": 20.0,
+        "verdict": "undated_not_connected_at_snapshot",
+        "not_connected_before": "2026-05-29",
+        "connected_by": null,
+        "ltds_rows": [
+          "328"
+        ]
+      },
+      {
+        "group": "Leighton Buzzard Primary 11kV PV",
+        "ltds_snapshot": "2026-05-29",
+        "ltds_connected_mw": 1.9999999599999945,
+        "dated_connected_before_snapshot_mw": 2.0,
+        "dated_assets": [
+          "ECR:526"
+        ],
+        "undated_assets": [],
+        "undated_mw": 0.0,
+        "verdict": "no_undated_assets",
+        "not_connected_before": null,
+        "connected_by": null,
+        "ltds_rows": [
+          "310"
+        ]
+      }
+    ]
+  },
+  "model_checks": {
+    "night_is_zero": true,
+    "bounded_0_1": true,
+    "clear_noon_high": true,
+    "cloud_reduces": true,
+    "low_sun_lower": true,
+    "warmer_is_lower": true
+  },
+  "acquire": {
+    "status": "OK",
+    "days_written_or_completed": 2,
+    "days_already_complete": 181,
+    "requests": 74,
+    "failed_slots": [],
+    "missing_in_archive": []
+  },
+  "night_check": {
+    "slots": [
+      "2024-06-15 00:00:00+00:00",
+      "2024-06-15 00:15:00+00:00",
+      "2024-06-15 00:30:00+00:00",
+      "2024-06-15 00:45:00+00:00"
+    ],
+    "requests": 4,
+    "status_counts": {
+      "NIGHT": 48
+    },
+    "dssf_values": [
+      0.0
+    ],
+    "max_pv_mw": 0.0,
+    "pass": true
+  },
+  "satellite_series": {
+    "slots": 9040,
+    "files": 183,
+    "assets": 12,
+    "product_version_from_gate": {
+      "algorithm_version": "2.0.0",
+      "base_algorithm_version": "v1.0.1",
+      "platform": "MSG3",
+      "processing_level": "03",
+      "date_created": "2024-06-15T12:20:09Z"
+    },
+    "validation": {
+      "daylight_slots_expected": 9078,
+      "slots_retrieved": 9040,
+      "slots_missing_from_archive_or_failed": 38,
+      "slots_rejected_any_active_asset_unusable": 732,
+      "slots_usable": 8308,
+      "asset_slot_status_fractions": {
+        "GOOD": 0.95238,
+        "LOW_QUALITY": 0.0474,
+        "MISSING": 0.00022
+      },
+      "missing_rate": 0.00022123893805309734,
+      "low_quality_fraction": 0.04740044247787611,
+      "invalid_fraction": 0.0,
+      "ghi_wm2_range_good": [
+        2.7,
+        947.2
+      ],
+      "ghi_wm2_percentiles_good": {
+        "0.05": 47.800000000000004,
+        "0.25": 191.10000000000002,
+        "0.5": 361.40000000000003,
+        "0.75": 574.3000000000001,
+        "0.95": 823.0,
+        "0.99": 901.3000000000001
+      },
+      "fleet_cf_percentiles": {
+        "0.05": 0.05423390240225121,
+        "0.25": 0.2079312871058031,
+        "0.5": 0.420530166605506,
+        "0.75": 0.7177124197000839,
+        "0.95": 1.0,
+        "0.99": 1.0
+      },
+      "fleet_cf_share_ge_0.9": 0.1267699115044248,
+      "active_capacity_mw": [
+        8.944736
+      ],
+      "aggregate_pv_max_mw": 8.944735999999999,
+      "aggregate_pv_max_slot": "2024-04-13 11:30:00+00:00",
+      "ramp_mw_abs_percentiles": {
+        "0.05": 0.0007367764212130708,
+        "0.25": 0.19337293694759125,
+        "0.5": 0.44875341534433577,
+        "0.75": 0.7315178111009748,
+        "0.95": 1.760063970336926,
+        "0.99": 2.9747163347492993
+      },
+      "ramp_mw_max_up": 5.862220642038382,
+      "ramp_mw_max_down": -6.1337582505581825,
+      "ramp_n_steps": 7972,
+      "bound_violations_p_gt_active_capacity": 0,
+      "bound_violations_p_lt_0": 0,
+      "inactive_assets_nonzero_pv": 0,
+      "same_sampled_pixel_max_cf_spread": 0.000454705205077649
+    }
+  }
+}

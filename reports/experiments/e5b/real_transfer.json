@@ -1,0 +1,73 @@
+{
+  "selected": "e5b_ft_n10000_s2",
+  "criteria": {
+    "R1_active": true,
+    "R2_pbe": true,
+    "R3_import": false,
+    "R4_voltage": false
+  },
+  "partial": {
+    "P1": true,
+    "P2": true,
+    "P3": true
+  },
+  "REAL_TRANSFER_SUCCESS": false,
+  "PARTIAL_TRANSFER": true,
+  "verdict": "E5B-C_PARTIAL_OR_INCONCLUSIVE",
+  "coverage_hypothesis": "INCONCLUSIVE",
+  "coverage_achieved_e5b": false,
+  "e5b_minus_e5_on_S1": {
+    "PBE_mean": {
+      "metric_a": 0.338271133538458,
+      "metric_control": 33.18071850402147,
+      "difference": -32.842447370483015,
+      "relative": -0.9898051896164498,
+      "diff_ci": [
+        -38.16258917656264,
+        -27.89277694681658
+      ],
+      "rel_ci": [
+        -0.9908881367025918,
+        -0.9885272859120984
+      ],
+      "n_pairs": 2829,
+      "blocks": 136
+    },
+    "P_residual": {
+      "metric_a": 0.2704916307475509,
+      "metric_control": 28.84540473521493,
+      "difference": -28.57491310446738,
+      "relative": -0.9906227132803123,
+      "diff_ci": [
+        -33.22151144436991,
+        -24.22757412738831
+      ],
+      "rel_ci": [
+        -0.9916548357151405,
+        -0.9893761509543715
+      ],
+      "n_pairs": 2829,
+      "blocks": 136
+    }
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-x86_64",
+    "packages": {
+      "gridfm-graphkit": "0.9.0.3",
+      "gridfm-datakit": "1.1.0",
+      "torch": "2.11.0+cu126",
+      "torch-geometric": "2.8.0.post1",
+      "torch-scatter": "2.1.2+pt211cu126",
+      "lightning": "2.6.6",
+      "pandapower": "3.5.5",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "cuda_available": true,
+    "gpu": "GPU",
+    "torch_cuda": "12.6",
+    "git_commit": "e7c4abbab381fb367ab176da9829859070f88db0",
+    "working_tree_dirty": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "variables": 18,
+  "coverage_achieved_e5b": false,
+  "coverage_achieved_e5": false,
+  "min_share_inside_e5b": 0.9490986214209968,
+  "joint_nn": {
+    "E5 train pool: median NN distance, pool sample \u2192 pool": 0.0,
+    "E5 train pool: median NN distance, S1 \u2192 pool": 6624271524.243073,
+    "E5b train pool: median NN distance, pool sample \u2192 pool": 0.0,
+    "E5b train pool: median NN distance, S1 \u2192 pool": 0.8937661788175455
+  }
+}

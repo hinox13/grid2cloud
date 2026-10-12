@@ -1,0 +1,135 @@
+{
+  "pools": {
+    "test": {
+      "datakit_seeds": [
+        7000,
+        7001,
+        7002
+      ],
+      "requested_max": 2838,
+      "generated_by_datakit": 2838,
+      "accepted": 2818,
+      "rejected": {
+        "voltage_sanity": 20
+      },
+      "load_blocks": 129,
+      "scenario_id_range": [
+        0,
+        2817
+      ]
+    },
+    "val": {
+      "datakit_seeds": [
+        7100,
+        7101,
+        7102,
+        7103,
+        7104,
+        7105,
+        7106,
+        7107,
+        7108,
+        7109
+      ],
+      "requested_max": 9460,
+      "generated_by_datakit": 9446,
+      "accepted": 9356,
+      "rejected": {
+        "voltage_sanity": 90
+      },
+      "load_blocks": 430,
+      "scenario_id_range": [
+        2818,
+        12173
+      ]
+    },
+    "train": {
+      "datakit_seeds": [
+        8000,
+        8001,
+        8002,
+        8003,
+        8004,
+        8005,
+        8006,
+        8007,
+        8008,
+        8009,
+        8010,
+        8011,
+        8012,
+        8013,
+        8014,
+        8015,
+        8016,
+        8017,
+        8018,
+        8019,
+        8020,
+        8021,
+        8022,
+        8023,
+        8024,
+        8025,
+        8026,
+        8027,
+        8028,
+        8029,
+        8030,
+        8031,
+        8032,
+        8033,
+        8034,
+        8035,
+        8036,
+        8037,
+        8038,
+        8039,
+        8040,
+        8041,
+        8042,
+        8043,
+        8044,
+        8045,
+        8046,
+        8047,
+        8048,
+        8049,
+        8050,
+        8051,
+        8052,
+        8053,
+        8054,
+        8055,
+        8056,
+        8057,
+        8058,
+        8059,
+        8060,
+        8061,
+        8062,
+        8063,
+        8064,
+        8065,
+        8066,
+        8067,
+        8068,
+        8069
+      ],
+      "requested_max": 66220,
+      "generated_by_datakit": 66156,
+      "accepted": 65433,
+      "rejected": {
+        "voltage_sanity": 723
+      },
+      "load_blocks": 3010,
+      "scenario_id_range": [
+        12174,
+        77606
+      ]
+    }
+  },
+  "total_accepted": 77607,
+  "git_commit": "14ccda83aa52128dbd3ee16a728ae796909fbd9c",
+  "working_tree_dirty": true
+}

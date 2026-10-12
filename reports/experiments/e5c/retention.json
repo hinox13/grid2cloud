@@ -1,0 +1,12 @@
+{
+  "E5_TEST_GA": {
+    "source": "data/interim/e5/synthetic",
+    "n": 2256,
+    "source_ids_sha256": "fb59e6f77d1faa4a129c695ddccfc3f8f2d9f50dd3ecb6e91921f5c5fd57f757"
+  },
+  "E5B_TEST_GA": {
+    "source": "data/interim/e5b/synthetic",
+    "n": 2818,
+    "source_ids_sha256": "0873e88f18979b4f2d0c368557601e84d63c01c3c4f372520f622630d6a00055"
+  }
+}

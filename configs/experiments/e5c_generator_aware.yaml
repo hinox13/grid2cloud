@@ -1,0 +1,86 @@
+# E5c — generator-aware synthetic representation + paired physics probes (data / representation).
+# PRE-REGISTERED 2026-10-08 before any E5c data generation, training or evaluation.
+# Parents: E4 0f3101b, E5 acda62c (D), E5b 4569a81 (E5B-C, coverage INCONCLUSIVE). Never modified.
+# Gates, selection, transfer criteria and verdicts: configs/experiments/e5c_selection.yaml.
+
+experiment_id: e5c_generator_aware
+question: >-
+  Can a generator-aware synthetic representation and physics-sensitive checkpoint selection teach
+  GENCO the correct response to generation / export while preserving E5b's real-state gains?
+  NOT weather adaptation. No real operating, satellite or weather value influences training,
+  validation, normalizer fitting, checkpoint or hyper-parameter selection.
+
+representation:           # see src/cloud2grid/genco/generator_aware.py and reports/e5c_design.md §1
+  e4_to_e5b: >-
+    LBUZ31/32/33 generation = NEGATIVE Pd on PQ buses (pandapower folds sgens into demand; E5b
+    datakit generator wrote negative load). Only gen node in every graph: the slack.
+  solver_path_limitation: >-
+    PowerModels network correction (datakit + our export) turns any bus with a generator into a
+    PV bus with fixed voltage set-point → fixed-power DG would become voltage-controlled and its
+    true Vm a GENCO input. Prototype (20 S1 states): 20/20 rejected, solver disagreement 0.040 pu.
+  e5c: >-
+    solve the AC state exactly as before (negative-demand injection), then RE-ENCODE the solved
+    tables: one explicit graphkit `gen` node per generation bus (Pg known input, Qg = Qmin = Qmax,
+    bus stays PQ, demand there 0). Pg − Pd, Vm/Va, flows, Y-bus, DC baseline unchanged (tested).
+  gen_buses: {8: "EPN:LBUZ31", 9: "EPN:LBUZ32", 10: "EPN:LBUZ33"}   # datakit bus index → node
+  pmax_mw_per_bus: 2.5      # (6.0 solar + 1.5 wind) / 3, E3 equal split; masked in the PF task
+  pv_and_wind: >-
+    ONE generator node per bus (solar + wind aggregated). graphkit gen nodes carry no technology
+    feature and Pmin/Pmax are masked in the PF task, so separate PV / wind nodes on the same bus
+    would be indistinguishable to GENCO (only a split of Pg).
+  applied_to: [E5c pools, E5c physics probes, E5 / E5b synthetic test pools (retention, re-encoded),
+               S1 real states (re-encoded copy, only after the E5c freeze)]
+
+envelope:                 # E5b static envelope reused unchanged except generation sampling
+  loads_and_storage: >-
+    configs/experiments/e5b_operating_envelope.yaml (LTDS 3a primaries, hierarchy,
+    CHAP31 ±49.5 MW ECR with 20 % idle mode)
+  generation_capacity: {solar_mw: 6.0, wind_mw: 1.5}   # ECR rows 955 / 187 (E5b, verified in code)
+  generation_sampling:    # physical fact: intermittent plant can be exactly off or exactly at rating
+    per_resource_level_mixture:     # solar level S and wind level W, sampled INDEPENDENTLY
+      zero:   {probability: 0.25, value: 0.0}
+      low:    {probability: 0.20, uniform: [0.0, 0.25]}
+      medium: {probability: 0.20, uniform: [0.25, 0.60]}
+      high:   {probability: 0.20, uniform: [0.60, 1.0]}
+      full:   {probability: 0.15, value: 1.0}
+    total_mw: "6.0 × S + 1.5 × W, equal split over LBUZ31/32/33, Q = 0"
+    implied_exact_zero_total: 0.0625
+  not_used: [real PV output, satellite capacity factors, real ramps, 2024 generation measurements]
+
+synthetic_data:           # datakit pipeline held constant from E5 / E5b (network, N-1 × 22,
+  pools:                  # admittance σ 0.2, OPF/PF, AC gates); only the load generator differs
+    test:  {datakit_seeds: [9000, 9001, 9002]}
+    val:   {datakit_seeds: "9100–9109"}
+    train: {datakit_seeds: "9200–9269", minimum_accepted: 50000,
+            if_short: "extend with consecutive seeds 9270, 9271, … until >= 50,000 accepted"}
+  load_scenarios_per_seed: 43
+  reencode_after_merge: true
+  retention_sets:
+    E5_narrow_test: "E5 test pool (2,256), re-encoded"
+    E5b_broad_test: "E5b test pool (2,818), re-encoded"
+
+physics_probes:           # paired AC states: ONE physical input changes, everything else identical
+  network: "E1 planning case (LTDS topology, unperturbed admittances, intact), A1 slack ±270"
+  solver: "pandapower AC + PowerModels AC reference + E4 AC gates (export_stream), then re-encode"
+  base_states: "E5c envelope sampler (static)"
+  n_base_states: 300
+  seeds: {validation: 9500, test: 9600}
+  pairs_per_base:
+    pv: "total generation G_A → G_B = G_A + U(1, 3.75) if G_A <= 3.75 else G_A − U(1, 3.75), clip [0, 7.5],
+         equal split over the three buses (solar/wind mix irrelevant to the graph)"
+    battery: "CHAP31 B_A → B_A − sign(B_A)·U(5, 25) MW (toward the interior; + if B_A = 0)"
+    load: "one primary node (uniform over the 8) changes by ±max(0.5 MW, U(0.2, 0.6)·P) (+ if P < 0.5 MW)"
+  target: "AC solutions of BOTH states (authoritative; slopes NOT hard-coded to ±1)"
+  x_definition: "Δ net withdrawal at the perturbed node: +load, −generation, +battery charging"
+  incomplete_pairs: "dropped if either state fails an AC gate (reported)"
+  use: "validation probes → gate + selection; test probes → reporting only"
+
+ladder:
+  training_states: [100, 1000, 10000, 50000]
+  seeds: {100: [0, 1, 2], 1000: [0, 1, 2], 10000: [0, 1, 2], 50000: [0]}
+  order: ascending
+  recipe: "E5 official graphkit finetune from gridfm/genco-pf-transfer@e7a98e9 (unchanged)"
+  normalizer: graphkit fit_on_train on the run's E5c training split only, stored with the checkpoint;
+    never target-, family- or real-state-fitted
+  splits: as E5 / E5b (seed-specific nested training subsets; validation ceil(N/8) of one fixed
+    permutation, rng 20261007; held-out test identical for every run)

@@ -1,0 +1,77 @@
+{
+  "merge_rule": "non-transformer line, same nominal voltage, |z| <= 0.0005 pu (100 MVA)",
+  "merged_branches": [
+    {
+      "name": "SUG1_SUG1_1",
+      "from_node": "EPN:SUND1A",
+      "to_node": "EPN:SUND11",
+      "length_m": 265.0,
+      "r_pu": 0.0001,
+      "x_pu": 0.0002,
+      "abs_z_pu": 0.00022360679774997898,
+      "b_pu": 0.0022000000000000006
+    },
+    {
+      "name": "SU33_SU11_4",
+      "from_node": "EPN:SUPR32",
+      "to_node": "EPN:SUND31",
+      "length_m": 25.0,
+      "r_pu": 0.0002,
+      "x_pu": 0.0002,
+      "abs_z_pu": 0.000282842712474619,
+      "b_pu": 0.0
+    },
+    {
+      "name": "SUG1_SUG1_3",
+      "from_node": "EPN:SUND1C",
+      "to_node": "EPN:SUND11",
+      "length_m": 337.0,
+      "r_pu": 0.0001,
+      "x_pu": 0.0003,
+      "abs_z_pu": 0.0003162277660168379,
+      "b_pu": 0.0029
+    },
+    {
+      "name": "SUG1_SUG1_2",
+      "from_node": "EPN:SUND1B",
+      "to_node": "EPN:SUND12",
+      "length_m": 319.0,
+      "r_pu": 0.0001,
+      "x_pu": 0.00030000000000000003,
+      "abs_z_pu": 0.00031622776601683794,
+      "b_pu": 0.0027
+    }
+  ],
+  "states_tested": {
+    "E1 planning peak": 5,
+    "S1_WEATHER_ALIGNED": 2829
+  },
+  "worst_case": {
+    "max_abs_dVm_pu": 0.0008173698432462073,
+    "max_abs_dVa_deg": 0.05623567414693298,
+    "max_abs_dP_branch_mw": 0.020563646087090603,
+    "max_abs_dQ_branch_mvar": 0.09800152653564709,
+    "max_abs_d_slack_p_mw": 0.034781925072906006,
+    "max_abs_d_slack_q_mvar": 0.2936438837413675,
+    "merged_power_balance_mva": 1.1528745427667374e-06
+  },
+  "tolerances": {
+    "max_abs_dVm_pu": 0.001,
+    "max_abs_dVa_deg": 0.01,
+    "max_abs_dP_branch_mw": 0.05,
+    "max_abs_dQ_branch_mvar": 0.05,
+    "max_abs_d_slack_p_mw": 0.05,
+    "max_abs_d_slack_q_mvar": 0.05,
+    "merged_power_balance_mva": 0.001
+  },
+  "verdict": "REJECTED",
+  "float32_pbe_floor_on_exact_ac": {
+    "float64_PBE_mean_mva": 1.3377103973911033e-06,
+    "float64_P_residual_mw": 1.1554387714851215e-06,
+    "float32_PBE_mean_mva": 0.0041864662557701,
+    "float32_P_residual_mw": 0.0015262545990422946
+  },
+  "wall_s": 186.62290050880983,
+  "git_commit": "cb5b11d803c5a8d2f2106006e908a13c015b6321",
+  "working_tree_dirty": true
+}

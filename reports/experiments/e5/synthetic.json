@@ -1,0 +1,137 @@
+{
+  "representation": "SUNDON_ORIGINAL",
+  "network_file": "data/interim/e4/network/sundon_33kv.m",
+  "pools": {
+    "test": {
+      "datakit_seeds": [
+        5000,
+        5001,
+        5002
+      ],
+      "requested_max": 2838,
+      "generated_by_datakit": 2690,
+      "accepted": 2256,
+      "rejected": {
+        "voltage_sanity": 434
+      },
+      "load_blocks": 129,
+      "scenario_id_range": [
+        0,
+        2255
+      ]
+    },
+    "val": {
+      "datakit_seeds": [
+        5100,
+        5101,
+        5102,
+        5103,
+        5104,
+        5105,
+        5106,
+        5107,
+        5108,
+        5109
+      ],
+      "requested_max": 9460,
+      "generated_by_datakit": 8903,
+      "accepted": 7642,
+      "rejected": {
+        "voltage_sanity": 1261
+      },
+      "load_blocks": 430,
+      "scenario_id_range": [
+        2256,
+        9897
+      ]
+    },
+    "train": {
+      "datakit_seeds": [
+        6000,
+        6001,
+        6002,
+        6003,
+        6004,
+        6005,
+        6006,
+        6007,
+        6008,
+        6009,
+        6010,
+        6011,
+        6012,
+        6013,
+        6014,
+        6015,
+        6016,
+        6017,
+        6018,
+        6019,
+        6020,
+        6021,
+        6022,
+        6023,
+        6024,
+        6025,
+        6026,
+        6027,
+        6028,
+        6029,
+        6030,
+        6031,
+        6032,
+        6033,
+        6034,
+        6035,
+        6036,
+        6037,
+        6038,
+        6039,
+        6040,
+        6041,
+        6042,
+        6043,
+        6044,
+        6045,
+        6046,
+        6047,
+        6048,
+        6049,
+        6050,
+        6051,
+        6052,
+        6053,
+        6054,
+        6055,
+        6056,
+        6057,
+        6058,
+        6059,
+        6060,
+        6061,
+        6062,
+        6063,
+        6064,
+        6065,
+        6066,
+        6067,
+        6068,
+        6069
+      ],
+      "requested_max": 66220,
+      "generated_by_datakit": 62407,
+      "accepted": 53200,
+      "rejected": {
+        "voltage_sanity": 9207
+      },
+      "load_blocks": 3010,
+      "scenario_id_range": [
+        9898,
+        63097
+      ]
+    }
+  },
+  "total_accepted": 63098,
+  "git_commit": "0f3101bfa5fb837e6704d89067285071015e5920",
+  "working_tree_dirty": true
+}

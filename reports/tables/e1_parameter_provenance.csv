@@ -1,0 +1,403 @@
+element,element_id,parameter,value,unit,class,source
+bus,EPN:CHAP31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:CHAP31,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:CHAU31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:CHAU31,geodata,"51.89129,-0.45196",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:CHAU32,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:CHAU32,geodata,"51.89129,-0.45196",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:CHAU33,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:CHAU33,geodata,"51.89129,-0.45196",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:CHAU51,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:CHAU51,geodata,"51.89129,-0.45196",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:CHAU52,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:CHAU52,geodata,"51.89129,-0.45196",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:GFSF31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:GFSF31,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:GFSF3A,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:GFSF3A,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:LBUZ31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LBUZ31,geodata,"51.91651,-0.65264",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LBUZ32,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LBUZ32,geodata,"51.91651,-0.65264",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LBUZ33,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LBUZ33,geodata,"51.91651,-0.65264",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LBUZ3C,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LBUZ3C,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:LBUZ3D,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LBUZ3D,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:LBUZ51,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:LBUZ51,geodata,"51.91651,-0.65264",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LBUZ5A,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:LBUZ5A,geodata,"51.91651,-0.65264",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LEWS31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LEWS31,geodata,"51.90630,-0.49472",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LEWS32,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:LEWS32,geodata,"51.90630,-0.49472",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:LEWS51,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:LEWS51,geodata,"51.90630,-0.49472",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:MFES31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:MFES31,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:MRFM3A,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:MRFM3A,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:MRFM3B,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:MRFM3B,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:MRFM3C,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:MRFM3C,geodata,,deg,MISSING,geolocation_status=unresolved (not interpolated)
+bus,EPN:SUND11,vn_kv,132.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND11,geodata,"51.93074,-0.49934",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND12,vn_kv,132.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND12,geodata,"51.93074,-0.49934",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND1A,vn_kv,132.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND1A,geodata,"51.93074,-0.49934",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND1B,vn_kv,132.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND1B,geodata,"51.93074,-0.49934",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND1C,vn_kv,132.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND1C,geodata,"51.93074,-0.49934",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND31,geodata,"51.92968,-0.49800",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND3A,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND3A,geodata,"51.92968,-0.49800",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND3B,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND3B,geodata,"51.92968,-0.49800",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUND3C,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUND3C,geodata,"51.92968,-0.49800",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUPR31,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUPR31,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUPR32,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUPR32,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUPR33,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUPR33,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUPR34,vn_kv,33.0,kV,PUBLISHED,LTDS T1 operating_voltage
+bus,EPN:SUPR34,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SUPR52,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:SUPR52,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SURP5A,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:SURP5A,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+bus,EPN:SURP5B,vn_kv,11.0,kV,PUBLISHED,transformer monthly index nominal_voltage
+bus,EPN:SURP5B,geodata,"51.92983,-0.49850",deg,PUBLISHED,Grid/Primary Sites spatial_coordinates via site FLOC
+line,T1:1815,length_km,5.2,km,PUBLISHED,LTDS T1 id=1815
+line,T1:1815,r_ohm_per_km,0.09172730769230769,ohm/km,DERIVED,LTDS T1 id=1815; percent on 100 MVA base [A01]
+line,T1:1815,x_ohm_per_km,0.09151788461538463,ohm/km,DERIVED,LTDS T1 id=1815; percent on 100 MVA base [A01]
+line,T1:1815,c_nf_per_km,449.6855070760622,nF/km,DERIVED,LTDS T1 id=1815; percent on 100 MVA base [A01]
+line,T1:1815,max_i_ka,0.395,kA,PUBLISHED,LTDS T1 id=1815 rating_amps_summer
+line,T1:1815,max_i_ka_winter,0.455,kA,PUBLISHED,LTDS T1 id=1815 rating_amps_winter
+line,T1:1924,length_km,10.247,km,PUBLISHED,LTDS T1 id=1924
+line,T1:1924,r_ohm_per_km,0.12402293354152436,ohm/km,DERIVED,LTDS T1 id=1924; percent on 100 MVA base [A01]
+line,T1:1924,x_ohm_per_km,0.2704698936274032,ohm/km,DERIVED,LTDS T1 id=1924; percent on 100 MVA base [A01]
+line,T1:1924,c_nf_per_km,88.42747113870062,nF/km,DERIVED,LTDS T1 id=1924; percent on 100 MVA base [A01]
+line,T1:1924,max_i_ka,0.408,kA,PUBLISHED,LTDS T1 id=1924 rating_amps_summer
+line,T1:1924,max_i_ka_winter,0.508,kA,PUBLISHED,LTDS T1 id=1924 rating_amps_winter
+line,T1:1925,length_km,1.36,km,PUBLISHED,LTDS T1 id=1925
+line,T1:1925,r_ohm_per_km,0.16495147058823528,ohm/km,DERIVED,LTDS T1 id=1925; percent on 100 MVA base [A01]
+line,T1:1925,x_ohm_per_km,0.10089264705882352,ohm/km,DERIVED,LTDS T1 id=1925; percent on 100 MVA base [A01]
+line,T1:1925,c_nf_per_km,408.3541185580418,nF/km,DERIVED,LTDS T1 id=1925; percent on 100 MVA base [A01]
+line,T1:1925,max_i_ka,0.279,kA,PUBLISHED,LTDS T1 id=1925 rating_amps_summer
+line,T1:1925,max_i_ka_winter,0.322,kA,PUBLISHED,LTDS T1 id=1925 rating_amps_winter
+line,T1:1926,length_km,0.214,km,PUBLISHED,LTDS T1 id=1926
+line,T1:1926,r_ohm_per_km,0.13739719626168226,ohm/km,DERIVED,LTDS T1 id=1926; percent on 100 MVA base [A01]
+line,T1:1926,x_ohm_per_km,0.32568224299065424,ohm/km,DERIVED,LTDS T1 id=1926; percent on 100 MVA base [A01]
+line,T1:1926,c_nf_per_km,0.0,nF/km,DERIVED,LTDS T1 id=1926; percent on 100 MVA base [A01]
+line,T1:1926,max_i_ka,0.408,kA,PUBLISHED,LTDS T1 id=1926 rating_amps_summer
+line,T1:1926,max_i_ka_winter,0.508,kA,PUBLISHED,LTDS T1 id=1926 rating_amps_winter
+line,T1:1927,length_km,0.251,km,PUBLISHED,LTDS T1 id=1927
+line,T1:1927,r_ohm_per_km,0.1388366533864542,ohm/km,DERIVED,LTDS T1 id=1927; percent on 100 MVA base [A01]
+line,T1:1927,x_ohm_per_km,0.32539840637450196,ohm/km,DERIVED,LTDS T1 id=1927; percent on 100 MVA base [A01]
+line,T1:1927,c_nf_per_km,0.0,nF/km,DERIVED,LTDS T1 id=1927; percent on 100 MVA base [A01]
+line,T1:1927,max_i_ka,0.408,kA,PUBLISHED,LTDS T1 id=1927 rating_amps_summer
+line,T1:1927,max_i_ka_winter,0.508,kA,PUBLISHED,LTDS T1 id=1927 rating_amps_winter
+line,T1:1928,length_km,1.022,km,PUBLISHED,LTDS T1 id=1928
+line,T1:1928,r_ohm_per_km,0.1651614481409002,ohm/km,DERIVED,LTDS T1 id=1928; percent on 100 MVA base [A01]
+line,T1:1928,x_ohm_per_km,0.1012279843444227,ohm/km,DERIVED,LTDS T1 id=1928; percent on 100 MVA base [A01]
+line,T1:1928,c_nf_per_km,400.4049035608774,nF/km,DERIVED,LTDS T1 id=1928; percent on 100 MVA base [A01]
+line,T1:1928,max_i_ka,0.279,kA,PUBLISHED,LTDS T1 id=1928 rating_amps_summer
+line,T1:1928,max_i_ka_winter,0.322,kA,PUBLISHED,LTDS T1 id=1928 rating_amps_winter
+line,T1:1929,length_km,1.434,km,PUBLISHED,LTDS T1 id=1929
+line,T1:1929,r_ohm_per_km,0.1169497907949791,ohm/km,DERIVED,LTDS T1 id=1929; percent on 100 MVA base [A01]
+line,T1:1929,x_ohm_per_km,0.23921548117154814,ohm/km,DERIVED,LTDS T1 id=1929; percent on 100 MVA base [A01]
+line,T1:1929,c_nf_per_km,122.29940569014245,nF/km,DERIVED,LTDS T1 id=1929; percent on 100 MVA base [A01]
+line,T1:1929,max_i_ka,0.408,kA,PUBLISHED,LTDS T1 id=1929 rating_amps_summer
+line,T1:1929,max_i_ka_winter,0.508,kA,PUBLISHED,LTDS T1 id=1929 rating_amps_winter
+line,T1:1930,length_km,0.121,km,PUBLISHED,LTDS T1 id=1930
+line,T1:1930,r_ohm_per_km,0.13500000000000004,ohm/km,DERIVED,LTDS T1 id=1930; percent on 100 MVA base [A01]
+line,T1:1930,x_ohm_per_km,0.324,ohm/km,DERIVED,LTDS T1 id=1930; percent on 100 MVA base [A01]
+line,T1:1930,c_nf_per_km,0.0,nF/km,DERIVED,LTDS T1 id=1930; percent on 100 MVA base [A01]
+line,T1:1930,max_i_ka,0.408,kA,PUBLISHED,LTDS T1 id=1930 rating_amps_summer
+line,T1:1930,max_i_ka_winter,0.508,kA,PUBLISHED,LTDS T1 id=1930 rating_amps_winter
+line,T1:1934,length_km,1.31,km,PUBLISHED,LTDS T1 id=1934
+line,T1:1934,r_ohm_per_km,0.1363328244274809,ohm/km,DERIVED,LTDS T1 id=1934; percent on 100 MVA base [A01]
+line,T1:1934,x_ohm_per_km,0.11222519083969468,ohm/km,DERIVED,LTDS T1 id=1934; percent on 100 MVA base [A01]
+line,T1:1934,c_nf_per_km,267.75167596895307,nF/km,DERIVED,LTDS T1 id=1934; percent on 100 MVA base [A01]
+line,T1:1934,max_i_ka,0.403,kA,PUBLISHED,LTDS T1 id=1934 rating_amps_summer
+line,T1:1934,max_i_ka_winter,0.445,kA,PUBLISHED,LTDS T1 id=1934 rating_amps_winter
+line,T1:1953,length_km,0.5,km,PUBLISHED,LTDS T1 id=1953
+line,T1:1953,r_ohm_per_km,0.135036,ohm/km,DERIVED,LTDS T1 id=1953; percent on 100 MVA base [A01]
+line,T1:1953,x_ohm_per_km,0.11107800000000001,ohm/km,DERIVED,LTDS T1 id=1953; percent on 100 MVA base [A01]
+line,T1:1953,c_nf_per_km,233.8364636795524,nF/km,DERIVED,LTDS T1 id=1953; percent on 100 MVA base [A01]
+line,T1:1953,max_i_ka,0.403,kA,PUBLISHED,LTDS T1 id=1953 rating_amps_summer
+line,T1:1953,max_i_ka_winter,0.445,kA,PUBLISHED,LTDS T1 id=1953 rating_amps_winter
+line,T1:1982,length_km,1.36,km,PUBLISHED,LTDS T1 id=1982
+line,T1:1982,r_ohm_per_km,0.16495147058823528,ohm/km,DERIVED,LTDS T1 id=1982; percent on 100 MVA base [A01]
+line,T1:1982,x_ohm_per_km,0.10089264705882352,ohm/km,DERIVED,LTDS T1 id=1982; percent on 100 MVA base [A01]
+line,T1:1982,c_nf_per_km,408.3541185580418,nF/km,DERIVED,LTDS T1 id=1982; percent on 100 MVA base [A01]
+line,T1:1982,max_i_ka,0.279,kA,PUBLISHED,LTDS T1 id=1982 rating_amps_summer
+line,T1:1982,max_i_ka_winter,0.322,kA,PUBLISHED,LTDS T1 id=1982 rating_amps_winter
+line,T1:1983,length_km,1.059,km,PUBLISHED,LTDS T1 id=1983
+line,T1:1983,r_ohm_per_km,0.16453257790368273,ohm/km,DERIVED,LTDS T1 id=1983; percent on 100 MVA base [A01]
+line,T1:1983,x_ohm_per_km,0.10077620396600567,ohm/km,DERIVED,LTDS T1 id=1983; percent on 100 MVA base [A01]
+line,T1:1983,c_nf_per_km,414.01640169892414,nF/km,DERIVED,LTDS T1 id=1983; percent on 100 MVA base [A01]
+line,T1:1983,max_i_ka,0.279,kA,PUBLISHED,LTDS T1 id=1983 rating_amps_summer
+line,T1:1983,max_i_ka_winter,0.322,kA,PUBLISHED,LTDS T1 id=1983 rating_amps_winter
+line,T1:1984,length_km,2.825,km,PUBLISHED,LTDS T1 id=1984
+line,T1:1984,r_ohm_per_km,0.0690021238938053,ohm/km,DERIVED,LTDS T1 id=1984; percent on 100 MVA base [A01]
+line,T1:1984,x_ohm_per_km,0.09984106194690265,ohm/km,DERIVED,LTDS T1 id=1984; percent on 100 MVA base [A01]
+line,T1:1984,c_nf_per_km,351.78937013737965,nF/km,DERIVED,LTDS T1 id=1984; percent on 100 MVA base [A01]
+line,T1:1984,max_i_ka,0.604,kA,PUBLISHED,LTDS T1 id=1984 rating_amps_summer
+line,T1:1984,max_i_ka_winter,0.67,kA,PUBLISHED,LTDS T1 id=1984 rating_amps_winter
+line,T1:2018,length_km,0.3,km,PUBLISHED,LTDS T1 id=2018
+line,T1:2018,r_ohm_per_km,0.036300000000000006,ohm/km,DERIVED,LTDS T1 id=2018; percent on 100 MVA base [A01]
+line,T1:2018,x_ohm_per_km,0.05082000000000001,ohm/km,DERIVED,LTDS T1 id=2018; percent on 100 MVA base [A01]
+line,T1:2018,c_nf_per_km,682.0230190653613,nF/km,DERIVED,LTDS T1 id=2018; percent on 100 MVA base [A01]
+line,T1:2018,max_i_ka,0.67,kA,PUBLISHED,LTDS T1 id=2018 rating_amps_summer
+line,T1:2018,max_i_ka_winter,0.778,kA,PUBLISHED,LTDS T1 id=2018 rating_amps_winter
+line,T1:2019,length_km,0.12,km,PUBLISHED,LTDS T1 id=2019
+line,T1:2019,r_ohm_per_km,0.045375000000000006,ohm/km,DERIVED,LTDS T1 id=2019; percent on 100 MVA base [A01]
+line,T1:2019,x_ohm_per_km,0.09982500000000002,ohm/km,DERIVED,LTDS T1 id=2019; percent on 100 MVA base [A01]
+line,T1:2019,c_nf_per_km,243.57964966620042,nF/km,DERIVED,LTDS T1 id=2019; percent on 100 MVA base [A01]
+line,T1:2019,max_i_ka,0.737,kA,PUBLISHED,LTDS T1 id=2019 rating_amps_summer
+line,T1:2019,max_i_ka_winter,0.818,kA,PUBLISHED,LTDS T1 id=2019 rating_amps_winter
+line,T1:2020,length_km,0.237,km,PUBLISHED,LTDS T1 id=2020
+line,T1:2020,r_ohm_per_km,0.01378481012658228,ohm/km,DERIVED,LTDS T1 id=2020; percent on 100 MVA base [A01]
+line,T1:2020,x_ohm_per_km,0.032164556962025324,ohm/km,DERIVED,LTDS T1 id=2020; percent on 100 MVA base [A01]
+line,T1:2020,c_nf_per_km,1603.3090864104329,nF/km,DERIVED,LTDS T1 id=2020; percent on 100 MVA base [A01]
+line,T1:2020,max_i_ka,0.625,kA,PUBLISHED,LTDS T1 id=2020 rating_amps_summer
+line,T1:2020,max_i_ka_winter,0.733,kA,PUBLISHED,LTDS T1 id=2020 rating_amps_winter
+line,T1:2021,length_km,0.2,km,PUBLISHED,LTDS T1 id=2021
+line,T1:2021,r_ohm_per_km,0.04356,ohm/km,DERIVED,LTDS T1 id=2021; percent on 100 MVA base [A01]
+line,T1:2021,x_ohm_per_km,0.103455,ohm/km,DERIVED,LTDS T1 id=2021; percent on 100 MVA base [A01]
+line,T1:2021,c_nf_per_km,292.2955795994405,nF/km,DERIVED,LTDS T1 id=2021; percent on 100 MVA base [A01]
+line,T1:2021,max_i_ka,0.737,kA,PUBLISHED,LTDS T1 id=2021 rating_amps_summer
+line,T1:2021,max_i_ka_winter,0.818,kA,PUBLISHED,LTDS T1 id=2021 rating_amps_winter
+line,T1:2022,length_km,6.204,km,PUBLISHED,LTDS T1 id=2022
+line,T1:2022,r_ohm_per_km,0.09864893617021278,ohm/km,DERIVED,LTDS T1 id=2022; percent on 100 MVA base [A01]
+line,T1:2022,x_ohm_per_km,0.08899468085106384,ohm/km,DERIVED,LTDS T1 id=2022; percent on 100 MVA base [A01]
+line,T1:2022,c_nf_per_km,480.5633320300278,nF/km,DERIVED,LTDS T1 id=2022; percent on 100 MVA base [A01]
+line,T1:2022,max_i_ka,0.395,kA,PUBLISHED,LTDS T1 id=2022 rating_amps_summer
+line,T1:2022,max_i_ka_winter,0.455,kA,PUBLISHED,LTDS T1 id=2022 rating_amps_winter
+line,T1:2023,length_km,5.38,km,PUBLISHED,LTDS T1 id=2023
+line,T1:2023,r_ohm_per_km,0.09149219330855018,ohm/km,DERIVED,LTDS T1 id=2023; percent on 100 MVA base [A01]
+line,T1:2023,x_ohm_per_km,0.09189702602230485,ohm/km,DERIVED,LTDS T1 id=2023; percent on 100 MVA base [A01]
+line,T1:2023,c_nf_per_km,445.5062737389241,nF/km,DERIVED,LTDS T1 id=2023; percent on 100 MVA base [A01]
+line,T1:2023,max_i_ka,0.395,kA,PUBLISHED,LTDS T1 id=2023 rating_amps_summer
+line,T1:2023,max_i_ka_winter,0.455,kA,PUBLISHED,LTDS T1 id=2023 rating_amps_winter
+line,T1:2024,length_km,8.085,km,PUBLISHED,LTDS T1 id=2024
+line,T1:2024,r_ohm_per_km,0.12984489795918366,ohm/km,DERIVED,LTDS T1 id=2024; percent on 100 MVA base [A01]
+line,T1:2024,x_ohm_per_km,0.2904,ohm/km,DERIVED,LTDS T1 id=2024; percent on 100 MVA base [A01]
+line,T1:2024,c_nf_per_km,57.84451791701976,nF/km,DERIVED,LTDS T1 id=2024; percent on 100 MVA base [A01]
+line,T1:2024,max_i_ka,0.403,kA,PUBLISHED,LTDS T1 id=2024 rating_amps_summer
+line,T1:2024,max_i_ka_winter,0.445,kA,PUBLISHED,LTDS T1 id=2024 rating_amps_winter
+line,T1:2025,length_km,2.825,km,PUBLISHED,LTDS T1 id=2025
+line,T1:2025,r_ohm_per_km,0.0690021238938053,ohm/km,DERIVED,LTDS T1 id=2025; percent on 100 MVA base [A01]
+line,T1:2025,x_ohm_per_km,0.09984106194690265,ohm/km,DERIVED,LTDS T1 id=2025; percent on 100 MVA base [A01]
+line,T1:2025,c_nf_per_km,351.78937013737965,nF/km,DERIVED,LTDS T1 id=2025; percent on 100 MVA base [A01]
+line,T1:2025,max_i_ka,0.604,kA,PUBLISHED,LTDS T1 id=2025 rating_amps_summer
+line,T1:2025,max_i_ka_winter,0.67,kA,PUBLISHED,LTDS T1 id=2025 rating_amps_winter
+line,T1:2026,length_km,0.15,km,PUBLISHED,LTDS T1 id=2026
+line,T1:2026,r_ohm_per_km,0.07260000000000001,ohm/km,DERIVED,LTDS T1 id=2026; percent on 100 MVA base [A01]
+line,T1:2026,x_ohm_per_km,0.10164000000000002,ohm/km,DERIVED,LTDS T1 id=2026; percent on 100 MVA base [A01]
+line,T1:2026,c_nf_per_km,389.72743946592067,nF/km,DERIVED,LTDS T1 id=2026; percent on 100 MVA base [A01]
+line,T1:2026,max_i_ka,0.604,kA,PUBLISHED,LTDS T1 id=2026 rating_amps_summer
+line,T1:2026,max_i_ka_winter,0.67,kA,PUBLISHED,LTDS T1 id=2026 rating_amps_winter
+line,T1:2027,length_km,0.15,km,PUBLISHED,LTDS T1 id=2027
+line,T1:2027,r_ohm_per_km,0.07260000000000001,ohm/km,DERIVED,LTDS T1 id=2027; percent on 100 MVA base [A01]
+line,T1:2027,x_ohm_per_km,0.10164000000000002,ohm/km,DERIVED,LTDS T1 id=2027; percent on 100 MVA base [A01]
+line,T1:2027,c_nf_per_km,389.72743946592067,nF/km,DERIVED,LTDS T1 id=2027; percent on 100 MVA base [A01]
+line,T1:2027,max_i_ka,0.604,kA,PUBLISHED,LTDS T1 id=2027 rating_amps_summer
+line,T1:2027,max_i_ka_winter,0.67,kA,PUBLISHED,LTDS T1 id=2027 rating_amps_winter
+line,T1:2028,length_km,0.081,km,PUBLISHED,LTDS T1 id=2028
+line,T1:2028,r_ohm_per_km,0.12100000000000001,ohm/km,DERIVED,LTDS T1 id=2028; percent on 100 MVA base [A01]
+line,T1:2028,x_ohm_per_km,0.08066666666666666,ohm/km,DERIVED,LTDS T1 id=2028; percent on 100 MVA base [A01]
+line,T1:2028,c_nf_per_km,721.7174804924456,nF/km,DERIVED,LTDS T1 id=2028; percent on 100 MVA base [A01]
+line,T1:2028,max_i_ka,0.395,kA,PUBLISHED,LTDS T1 id=2028 rating_amps_summer
+line,T1:2028,max_i_ka_winter,0.455,kA,PUBLISHED,LTDS T1 id=2028 rating_amps_winter
+line,T1:2029,length_km,14.5,km,PUBLISHED,LTDS T1 id=2029
+line,T1:2029,r_ohm_per_km,0.08599344827586207,ohm/km,DERIVED,LTDS T1 id=2029; percent on 100 MVA base [A01]
+line,T1:2029,x_ohm_per_km,0.10401827586206897,ohm/km,DERIVED,LTDS T1 id=2029; percent on 100 MVA base [A01]
+line,T1:2029,c_nf_per_km,314.4697270173291,nF/km,DERIVED,LTDS T1 id=2029; percent on 100 MVA base [A01]
+line,T1:2029,max_i_ka,0.521,kA,PUBLISHED,LTDS T1 id=2029 rating_amps_summer
+line,T1:2029,max_i_ka_winter,0.579,kA,PUBLISHED,LTDS T1 id=2029 rating_amps_winter
+line,T1:2037,length_km,0.025,km,PUBLISHED,LTDS T1 id=2037
+line,T1:2037,r_ohm_per_km,0.08712,ohm/km,DERIVED,LTDS T1 id=2037; percent on 100 MVA base [A01]
+line,T1:2037,x_ohm_per_km,0.08712,ohm/km,DERIVED,LTDS T1 id=2037; percent on 100 MVA base [A01]
+line,T1:2037,c_nf_per_km,0.0,nF/km,DERIVED,LTDS T1 id=2037; percent on 100 MVA base [A01]
+line,T1:2037,max_i_ka,0.395,kA,PUBLISHED,LTDS T1 id=2037 rating_amps_summer
+line,T1:2037,max_i_ka_winter,0.455,kA,PUBLISHED,LTDS T1 id=2037 rating_amps_winter
+trafo,T2a:827,sn_mva,90.0,MVA,PUBLISHED,LTDS T2a id=827
+trafo,T2a:827,vn_hv_kv,132.0,kV,PUBLISHED,LTDS T2a id=827
+trafo,T2a:827,vn_lv_kv,33.0,kV,PUBLISHED,LTDS T2a id=827
+trafo,T2a:827,tap_min_percent,79.0,%,PUBLISHED,LTDS T2a id=827
+trafo,T2a:827,tap_max_percent,110.0,%,PUBLISHED,LTDS T2a id=827
+trafo,T2a:827,vk_percent,23.14996741192091,%,DERIVED,LTDS T2a id=827; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:827,vkr_percent,0.40238999999999997,%,DERIVED,LTDS T2a id=827; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:827,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:827,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:827,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group YNd1)
+trafo,T2a:828,sn_mva,90.0,MVA,PUBLISHED,LTDS T2a id=828
+trafo,T2a:828,vn_hv_kv,132.0,kV,PUBLISHED,LTDS T2a id=828
+trafo,T2a:828,vn_lv_kv,33.0,kV,PUBLISHED,LTDS T2a id=828
+trafo,T2a:828,tap_min_percent,79.0,%,PUBLISHED,LTDS T2a id=828
+trafo,T2a:828,tap_max_percent,110.0,%,PUBLISHED,LTDS T2a id=828
+trafo,T2a:828,vk_percent,23.419995463502975,%,DERIVED,LTDS T2a id=828; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:828,vkr_percent,0.40113,%,DERIVED,LTDS T2a id=828; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:828,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:828,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:828,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group YNd1)
+trafo,T2a:829,sn_mva,90.0,MVA,PUBLISHED,LTDS T2a id=829
+trafo,T2a:829,vn_hv_kv,132.0,kV,PUBLISHED,LTDS T2a id=829
+trafo,T2a:829,vn_lv_kv,33.0,kV,PUBLISHED,LTDS T2a id=829
+trafo,T2a:829,tap_min_percent,79.0,%,PUBLISHED,LTDS T2a id=829
+trafo,T2a:829,tap_max_percent,110.0,%,PUBLISHED,LTDS T2a id=829
+trafo,T2a:829,vk_percent,23.039971175548377,%,DERIVED,LTDS T2a id=829; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:829,vkr_percent,0.40049999999999997,%,DERIVED,LTDS T2a id=829; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:829,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:829,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:829,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group YNd1)
+line,T1:2032,length_km,0.265,km,PUBLISHED,LTDS T1 id=2032
+line,T1:2032,r_ohm_per_km,0.06575094339622642,ohm/km,DERIVED,LTDS T1 id=2032; percent on 100 MVA base [A01]
+line,T1:2032,x_ohm_per_km,0.13150188679245284,ohm/km,DERIVED,LTDS T1 id=2032; percent on 100 MVA base [A01]
+line,T1:2032,c_nf_per_km,151.66280073555873,nF/km,DERIVED,LTDS T1 id=2032; percent on 100 MVA base [A01]
+line,T1:2032,max_i_ka,0.678,kA,PUBLISHED,LTDS T1 id=2032 rating_amps_summer
+line,T1:2032,max_i_ka_winter,0.765,kA,PUBLISHED,LTDS T1 id=2032 rating_amps_winter
+line,T1:2033,length_km,0.319,km,PUBLISHED,LTDS T1 id=2033
+line,T1:2033,r_ohm_per_km,0.054620689655172416,ohm/km,DERIVED,LTDS T1 id=2033; percent on 100 MVA base [A01]
+line,T1:2033,x_ohm_per_km,0.16386206896551725,ohm/km,DERIVED,LTDS T1 id=2033; percent on 100 MVA base [A01]
+line,T1:2033,c_nf_per_km,154.6234453210206,nF/km,DERIVED,LTDS T1 id=2033; percent on 100 MVA base [A01]
+line,T1:2033,max_i_ka,0.678,kA,PUBLISHED,LTDS T1 id=2033 rating_amps_summer
+line,T1:2033,max_i_ka_winter,0.765,kA,PUBLISHED,LTDS T1 id=2033 rating_amps_winter
+line,T1:2034,length_km,0.337,km,PUBLISHED,LTDS T1 id=2034
+line,T1:2034,r_ohm_per_km,0.051703264094955494,ohm/km,DERIVED,LTDS T1 id=2034; percent on 100 MVA base [A01]
+line,T1:2034,x_ohm_per_km,0.15510979228486646,ohm/km,DERIVED,LTDS T1 id=2034; percent on 100 MVA base [A01]
+line,T1:2034,c_nf_per_km,157.2064504522213,nF/km,DERIVED,LTDS T1 id=2034; percent on 100 MVA base [A01]
+line,T1:2034,max_i_ka,0.678,kA,PUBLISHED,LTDS T1 id=2034 rating_amps_summer
+line,T1:2034,max_i_ka_winter,0.765,kA,PUBLISHED,LTDS T1 id=2034 rating_amps_winter
+trafo,T2a:775,sn_mva,18.00003,MVA,PUBLISHED,LTDS T2a id=775
+trafo,T2a:775,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=775
+trafo,T2a:775,vn_lv_kv,11.5,kV,PUBLISHED,LTDS T2a id=775
+trafo,T2a:775,tap_min_percent,85.0,%,PUBLISHED,LTDS T2a id=775
+trafo,T2a:775,tap_max_percent,105.0,%,PUBLISHED,LTDS T2a id=775
+trafo,T2a:775,vk_percent,16.98702342299001,%,DERIVED,LTDS T2a id=775; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:775,vkr_percent,0.3600006,%,DERIVED,LTDS T2a id=775; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:775,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:775,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:775,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:776,sn_mva,18.0,MVA,PUBLISHED,LTDS T2a id=776
+trafo,T2a:776,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=776
+trafo,T2a:776,vn_lv_kv,11.0,kV,PUBLISHED,LTDS T2a id=776
+trafo,T2a:776,tap_min_percent,90.0,%,PUBLISHED,LTDS T2a id=776
+trafo,T2a:776,tap_max_percent,110.0,%,PUBLISHED,LTDS T2a id=776
+trafo,T2a:776,vk_percent,19.457730580928498,%,DERIVED,LTDS T2a id=776; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:776,vkr_percent,0.36,%,DERIVED,LTDS T2a id=776; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:776,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:776,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:776,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:777,sn_mva,14.999975,MVA,PUBLISHED,LTDS T2a id=777
+trafo,T2a:777,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=777
+trafo,T2a:777,vn_lv_kv,11.3,kV,PUBLISHED,LTDS T2a id=777
+trafo,T2a:777,tap_min_percent,83.0,%,PUBLISHED,LTDS T2a id=777
+trafo,T2a:777,tap_max_percent,104.0,%,PUBLISHED,LTDS T2a id=777
+trafo,T2a:777,vk_percent,11.883767468795083,%,DERIVED,LTDS T2a id=777; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:777,vkr_percent,0.2999995,%,DERIVED,LTDS T2a id=777; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:777,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:777,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:777,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:799,sn_mva,28.5,MVA,PUBLISHED,LTDS T2a id=799
+trafo,T2a:799,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=799
+trafo,T2a:799,vn_lv_kv,11.0,kV,PUBLISHED,LTDS T2a id=799
+trafo,T2a:799,tap_min_percent,82.0,%,PUBLISHED,LTDS T2a id=799
+trafo,T2a:799,tap_max_percent,102.0,%,PUBLISHED,LTDS T2a id=799
+trafo,T2a:799,vk_percent,22.335522731794303,%,DERIVED,LTDS T2a id=799; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:799,vkr_percent,0.057,%,DERIVED,LTDS T2a id=799; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:799,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:799,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:799,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:800,sn_mva,28.5,MVA,PUBLISHED,LTDS T2a id=800
+trafo,T2a:800,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=800
+trafo,T2a:800,vn_lv_kv,11.0,kV,PUBLISHED,LTDS T2a id=800
+trafo,T2a:800,tap_min_percent,82.0,%,PUBLISHED,LTDS T2a id=800
+trafo,T2a:800,tap_max_percent,102.0,%,PUBLISHED,LTDS T2a id=800
+trafo,T2a:800,vk_percent,22.52932210614647,%,DERIVED,LTDS T2a id=800; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:800,vkr_percent,0.057,%,DERIVED,LTDS T2a id=800; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:800,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:800,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:800,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:801,sn_mva,30.0,MVA,PUBLISHED,LTDS T2a id=801
+trafo,T2a:801,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=801
+trafo,T2a:801,vn_lv_kv,11.5,kV,PUBLISHED,LTDS T2a id=801
+trafo,T2a:801,tap_min_percent,82.0,%,PUBLISHED,LTDS T2a id=801
+trafo,T2a:801,tap_max_percent,105.0,%,PUBLISHED,LTDS T2a id=801
+trafo,T2a:801,vk_percent,24.42000258589667,%,DERIVED,LTDS T2a id=801; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:801,vkr_percent,0.72426,%,DERIVED,LTDS T2a id=801; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:801,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:801,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:801,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:802,sn_mva,17.25,MVA,PUBLISHED,LTDS T2a id=802
+trafo,T2a:802,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=802
+trafo,T2a:802,vn_lv_kv,11.0,kV,PUBLISHED,LTDS T2a id=802
+trafo,T2a:802,tap_min_percent,82.0,%,PUBLISHED,LTDS T2a id=802
+trafo,T2a:802,tap_max_percent,105.0,%,PUBLISHED,LTDS T2a id=802
+trafo,T2a:802,vk_percent,16.889510236404874,%,DERIVED,LTDS T2a id=802; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:802,vkr_percent,0.0345,%,DERIVED,LTDS T2a id=802; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:802,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:802,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:802,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:803,sn_mva,17.25,MVA,PUBLISHED,LTDS T2a id=803
+trafo,T2a:803,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=803
+trafo,T2a:803,vn_lv_kv,11.0,kV,PUBLISHED,LTDS T2a id=803
+trafo,T2a:803,tap_min_percent,82.0,%,PUBLISHED,LTDS T2a id=803
+trafo,T2a:803,tap_max_percent,105.0,%,PUBLISHED,LTDS T2a id=803
+trafo,T2a:803,vk_percent,16.597985855292805,%,DERIVED,LTDS T2a id=803; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:803,vkr_percent,0.0345,%,DERIVED,LTDS T2a id=803; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:803,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:803,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:803,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:830,sn_mva,17.25,MVA,PUBLISHED,LTDS T2a id=830
+trafo,T2a:830,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=830
+trafo,T2a:830,vn_lv_kv,11.5,kV,PUBLISHED,LTDS T2a id=830
+trafo,T2a:830,tap_min_percent,84.0,%,PUBLISHED,LTDS T2a id=830
+trafo,T2a:830,tap_max_percent,104.0,%,PUBLISHED,LTDS T2a id=830
+trafo,T2a:830,vk_percent,17.2500344999655,%,DERIVED,LTDS T2a id=830; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:830,vkr_percent,0.0345,%,DERIVED,LTDS T2a id=830; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:830,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:830,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:830,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:831,sn_mva,17.25,MVA,PUBLISHED,LTDS T2a id=831
+trafo,T2a:831,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=831
+trafo,T2a:831,vn_lv_kv,11.0,kV,PUBLISHED,LTDS T2a id=831
+trafo,T2a:831,tap_min_percent,84.0,%,PUBLISHED,LTDS T2a id=831
+trafo,T2a:831,tap_max_percent,104.0,%,PUBLISHED,LTDS T2a id=831
+trafo,T2a:831,vk_percent,17.2500344999655,%,DERIVED,LTDS T2a id=831; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:831,vkr_percent,0.0345,%,DERIVED,LTDS T2a id=831; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:831,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:831,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:831,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:832,sn_mva,30.0,MVA,PUBLISHED,LTDS T2a id=832
+trafo,T2a:832,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=832
+trafo,T2a:832,vn_lv_kv,11.5,kV,PUBLISHED,LTDS T2a id=832
+trafo,T2a:832,tap_min_percent,90.0,%,PUBLISHED,LTDS T2a id=832
+trafo,T2a:832,tap_max_percent,110.0,%,PUBLISHED,LTDS T2a id=832
+trafo,T2a:832,vk_percent,23.10001170593859,%,DERIVED,LTDS T2a id=832; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:832,vkr_percent,0.73737,%,DERIVED,LTDS T2a id=832; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:832,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:832,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:832,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+trafo,T2a:833,sn_mva,30.0,MVA,PUBLISHED,LTDS T2a id=833
+trafo,T2a:833,vn_hv_kv,33.0,kV,PUBLISHED,LTDS T2a id=833
+trafo,T2a:833,vn_lv_kv,11.5,kV,PUBLISHED,LTDS T2a id=833
+trafo,T2a:833,tap_min_percent,90.0,%,PUBLISHED,LTDS T2a id=833
+trafo,T2a:833,tap_max_percent,110.0,%,PUBLISHED,LTDS T2a id=833
+trafo,T2a:833,vk_percent,23.140008814453807,%,DERIVED,LTDS T2a id=833; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:833,vkr_percent,0.73257,%,DERIVED,LTDS T2a id=833; percent on 100 MVA base rescaled to sn_mva [A01]
+trafo,T2a:833,tap_pos,0,,ASSUMED,A02_neutral_taps
+trafo,T2a:833,pfe_kw/i0_percent,0,,ASSUMED,A03_no_magnetising_branch
+trafo,T2a:833,shift_degree,0,deg,ASSUMED,A04_zero_phase_shift (published vector group Dyn11)
+switch,EPN:SUND11-EPN:SUND12,closed,True,,ASSUMED,A06_sundon_132kv_coupler_closed
+ext_grid,EPN:SUND11,vm_pu,1.0,pu,ASSUMED,A05_external_grid_sundon_gis_132kv

@@ -1,0 +1,30 @@
+# E4-D — ramp / trajectory analysis on the 15-minute satellite timeline.
+# PRE-REGISTERED 2026-10-06 before any GENCO inference on Sundon (E3 commit 55ba739).
+
+timeline:
+  states: >-
+    every usable 15-min slot s (Apr–Sep 2024, E3 QC) whose half-hour T = floor(s, 30 min) has a
+    complete E2 base state; state = B(T) + HV PV of s (synchronous). Slots :00/:30 coincide with
+    S1 states; :15/:45 use the SAME half-hour average load (no interpolation).
+  expected_count: 5667
+
+transitions:
+  pair: consecutive slots (Δt = 15 min), both states valid and AC-gated
+  primary: within-half-hour pairs (:00→:15, :30→:45) — load identical, change is PV only
+  secondary: all consecutive pairs (load may also change at :15→:30, :45→:00)
+  quantities: [dPV_injected_mw, dVm, dVa, dP_branch, dQ_branch, dLoading]
+  error: "Δ_GENCO − Δ_AC per element; summarised as mean |·| per transition"
+  also: "tracking ratio Σ|Δ_GENCO| / Σ|Δ_AC| for branch P"
+
+ramp_bins:               # from the |ΔPV_injected| distribution of PRIMARY transitions only
+  variable: abs_dPV_injected_mw
+  quantiles: [0.0, 0.5, 0.8, 0.95, 1.0]
+  labels: [low, medium, high, extreme]
+
+events:                  # E3 frozen selection; rankings not changed by GENCO results
+  analyse_classes: [B, C, D]
+  hero: [D01_20240615T0930, B02_20240615T0845, C01_20240415T1215, A01_20240916T1145, A02_20240823T1045]
+  # A02 added 2026-10-06 AFTER E4 results, for illustration only: A01 has no complete E2 base
+  # state (UKPN LBUZ51 primary-transformer data missing 2024-09-16). E3 ranking unchanged.
+  outputs: [pv_timeline, ac_response, genco_response, genco_error]
+  note: "class E empty under E3-v1 criteria — no overcast replacement"
