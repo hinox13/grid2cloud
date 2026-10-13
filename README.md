@@ -49,16 +49,63 @@ response** (the central finding: the PV blind spot and what closed it), **Model 
 
 ![What did we learn? E4 → E5d](reports/figures/c2g_what_we_learned.png)
 
-**Result in one line.** Synthetic-to-real transfer requires not only topology and
-operating-envelope coverage, but explicit learning of physically meaningful sensitivities: the
-response-aware model (E5d) learns the PV sensitivity from paired synthetic AC states and it
-transfers to real operation (PV slope −1.07 vs AC −1.02), but its import is ~13 MW too high and
-the voltage and battery criteria fail (verdict E5D-D, partial). The original weather question
-remains unresolved because no model passes the full real-transfer gate.
+**Result in one line.** In our experiments, synthetic-to-real transfer needed not only topology
+and operating-envelope coverage, but explicit learning of physically meaningful sensitivities.
+- **What E5d achieved:** the response-aware model learns the PV sensitivity from paired synthetic AC
+  states, and it transfers to real operation (PV slope −1.07 vs AC −1.02).
+- **What still fails:** its import is ~13 MW too high, and the voltage and battery criteria fail
+  (verdict E5D-D, partial).
+- **Why the level is wrong:** a post-hoc diagnostic (E6, below) explains the import error.
+- **The weather question remains unresolved,** because no model passes the full real-transfer gate.
 
 **Licensing.** Third-party data, imagery and checkpoints keep their own licences and attribution requirements: see [`docs/DATA_LICENSES.md`](docs/DATA_LICENSES.md) and [`NOTICE`](NOTICE). No project-level software licence has been selected yet.
 
 **Repository snapshot.** This repository is a single snapshot of the final project state; the development history is not included. Commit IDs cited in reports, registries and bundle metadata (pre-registration, freeze and build commits) refer to that development history.
+
+## Why does GENCO get the response right but the import level wrong? (E6 diagnostic)
+
+> **Diagnostic only.** Post-hoc and not pre-registered. Held-out synthetic data. No model was trained and no E6 checkpoint exists. Nothing frozen changed. Full analysis: [`reports/e6_feasibility_diagnostic.md`](reports/e6_feasibility_diagnostic.md).
+
+**Mechanism (an exact identity).**
+- GENCO does not predict the grid import directly. GraphKit's decoder computes it from the predicted voltages, as the flow out of the slack bus.
+- All other injections are known inputs. So the import error equals the sum of the signed active-power mismatches the predicted state leaves at the 36 other buses, plus a small loss difference.
+- This holds within 0.06 MW in every state.
+
+**Synthetic evidence** (frozen E5d, 2,804 held-out states; 500 held-out PV pairs):
+
+| | Value |
+|---|---|
+| Import MAE / fit | 14.21 MW; predicted = 21.1 + 0.623 × AC (compressed toward the 58 MW training mean; exports detected 22 %) |
+| Per-bus mismatch vs their sum | ~0.7 MW per bus, sign-coherent; Σ ≈ 14 MW in absolute value |
+| PV pairs: absolute error / error of the change | 11.68 MW / 0.046 MW; paired-error correlation 0.999 |
+
+**Limits of response supervision.**
+- The level error is shared by both states of a pair, so it cancels in the change that the response loss supervises.
+- The original loss does penalise per-bus residuals, but not explicitly their aggregate signed imbalance.
+- The slack branches are near-ideal (30–39 MW per µrad), so the angle errors that set the import are invisible to the Va error term.
+- Whether the objective or the architecture is ultimately responsible is untested.
+
+**Analytic balance (not a model improvement).** Summing the known injections gives 0.58 MW import MAE; adding GENCO's own predicted losses gives 0.20 MW. Both bypass GENCO's import, and neither makes its voltage state more consistent.
+
+**E5c encoding caveat.**
+- **The issue:** our generator-aware encoding (E5c, inherited by E5d) attaches the Leighton Buzzard generators to PQ buses. GraphKit's internal physics decoder sets their `Pg` to zero, so the model's physics feedback and physics loss omit that known generation.
+- **What still holds:** evaluation restores it, so the frozen metrics remain valid evaluations of the implemented models.
+- **What is untested:** the effect of correcting it.
+- **How to read E5c:** *our generator-aware adaptation remained largely insensitive to PV.* The independent effect of a correctly integrated generator representation remains untested.
+- **How to read E5d:** response supervision made the difference within this implementation, against the λ = 0 control. That does not make it universally necessary.
+
+**Lesson.** Accurate electrical states, accurate physical sensitivities and global physical conservation are distinct model properties. Good performance on one does not guarantee the others.
+
+**Future work (not started): conservation-supervised GENCO.**
+- E5d's objective plus an explicit global signed power-balance term.
+- The generator encoding corrected, and assessed as a separate arm.
+- Confirmation only on an untouched real population.
+
+**Reproducibility.**
+- `PYTHONPATH=src uv run python scripts/diagnose_e6_feasibility.py all` regenerates the 11 tables in `reports/tables/e6_*.csv`, the 4 figures in `reports/figures/e6_*.png` and `reports/experiments/e6_feasibility/diagnostic.json`, byte-identically.
+- It needs the local frozen synthetic predictions, pair manifest and checkpoints under `data/interim/`. These are **not** in this repository, so the diagnostic cannot be re-run from a clean checkout.
+- What a clean checkout can do: `tests/satellite/test_e6_diagnostic.py` checks every quoted number against the published tables.
+
 
 ---
 
@@ -2325,7 +2372,8 @@ That is the core story of Cloud2Grid.
 [x] Generator-aware adaptation  (E5c verdict: B — load/battery tracking improves, PV response stays near zero)
 [x] Response-aware training     (E5d verdict: D — real PV response learned (slope −1.07 vs AC −1.02); import offset, voltage, battery gate fail)
 [x] Streamlit application       (Cloud2Grid Explorer: demo/streamlit_app.py, bundles in data/demo)
-[x] Final submission package   (local commit + tag cloud2grid-submission-v1; push / deploy not done)
+[x] Final submission package   (tag cloud2grid-submission-v1; Explorer deployed at https://cloud2grid.streamlit.app/)
+[x] E6 feasibility diagnostic   (post-hoc, synthetic only, no model trained: import error = accumulated nodal mismatch; reports/e6_feasibility_diagnostic.md)
 ```
 
 ---
@@ -2431,6 +2479,7 @@ uv run --env-file .env python scripts/evaluate_e5b.py synthetic|freeze|coverage|
 uv run --env-file .env python scripts/build_e5d_pairs.py --set train|validation|test   # E5d paired AC states
 uv run python scripts/train_e5d.py prepare|ladder|predict                   # E5d response-aware fine-tuning
 uv run --env-file .env python scripts/evaluate_e5d.py scale|synthetic|freeze|transfer|postfreeze   # E5d
+PYTHONPATH=src uv run python scripts/diagnose_e6_feasibility.py all       # E6 diagnostic (local frozen predictions)
 ```
 
 Phase 0 outputs:
@@ -2446,3 +2495,4 @@ Phase 0 outputs:
 - [`reports/e5_verdict_erratum.md`](reports/e5_verdict_erratum.md), [`reports/e5b_design.md`](reports/e5b_design.md), [`reports/e5b_coverage.md`](reports/e5b_coverage.md), [`reports/e5b_learning_curve.md`](reports/e5b_learning_curve.md), [`reports/e5b_real_transfer.md`](reports/e5b_real_transfer.md) and [`metadata/e5b_checkpoint_registry.yaml`](metadata/e5b_checkpoint_registry.yaml): broad static-metadata synthetic envelope, real-state transfer test.
 - [`reports/e5c_design.md`](reports/e5c_design.md), [`reports/experiments/e5c/real_transfer.json`](reports/experiments/e5c/real_transfer.json) and [`metadata/e5c_checkpoint_registry.yaml`](metadata/e5c_checkpoint_registry.yaml): explicit generator nodes, paired physics probes (E5C-B).
 - [`reports/e5d_design.md`](reports/e5d_design.md), [`reports/e5d_synthetic_response.md`](reports/e5d_synthetic_response.md), [`reports/e5d_checkpoint_selection.md`](reports/e5d_checkpoint_selection.md), [`reports/e5d_real_transfer.md`](reports/e5d_real_transfer.md) and [`metadata/e5d_checkpoint_registry.yaml`](metadata/e5d_checkpoint_registry.yaml): physics-response-aware training on paired synthetic AC states (E5D-D; final model-training experiment).
+- [`reports/e6_feasibility_diagnostic.md`](reports/e6_feasibility_diagnostic.md): post-hoc E6 diagnostic of the absolute import failure (synthetic only; no model trained), including the E5c generator-encoding caveat.

@@ -1,0 +1,7 @@
+estimate,bias_mw,mae_mw,rmse_mw,max_abs_mw,sign_acc_abs_ge5,needs
+A  AC reference (pandapower/PowerModels),0.0,0.0,0.0,0.0,1.0,full AC solve
+B  GENCO (frozen E5d) slack Pg,-1.621222972869873,14.213606834411621,17.421506881713867,68.02235412597656,0.9495982468955442,GENCO forward pass
+C  injections + AC losses (accounting check),-3.636740075307898e-05,0.008779044263064861,0.011138783767819405,0.046732425689697266,1.0,AC losses (i.e. the AC solve)
+D  injections + GENCO-predicted losses,0.045585814863443375,0.20246845483779907,0.281320184469223,1.1106414794921875,1.0,GENCO forward pass + sum
+"E1 injections, lossless (DC-type balance)",-0.575882613658905,0.575882613658905,0.758430004119873,2.3658447265625,1.0,sum of known injections only
+E2 injections + constant mean training loss,-0.045960087329149246,0.4135376811027527,0.4956689178943634,1.8359222412109375,1.0,sum of known injections only

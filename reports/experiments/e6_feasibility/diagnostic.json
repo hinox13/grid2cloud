@@ -1,0 +1,163 @@
+{
+  "populations": {},
+  "inputs": {
+    "E5c (frozen)": {
+      "sundon_33kv_predictions.parquet": "ac47f8e479fae0fe3667ddd811b346f71fdb52fa560134545611e30dfb67895a",
+      "sundon_33kv_branch_predictions.parquet": "de00120b3a952900ede78d242b2ad73ba5e32ee8bdce78a67639bacf18da6e38"
+    },
+    "E5d \u03bb0 control": {
+      "sundon_33kv_predictions.parquet": "676eeb7a2d4c6fd284bca3d4e23e78f50ce525ded9a093fc4944325d64975ce1",
+      "sundon_33kv_branch_predictions.parquet": "cdcea29fec9f01d569cc03a755493d0850e38633d44d2db35064ca21a286326a"
+    },
+    "E5d \u03bb0.3": {
+      "sundon_33kv_predictions.parquet": "b00210c9ac7d80d1040fab3c408bbfe0c7918019d042bddb6581989ab8852101",
+      "sundon_33kv_branch_predictions.parquet": "64a8da3c5e0d4ef173509b2f7ec64f131eb3f359328f4c8f3188e8f9595377b9"
+    },
+    "E5d \u03bb1 s0 (frozen)": {
+      "sundon_33kv_predictions.parquet": "20d7f5e82e1c867d264d18e86852bcb131e393c3d4942052f787b47fd0bf6615",
+      "sundon_33kv_branch_predictions.parquet": "bf81b24b1b61fbd089c0e2d11d65991ab82dcd5d7aa9904308810b7aa9cb83cd"
+    },
+    "E5d \u03bb1 s1": {
+      "sundon_33kv_predictions.parquet": "ca5a5697a5ab7860fc189c43099272f1a4dfcc56a6287dc8c1678024e83c5c9d",
+      "sundon_33kv_branch_predictions.parquet": "1228340a7e8d68a255fb680495a6d72e5e39289aa3f4b12adb1b90883821570f"
+    },
+    "E5d \u03bb1 s2": {
+      "sundon_33kv_predictions.parquet": "832dafd6fc68cb5d9c92c683479962d4cf50bea16b62ae08c9e1a6af2ee2a9a1",
+      "sundon_33kv_branch_predictions.parquet": "1f3b440ab188fd9f94f50d4afb1e644bc471f5261b91f47a419e4a7355015dd2"
+    },
+    "E5d \u03bb3": {
+      "sundon_33kv_predictions.parquet": "3a0a64d1c4f4cec1ad190706a65ff3808f845c8c6a5c9fdbfedcabb39b4ffd1a",
+      "sundon_33kv_branch_predictions.parquet": "4b9317b52a1d02da0206270d94d7c04e15299c0ead58c9d24b4da1ee391a241c"
+    },
+    "[E5b test] E5b (frozen)": {
+      "sundon_33kv_predictions.parquet": "811e806be3c823f80e6b10721b76cb656a818736c854c6941af594f56b991487",
+      "sundon_33kv_branch_predictions.parquet": "2dc7295245e60ed71e77128ebb0960b8cf195a400b6523f9bdb36fecc5f79c6e"
+    },
+    "[E5b test] E5c (frozen)": {
+      "sundon_33kv_predictions.parquet": "293192b7fa1db6c408bd7416e9feba450d4df633623aacdb2ef01a4069a6fdd9",
+      "sundon_33kv_branch_predictions.parquet": "0e04ffadd1312d92ece83173824772ce2b19f13835a801e73ffc365f99dedc45"
+    },
+    "[E5b test] E5d \u03bb1 s0 (frozen)": {
+      "sundon_33kv_predictions.parquet": "37affac26152068ea62af4fb3eae68eb5a6b6fae84af22104c5b193a5822277e",
+      "sundon_33kv_branch_predictions.parquet": "9f97c9b17681706d66c84f09f558ae28ef041da008f6b84ef8566cb0136c8ef0"
+    }
+  },
+  "selected": "E5d \u03bb1 s0 (frozen)",
+  "train_coverage": {
+    "n_train": 10000,
+    "share_export_lt_minus5": 0.085,
+    "share_negative": 0.1026,
+    "share_near_zero_abs_lt5": 0.0421,
+    "import_mean_mw": 58.00127400588207,
+    "import_p5_p50_p95_mw": [
+      -15.292229360739414,
+      58.02029937727396,
+      131.36078477402538
+    ],
+    "train_loss_mean_mw": 0.5299229330558071
+  },
+  "test_coverage": {
+    "share_export_lt_minus5": 0.06276747503566334,
+    "share_near_zero_abs_lt5": 0.023537803138373753
+  },
+  "lbuz_mismatch_vs_generation": {
+    "E5b (frozen)": {
+      "slope_res_on_gen": 0.2658151686191559,
+      "intercept_mw": -1.2177938222885132,
+      "r2": 0.04296809434890747,
+      "mean_res_mw": -0.18538261950016022
+    },
+    "E5c (frozen)": {
+      "slope_res_on_gen": 1.3322677612304688,
+      "intercept_mw": -1.7606241703033447,
+      "r2": 0.116901695728302,
+      "mean_res_mw": 3.4138288497924805
+    },
+    "E5d \u03bb1 s0 (frozen)": {
+      "slope_res_on_gen": 0.6406649947166443,
+      "intercept_mw": 0.5797260999679565,
+      "r2": 0.23240143060684204,
+      "mean_res_mw": 3.06803297996521
+    },
+    "[E5c test] E5c (frozen)": {
+      "slope_res_on_gen": 0.9560526013374329,
+      "intercept_mw": -1.0147382020950317,
+      "r2": 0.12832754850387573,
+      "mean_res_mw": 1.8847137689590454
+    },
+    "[E5c test] E5d \u03bb0 control": {
+      "slope_res_on_gen": 0.9763933420181274,
+      "intercept_mw": -1.22299325466156,
+      "r2": 0.34105080366134644,
+      "mean_res_mw": 1.7381467819213867
+    },
+    "[E5c test] E5d \u03bb1 s0 (frozen)": {
+      "slope_res_on_gen": 0.5151416659355164,
+      "intercept_mw": 0.9073192477226257,
+      "r2": 0.2803614139556885,
+      "mean_res_mw": 2.4696061611175537
+    }
+  },
+  "normalizer": {
+    "e5d_l1_s0": {
+      "weights_sha256": "45ab82525da00844a82a9526bc814de9290efc776159f0d8818703d5e9647435",
+      "normalizer_sha256": "9ae23c469edd4fe5cf894e2e02264d801013015fe5dcd170c7d35d18f69f5cec",
+      "weights_in_own_registry": true,
+      "normalizer_in_own_registry": true,
+      "baseMVA": 36.741424560546875,
+      "baseMVA_orig": 100.0
+    },
+    "e5c_ft_n10000_s2": {
+      "weights_sha256": "31b824241880ffc6807f2dad478c34c5c211ee31c7f403092e586c6373ab4d8a",
+      "normalizer_sha256": "bb34d0b741d4715e1a4a9c133e291fbe1962237d1eaa4e855d7dc420c35d3f3e",
+      "weights_in_own_registry": true,
+      "normalizer_in_own_registry": true,
+      "baseMVA": 36.72218704223633,
+      "baseMVA_orig": 100.0
+    }
+  },
+  "slack_vm_range_test": [
+    0.9886177778244019,
+    1.0616904497146606
+  ],
+  "trace_checks": {
+    "n_states": 2804,
+    "cpu_forward_ms_per_state_batch64": 6.080348675867301,
+    "baseMVA_fitted": 36.741424560546875,
+    "max_abs_dev_model_vs_frozen_import_mw": 0.22710418701171875,
+    "max_abs_dev_true_state_decoder_vs_ac_import_mw": 0.053466796875,
+    "lbuz_inmodel_residual_mean_mw": -0.5631026029586792,
+    "lbuz_eval_residual_mean_mw": 2.469630002975464,
+    "lbuz_inmodel_minus_eval_vs_gen_max_abs_mw": 1.1920928955078125e-06
+  },
+  "graph_reach": {
+    "n_bus": 37,
+    "n_branches": 43,
+    "max_hops_from_ref": 8,
+    "graph_diameter_hops": 8,
+    "message_passing_layers": 12,
+    "hops_ref_to_lbuz": [
+      5,
+      7,
+      4
+    ],
+    "hops_ref_to_battery": 4
+  },
+  "slack_vm": {
+    "masked_in_graphkit_pf_mask": true,
+    "corr_pred_true": 0.12316428834597391,
+    "mae_pu": 0.01804427243769169,
+    "sd_pred_pu": 5.757325925515033e-05,
+    "sd_true_pu": 0.019374892115592957,
+    "corr_vm_ref_load": 0.985895678867297,
+    "r2_err_on_ac_import": 0.8478773647409955,
+    "r2_err_on_ac_import_and_vm_ref": 0.8653980428658203
+  },
+  "solver_runtime": {
+    "pandapower_ac_median_s": 0.018395229475572705,
+    "powermodels_ac_median_s": 0.023281843634322286
+  },
+  "integrity": {
+    "note": "frozen artefacts read only; synthetic populations; S1 exploratory only"
+  }
+}
