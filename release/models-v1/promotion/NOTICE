@@ -1,0 +1,47 @@
+Cloud2Grid: licensing notice
+============================
+
+Copyright 2026 {{COPYRIGHT_HOLDER}}
+
+What is licensed, and under which terms
+---------------------------------------
+1. Cloud2Grid source code in this repository (src/, scripts/, tests/, demo/ application code,
+   reproduce/, release/ tooling, configs/): Apache License 2.0, see LICENSE.
+
+2. Cloud2Grid model weights published as GitHub Release assets (release `cloud2grid-models-v1`:
+   E5c `e5c_ft_n10000_s2`, E5d `e5d_l1_s0`): Apache License 2.0, to the extent of Cloud2Grid's
+   contribution. They are fine-tuned from the GENCO checkpoint gridfm/genco-pf-transfer
+   (Apache-2.0); see "Third-party material" below.
+
+3. Cloud2Grid synthetic verification dataset (release asset
+   `cloud2grid-verification-synthetic-v1`): Creative Commons Attribution 4.0 International
+   (CC BY 4.0), with the source attribution given inside the dataset.
+
+4. NOT relicensed by this notice: the demo bundles (data/demo/), and reports, figures and
+   documentation that contain or are derived from third-party material. They remain subject to
+   the licences and attribution requirements of their sources (docs/DATA_LICENSES.md,
+   data/demo/attribution.json). Any future licence for Cloud2Grid documentation will be stated
+   here.
+
+No licence above relicenses, or can relicense, any third-party material.
+
+Third-party material
+--------------------
+- GENCO transfer checkpoint, gridfm/genco-pf-transfer
+  (https://huggingface.co/gridfm/genco-pf-transfer), Apache-2.0. Puech et al. (2026),
+  arXiv:2608.09921. MODIFIED: Cloud2Grid fine-tuned all weights on synthetic Sundon data.
+- gridfm-graphkit and gridfm-datakit (GridFM), Apache-2.0. Used as libraries; not modified.
+- pandapower (BSD-3-Clause) and pvlib (BSD-3-Clause), and other open-source dependencies: see
+  their own licences.
+- UK Power Networks open data, CC BY 4.0. Contains UK Power Networks data (Long Term Development
+  Statement Tables 1, 2a, 2b, 3a, 5; Grid and Primary Sites; Embedded Capacity Register; and
+  operational half-hourly data used in the demo). Contains data from Office for National
+  Statistics licensed under the Open Government Licence v.3.0. Contains OS data © Crown copyright
+  and database right [2019-]. All UKPN-derived data here are modified.
+- EUMETSAT Meteosat imagery and EUMETSAT LSA SAF products, CC BY 4.0 (demo bundles only):
+  "Contains modified EUMETSAT Meteosat data [year]" (E-View / European HRV RGB; Natural Colour
+  Enhanced RGB); "Data source: EUMETSAT LSA SAF, MSG Total and Diffuse Downward Surface Shortwave
+  Flux, MDSSFTD, LSA-207" and "EUMETSAT LSA SAF (static MSG grid and land/water mask)". Modified.
+
+For the licence, evidence and required attribution text of every source, see
+docs/DATA_LICENSES.md and metadata/data_sources.yaml.

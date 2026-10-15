@@ -1,0 +1,27 @@
+{
+  "release": "cloud2grid-models-v1",
+  "status": "PROPOSED \u2014 not published",
+  "copyright_holder": "Oriol Hinojo",
+  "download_base_url": "https://github.com/hinox13/grid2cloud/releases/download/cloud2grid-models-v1/",
+  "assets": {
+    "cloud2grid-e5c-ft-n10000-s2.tar.gz": {
+      "kind": "model",
+      "run": "e5c_ft_n10000_s2",
+      "checkpoint_sha256": "31b824241880ffc6807f2dad478c34c5c211ee31c7f403092e586c6373ab4d8a",
+      "sha256": "195815e2758f8448e045f2cec23e74d448bf7a32c450e854710f43eac6ba5f6b",
+      "bytes": 74301576
+    },
+    "cloud2grid-e5d-l1-s0.tar.gz": {
+      "kind": "model",
+      "run": "e5d_l1_s0",
+      "checkpoint_sha256": "45ab82525da00844a82a9526bc814de9290efc776159f0d8818703d5e9647435",
+      "sha256": "8ba6c712c21d4730a78bfd4e056ea3f9281dd424636baca9c2a96733de0845b7",
+      "bytes": 74295764
+    },
+    "cloud2grid-verification-synthetic-v1.tar.gz": {
+      "kind": "verification-data",
+      "sha256": "13b3b4f7b89cf87025f622a224728d592166d875d9c22c585f63ae2dc72ffec0",
+      "bytes": 47495761
+    }
+  }
+}

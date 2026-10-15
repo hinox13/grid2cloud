@@ -37,3 +37,9 @@ lightning_logs/
 .vscode/
 .idea/
 .DS_Store
+
+# --- Model release (cloud2grid-models-v1): large assets live in GitHub Releases, not Git
+data/release/*
+reproduce/.assets/
+reproduce/.work/
+reproduce/output/

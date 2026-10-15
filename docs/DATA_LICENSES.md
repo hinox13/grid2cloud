@@ -21,7 +21,7 @@ uv run python scripts/audit_licences.py --check-remote
 3. **UKPN licences are dataset-specific.** Each UKPN dataset was checked individually through the Opendatasoft catalogue API (`metas.default.license`, the same field as the dataset's Information tab). One LTDS product (`ukpn-ltds-cim`) is under a different, bespoke licence. See below.
 4. **Raw third-party data is never committed** (README §40). `data/raw/`, `data/interim/` and `data/processed/` are gitignored. Provenance (URL, revision, timestamp, licence, size, SHA-256) is committed in [`metadata/provenance.json`](../metadata/provenance.json). The one exception is `data/demo/`: the Explorer's derived, cropped and re-encoded bundles are committed so the app can be deployed. They are built only from sources that pass the licence gate for `redistribute_derived` (decisions in `data/demo/attribution.json`) and contain no raw files or model weights.
 5. **Do not use the UKPN logo** without permission (README §1).
-6. **The project's own software licence does not cover third-party material.** No project-level software licence has been selected yet (see [`NOTICE`](../NOTICE)). Whatever licence is later chosen applies to Cloud2Grid's own source code only; the datasets, imagery, checkpoints and derived assets listed here stay under their own licences.
+6. **The project's own licences do not cover third-party material.** Cloud2Grid source code and released model weights are Apache-2.0 and the synthetic verification dataset is CC BY 4.0 (see [`LICENSE`](../LICENSE) and [`NOTICE`](../NOTICE)); these apply to Cloud2Grid's own contribution only. The datasets, imagery, checkpoints and derived assets listed here stay under their own licences.
 
 ## Verified
 

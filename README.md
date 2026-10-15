@@ -58,13 +58,47 @@ and operating-envelope coverage, but explicit learning of physically meaningful 
 - **Why the level is wrong:** a post-hoc diagnostic (E6, below) explains the import error.
 - **The weather question remains unresolved,** because no model passes the full real-transfer gate.
 
-**Licensing.** Third-party data, imagery and checkpoints keep their own licences and attribution requirements: see [`docs/DATA_LICENSES.md`](docs/DATA_LICENSES.md) and [`NOTICE`](NOTICE). No project-level software licence has been selected yet.
+**Licensing.** Cloud2Grid source code: Apache-2.0 ([`LICENSE`](LICENSE)). Released model weights (`cloud2grid-models-v1`): Apache-2.0 for Cloud2Grid's contribution, fine-tuned from the Apache-2.0 GENCO checkpoint. Synthetic verification dataset: CC BY 4.0. Third-party data, imagery and checkpoints keep their own licences and attribution requirements, and the demo bundles, reports and figures are not relicensed: see [`NOTICE`](NOTICE) and [`docs/DATA_LICENSES.md`](docs/DATA_LICENSES.md).
 
 **Repository snapshot.** This repository is a single snapshot of the final project state; the development history is not included. Commit IDs cited in reports, registries and bundle metadata (pre-registration, freeze and build commits) refer to that development history.
 
+## Frozen models and independent verification (`cloud2grid-models-v1`)
+
+The frozen **E5c** and **E5d** checkpoints are published as GitHub Release assets, with a held-out synthetic verification set. One command re-runs both models and checks the main synthetic finding:
+
+```bash
+uv sync --extra genco                      # Linux x86-64
+uv run python reproduce/verify_models.py   # CPU by default; --device gpu optional
+```
+
+**What is independently reproducible** (synthetic, held-out data, actual inference):
+- E5c's PV blindness (import slope ratio 0.014);
+- E5d's recovery of the PV, battery and load responses, including branch flows and voltages;
+- both models' remaining ~14 MW absolute import error.
+
+**What is not:**
+- **The real 2024 results:** PV slopes AC −1.02 / E5c −0.04 / E5d −1.07, E5d's +13 MW offset, and the **E5D-D partial-transfer verdict**. They need real operating data that are not published.
+- **Training.**
+
+**Known limitations, stated in the model cards:**
+- **E5c generator-encoding caveat:** see below.
+- **E5d is partial:** the E5D-D verdict.
+- **Scope:** single network, synthetic training, flagged selections.
+
+**Numerical determinism.**
+- **GPU inference is not bit-for-bit deterministic** (most likely the order of GPU scatter-add reductions; not isolated). In our CUDA 12.6 setup, identical GPU runs differed by up to ~0.2 MW in decoded import and branch flows, while Vm and Va agree to ~1e-5. CPU inference is deterministic.
+- **Effect on the published values:** they come from one GPU run, so the verifier's tolerances are set from this measured noise ([`reproduce/README.md`](reproduce/README.md)).
+- **Claim thresholds** are the pre-registered E5d gates.
+
+**Licences.**
+- **Weights and code:** Apache-2.0.
+- **Verification data:** CC BY 4.0.
+- **Third-party material keeps its own terms:** see [`NOTICE`](NOTICE).
+- **Where the assets live:** in GitHub Releases, not in Git history.
+
 ## Why does GENCO get the response right but the import level wrong? (E6 diagnostic)
 
-> **Diagnostic only.** Post-hoc and not pre-registered. Held-out synthetic data. No model was trained and no E6 checkpoint exists. Nothing frozen changed. Full analysis: [`reports/e6_feasibility_diagnostic.md`](reports/e6_feasibility_diagnostic.md).
+> **Diagnostic only.** Post-hoc and not pre-registered. Held-out synthetic data. No model was trained for this diagnostic. Nothing frozen changed. Full analysis: [`reports/e6_feasibility_diagnostic.md`](reports/e6_feasibility_diagnostic.md).
 
 **Mechanism (an exact identity).**
 - GENCO does not predict the grid import directly. GraphKit's decoder computes it from the predicted voltages, as the flow out of the slack bus.
@@ -96,7 +130,7 @@ and operating-envelope coverage, but explicit learning of physically meaningful 
 
 **Lesson.** Accurate electrical states, accurate physical sensitivities and global physical conservation are distinct model properties. Good performance on one does not guarantee the others.
 
-**Future work (not started): conservation-supervised GENCO.**
+**Follow-up direction: conservation-supervised GENCO.**
 - E5d's objective plus an explicit global signed power-balance term.
 - The generator encoding corrected, and assessed as a separate arm.
 - Confirmation only on an untouched real population.
