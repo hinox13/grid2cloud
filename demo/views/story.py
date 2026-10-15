@@ -1,168 +1,207 @@
-"""Scientific story and methodology, in one page."""
+"""Scientific story and methodology, in one page: the question and its short answer, what was
+built, the original model and its four fine-tuning steps (cards + one chart), the bottom line,
+how the evidence was kept honest, the limits of this demo, and possible follow-up work.
+Every number comes from model_evolution.csv (the published S1 results); nothing is computed anew."""
 
 from __future__ import annotations
 
 import streamlit as st
 from c2g import data as D
+from c2g import figures as F
 from c2g import theme as T
 
 T.setup("Scientific story")
+p = T.palette()
 evo = D.evolution()
 mods = [m["id"] for m in D.models()]
+has_e5d = "E5d" in mods
+num = T.num
+ac = evo.iloc[0]  # the physics (AC) columns are identical on every row
 
+st.markdown(
+    f"""
+<style>
+.sc-answer {{ color: {p["INK"]}; font-size: 1.02rem; line-height: 1.55; background: {p["SURFACE"]};
+  border-left: 4px solid {p["ACCENT"]}; border-radius: 0 10px 10px 0; padding: 10px 16px;
+  box-shadow: {p["SHADOW"]}; margin: 12px 0 8px 0; }}
+.sc-flow {{ display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; gap: 8px;
+  align-items: stretch; margin: 4px 0 6px 0; }}
+@media (max-width: 900px) {{ .sc-flow {{ grid-template-columns: 1fr 1fr; }}
+  .sc-flow .sc-arrow {{ display: none; }} }}
+.sc-stage {{ background: {p["SURFACE"]}; border: 1px solid {p["BORDER"]}; border-radius: 12px;
+  padding: 10px 14px; box-shadow: {p["SHADOW"]}; }}
+.sc-stage .n {{ color: {p["INK"]}; font-weight: 700; font-size: 1.0rem; margin: 6px 0 4px 0; }}
+.sc-stage .d {{ color: {p["INK_2"]}; font-size: 0.9rem; line-height: 1.45; }}
+.sc-arrow {{ color: {p["MUTED"]}; align-self: center; font-size: 1.2rem; }}
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+# ---------------------------------------------------------------- question and short answer
 st.markdown("## The scientific story")
 st.markdown(
     '<div class="c2g-sub">Can a neural power-flow foundation model (GENCO) stand in for a physical '
     "AC solver on a real distribution network when the weather drives the grid?</div>",
     unsafe_allow_html=True,
 )
-
-st.markdown("### What we built")
-c1, c2, c3, c4 = st.columns(4)
-c1.markdown(
-    f"{T.badge('OBSERVED')}\n\n**Satellite & grid data**\n\nMeteosat E-View imagery every "
-    "15 minutes; UK Power Networks half-hourly operational load data.",
-    unsafe_allow_html=True,
-)
-c2.markdown(
-    f"{T.badge('DERIVED')}\n\n**Satellite PV forcing**\n\nLSA SAF irradiance sampled at "
-    "every registered PV asset, converted to estimated output with pvlib. Never measured "
-    "PV.",
-    unsafe_allow_html=True,
-)
-c3.markdown(
-    f"{T.badge('SIMULATED')}\n\n**AC reference**\n\nThe Sundon 33 kV network rebuilt "
-    "from LTDS tables, validated against operational metering, solved with a full AC "
-    "power flow.",
-    unsafe_allow_html=True,
-)
-c4.markdown(
-    f"{T.badge('PREDICTED')}\n\n**GENCO**\n\nFrozen GENCO checkpoints predicting the same "
-    "states: off-the-shelf, then four adaptation recipes (grid-tuned, envelope-tuned, "
-    "generator-aware, response-aware).",
-    unsafe_allow_html=True,
-)
-
-st.markdown("### What each experiment found")
-zs, e5, e5b, e5c = (evo.loc[m] for m in ("zero_shot", "E5", "E5b", "E5c"))
-e5d = evo.loc["E5d"] if "E5d" in mods else None
-steps = [
-    (
-        "zero_shot",
-        "Off-the-shelf GENCO fails on a new grid (E4)",
-        "Off-the-shelf GENCO, trained on other grids, predicts about "
-        f"{abs(zs.genco_import_mean_mw):.0f}"
-        f" MW of export where the AC solution imports {zs.ac_import_mean_mw:.0f} MW. Mean power-"
-        f"balance error {zs.PBE_mean:.1f} MVA.",
-    ),
-    (
-        "E5",
-        "Grid-tuned: fits synthetic states, not real operation (E5)",
-        "Fine-tuning on synthetic Sundon states brings held-out synthetic error down to 0.47 MVA, "
-        f"but on real states the error stays heavy-tailed (PBE {e5.PBE_mean:.1f} MVA, import r = "
-        f"{e5.import_corr:.2f}): real loads, battery and PV lie outside the synthetic support.",
-    ),
-    (
-        "E5b",
-        "Envelope-tuned: a broad physics-informed envelope cuts real error by ~99 % (E5b)",
-        f"Sampling loads, battery and generation over their physical ranges from static metadata "
-        f"(no real data) brings real-state PBE down to {e5b.PBE_mean:.2f} MVA "
-        f"({1 - e5b.PBE_mean / e5.PBE_mean:.1%} below grid-tuned). "
-        "Import and voltage tracking still fail.",
-    ),
-    (
-        "E5c",
-        "Generator-aware: explicit generators help load and battery, not PV (E5c)",
-        f"Representing PV as explicit generator nodes improves import tracking (r = "
-        f"{e5c.import_corr:.2f}, battery slope {e5c.genco_slope_chap31:+.2f} vs AC "
-        f"{e5c.ac_slope_chap31:+.2f}), but the PV slope stays at {e5c.genco_slope_pv:+.2f} against "
-        f"AC {e5c.ac_slope_pv:+.2f}.",
-    ),
-]
-if e5d is not None:
-    steps.append(
-        (
-            "E5d",
-            "Response-aware: the PV sensitivity is learned and transfers; calibration is still off "
-            "(E5d)",
-            "Adding a loss on pairs of synthetic AC states that differ in one input teaches the "
-            f"response: the real PV slope moves from {e5c.genco_slope_pv:+.2f} to "
-            f"{e5d.genco_slope_pv:+.2f} (AC {e5d.ac_slope_pv:+.2f}) and load from "
-            f"{e5c.genco_slope_load:+.2f} to {e5d.genco_slope_load:+.2f}. But the import sits "
-            f"{e5d.import_bias_mw:+.0f} MW too high, voltage error misses its limit and the "
-            "battery "
-            f"response overshoots ({e5d.genco_slope_chap31:+.2f}): verdict E5D-D, partial.",
-        )
+if has_e5d:
+    e5d = evo.loc["E5d"]
+    answer = (
+        "<b>Short answer: partly.</b> Out of the box GENCO cannot read this grid. After four "
+        "fine-tuning steps on synthetic data only, it learned how the real grid responds to "
+        "solar, battery and load, but it still overestimates how much power Sundon draws "
+        f"({num(float(e5d.import_bias_mw), '+.0f')} MW), so real transfer is only partial and "
+        "the weather question stays open."
     )
-for mid, head, body in steps:
-    st.markdown(f"{T.swatch(mid)} **{head}**  \n{body}", unsafe_allow_html=True)
+else:
+    answer = (
+        "<b>Short answer: not yet.</b> Fine-tuning on synthetic data fixes the topology and the "
+        "operating range, but no model responds correctly to solar, so real transfer fails."
+    )
+st.markdown(f'<div class="sc-answer">{answer}</div>', unsafe_allow_html=True)
 
+# ---------------------------------------------------------------- what we built
+st.markdown("### What we built")
+STAGES = [
+    ("OBSERVED", "Satellite and grid data", T.INK_2,
+     "Meteosat E-View imagery every 15 minutes; UK Power Networks half-hourly operational load "
+     "data."),
+    ("DERIVED", "Satellite solar forcing", T.PV,
+     "LSA SAF irradiance sampled at every registered solar asset and converted to estimated "
+     "output with pvlib. Never metered solar."),
+    ("SIMULATED", "Physics reference", T.AC,
+     "The Sundon 33 kV network rebuilt from public LTDS tables, validated against operational "
+     "metering and solved with a full AC power flow."),
+    ("PREDICTED", "GENCO", T.MUTED,
+     "Frozen GENCO checkpoints predicting the same states: the original model, then four "
+     "fine-tuning steps."),
+]  # fmt: skip
+flow = '<div class="sc-arrow">→</div>'.join(
+    f'<div class="sc-stage" style="border-top:3px solid {c}">{T.badge(kind)}'
+    f'<div class="n">{title}</div><div class="d">{desc}</div></div>'
+    for kind, title, c, desc in STAGES
+)
+st.markdown(f'<div class="sc-flow">{flow}</div>', unsafe_allow_html=True)
+
+# ---------------------------------------------------------------- the steps (cards + chart)
+st.markdown("### From the original model to four fine-tuning steps")
+zs, e5, e5b, e5c = (evo.loc[m] for m in ("zero_shot", "E5", "E5b", "E5c"))
+cut = (1 - float(e5b.PBE_mean) / float(e5.PBE_mean)) * 100
+DETAIL = {
+    "zero_shot": (
+        "Trained on other grids, it predicts about "
+        f"{abs(float(zs.genco_import_mean_mw)):.0f} MW of export where the physics says Sundon "
+        f"draws {float(ac.ac_import_mean_mw):.0f} MW: power flows the wrong way in "
+        f"{(1 - float(zs.import_sign_accuracy)) * 100:.1f}&nbsp;% of states."
+    ),
+    "E5": (
+        "It fits held-out synthetic states well (error 0.47 MVA), but real loads, battery and "
+        "solar lie outside what it was trained on, so its real-state errors stay heavy-tailed."
+    ),
+    "E5b": (
+        "Sampling load, battery and generation over their physical ranges, from public metadata "
+        f"only, cuts the real-state error by {cut:.0f}&nbsp;%. Import and voltage tracking still "
+        "fail."
+    ),
+    "E5c": (
+        f"Import tracking improves (correlation r = {float(e5c.import_corr):.2f}) and so does the "
+        f"battery response ({num(float(e5c.genco_slope_chap31), '+.2f')} against physics "
+        f"{num(float(ac.ac_slope_chap31), '+.2f')}), but the solar response stays near zero."
+    ),
+}
+if has_e5d:
+    DETAIL["E5d"] = (
+        "Trained on pairs of synthetic states that differ in one input, it learns the response: "
+        f"solar {num(float(e5d.genco_slope_pv), '+.2f')} and load "
+        f"{num(float(e5d.genco_slope_load), '+.2f')} against physics "
+        f"{num(float(ac.ac_slope_pv), '+.2f')} and {num(float(ac.ac_slope_load), '+.2f')}. Its "
+        "level is too high, voltage error misses its limit and the battery response overshoots "
+        f"({num(float(e5d.genco_slope_chap31), '+.2f')}). Verdict: partial."
+    )
+T.learned_ladder(evo, mods, DETAIL)
+
+st.markdown('<div style="height:14px"></div>', unsafe_allow_html=True)
+T.panel_title("Solar response by step, against the physics")
+st.plotly_chart(
+    F.solar_response_by_step(evo, mods),
+    width="stretch",
+    config={"displayModeBar": False},
+    key="sc_pv",
+)
+
+# ---------------------------------------------------------------- the bottom line
 st.markdown(
-    '<div class="c2g-callout"><b>Synthetic-to-real transfer requires not only topology and '
-    "operating-envelope coverage, but explicit learning of physically meaningful sensitivities."
-    "</b> Correct sensitivity is still not the same as a fully calibrated real-grid model.</div>",
+    '<div class="c2g-callout"><b>Bottom line.</b> Synthetic-to-real transfer needs topology and '
+    "operating-envelope coverage, and explicit learning of physically meaningful sensitivities. "
+    "Correct sensitivity is still not a calibrated model: the final step fails the full "
+    "pre-registered real-transfer gate, so the original weather question stays "
+    "<b>unresolved</b>. Nothing here shows that weather has no effect, or that GENCO is "
+    "weather-robust.</div>",
     unsafe_allow_html=True,
 )
-st.markdown("### What did we learn?")
-T.learned_ladder(evo, mods)
-st.markdown(
-    '<div class="c2g-callout">The original weather-generalisation question remains '
-    "<b>unresolved</b>, because the final model still fails the full real-transfer gate. Nothing "
-    "here shows that weather has no effect, or that GENCO is weather-robust.</div>",
-    unsafe_allow_html=True,
-)
 
-st.markdown("### How the evidence was kept honest")
-st.markdown(
-    """
+# ---------------------------------------------------------------- honesty and limits
+c_honest, c_limits = st.columns(2, gap="large")
+with c_honest:
+    st.markdown("### How the evidence was kept honest")
+    st.markdown(
+        """
 - **Pre-registration.** Every experiment's gates, selection rule, transfer criteria and verdict
   rules were committed before its data, training or evaluation existed.
-- **Synthetic-only selection.** Checkpoints were chosen on synthetic data and frozen (sha256
-  hashes committed) before any real 2024 state was opened.
-- **Events chosen by weather, not by model.** Hero events come from a pre-registered
+- **Synthetic-only selection.** Checkpoints were chosen on synthetic data and frozen, with their
+  SHA256 hashes committed, before any real 2024 state was opened.
+- **Events chosen by weather, not by model.** The showcase events come from a pre-registered
   meteorological ranking (ramps, broken cloud, clearing, clear sky). None was chosen for how
   GENCO behaved on it.
-- **Same real states for every model.** All five models are scored on the same 2,829 half-hourly
-  2024 states, with confidence intervals from a day-block bootstrap.
+- **Same real states for every model.** All five models are scored on the same 2,829
+  half-hourly 2024 states, with confidence intervals from a day-block bootstrap.
 - **No real data in training.** The response-aware model learned its sensitivities from paired
-  synthetic AC states only; the real PV slope was never a training or selection target.
-- **Stop rules respected.** The weather-generalisation re-test was pre-registered to run only if
-  real transfer succeeded. It did not, so it was not run for the envelope-tuned,
-  generator-aware or response-aware models.
+  synthetic states only. The real solar response was never a training or selection target.
+- **Stop rules respected.** The weather re-test was pre-registered to run only if real transfer
+  succeeded. It did not, so it was not run for steps 2 to 4.
 """
-)
-
-st.markdown("### Limits of this demo")
-st.markdown(
-    """
-- Grid states are **half-hourly** (UKPN data); the satellite and PV run at 15 minutes. Between
-  grid states the app holds the last state and labels it. Nothing is interpolated.
-- PV is a **satellite-derived estimate**, not metered output. The AC flows are a **simulation**
-  on a reconstructed network, validated against operational metering but not identical to it.
-- Several network junctions have **no published coordinates**; they appear only in the
-  schematic.
-- The S1 regression slopes summarise average sensitivity over 2,829 states; per-step
-  attributions on the PV page apply those averages to one event's input changes.
-- Every model, including the response-aware one, is shown on the frozen half-hourly real states
-  used for its published metrics. No 15-minute, ramp or weather predictions were made for the
-  response-aware model, because its pre-registered rules stopped before that step.
+    )
+with c_limits:
+    st.markdown("### Limits of this demo")
+    st.markdown(
+        """
+- **Half-hourly grid states.** Grid states are half-hourly (UKPN data), while the satellite and
+  solar run at 15 minutes. Between grid states the app holds the last state and labels it.
+  Nothing is interpolated.
+- **Estimated solar, simulated flows.** Solar is a satellite-derived estimate, not metered
+  output. The flows are a simulation on a reconstructed network, validated against operational
+  metering but not identical to it.
+- **Schematic network.** Several network junctions have no published coordinates, so they
+  appear only in the schematic.
+- **Average sensitivities.** The solar, load and battery responses are averages over 2,829
+  states. The per-step attributions on the PV response page apply those averages to one event.
+- **No 15-minute predictions for step 4.** Every model is shown on the frozen half-hourly real
+  states behind its published metrics. No 15-minute, ramp or weather predictions were made for
+  the response-aware model, because its pre-registered rules stopped before that step.
 """
-)
+    )
 
+# ---------------------------------------------------------------- follow-up
 st.markdown("### Possible follow-up directions")
+offset = (
+    f" (the response-aware model's {num(float(e5d.import_bias_mw), '+.0f')} MW offset)"
+    if has_e5d
+    else ""
+)
 st.markdown(
-    """
+    f"""
 Ideas for further work; each would need its own pre-registration.
 
-- **Bias / calibration correction** of the absolute import level (the response-aware model's
-  +13 MW offset), learned from synthetic data only.
+- **Calibration correction.** Correct the absolute import level{offset}, learning the
+  correction from synthetic data only.
 - **Seed stability.** Response-aware training gave very different real accuracy across seeds.
-- **Multi-objective response + state training**, balancing absolute accuracy and sensitivities
-  explicitly.
-- **Canterbury spatial experiment:** a second network where PV is spread over many pixels, so
-  spatial weather structure (hypothesis H2) can be tested.
-- **Weather re-test** with the frozen S1 / S2 protocol, once a future model passes the complete
-  real-transfer gate.
+- **Joint response and state training.** Balance absolute accuracy and sensitivities explicitly
+  in one training objective.
+- **A second network.** Canterbury, where solar is spread over many satellite pixels, so the
+  spatial structure of the weather can be tested (hypothesis H2 in the pre-registration).
+- **Weather re-test.** Rerun the frozen weather-test protocol (S1 and S2 in the reports) once a
+  future model passes the complete real-transfer gate.
 """
 )
 T.footer()

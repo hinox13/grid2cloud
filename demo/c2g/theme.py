@@ -329,18 +329,27 @@ h1, h2, h3 {{ letter-spacing: -0.01em; }}
 .c2g-table td {{ color: {INK}; padding: 7px 12px; border-bottom: 1px solid {BORDER};
   font-variant-numeric: tabular-nums; }}
 .c2g-table tr:last-child td {{ border-bottom: 0; }}
-.c2g-ladder {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+.c2g-ladder {{ display: grid; grid-template-columns: repeat(var(--n, 5), 1fr);
   gap: 10px; margin: 6px 0 4px 0; }}
+@media (max-width: 1100px) {{ .c2g-ladder {{ grid-template-columns: repeat(3, 1fr); }} }}
+@media (max-width: 700px) {{ .c2g-ladder {{ grid-template-columns: 1fr; }} }}
 .c2g-step {{ background: {SURFACE}; border: 1px solid {BORDER}; border-radius: 12px;
-  padding: 10px 14px; box-shadow: {SHADOW}; }}
-.c2g-step .n {{ color: {INK}; font-weight: 700; font-size: 0.95rem; }}
-.c2g-step .a {{ color: {MUTED}; font-size: 0.80rem; margin-top: 2px; }}
-.c2g-step .o {{ color: {INK}; font-size: 0.92rem; font-weight: 600; margin: 6px 0 8px 0;
+  padding: 10px 14px; box-shadow: {SHADOW}; display: flex; flex-direction: column; }}
+.c2g-step .t {{ color: {MUTED}; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; }}
+.c2g-step .n {{ color: {INK}; font-weight: 700; font-size: 0.98rem; margin-top: 1px; }}
+.c2g-step .a {{ color: {INK_2}; font-size: 0.84rem; margin-top: 2px; line-height: 1.35; }}
+.c2g-step .o {{ color: {INK}; font-size: 0.92rem; font-weight: 600; margin: 6px 0 4px 0;
   min-height: 2.6em; line-height: 1.3; }}
-.c2g-step .m {{ display: flex; justify-content: space-between; gap: 8px; font-size: 0.78rem;
-  color: {INK_2}; border-top: 1px solid {BORDER}; padding: 3px 0; }}
-.c2g-step .m b {{ color: {INK}; font-variant-numeric: tabular-nums; }}
-.c2g-step .x {{ color: {MUTED}; font-size: 0.72rem; }}
+.c2g-step .d {{ color: {INK_2}; font-size: 0.86rem; line-height: 1.45; margin-bottom: 8px;
+}}
+.c2g-step .m {{ display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 8px;
+  font-size: 0.84rem; color: {INK_2}; border-top: 1px solid {BORDER}; padding: 4px 0; }}
+.c2g-step .m span {{ white-space: nowrap; }}
+.c2g-step .m b {{ color: {INK}; font-variant-numeric: tabular-nums; white-space: nowrap;
+  margin-left: auto; }}
+.c2g-step .m2 b {{ flex-basis: 100%; text-align: right; }}
+.c2g-step .x {{ color: {MUTED}; font-size: 0.78rem; line-height: 1.35; margin-bottom: 6px; }}
 .c2g-swatch {{ display:inline-block; width:10px; height:10px; border-radius:2px;
   margin-right:6px; vertical-align:middle; }}
 </style>
@@ -441,37 +450,81 @@ def faceoff(*cells: tuple[str, str, str, str]) -> None:
 
 # "What did we learn?": one card per stage, frozen S1 numbers only (model_evolution.csv)
 LADDER = [
-    ("zero_shot", "Zero-shot", "Topology failure"),
-    ("E5", "+ synthetic topology adaptation", "Synthetic success, real failure"),
-    ("E5b", "+ broader operating envelope", "~99 % lower real-state error"),
-    ("E5c", "+ explicit generators", "Better load and battery response; PV still blind"),
-    ("E5d", "+ paired response supervision", "PV sensitivity transfers; calibration still off"),
+    ("zero_shot", "As published, never trained on this grid", "Topology failure"),
+    (
+        "E5",
+        "Fine-tuned on synthetic states of the Sundon network",
+        "Synthetic success, real failure",
+    ),
+    ("E5b", "Synthetic states spanning the real operating range", "~99 % lower real-state error"),
+    (
+        "E5c",
+        "Solar farms modelled as explicit generators",
+        "Better load and battery response; PV still blind",
+    ),
+    (
+        "E5d",
+        "New loss: match how the grid responds to each input",
+        "PV sensitivity transfers; calibration still off",
+    ),
 ]
 
 
-def learned_ladder(evo: object, models: list[str]) -> None:
-    """One card per listed stage, each fixing a different failure mode (evo indexed by id)."""
-    ac = float(evo.iloc[0]["ac_slope_pv"])
+def num(x: float, spec: str) -> str:
+    """Format a number with a true minus sign (−), e.g. num(-1.02, '+.2f') -> '−1.02'."""
+    return format(x, spec).replace("-", "\u2212")
+
+
+def step_tag(k: int) -> str:
+    """'Start' for the original model, then 'Step 1' … (the Overview's numbering)."""
+    return "Start" if k == 0 else f"Step {k}"
+
+
+def step_name(m: str) -> str:
+    return "Original GENCO" if m == "zero_shot" else NAMES[m]
+
+
+def learned_ladder(evo: object, models: list[str], detail: dict[str, str] | None = None) -> None:
+    """One card per listed stage, each fixing a different failure mode (evo indexed by id).
+    Names, numbering and metrics match the Overview; `detail` adds one sentence per card."""
+    ac_pv = float(evo.iloc[0]["ac_slope_pv"])
+    ac_imp = float(evo.iloc[0]["ac_import_mean_mw"])
+    steps = [x for x in LADDER if x[0] in models]
     cells = []
-    for i, (m, added, outcome) in enumerate(x for x in LADDER if x[0] in models):
+    for k, (m, added, outcome) in enumerate(steps):
         pv, pbe = float(evo.at[m, "genco_slope_pv"]), float(evo.at[m, "PBE_mean"])
-        note = "PV slope not a usable response (import r 0.11)" if m == "E5" else ""
+        level = float(evo.at[m, "genco_import_mean_mw"])
+        off = float(evo.at[m, "import_bias_mw"])
+        if m == "E5":  # its slope exists but is not a response (import barely correlates with AC)
+            pv_txt = "not usable"
+            note = (
+                f"Fitted slope {num(pv, '+.2f')}, but its import barely follows the physics "
+                f"(r = {float(evo.at[m, 'import_corr']):.2f}), so it is not a usable response."
+            )
+        else:
+            pv_txt, note = num(pv, "+.2f"), ""
+        more = f'<div class="d">{detail[m]}</div>' if detail and m in detail else ""
         cells.append(
             f'<div class="c2g-step" style="border-top:4px solid {colour(m)}">'
-            f'<div class="n">{i + 1}. {named(m)}</div><div class="a">{added}</div>'
-            f'<div class="o">{outcome}</div>'
+            f'<div class="t">{step_tag(k)}</div>'
+            f'<div class="n">{step_name(m)} {exp_tag(m)}</div><div class="a">{added}</div>'
+            f'<div class="o">{outcome}</div>{more}<div class="x">{note}</div>'
+            '<div style="flex-grow:1"></div>'
             f'<div class="m"><span>Real-state error</span><b>{pbe:.2g} MVA</b></div>'
-            f'<div class="m"><span>PV response (AC {ac:+.2f})</span><b>{pv:+.2f}</b></div>'
-            f'<div class="m"><span>Import bias</span><b>{evo.at[m, "import_bias_mw"]:+.0f} MW</b>'
-            f"</div>"
-            f'<div class="x">{note}</div></div>'
+            f'<div class="m"><span>Solar response</span><b>{pv_txt}</b></div>'
+            f'<div class="m m2"><span>Power drawn from grid</span>'
+            f"<b>{num(level, '+.0f')} MW ({num(off, '+.0f')})</b></div>"
+            "</div>"
         )
     st.markdown(
-        '<div class="c2g-ladder">' + "".join(cells) + "</div>"
-        '<div class="c2g-note">Frozen results on the same 2,829 real half-hourly 2024 states. '
-        "Real-state error = mean power-balance error; PV response = MW of grid import per MW of "
-        "PV. No stage passes the full pre-registered real-transfer gate, so the weather question "
-        "stays unresolved.</div>",
+        f'<div class="c2g-ladder" style="--n:{len(steps)}">' + "".join(cells) + "</div>"
+        '<div class="c2g-note" style="font-size:0.84rem;margin-top:6px">Frozen results on the '
+        "same 2,829 real half-hourly 2024 states. <b>Real-state error</b>: mean power-balance "
+        "error of the prediction (MVA; 0 for the physics). <b>Solar response</b>: MW change in "
+        f"power drawn from the grid per MW of solar (physics {num(ac_pv, '+.2f')}). <b>Power "
+        "drawn from grid</b>: average import at Sundon's grid supply point, with the offset from "
+        f"the physics value ({ac_imp:.0f} MW) in brackets. The small tags (E4 to E5d) are the "
+        "experiment codes used in the reports.</div>",
         unsafe_allow_html=True,
     )
 

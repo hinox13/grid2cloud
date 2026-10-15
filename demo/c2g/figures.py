@@ -579,3 +579,59 @@ def metric_bars(
         )
     )
     return fig
+
+
+# --------------------------------------------------------------------------- scientific story
+def solar_response_by_step(evo: pd.DataFrame, models: list[str]) -> go.Figure:
+    """Solar (PV) response per step against the physics value: one horizontal bar per model,
+    in step order top to bottom. The grid-tuned slope is drawn faded and hatched: it exists but
+    is not a usable response (its import barely correlates with the physics)."""
+    steps = [m for m, _, _ in T.LADDER if m in models]
+    ac = float(evo.iloc[0]["ac_slope_pv"])
+    labels = [f"{T.step_tag(k)}: {T.step_name(m)}" for k, m in enumerate(steps)]
+    vals = [float(evo.at[m, "genco_slope_pv"]) for m in steps]
+    unusable = [m == "E5" for m in steps]
+    fig = go.Figure(
+        go.Bar(
+            y=labels,
+            x=vals,
+            orientation="h",
+            marker=dict(
+                color=[T.colour(m) for m in steps],
+                opacity=[0.45 if u else 1.0 for u in unusable],
+                pattern=dict(shape=["/" if u else "" for u in unusable], fgcolor=T.SURFACE),
+                cornerradius=4,
+                line_width=0,
+            ),
+            text=[
+                f"{T.num(v, '+.2f')}" + (" (not usable)" if u else "")
+                for v, u in zip(vals, unusable, strict=True)
+            ],
+            textposition="outside",
+            textfont=dict(color=T.INK_2, size=12),
+            cliponaxis=False,
+            hovertemplate="%{y}: %{x:+.2f} MW per MW of solar<extra></extra>",
+            showlegend=False,
+        )
+    )
+    fig.add_vline(x=ac, line=dict(color=T.AC, width=2, dash="dot"))
+    fig.add_annotation(
+        x=ac,
+        y=1.0,
+        yref="paper",
+        yanchor="bottom",
+        text=f"Physics {T.num(ac, '+.2f')}",
+        showarrow=False,
+        font=dict(color=T.INK, size=12),
+    )
+    fig.update_xaxes(
+        **T.axis(),
+        range=[min(vals + [ac]) * 1.28, 0.06],
+        zeroline=True,
+        title=dict(
+            text="MW change in power drawn from the grid per MW of solar", font=dict(size=12)
+        ),
+    )
+    fig.update_yaxes(**T.axis(), autorange="reversed", showgrid=False)
+    fig.update_layout(**T.plotly_layout(height=270, margin=dict(l=8, r=16, t=30, b=8), bargap=0.45))
+    return fig
