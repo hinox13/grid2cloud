@@ -43,9 +43,10 @@ E-View frames) and runs offline in about a minute:
 uv run python scripts/build_demo_events.py             # → data/demo/ (≈3 MB)
 ```
 
-Pages: **Explorer** (Play the event; switch AC / zero-shot / E5 / E5b / E5c / E5d), **PV
-response** (the central finding: the PV blind spot and what closed it), **Model evolution**,
-**Scientific story**, **Data & attribution**. Deployment: [`docs/DEMO.md`](docs/DEMO.md).
+Pages: **Overview** (the question, the finding and one frozen moment of the 15 June story),
+**Demo** (play the story or the event; switch AC / zero-shot / E5 / E5b / E5c / E5d),
+**Scientific story**, **PV response** (the central finding: the PV blind spot and what closed it),
+**Model evolution**, **Data & attribution**. Deployment: [`docs/DEMO.md`](docs/DEMO.md).
 
 ![What did we learn? E4 → E5d](reports/figures/c2g_what_we_learned.png)
 

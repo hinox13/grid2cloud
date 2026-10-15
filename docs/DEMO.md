@@ -1,8 +1,9 @@
 # Cloud2Grid Explorer: run and deploy
 
-The Explorer replays **frozen** research results. It never runs an AC power flow, GENCO
-inference, satellite download or training. Everything it shows is precomputed in `data/demo/`
-by `scripts/build_demo_events.py`.
+The Explorer replays **frozen** research results. It opens on an **Overview** (the question,
+the finding and one frozen moment of the story); the interactive replay is the **Demo** page.
+It never runs an AC power flow, GENCO inference, satellite download or training. Everything it
+shows is precomputed in `data/demo/` by `scripts/build_demo_events.py`.
 
 ## Run locally
 
@@ -62,8 +63,11 @@ states the app holds the last state and labels it.
 
 ## Story mode
 
-**Play the 15 June story** on the Explorer runs a fixed, captioned sequence over the frozen
-B02/D01 clearing in six scenes. It takes about a minute and can be paused, skipped or exited:
+**Play the 15 June story** (on the Overview or the Demo page) runs a fixed, captioned sequence
+over the frozen B02/D01 clearing in six scenes, shown like slides. Within a scene, image steps
+advance every second and a change of model keeps its authored hold; at the end of each scene the
+story waits for **Next** (**Back** returns to the previous scene, **Exit** leaves it). With
+**Auto-play** on, it continues to the next scene after the authored hold:
 
 1. **A real cloud field over Sundon**: observed E-View imagery.
 2. **Satellite observations become PV forcing**: LSA SAF radiation → estimated PV.
@@ -84,7 +88,7 @@ and the current frame fades in on top, so consecutive real 15-minute images diss
 other during Play and when scrubbing. The cross-fade is a display transition between two real
 frames; no intermediate image is synthesised or stored. The overlay (study area, substations,
 PV assets, reference towns) is an SVG image, because `st.html` strips inline SVG; it therefore
-has no hover tooltips. In story mode the Explorer switches to a two-panel "cinema" layout, and
+has no hover tooltips. In story mode the Demo page switches to a two-panel "cinema" layout, and
 scenes 3 and 5 shade the 11:00–11:30 interval on the timeline.
 
 ## Themes

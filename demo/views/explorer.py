@@ -1,8 +1,11 @@
-"""Explorer: replay a frozen hero event — real clouds → solar power → power grid → GENCO.
+"""Demo: replay a frozen hero event — real clouds → solar power → power grid → GENCO.
 
 Two modes share one stage:
   manual  pick event / model / time, or Play the event;
-  story   "Play the 15 June story": a fixed, captioned sequence of beats (c2g/story.py).
+  story   "Play the 15 June story": a fixed, captioned sequence of scenes (c2g/story.py), shown
+          like slides — within a scene, image steps advance quickly (1 s) and model changes keep
+          their authored hold; at the end of each scene the story waits for Next (or continues
+          after the authored hold when Auto-play is on).
 Charts keep stable keys so Plotly updates in place during playback (no remount flicker)."""
 
 from __future__ import annotations
@@ -14,7 +17,7 @@ from c2g import satellite as SAT
 from c2g import story as S
 from c2g import theme as T
 
-T.setup("Explorer", toggle=False)
+T.setup("Demo", toggle=False)
 cat = D.catalog()
 mods = [m["id"] for m in D.models()]
 events = {e["event_id"]: e for e in cat["events"]}
@@ -29,13 +32,19 @@ ss.setdefault("story_paused", False)
 ss.setdefault("beat", 0)
 ss.setdefault("beat_age", 0)
 ss.setdefault("playing", False)
+ss.setdefault("story_auto", False)
 ss.setdefault("t_idx", 0)
 ss.setdefault("model", "E5c")
 ss.setdefault("colour_by", "Loading")
 
 
+def scene_start(scene: int) -> int:
+    """Index of the first beat of a scene."""
+    return next(k for k, b in enumerate(BEATS) if b.scene == scene)
+
+
 def start_story() -> None:
-    ss.update(story_on=True, story_paused=False, beat=0, beat_age=0, playing=False)
+    ss.update(story_on=True, story_paused=False, beat=0, beat_age=-1, playing=False)
 
 
 def stop_story() -> None:
@@ -66,27 +75,24 @@ with h_right:
     with tcol:
         T.theme_toggle()
     if ss.story_on:  # story controls live in the header so the stage keeps its height
-        last = ss.beat == len(BEATS) - 1
+        cur = BEATS[ss.beat].scene
         c1, c2, c3 = st.columns(3)
         if c1.button(
-            "Pause" if not ss.story_paused else "Resume",
-            icon=":material/pause:" if not ss.story_paused else ":material/play_arrow:",
-            width="stretch",
-            key="story_pause",
-            disabled=last and ss.story_paused,
-        ):
-            ss.story_paused = not ss.story_paused
+            "Back", icon=":material/skip_previous:", width="stretch", key="story_back",
+            disabled=cur == 0,
+        ):  # fmt: skip
+            ss.update(beat=scene_start(cur - 1), beat_age=-1, story_paused=False)
             st.rerun()
         if c2.button(
-            "Next", icon=":material/skip_next:", width="stretch", key="story_next", disabled=last
-        ):
-            cur = BEATS[ss.beat].scene
-            nxt = next((k for k, b in enumerate(BEATS) if b.scene > cur), len(BEATS) - 1)
-            ss.update(beat=nxt, beat_age=0, story_paused=False)
+            "Next", icon=":material/skip_next:", width="stretch", key="story_next",
+            type="primary", disabled=cur == S.n_scenes() - 1,
+        ):  # fmt: skip
+            ss.update(beat=scene_start(cur + 1), beat_age=-1, story_paused=False)
             st.rerun()
         if c3.button("Exit", icon=":material/close:", width="stretch", key="exit_story"):
             stop_story()
             st.rerun()
+        st.toggle("Auto-play", key="story_auto", help="Continue to the next scene automatically.")
     elif st.button(
         "Play the 15 June story",
         icon=":material/play_circle:",
@@ -166,11 +172,17 @@ def stage() -> None:
         if not ss.story_paused:
             beat = BEATS[ss.beat]
             ss.beat_age += 1
-            if beat.hold and ss.beat_age >= beat.hold and ss.beat < len(BEATS) - 1:
-                ss.beat += 1
-                ss.beat_age = 0
-            elif ss.beat == len(BEATS) - 1:
-                ss.story_paused = True  # the story ends on its last beat
+            nxt = ss.beat + 1 if ss.beat < len(BEATS) - 1 else None
+            if nxt is not None and BEATS[nxt].scene == beat.scene:
+                # within a scene: image steps advance quickly; a model change keeps its hold
+                wait = 1 if BEATS[nxt].model == beat.model else max(beat.hold, 1)
+                if ss.beat_age >= wait:
+                    ss.update(beat=nxt, beat_age=0)
+            elif nxt is not None and ss.story_auto:
+                if ss.beat_age >= max(beat.hold, 2):
+                    ss.update(beat=nxt, beat_age=0)
+            else:
+                ss.story_paused = True  # end of a scene (or of the story): wait for Next
                 st.rerun()  # full rerun: stops the timer
         beat = BEATS[ss.beat]
         i, view, watch = beat.t, beat.model, beat.watch
@@ -219,6 +231,11 @@ def stage() -> None:
             f'<div class="c2g-story-cap">{S.caption(beat, t, pv_t, ac_imp, m_imp)}</div></div>',
             unsafe_allow_html=True,
         )
+        if ss.story_paused and beat.scene < S.n_scenes() - 1:
+            st.markdown(
+                '<div class="c2g-note">Press <b>Next</b> for the next scene.</div>',
+                unsafe_allow_html=True,
+            )
         if ss.beat == len(BEATS) - 1:
             st.page_link(
                 "views/pv_response.py", label="See the PV response →", icon=":material/wb_sunny:"

@@ -149,11 +149,10 @@ st.markdown(
 """
 )
 
-st.markdown("### Future work (not started)")
+st.markdown("### Possible follow-up directions")
 st.markdown(
     """
-Ideas only; none has been implemented or started, and each would need its own
-pre-registration.
+Ideas for further work; each would need its own pre-registration.
 
 - **Bias / calibration correction** of the absolute import level (the response-aware model's
   +13 MW offset), learned from synthetic data only.
