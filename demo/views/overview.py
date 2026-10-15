@@ -140,7 +140,7 @@ def bar(label: str, value: float, scale: float, colour: str, text: str) -> str:
 
 
 def start_tour() -> None:
-    ss.update(story_on=True, story_paused=False, beat=0, beat_age=-1, playing=False)
+    ss.update(story_start=True, playing=False)  # the Demo page opens the story on slide 1
     st.switch_page("views/explorer.py")
 
 

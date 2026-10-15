@@ -226,6 +226,8 @@ def css(p: dict) -> str:
   color: {ACCENT_INK}; border: 0; font-weight: 600; box-shadow: 0 6px 20px rgba(245,165,36,0.28); }}
 [data-testid="stBaseButton-primary"]:hover {{ background: #ffc24f; color: {ACCENT_INK}; }}
 [data-testid="stBaseButton-primary"] * {{ color: {ACCENT_INK} !important; }}
+[data-testid="stBaseButton-primary"]:disabled {{ background: {ACCENT} !important;
+  opacity: 0.4; box-shadow: none; }}
 [data-testid="stBaseButton-secondary"] {{ background: {SURFACE}; color: {INK};
   border: 1px solid {BORDER}; }}
 .block-container {{ padding-top: 3.6rem; padding-bottom: 2rem; max-width: 1500px; }}
@@ -235,10 +237,12 @@ h1, h2, h3 {{ letter-spacing: -0.01em; }}
   border: 1px solid {BORDER}; color: {INK_2}; margin-right: 6px;
   text-transform: uppercase; letter-spacing: 0.04em; }}
 .c2g-panel-title {{ color: {INK}; font-weight: 600; font-size: 0.95rem; margin: 0 0 2px 0; }}
-.c2g-chain {{ display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch;
-  margin: 2px 0 8px 0; }}
+.c2g-chain {{ display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; gap: 6px;
+  align-items: stretch; margin: 2px 0 10px 0; }}
+@media (max-width: 760px) {{ .c2g-chain {{ grid-template-columns: 1fr 1fr; }}
+  .c2g-chain .c2g-arrow {{ display: none; }} }}
 .c2g-chip {{ background: {SURFACE}; border: 1px solid {BORDER}; border-radius: 10px;
-  padding: 6px 12px; min-width: 120px; }}
+  padding: 6px 12px; min-width: 0; }}
 .c2g-chip .k {{ color: {MUTED}; font-size: 0.70rem; text-transform: uppercase;
   letter-spacing: 0.05em; }}
 .c2g-chip .v {{ color: {INK}; font-size: 1.15rem; font-weight: 600; }}
@@ -376,6 +380,8 @@ h1, h2, h3 {{ letter-spacing: -0.01em; }}
 [data-testid="stHeader"] svg {{ color: {INK_2}; fill: {INK_2}; }}
 .stApp code {{ background: {SURFACE}; color: {INK}; }}
 .stApp a {{ color: #8ab4ff; }}
+[data-testid="stPageLink-NavLink"] span {{ color: {INK} !important; }}
+[data-testid="stPageLink-NavLink"] [data-testid="stIconMaterial"] {{ color: {INK_2} !important; }}
 .stApp table th, .stApp table td {{ border-color: {BORDER} !important; }}
 </style>
 """

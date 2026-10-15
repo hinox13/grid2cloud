@@ -64,16 +64,18 @@ states the app holds the last state and labels it.
 
 ## Story mode
 
-**Play the 15 June story** (on the Demo page; **Take the guided tour** on the Overview) runs a
-fixed, captioned sequence over the frozen B02/D01 clearing in six scenes, shown like slides. Within a scene, image steps
-advance every second and a change of model keeps its authored hold; at the end of each scene the
-story waits for **Next** (**Back** returns to the previous scene, **Exit** leaves it). With
-**Auto-play** on, it continues to the next scene after the authored hold:
+**Take the guided tour** (on the Overview or the Demo page) runs a fixed, captioned sequence over the frozen B02/D01 clearing in six scenes, shown as still slides.
+Each slide shows the last moment of its scene, and its caption is filled at that moment, so
+nothing moves until you press **Next** (**Back** returns to the previous slide, **Exit** leaves
+the story). **Replay this scene** steps through the scene's 15-minute images, one per second,
+and stops on the slide again. Scene 4 switches model, so it is split into one slide per model
+(4a, 4b, 4c). With **Auto-play** on, the next slide follows after 5 seconds. Story mode opens
+the satellite view zoomed to Sundon and hides the provenance tags:
 
 1. **A real cloud field over Sundon**: observed E-View imagery.
 2. **Satellite observations become PV forcing**: LSA SAF radiation → estimated PV.
 3. **The physical grid responds**: AC import at 11:00 → 11:30, and the PV share of that change.
-4. **GENCO transfer**: zero-shot failure, then E5b and E5c.
+4. **GENCO transfer**: zero-shot failure (4a), then E5b (4b) and E5c (4c).
 5. **The blind spot**: AC versus E5c PV slopes.
 6. **Learning the response**: E5d's PV and load slopes, and its +13 MW import bias, ending with a
    link to the PV page. Skipped automatically if E5d is not in the bundle.
