@@ -1,7 +1,8 @@
 # Cloud2Grid Explorer: run and deploy
 
 The Explorer replays **frozen** research results. It opens on an **Overview** (the question,
-the finding and one frozen moment of the story); the interactive replay is the **Demo** page.
+the four fine-tuning steps, the answer, one frozen moment of the story and links to the code and
+models); the interactive replay is the **Demo** page.
 It never runs an AC power flow, GENCO inference, satellite download or training. Everything it
 shows is precomputed in `data/demo/` by `scripts/build_demo_events.py`.
 
@@ -63,8 +64,8 @@ states the app holds the last state and labels it.
 
 ## Story mode
 
-**Play the 15 June story** (on the Overview or the Demo page) runs a fixed, captioned sequence
-over the frozen B02/D01 clearing in six scenes, shown like slides. Within a scene, image steps
+**Play the 15 June story** (on the Demo page; **Take the guided tour** on the Overview) runs a
+fixed, captioned sequence over the frozen B02/D01 clearing in six scenes, shown like slides. Within a scene, image steps
 advance every second and a change of model keeps its authored hold; at the end of each scene the
 story waits for **Next** (**Back** returns to the previous scene, **Exit** leaves it). With
 **Auto-play** on, it continues to the next scene after the authored hold:
