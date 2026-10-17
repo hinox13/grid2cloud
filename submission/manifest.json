@@ -1,0 +1,93 @@
+{
+  "figures": {
+    "01_cloud2grid_overview.png": {
+      "sha256": "76f57763f3d5c2bbc342e4bdf283a051f5c74a32f41dde3a2b5de9dc6c8bee95",
+      "bytes": 1137349,
+      "px": [
+        3200,
+        1640
+      ],
+      "claim": "Real clouds \u2192 solar power \u2192 a real grid \u2192 GENCO, on the 15 June 2024 clearing; each layer labelled with its provenance.",
+      "data": "data/demo/events/jun15_cloud_clearing/ (E-View frames 09:00 and 11:30 UTC, fleet_pv.parquet, summary.parquet, AC branch states), data/demo/network_layout.json",
+      "code": "submission/make_figures.py fig1"
+    },
+    "02_transfer_learning_journey.png": {
+      "sha256": "7fee822ea6c72534213f61857eb5fb21a57bb7b30a1a59b7cb5997a446277c97",
+      "bytes": 561067,
+      "px": [
+        3200,
+        2180
+      ],
+      "claim": "Five pre-registered stages, each fixing one limitation and exposing the next; real-state PBE and PV response per stage.",
+      "data": "reports/tables/e5d_real_transfer.csv, reports/tables/e4_family_summary.csv (S0), reports/e5_topology_adaptation.md \u00a71, reports/e5b_real_transfer.md",
+      "code": "submission/make_figures.py fig2"
+    },
+    "03_pv_response_real_states.png": {
+      "sha256": "1cd0f6308f986c099bb43d8c9bee7895cacf8c5a37536112d4190bab014dd463",
+      "bytes": 791599,
+      "px": [
+        3200,
+        1720
+      ],
+      "claim": "On 2,829 real states the PV-to-import slope is \u22120.04 (E5c) and \u22121.07 (E5d) against AC \u22121.02; calibration incomplete (+13.1 MW, E5D-D).",
+      "data": "data/demo/pv_response_s1.parquet (partial residuals of the published S1 regression), data/demo/catalog.json, reports/tables/e5d_real_transfer.csv",
+      "code": "submission/make_figures.py fig3"
+    },
+    "04_real_transfer_performance.png": {
+      "sha256": "083dbfaee0446ade582d7092e6f527f7b14c6ba665c839c0cdd3abc9bc43d8fc",
+      "bytes": 336741,
+      "px": [
+        3200,
+        1680
+      ],
+      "claim": "Different stages fix different things: E5b lowest PBE, E5c best import spread, E5d only physical PV sensitivity; no stage passes the full gate.",
+      "data": "reports/tables/e5d_real_transfer.csv; gate lines from configs/experiments/e5d_selection.yaml",
+      "code": "submission/make_figures.py fig4"
+    },
+    "05_explorer_hero_event.png": {
+      "sha256": "4259de022cca1cbbe6b3e4d9bdb0f0f88422250c381d35d1f593a8d5342be4f2",
+      "bytes": 1728010,
+      "px": [
+        2560,
+        1744
+      ],
+      "claim": "The deployed Explorer: guided tour (slide 6 of 6), Overview, Scientific story. Screenshots only; no data drawn.",
+      "data": "submission/screenshots/explorer_guided_tour_slide6.png, explorer_overview_top.png, explorer_story_steps.png (captured 16 Oct 2026 from the Explorer at publication commit 41ab219, light theme, 1440 px viewport at 2\u00d7 density)",
+      "code": "submission/make_figures.py fig5"
+    },
+    "06_why_response_is_not_enough.png": {
+      "sha256": "f58af618e8bb88c3daf76c8cc6e0707c2c9130824c0a59ec73029fd04c35f35a",
+      "bytes": 623101,
+      "px": [
+        3200,
+        1720
+      ],
+      "claim": "Post-hoc E6 diagnostic (held-out synthetic only): import compressed toward the training mean; the level error is shared within PV pairs and cancels in the supervised change.",
+      "data": "reports/tables/e6_import_states_e5d.csv, e6_pv_pairs_e5d.csv, e6_pair_level_cancellation.csv, e6_model_comparison.csv; reports/experiments/e6_feasibility/diagnostic.json",
+      "code": "submission/make_figures.py fig6"
+    }
+  },
+  "screenshots": {
+    "explorer_guided_tour_slide6.png": {
+      "sha256": "f994da4da91b9111e4a21d8c0fc0619235cc59012ac27d11a65a5f4c6bd95f85",
+      "px": [
+        2640,
+        2730
+      ]
+    },
+    "explorer_overview_top.png": {
+      "sha256": "503f77596686b3fad987d2975f766a391387bb1496df14d5b432c6bdba6513e3",
+      "px": [
+        2640,
+        1495
+      ]
+    },
+    "explorer_story_steps.png": {
+      "sha256": "c12c7d97362bee1c72149654afb8c34e096a7abf6f6345d220c4060e9b8f2ee1",
+      "px": [
+        2640,
+        1740
+      ]
+    }
+  }
+}

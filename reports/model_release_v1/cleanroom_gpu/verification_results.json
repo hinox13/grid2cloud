@@ -1,0 +1,136 @@
+{
+  "release": "cloud2grid-models-v1",
+  "device": "gpu",
+  "checks": {
+    "asset_sha256": {
+      "cloud2grid-e5c-ft-n10000-s2.tar.gz": "PASS",
+      "cloud2grid-e5d-l1-s0.tar.gz": "PASS",
+      "cloud2grid-verification-synthetic-v1.tar.gz": "PASS"
+    },
+    "integrity": {
+      "E5c": {
+        "package_files": true,
+        "checkpoint_matches_public_registry": true,
+        "normalizer_matches_public_registry": true,
+        "loads_with_weights_only": true,
+        "n_parameters": 20069187
+      },
+      "E5d": {
+        "package_files": true,
+        "checkpoint_matches_public_registry": true,
+        "normalizer_matches_public_registry": true,
+        "loads_with_weights_only": true,
+        "n_parameters": 20069187
+      },
+      "verification_data_files": true
+    },
+    "A_definitions_reproduce_published_from_frozen_predictions": {
+      "E5c": {
+        "response_max_rel_diff": 6.915672383611318e-15,
+        "static_max_rel_diff": 5.5219632427677665e-08,
+        "pass": "True"
+      },
+      "E5d": {
+        "response_max_rel_diff": 8.123104317234025e-15,
+        "static_max_rel_diff": 7.812409179634633e-08,
+        "pass": "True"
+      }
+    },
+    "B_fresh_vs_frozen_predictions": {
+      "E5c": {
+        "e5d_test_pairs": {
+          "import_mw": 0.18613433837890625,
+          "Vm_pu": 5.1021575927734375e-05,
+          "Va_rad": 0.00010527670383453369,
+          "branch_P_mw": 0.48738908767700195,
+          "import_mean_mw": 0.0376586876809597,
+          "ac_targets_identical": true
+        },
+        "e5c_test": {
+          "import_mw": 0.24057769775390625,
+          "Vm_pu": 5.745887756347656e-05,
+          "Va_rad": 0.00012242794036865234,
+          "branch_P_mw": 0.7784526944160461,
+          "import_mean_mw": 0.036857426166534424,
+          "ac_targets_identical": true
+        },
+        "pass": true
+      },
+      "E5d": {
+        "e5d_test_pairs": {
+          "import_mw": 0.1434173583984375,
+          "Vm_pu": 7.033348083496094e-06,
+          "Va_rad": 9.715557098388672e-06,
+          "branch_P_mw": 0.22112688422203064,
+          "import_mean_mw": 0.02600017376244068,
+          "ac_targets_identical": true
+        },
+        "e5c_test": {
+          "import_mw": 0.13999176025390625,
+          "Vm_pu": 2.1696090698242188e-05,
+          "Va_rad": 2.498924732208252e-05,
+          "branch_P_mw": 0.1995619535446167,
+          "import_mean_mw": 0.025349467992782593,
+          "ac_targets_identical": true
+        },
+        "pass": true
+      }
+    },
+    "C_fresh_metrics_within_tolerance": {
+      "n_scored": 44,
+      "n_within": 44,
+      "n_informational": 6,
+      "pass": true
+    }
+  },
+  "inference_wall_s": {
+    "e5c_ft_n10000_s2/e5d_test_pairs": 17.9,
+    "e5c_ft_n10000_s2/e5c_test": 17.2,
+    "e5d_l1_s0/e5d_test_pairs": 9.4,
+    "e5d_l1_s0/e5c_test": 9.1
+  },
+  "numerical_note": "GPU inference is not bit-deterministic; CPU inference is. Small response errors (e.g. E5d PV import ~0.02\u20130.03) include float32 noise in the decoded import; the published values were computed from one GPU run.",
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "E5c is blind to PV: its import barely responds to a PV change",
+      "criterion": "E5c pv import slope ratio < 0.1 and relative error > 0.9",
+      "holds": true,
+      "independently_reproduced": true
+    },
+    {
+      "id": "C2",
+      "claim": "E5d recovers the PV import response",
+      "criterion": "E5d pv slope ratio in [0.8, 1.2] and relative error <= 0.25 (RS1, RS2)",
+      "holds": true,
+      "independently_reproduced": true
+    },
+    {
+      "id": "C3",
+      "claim": "E5d reproduces the battery and load import responses",
+      "criterion": "battery and load: slope ratio in [0.8, 1.2] and relative error <= 0.25",
+      "holds": true,
+      "independently_reproduced": true
+    },
+    {
+      "id": "C4",
+      "claim": "E5d reproduces the distributed response (branch P, Vm, Va) for PV, battery and load",
+      "criterion": "relative error <= 0.5 for all nine (RS3\u2013RS5)",
+      "holds": true,
+      "independently_reproduced": true
+    },
+    {
+      "id": "C5",
+      "claim": "Both models keep an absolute import limitation on held-out synthetic states",
+      "criterion": "import MAE > 5 MW (fails ST4) and sign accuracy on |AC| >= 5 MW < 0.99 (fails ST3), both models",
+      "holds": true,
+      "independently_reproduced": true
+    }
+  ],
+  "not_reproducible_from_this_package": [
+    "Real 2024 Sundon results (e.g. PV \u2192 import slope AC \u22121.02, E5c \u22120.04, E5d \u22121.07 MW/MW; E5d +13 MW import offset; E5D-D transfer verdict): they require the real operating states (UKPN measurements + satellite-derived PV), which are not in this release.",
+    "Training: this package verifies inference of frozen checkpoints; it does not retrain them."
+  ],
+  "all_checks_pass": true,
+  "wall_s_total": 58.6
+}
