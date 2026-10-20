@@ -1,0 +1,71 @@
+# Cloud2Grid economic impact: PRE-REGISTERED methodology.
+# Committed before any price-weighted result is computed. After the first valuation, nothing below
+# may change: counterfactuals, price series, alignment, metrics, outcome rules.
+#
+# Publication note (2026-10-20): two wording edits since registration, no methodological change.
+# (1) `states.network` named a development-only module path; the same solver functions are now in
+#     scripts/economic_impact/counterfactual.py (outputs proven identical).
+# (2) The 7 Jul event label no longer ranks the ramp within the season (that ranking came from
+#     outside this study); the day, its periods and every rule are unchanged.
+# SHA-256 of the file as registered: f527cdbc1daaa57dbe9bbbe30b9958b2041bd6221c6c523c04375b8441753829
+
+name: economic_impact_v1
+registered: 2026-10-20
+question: >-
+  Under observed 2024 GB market prices, what is the illustrative value of the grid-import energy
+  attributable to the explicit 33 kV solar at Sundon, and of the extra import caused by clouds;
+  and how accurately do simple accounting, E5c and E5d reproduce the AC-based estimate?
+
+states:
+  source: "S1_WEATHER_ALIGNED: 2,829 AC-reconstructed half-hourly 2024 states (frozen)"
+  included: "states with no line out (2,820); the 9 outage states are excluded because the counterfactual is solved on the intact network"
+  network: "E1 planning case via the unchanged E5d pair machinery (scripts/economic_impact/counterfactual.py); the re-solved base must reproduce the frozen S1 AC import (max deviation reported)"
+  explicit_pv: "the 6 MW 33 kV plant ECR:955 at LBUZ31/32/33 (equals p_hv_injected_mw exactly); the ≤ 11 kV PV (2.9 MW) is inside the metered loads and is not changed"
+counterfactuals:
+  CF_noPV: "explicit 33 kV PV set to 0; loads, battery and reactive injections unchanged"
+  CF_clear: "explicit 33 kV PV set to its clear-sky estimate (same pvlib chain, Ineichen) at the slot; everything else unchanged"
+  quantities:
+    pv_attributed_import: "ΔI_pv = I(CF_noPV) − I(S1)  (MW; the import displaced by the plant)"
+    cloud_attributed_import: "ΔI_cloud = I(S1) − I(CF_clear)  (MW; the extra import caused by cloud attenuation)"
+  energy: >-
+    E = ΔI × 0.5 h per settlement period. Each half-hourly state stands for its settlement period
+    (loads are period averages; PV is the slot-start 15-min estimate). Sensitivity (reported, not
+    primary): PV replaced by the mean of the two 15-min estimates in the period, scaled through
+    the state's own AC response ΔI / ΔPV.
+
+prices:
+  primary_wholesale: >-
+    Elexon Insights Market Index Data (/balancing/pricing/market-index), provider APXMIDP:
+    volume-weighted short-term traded price (GBP/MWh) per settlement period. Periods with zero
+    MID volume are reported and valued at their published price.
+  secondary_imbalance: >-
+    Elexon Insights system prices (/balancing/settlement/system-prices/{date}): the single
+    imbalance cash-out price (GBP/MWh), latest settlement run. A separate scenario, never called a wholesale price.
+  alignment: "match on the period's UTC start time (Elexon startTime = S1 slot); settlement date and period number recorded (BST: period 1 starts 23:00 UTC)"
+  no_selection: "every included period is valued; no spike filtering; negative prices kept"
+  retrieval: "retrieval timestamp and row counts recorded; prices are inputs, never forecasts"
+
+methods_for_the_import_change:
+  AC: "pandapower AC on S1 and the counterfactual (reference)"
+  accounting: "ΔI = Δ(explicit PV) (lossless sum of injections)"
+  E5c: "frozen E5c predicted change: E5c(CF) − E5c(S1)"
+  E5d: "frozen E5d predicted change"
+  absolute_mode_diagnostic: "valuing GENCO's own absolute import, Σ I_model × price vs Σ I_AC × price (shows the bias risk)"
+
+metrics:
+  totals: "season and per-event energy (MWh) and value (GBP) per method and price series"
+  errors: "signed and relative error of each method's season value vs AC; per-period MAE of ΔI (MW) and of value (GBP)"
+  events: >-
+    15 Jun (cloud clearing), 15 Apr (broken cumulus), 23 Aug (clear-sky control), 7 Jul (a 30-min
+    PV ramp of +6.76 MW): every included period of each day; event exposure = the day's
+    integrated ΔI_cloud energy and value, plus its share of the season. Representative context:
+    season distribution of per-day values.
+
+outcomes:
+  A_strong: "authentic prices for every event period AND E5d's absolute season-value error ≤ 50 % of E5c's AND E5d's error < accounting's"
+  B_moderate: "prices authentic and the valuation physically meaningful, but A fails"
+  C_weak: "prices unavailable for the events, OR the season PV-attributed value is < £1,000, OR the counterfactual cannot be solved consistently (re-solved base deviates > 0.05 MW)"
+flexibility:
+  rule: >-
+    no avoided-flexibility-cost claim; UKPN dispatches are reported only as documented records, and
+    used as context only if their zone is not shown to contain the modelled Sundon 33 kV network

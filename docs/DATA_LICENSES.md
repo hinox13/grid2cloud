@@ -56,12 +56,16 @@ uv run python scripts/audit_licences.py --check-remote
 | `ukpn_ltds_table_5_generation`* | `ukpn-ltds-table-5-generation` | CC-BY-4.0 | ODS API licence field (registered in E1) |
 | `pvlib` | pvlib/pvlib-python | BSD-3-Clause | GitHub API |
 | `pandapower` | e2nIEE/pandapower | BSD-3-Clause | LICENSE text (GitHub API says NOASSERTION because of the multi-holder header) |
+| `elexon_bmrs_market_index`* | Elexon Insights Market Index Data (APXMIDP) | Elexon BMRS data licence | Elexon "Licence to use BMRS open data" page (registered for the Cloud Impact page) |
+| `elexon_bmrs_system_prices`* | Elexon Insights system prices | Elexon BMRS data licence | Same licence |
+| `ukpn_flexibility_dispatches`*, `ukpn_flexibility_tender_data`*, `ukpn_gsp_narrative`*, `ukpn_dnoa`* | UKPN flexibility and network-planning datasets | CC-BY-4.0 | ODS API licence field (read only; no record redistributed) |
 
 \* Added beyond the README registry. The reason for each is in its `notes` field:
 
 - The checkpoints and the case14 dataset are the official artefacts of the GENCO paper's reproduction guide.
 - The monthly operational datasets are, per the half-hourly datasets' own descriptions, the index of which circuits are redacted.
 - The E1 transformer datasets link half-hourly `tx_id` series to LTDS transformer nodes, and supply observed nodal demand and the BSP import. The LTDS 3a/5 tables give planning demand, power factor and generation. Only the study region's half-hourly series are retrieved, using a server-side `where` filter.
+- The Elexon BMRS prices value energy on the Cloud Impact page (`reports/economic_impact/`). Required attribution: "Contains BMRS data © Elexon Limited copyright and database right [year]"; no implied endorsement by Elexon. The UKPN flexibility datasets were read only to test whether any dispatch belongs to the modelled network.
 - The EPN 33 kV half-hourly dataset is the EPN counterpart of the README's SPN dataset. It was registered in E0-D because most grid-fed 33 kV networks with published data are in EPN.
 
 ## Unresolved (blocked by the gate)

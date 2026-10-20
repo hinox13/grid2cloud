@@ -1,0 +1,25 @@
+{
+  "retrieved_utc": "2026-10-20T15:05:59.079360+00:00",
+  "api": "https://data.elexon.co.uk/bmrs/api/v1",
+  "mid_rows": 17736,
+  "mid_providers": {
+    "APXMIDP": 8879,
+    "N2EXMIDP": 8857
+  },
+  "apx_periods": 8879,
+  "apx_zero_volume_periods": 0,
+  "apx_price_range": [
+    -61.09,
+    147.86
+  ],
+  "system_price_periods": 8878,
+  "ssp_equals_sbp_share": 1.0,
+  "system_price_range": [
+    -91.82,
+    200.0
+  ],
+  "system_price_created_range": [
+    "2024-04-01T00:44:36Z",
+    "2024-10-02T23:14:23Z"
+  ]
+}

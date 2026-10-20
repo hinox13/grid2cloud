@@ -25,6 +25,7 @@ VIEWS = Path(__file__).resolve().parent / "views"
 nav = st.navigation(
     [
         st.Page(VIEWS / "overview.py", title="Overview", icon=":material/home:", default=True),
+        st.Page(VIEWS / "cloud_impact.py", title="Cloud Impact", icon=":material/bolt:"),
         st.Page(VIEWS / "explorer.py", title="Demo", icon=":material/satellite_alt:"),
         st.Page(VIEWS / "story.py", title="Scientific story", icon=":material/explore:"),
         st.Page(VIEWS / "pv_response.py", title="PV response", icon=":material/wb_sunny:"),

@@ -1,0 +1,87 @@
+{
+  "title": "Cloud Impact bundle: 15 June 2024 and season aggregates (illustrative historical valuation)",
+  "built_from": "the frozen study outputs listed under input_sha256 (no runtime data access)",
+  "methodology": "configs/economic_impact/prereg.yaml (pre-registered before any valuation; see its publication note); reports/economic_impact/methodology.md",
+  "definitions": {
+    "plant": "the explicit 6 MW 33 kV PV plant ECR:955 (Leighton Buzzard), the only PV changed in the counterfactuals",
+    "fleet_pv": "all 2024 PV assets of the study area (8.945 MW), satellite-derived; shown for context only",
+    "clear_sky": "the plant at its clear-sky estimate (same pvlib chain, Ineichen); everything else unchanged",
+    "no_plant": "the plant's output set to 0; everything else unchanged",
+    "energy": "MW difference x 0.5 h per settlement period; each AC state stands for its period",
+    "value": "energy x the APX Market Index price of the same period (GBP); illustrative, not a realised saving, cost, bill or revenue"
+  },
+  "sources": [
+    {
+      "name": "Elexon Insights Market Index Data (APXMIDP)",
+      "endpoint": "https://data.elexon.co.uk/bmrs/api/v1/balancing/pricing/market-index",
+      "licence": "BMRS data licence",
+      "licence_url": "https://www.elexon.co.uk/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2024"
+    },
+    {
+      "name": "Elexon Insights system prices (imbalance; separate scenario)",
+      "endpoint": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/system-prices/{date}",
+      "licence": "BMRS data licence",
+      "attribution": "Contains BMRS data \u00a9 Elexon Limited copyright and database right 2024"
+    },
+    {
+      "name": "Cloud2Grid AC-reconstructed states, PV estimates and frozen E5c/E5d predictions",
+      "licence": "derived from UK Power Networks (CC BY 4.0) and EUMETSAT LSA SAF (CC BY 4.0) data"
+    }
+  ],
+  "gate_decisions": [
+    {
+      "source_id": "elexon_bmrs_market_index",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "Elexon-BMRS-Data-Licence"
+    },
+    {
+      "source_id": "elexon_bmrs_system_prices",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "Elexon-BMRS-Data-Licence"
+    },
+    {
+      "source_id": "ukpn_33kv_operational_half_hourly_epn",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "CC-BY-4.0"
+    },
+    {
+      "source_id": "ukpn_ecr_1mw_and_above",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "CC-BY-4.0"
+    },
+    {
+      "source_id": "ukpn_ecr_under_1mw",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "CC-BY-4.0"
+    },
+    {
+      "source_id": "lsa_saf_mdssftd",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "CC-BY-4.0"
+    },
+    {
+      "source_id": "eumetsat_eview",
+      "use": "redistribute_derived",
+      "allowed": true,
+      "licence": "CC-BY-4.0"
+    }
+  ],
+  "retrieval": "2026-10-20T15:05:59.079360+00:00",
+  "input_sha256": {
+    "data/interim/economic_impact/imports.parquet": "243a15dcef7a79756bd83b6ab32e8f3d50f0ccf7657fb76a8a898ee6eeadfc7a",
+    "data/interim/economic_impact/mid.parquet": "114c82708b51ff23ed6891080e1a6c0dd22d83b5b60b9026d1b2e4009fb379ea",
+    "data/interim/economic_impact/system_prices.parquet": "aac9dd1191b889873ccd19107a0b04d61f31b10cf72ac4807722d57401348566",
+    "reports/economic_impact/results.json": "34da13ec493823c3320e525035fe0a579fae97af158adc7f963c97459ac864e2"
+  },
+  "files_sha256": {
+    "periods_2024-06-15.parquet": "328cfbd5895ebff7c592bbe2afcfbe08a2831fba2241e00af3d744e3395bbfe0",
+    "season.json": "0c38d1b655d8c870565963f17fc42a0ab9759b40d0ffbc9f77337cd9adc20130"
+  }
+}

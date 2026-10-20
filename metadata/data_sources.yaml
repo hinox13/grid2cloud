@@ -731,3 +731,131 @@ sources:
     raw_data_committed: false
     licence_verified: "2026-10-02"
     notes: "Independent AC power-flow reference. Not installed in Phase 0 (out of scope)."
+
+  # ------------------------------------------------------------------ economic impact (Cloud Impact)
+  # Used by scripts/economic_impact/ (configs/economic_impact/prereg.yaml). Prices are period inputs,
+  # never forecasts. The UKPN flexibility datasets were only read to test relevance (documented in
+  # reports/economic_impact/data_sources.md); none of their records is redistributed.
+  elexon_bmrs_market_index:
+    kind: dataset
+    provider: Elexon
+    name: "Elexon Insights Market Index Data (APXMIDP, N2EXMIDP)"
+    identifier: "bmrs/api/v1/balancing/pricing/market-index"
+    source_url: https://data.elexon.co.uk/bmrs/api/v1/balancing/pricing/market-index
+    documentation_url: https://bmrs.elexon.co.uk/api-documentation
+    licence: Elexon-BMRS-Data-Licence
+    licence_url: https://www.elexon.co.uk/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/
+    licence_evidence: >-
+      Elexon "Copyright: Licence to use BMRS open data" page (worldwide, royalty-free, perpetual,
+      non-exclusive; commercial use permitted; attribution statement required; no endorsement or
+      misrepresentation). The page refuses scripted fetches (HTTP 403); its terms were read from the
+      page's indexed text on 2026-10-20.
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains BMRS data © Elexon Limited copyright and database right [year]."
+    raw_data_committed: false
+    licence_verified: "2026-10-20"
+    added_beyond_readme: true
+    notes: >-
+      Economic impact: APXMIDP price per settlement period, 1 Apr – 30 Sep 2024 (no API key).
+      N2EXMIDP rows carry price 0 and volume 0 and are not used. One source gap: 2024-04-13 SP 17.
+
+  elexon_bmrs_system_prices:
+    kind: dataset
+    provider: Elexon
+    name: "Elexon Insights system prices (imbalance)"
+    identifier: "bmrs/api/v1/balancing/settlement/system-prices"
+    source_url: https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/system-prices/
+    documentation_url: https://bmrs.elexon.co.uk/api-documentation
+    licence: Elexon-BMRS-Data-Licence
+    licence_url: https://www.elexon.co.uk/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/
+    licence_evidence: "Same Elexon BMRS data licence as elexon_bmrs_market_index (read 2026-10-20)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains BMRS data © Elexon Limited copyright and database right [year]."
+    raw_data_committed: false
+    licence_verified: "2026-10-20"
+    added_beyond_readme: true
+    notes: "Economic impact: imbalance cash-out price, a separate scenario only (never called a wholesale price)."
+
+  ukpn_flexibility_dispatches:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Flexibility Dispatches"
+    identifier: "ukpn-flexibility-dispatches"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-flexibility-dispatches/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-flexibility-dispatches/information/
+    api_dataset_id: ukpn-flexibility-dispatches
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-20)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Flexibility Dispatches), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-20"
+    added_beyond_readme: true
+    notes: "Read only to test whether any 2024 dispatch belongs to the modelled network (it is not shown to). No record redistributed."
+
+  ukpn_flexibility_tender_data:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Flexibility Tender Data by Postcode"
+    identifier: "ukpn-flexibility-tender-data"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-flexibility-tender-data/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-flexibility-tender-data/information/
+    api_dataset_id: ukpn-flexibility-tender-data
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-20)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Flexibility Tender Data by Postcode), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-20"
+    added_beyond_readme: true
+    notes: "Zone ↔ postcode extent of flexibility zones; counts only reported. No record redistributed."
+
+  ukpn_gsp_narrative:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Grid Supply Point Narrative"
+    identifier: "ukpn-gsp-narrative"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-gsp-narrative/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-gsp-narrative/information/
+    api_dataset_id: ukpn-gsp-narrative
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-20)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Grid Supply Point Narrative), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-20"
+    added_beyond_readme: true
+    notes: "Sundon GSP context (paraphrased in reports/economic_impact/data_sources.md)."
+
+  ukpn_dnoa:
+    kind: dataset
+    provider: UK Power Networks
+    name: "Distribution Network Options Assessment"
+    identifier: "ukpn-dnoa"
+    source_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-dnoa/
+    documentation_url: https://ukpowernetworks.opendatasoft.com/explore/dataset/ukpn-dnoa/information/
+    api_dataset_id: ukpn-dnoa
+    licence: CC-BY-4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    licence_evidence: "Opendatasoft catalogue API metas.default.license = 'CC BY 4.0' (checked 2026-10-20)."
+    redistribution_allowed: true
+    derivatives_allowed: true
+    attribution_required: true
+    attribution: "Contains UK Power Networks data (Distribution Network Options Assessment), licensed under CC BY 4.0."
+    raw_data_committed: false
+    licence_verified: "2026-10-20"
+    added_beyond_readme: true
+    notes: "Constraint register: no record mentions Sundon."

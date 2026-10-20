@@ -39,6 +39,14 @@ for src in att["sources"]:
     credit = src["attribution"].replace("[year]", year)
     link = f' · <a href="{src["licence_url"]}">{src["licence"]}</a>' if src["licence_url"] else ""
     items.append(f"<li><code>{src['source_id']}</code> — {credit}{link}</li>")
+ci = D.DATA / "cloud_impact" / "provenance.json"
+if ci.exists():  # the Cloud Impact page's market prices (licence-gated when its bundle was built)
+    lic = "https://www.elexon.co.uk/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/"
+    items.append(
+        "<li><code>elexon_bmrs_market_index</code>, <code>elexon_bmrs_system_prices</code> — "
+        f"Contains BMRS data © Elexon Limited copyright and database right {year} · "
+        f'<a href="{lic}">BMRS data licence</a> (Cloud Impact page)</li>'
+    )
 st.markdown(f'<ul style="line-height:1.55">{"".join(items)}</ul>', unsafe_allow_html=True)
 st.markdown(f'<div class="c2g-callout">{att["modified_notice"]}</div>', unsafe_allow_html=True)
 

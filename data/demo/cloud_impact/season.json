@@ -1,0 +1,140 @@
+{
+  "periods_valued": 2820,
+  "pv_attributed": {
+    "AC": {
+      "energy_mwh": 4038.079345703125,
+      "value_apx_gbp": 234226.25802513125,
+      "value_system_gbp": 225210.87163492184
+    },
+    "accounting": {
+      "energy_mwh": 3978.1808003227143,
+      "value_apx_gbp": 230626.6422721847,
+      "value_system_gbp": 221728.48455002968,
+      "value_apx_error_gbp": -3599.6157529465563,
+      "value_apx_error_pct": -1.5368113649155153,
+      "value_system_error_pct": -1.5462784099238733,
+      "period_mae_mw": 0.04248130143673542,
+      "period_value_mae_gbp": 1.3232316851065264
+    },
+    "E5c": {
+      "energy_mwh": 61.618751525878906,
+      "value_apx_gbp": 3662.3439500188824,
+      "value_system_gbp": 3513.9219850473633,
+      "value_apx_error_gbp": -230563.91407511238,
+      "value_apx_error_pct": -98.43640760822558,
+      "value_system_error_pct": -98.43971920203585,
+      "period_mae_mw": 2.8202273845672607,
+      "period_value_mae_gbp": 85.47024739052819
+    },
+    "E5d": {
+      "energy_mwh": 4027.093994140625,
+      "value_apx_gbp": 233541.96775458963,
+      "value_system_gbp": 224491.93882212712,
+      "value_apx_error_gbp": -684.29027054162,
+      "value_apx_error_pct": -0.29214925615564385,
+      "value_system_error_pct": -0.31922651316768985,
+      "period_mae_mw": 0.04883469268679619,
+      "period_value_mae_gbp": 1.5969154795843603
+    }
+  },
+  "cloud_attributed": {
+    "AC": {
+      "energy_mwh": 1428.3748779296875,
+      "value_apx_gbp": 93286.03079982758,
+      "value_system_gbp": 99224.32815062419
+    },
+    "accounting": {
+      "energy_mwh": 1407.31589873613,
+      "value_apx_gbp": 91882.19732110354,
+      "value_system_gbp": 97737.85843846347,
+      "value_apx_error_gbp": -1403.8334787240456,
+      "value_apx_error_pct": -1.5048699860929662,
+      "value_system_error_pct": -1.498089974370228,
+      "period_mae_mw": 0.01784370873932847,
+      "period_value_mae_gbp": 0.6038767200581899
+    },
+    "E5c": {
+      "energy_mwh": 22.524333953857422,
+      "value_apx_gbp": 1479.0269723224642,
+      "value_system_gbp": 1582.7632133709922,
+      "value_apx_error_gbp": -91807.00382750512,
+      "value_apx_error_pct": -98.41452470467293,
+      "value_system_error_pct": -98.40486376388627,
+      "period_mae_mw": 1.2225465774536133,
+      "period_value_mae_gbp": 40.53029901392031
+    },
+    "E5d": {
+      "energy_mwh": 1429.349853515625,
+      "value_apx_gbp": 93345.70566107586,
+      "value_system_gbp": 99281.78226095182,
+      "value_apx_error_gbp": 59.67486124827701,
+      "value_apx_error_pct": 0.06396977204049645,
+      "value_system_error_pct": 0.057903249534137995,
+      "period_mae_mw": 0.041458550840616226,
+      "period_value_mae_gbp": 1.3660282973845763
+    }
+  },
+  "absolute_mode_diagnostic": {
+    "AC": {
+      "import_value_apx_gbp": 4379352.599830773
+    },
+    "E5c": {
+      "import_value_apx_gbp": 5042891.191543245,
+      "error_vs_ac_gbp": 663538.591712472
+    },
+    "E5d": {
+      "import_value_apx_gbp": 5550590.877100789,
+      "error_vs_ac_gbp": 1171238.2772700163
+    }
+  },
+  "event_2024-06-15": {
+    "label": "cloud clearing (Explorer)",
+    "periods": 24,
+    "first_last_utc": [
+      "2024-06-15 05:00:00+00:00",
+      "2024-06-15 16:30:00+00:00"
+    ],
+    "missing_prices": 0,
+    "AC": {
+      "pv_energy_mwh": 31.241025924682617,
+      "pv_value_apx_gbp": 2890.2017706871034,
+      "cloud_energy_mwh": 16.941381454467773,
+      "cloud_value_apx_gbp": 1661.1768597841262,
+      "cloud_value_system_gbp": 1573.86400514278
+    },
+    "accounting": {
+      "pv_energy_mwh": 30.862428823873802,
+      "pv_value_apx_gbp": 2854.836800636819,
+      "cloud_energy_mwh": 16.721890283568765,
+      "cloud_value_apx_gbp": 1639.5144085515221,
+      "cloud_value_system_gbp": 1552.8465054165674
+    },
+    "E5c": {
+      "pv_energy_mwh": 0.2872934341430664,
+      "pv_value_apx_gbp": 26.78201069831848,
+      "cloud_energy_mwh": 0.2190556526184082,
+      "cloud_value_apx_gbp": 20.984587125778198,
+      "cloud_value_system_gbp": 20.317939708064365
+    },
+    "E5d": {
+      "pv_energy_mwh": 31.0346622467041,
+      "pv_value_apx_gbp": 2870.2847099280357,
+      "cloud_energy_mwh": 16.954505920410156,
+      "cloud_value_apx_gbp": 1663.3670409059525,
+      "cloud_value_system_gbp": 1585.1655031777145
+    },
+    "day_rank_by_cloud_value": 15,
+    "apx_day_mean_percentile": 97.05882352941177,
+    "apx_range_gbp_mwh": [
+      73.78,
+      105.49
+    ]
+  },
+  "daily_context": {
+    "days": 136,
+    "cloud_value_apx_gbp_median": 601.5490411424637,
+    "cloud_value_apx_gbp_p90": 1697.8203685307503,
+    "cloud_value_apx_gbp_max": 2707.1721535301203,
+    "max_day": "2024-06-01"
+  }
+}

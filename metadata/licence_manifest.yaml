@@ -55,3 +55,17 @@ licences:
     obligations:
       - Retain the copyright notice and licence text when redistributing.
       - Do not use contributors' names to endorse derived products.
+
+  # ------------------------------------------------------------------ economic impact (Cloud Impact)
+  Elexon-BMRS-Data-Licence:
+    name: Elexon licence to use BMRS data (non-BSC Parties)
+    url: https://www.elexon.co.uk/data/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/
+    # Worldwide, royalty-free, perpetual, non-exclusive; exploitation including commercial use and
+    # inclusion in one's own product or application. Registered for derived tables and the small
+    # Cloud Impact bundle (24 half-hourly prices aligned to modelled states), not raw API dumps.
+    permits: [download, process, derive, redistribute_derived]
+    obligations:
+      - Include the attribution "Contains BMRS data © Elexon Limited copyright and database right [year]".
+      - Link to the licence where possible; sub-licensees must carry the same attribution.
+      - Do not imply official status or endorsement by Elexon.
+      - Do not mislead others or misrepresent the data or its source.

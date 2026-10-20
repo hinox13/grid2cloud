@@ -43,5 +43,9 @@ Third-party material
   Enhanced RGB); "Data source: EUMETSAT LSA SAF, MSG Total and Diffuse Downward Surface Shortwave
   Flux, MDSSFTD, LSA-207" and "EUMETSAT LSA SAF (static MSG grid and land/water mask)". Modified.
 
+- Elexon BMRS data (Market Index Data and system prices; Cloud Impact page, reports/economic_impact/):
+  Elexon BMRS data licence. "Contains BMRS data © Elexon Limited copyright and database right 2024."
+  Prices are aligned to modelled half-hours; no endorsement by Elexon is implied.
+
 For the licence, evidence and required attribution text of every source, see
 docs/DATA_LICENSES.md and metadata/data_sources.yaml.

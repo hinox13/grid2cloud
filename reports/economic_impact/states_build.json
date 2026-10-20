@@ -1,0 +1,11 @@
+{
+  "states": 8460,
+  "accepted": 8460,
+  "rejected": {},
+  "predict_wall_s": {
+    "E5c": 39.408840185031295,
+    "E5d": 14.33727711904794
+  },
+  "base_vs_frozen_import_max_abs_mw": 1.0252238212160592e-05,
+  "base_vs_frozen_import_mean_abs_mw": 1.3432553379469545e-06
+}

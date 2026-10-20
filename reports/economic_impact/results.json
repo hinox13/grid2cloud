@@ -1,0 +1,292 @@
+{
+  "periods_valued": 2820,
+  "periods_missing_apx": 1,
+  "periods_missing_system_price": 0,
+  "base_vs_frozen_import_max_abs_mw": 1.0252238212160592e-05,
+  "season": {
+    "pv_attributed": {
+      "AC": {
+        "energy_mwh": 4038.079345703125,
+        "value_apx_gbp": 234226.25802513125,
+        "value_system_gbp": 225210.87163492184
+      },
+      "accounting": {
+        "energy_mwh": 3978.1808003227143,
+        "value_apx_gbp": 230626.6422721847,
+        "value_system_gbp": 221728.48455002968,
+        "value_apx_error_gbp": -3599.6157529465563,
+        "value_apx_error_pct": -1.5368113649155153,
+        "value_system_error_pct": -1.5462784099238733,
+        "period_mae_mw": 0.04248130143673542,
+        "period_value_mae_gbp": 1.3232316851065264
+      },
+      "E5c": {
+        "energy_mwh": 61.618751525878906,
+        "value_apx_gbp": 3662.3439500188824,
+        "value_system_gbp": 3513.9219850473633,
+        "value_apx_error_gbp": -230563.91407511238,
+        "value_apx_error_pct": -98.43640760822558,
+        "value_system_error_pct": -98.43971920203585,
+        "period_mae_mw": 2.8202273845672607,
+        "period_value_mae_gbp": 85.47024739052819
+      },
+      "E5d": {
+        "energy_mwh": 4027.093994140625,
+        "value_apx_gbp": 233541.96775458963,
+        "value_system_gbp": 224491.93882212712,
+        "value_apx_error_gbp": -684.29027054162,
+        "value_apx_error_pct": -0.29214925615564385,
+        "value_system_error_pct": -0.31922651316768985,
+        "period_mae_mw": 0.04883469268679619,
+        "period_value_mae_gbp": 1.5969154795843603
+      }
+    },
+    "cloud_attributed": {
+      "AC": {
+        "energy_mwh": 1428.3748779296875,
+        "value_apx_gbp": 93286.03079982758,
+        "value_system_gbp": 99224.32815062419
+      },
+      "accounting": {
+        "energy_mwh": 1407.31589873613,
+        "value_apx_gbp": 91882.19732110354,
+        "value_system_gbp": 97737.85843846347,
+        "value_apx_error_gbp": -1403.8334787240456,
+        "value_apx_error_pct": -1.5048699860929662,
+        "value_system_error_pct": -1.498089974370228,
+        "period_mae_mw": 0.01784370873932847,
+        "period_value_mae_gbp": 0.6038767200581899
+      },
+      "E5c": {
+        "energy_mwh": 22.524333953857422,
+        "value_apx_gbp": 1479.0269723224642,
+        "value_system_gbp": 1582.7632133709922,
+        "value_apx_error_gbp": -91807.00382750512,
+        "value_apx_error_pct": -98.41452470467293,
+        "value_system_error_pct": -98.40486376388627,
+        "period_mae_mw": 1.2225465774536133,
+        "period_value_mae_gbp": 40.53029901392031
+      },
+      "E5d": {
+        "energy_mwh": 1429.349853515625,
+        "value_apx_gbp": 93345.70566107586,
+        "value_system_gbp": 99281.78226095182,
+        "value_apx_error_gbp": 59.67486124827701,
+        "value_apx_error_pct": 0.06396977204049645,
+        "value_system_error_pct": 0.057903249534137995,
+        "period_mae_mw": 0.041458550840616226,
+        "period_value_mae_gbp": 1.3660282973845763
+      }
+    }
+  },
+  "season_import_energy_ac_mwh": 68580.0390625,
+  "absolute_mode_diagnostic": {
+    "AC": {
+      "import_value_apx_gbp": 4379352.599830773
+    },
+    "E5c": {
+      "import_value_apx_gbp": 5042891.191543245,
+      "error_vs_ac_gbp": 663538.591712472
+    },
+    "E5d": {
+      "import_value_apx_gbp": 5550590.877100789,
+      "error_vs_ac_gbp": 1171238.2772700163
+    }
+  },
+  "sensitivity_halfhour_mean_pv": {
+    "periods": 2764,
+    "pv_attributed_energy_mwh_slot": 4024.156982421875,
+    "pv_attributed_energy_mwh_halfhour_mean": 4018.6394120087293,
+    "value_apx_slot_gbp": 233104.8737595439,
+    "value_apx_halfhour_mean_gbp": 233155.6004202899
+  },
+  "daily_context": {
+    "days": 136,
+    "cloud_value_apx_gbp_median": 601.5490411424637,
+    "cloud_value_apx_gbp_p90": 1697.8203685307503,
+    "cloud_value_apx_gbp_max": 2707.1721535301203,
+    "max_day": "2024-06-01"
+  },
+  "events": {
+    "2024-06-15": {
+      "label": "cloud clearing (Explorer)",
+      "periods": 24,
+      "first_last_utc": [
+        "2024-06-15 05:00:00+00:00",
+        "2024-06-15 16:30:00+00:00"
+      ],
+      "missing_prices": 0,
+      "AC": {
+        "pv_energy_mwh": 31.241025924682617,
+        "pv_value_apx_gbp": 2890.2017706871034,
+        "cloud_energy_mwh": 16.941381454467773,
+        "cloud_value_apx_gbp": 1661.1768597841262,
+        "cloud_value_system_gbp": 1573.86400514278
+      },
+      "accounting": {
+        "pv_energy_mwh": 30.862428823873802,
+        "pv_value_apx_gbp": 2854.836800636819,
+        "cloud_energy_mwh": 16.721890283568765,
+        "cloud_value_apx_gbp": 1639.5144085515221,
+        "cloud_value_system_gbp": 1552.8465054165674
+      },
+      "E5c": {
+        "pv_energy_mwh": 0.2872934341430664,
+        "pv_value_apx_gbp": 26.78201069831848,
+        "cloud_energy_mwh": 0.2190556526184082,
+        "cloud_value_apx_gbp": 20.984587125778198,
+        "cloud_value_system_gbp": 20.317939708064365
+      },
+      "E5d": {
+        "pv_energy_mwh": 31.0346622467041,
+        "pv_value_apx_gbp": 2870.2847099280357,
+        "cloud_energy_mwh": 16.954505920410156,
+        "cloud_value_apx_gbp": 1663.3670409059525,
+        "cloud_value_system_gbp": 1585.1655031777145
+      },
+      "day_rank_by_cloud_value": 15,
+      "apx_day_mean_percentile": 97.05882352941177,
+      "apx_range_gbp_mwh": [
+        73.78,
+        105.49
+      ]
+    },
+    "2024-04-15": {
+      "label": "broken cumulus (Explorer)",
+      "periods": 18,
+      "first_last_utc": [
+        "2024-04-15 08:30:00+00:00",
+        "2024-04-15 17:00:00+00:00"
+      ],
+      "missing_prices": 0,
+      "AC": {
+        "pv_energy_mwh": 36.275821685791016,
+        "pv_value_apx_gbp": 341.5339730834961,
+        "cloud_energy_mwh": 5.719669342041016,
+        "cloud_value_apx_gbp": 170.3600824165344,
+        "cloud_value_system_gbp": 55.17112723668418
+      },
+      "accounting": {
+        "pv_energy_mwh": 35.60782231761798,
+        "pv_value_apx_gbp": 334.6876244362759,
+        "cloud_energy_mwh": 5.612172455771607,
+        "cloud_value_apx_gbp": 167.15299840904922,
+        "cloud_value_system_gbp": 53.97424605880159
+      },
+      "E5c": {
+        "pv_energy_mwh": 0.6956691741943359,
+        "pv_value_apx_gbp": 5.967715702056885,
+        "cloud_energy_mwh": 0.1729717254638672,
+        "cloud_value_apx_gbp": 4.683458938598632,
+        "cloud_value_system_gbp": 1.3813459449344219
+      },
+      "E5d": {
+        "pv_energy_mwh": 36.28299331665039,
+        "pv_value_apx_gbp": 338.83263582229614,
+        "cloud_energy_mwh": 5.797643661499023,
+        "cloud_value_apx_gbp": 172.30895532608034,
+        "cloud_value_system_gbp": 53.91766944249473
+      },
+      "day_rank_by_cloud_value": 89,
+      "apx_day_mean_percentile": 8.088235294117647,
+      "apx_range_gbp_mwh": [
+        -9.73,
+        59.0
+      ]
+    },
+    "2024-08-23": {
+      "label": "clear-sky control (Explorer)",
+      "periods": 23,
+      "first_last_utc": [
+        "2024-08-23 06:30:00+00:00",
+        "2024-08-23 17:30:00+00:00"
+      ],
+      "missing_prices": 0,
+      "AC": {
+        "pv_energy_mwh": 46.5145263671875,
+        "pv_value_apx_gbp": 201.32498001098634,
+        "cloud_energy_mwh": -2.582246780395508,
+        "cloud_value_apx_gbp": 68.80431893348694,
+        "cloud_value_system_gbp": 192.35604115750357
+      },
+      "accounting": {
+        "pv_energy_mwh": 45.95113644660054,
+        "pv_value_apx_gbp": 198.60910880851304,
+        "cloud_energy_mwh": -2.5604717537952846,
+        "cloud_value_apx_gbp": 67.85377065614013,
+        "cloud_value_system_gbp": 189.9501325049466
+      },
+      "E5c": {
+        "pv_energy_mwh": 0.8236579895019531,
+        "pv_value_apx_gbp": 8.397060737609863,
+        "cloud_energy_mwh": -0.35825538635253906,
+        "cloud_value_apx_gbp": -2.429621334075928,
+        "cloud_value_system_gbp": 2.1446781056667676
+      },
+      "E5d": {
+        "pv_energy_mwh": 46.49586486816406,
+        "pv_value_apx_gbp": 200.8998374557495,
+        "cloud_energy_mwh": -2.510347366333008,
+        "cloud_value_apx_gbp": 66.96215255737305,
+        "cloud_value_system_gbp": 182.48897388119133
+      },
+      "day_rank_by_cloud_value": 96,
+      "apx_day_mean_percentile": 5.88235294117647,
+      "apx_range_gbp_mwh": [
+        -11.87,
+        87.38
+      ]
+    },
+    "2024-07-07": {
+      "label": "30-min PV ramp of +6.76 MW (10:15 → 10:45 UTC)",
+      "periods": 24,
+      "first_last_utc": [
+        "2024-07-07 05:30:00+00:00",
+        "2024-07-07 18:30:00+00:00"
+      ],
+      "missing_prices": 0,
+      "AC": {
+        "pv_energy_mwh": 33.301856994628906,
+        "pv_value_apx_gbp": 2523.838854618072,
+        "cloud_energy_mwh": 12.664091110229492,
+        "cloud_value_apx_gbp": 1033.1230115127564,
+        "cloud_value_system_gbp": 1013.3434483337401
+      },
+      "accounting": {
+        "pv_energy_mwh": 32.860215646881365,
+        "pv_value_apx_gbp": 2490.1734259227314,
+        "cloud_energy_mwh": 12.517756874085862,
+        "cloud_value_apx_gbp": 1021.1581509324935,
+        "cloud_value_system_gbp": 1001.4707564472384
+      },
+      "E5c": {
+        "pv_energy_mwh": 0.4736919403076172,
+        "pv_value_apx_gbp": 32.05783121109009,
+        "cloud_energy_mwh": 0.11535835266113281,
+        "cloud_value_apx_gbp": 12.111044960021971,
+        "cloud_value_system_gbp": 6.460414333343505
+      },
+      "E5d": {
+        "pv_energy_mwh": 33.23889923095703,
+        "pv_value_apx_gbp": 2518.870777587891,
+        "cloud_energy_mwh": 12.686901092529297,
+        "cloud_value_apx_gbp": 1035.3324587059021,
+        "cloud_value_system_gbp": 1018.8684699821472
+      },
+      "day_rank_by_cloud_value": 46,
+      "apx_day_mean_percentile": 54.41176470588235,
+      "apx_range_gbp_mwh": [
+        25.87,
+        88.69
+      ]
+    }
+  },
+  "outcome": {
+    "events_have_prices": true,
+    "e5d_err_le_half_e5c": true,
+    "e5d_err_lt_accounting": true,
+    "season_pv_value_ge_1000": true,
+    "consistent_resolve": true,
+    "classification": "A_strong"
+  }
+}
