@@ -7,6 +7,12 @@ Each claim pairs the exact text used in the post with a value recomputed here fr
 table, report JSON or verification record (paths relative to the repository root). A claim
 passes when (1) the recomputed value, formatted as in the post, equals the quoted text and
 (2) that text occurs in every rendered variant. Nothing is re-fitted or re-simulated.
+
+The approved constructive text (Cloud2Grid_submission_final.md, and the README rendered from it by
+render_readme.py) words a few items differently. For those variants the alternative wording in
+REPHRASE / TABLE_LABEL is required instead, and it is recomputed from the same source; claims kept
+in a collapsible block elsewhere must be replaced there by a link to their report. Every claim must
+be checked in at least one variant.
 """
 
 from __future__ import annotations
@@ -23,7 +29,8 @@ T = ROOT / "reports/tables"
 TITLE = "Cloud2Grid: from real clouds to electric grid intelligence"
 # rendered variants present in this checkout (development: all three; publication: README files only)
 VARIANTS = [p for p in (HERE / "README.md", HERE / "Cloud2Grid_HuggingFace_READY.md", HERE / "promotion/README.md",
-                        ROOT / "README.md") if p.exists() and TITLE in p.read_text()]
+                        HERE / "Cloud2Grid_submission_final.md", ROOT / "README.md") if p.exists() and TITLE in p.read_text()]
+CONSTRUCTIVE = {str(p.relative_to(ROOT)) for p in (HERE / "Cloud2Grid_submission_final.md", ROOT / "README.md")}
 
 
 def j(rel: str) -> dict:
@@ -124,12 +131,20 @@ CLAIMS: list[tuple[str, str, str]] = [
     ("both devices pass", "passed on CPU and GPU", "passed on CPU and GPU" if cpu["all_checks_pass"] and gpu["all_checks_pass"] else "FAILED"),
 ]
 
+# constructive wording: what → (quoted text, recomputed text), required in CONSTRUCTIVE variants instead
+REPHRASE = {
+    "control ratio": ("remains insensitive to PV (0.001)", f"remains insensitive to PV ({pv_ratio['e5d_l0_s0']:.3f})"),
+}
+# "[details]" claims: CONSTRUCTIVE variants link the report that holds them instead of embedding them
+DETAILS_LINK = {"E6 MAE 2dp [details]": "reports/e6_feasibility_diagnostic.md"}
+
 # results table rows: PBE · active residual · import MAE · import r · PV slope
 TABLE = {ZS: "| E4 Original GENCO | 49.0 | 28.9 | 260 | 0.05 | −0.06 |",
          E5: "| E5 Grid-tuned | 33.2 | 28.8 | 70.7 | 0.11 | −0.66¹ |",
          E5B: "| E5b Envelope-tuned | **0.338** | **0.270** | **7.30** | 0.87 | −0.06 |",
          E5C: "| E5c Generator-aware | 0.442 | 0.342 | 7.74 | 0.96 | −0.04 |",
          E5D: "| E5d Response-aware | 0.676 | 0.567 | 13.2 | **0.994** | **−1.07** |"}  # fmt: skip
+TABLE_LABEL = {ZS: ("| E4 Original GENCO |", "| E4 Pretrained, zero-shot |")}  # constructive row label; same cells
 
 
 def sig(v: float) -> str:
@@ -148,17 +163,27 @@ def main() -> int:
     assert texts, "no rendered write-up found"
     bad = 0
     for what, quoted, recomputed in CLAIMS:
-        ok_val = quoted == recomputed
-        # "[details]" claims sit in a collapsible block, which the Hugging Face post links instead
-        where = {n: t for n, t in texts.items() if not (what.endswith("[details]") and "HuggingFace" in n)}
-        missing = [n for n, t in where.items() if quoted not in t]
-        if not ok_val or missing:
+        alt = REPHRASE.get(what)
+        ok_val = quoted == recomputed and (alt is None or alt[0] == alt[1])
+        missing, checked = [], 0
+        for n, t in texts.items():
+            if what.endswith("[details]") and "HuggingFace" in n:
+                continue  # a collapsible block, which the Hugging Face post links instead
+            if what.endswith("[details]") and n in CONSTRUCTIVE:
+                if DETAILS_LINK[what] not in t:
+                    missing.append(f"{n} (link to {DETAILS_LINK[what]})")
+                continue
+            checked += 1
+            if (alt[0] if alt and n in CONSTRUCTIVE else quoted) not in t:
+                missing.append(n)
+        if not ok_val or missing or not checked:
             bad += 1
-            print(f"FAIL {what}: quoted {quoted!r} | source {recomputed!r} | missing in {missing}")
+            print(f"FAIL {what}: quoted {quoted!r} | source {recomputed!r} | rephrase {alt!r} | missing in {missing} | checked in {checked} variants")
     for m, row in TABLE.items():
         cells = [c.strip().strip("*").rstrip("¹") for c in row.strip("|").split("|")[1:]]
         want = table_row(m)
-        if cells != want or any(row not in t for t in texts.values()):
+        rows = {n: row.replace(*TABLE_LABEL[m]) if m in TABLE_LABEL and n in CONSTRUCTIVE else row for n in texts}
+        if cells != want or any(rows[n] not in t for n, t in texts.items()):
             bad += 1
             print(f"FAIL table {m}: post {cells} | source {want}")
     n = len(CLAIMS) + len(TABLE)
