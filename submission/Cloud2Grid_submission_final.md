@@ -2,7 +2,7 @@
 
 *What does it take to adapt GENCO, a grid foundation model pretrained on synthetic networks, to a real UK distribution grid as real clouds pass over it?*
 
-**🖥️ [Interactive Explorer](https://cloud2grid.streamlit.app/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Frozen models + verification data](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduce in one command](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md)**
+**🌐 [Interactive Experience](https://hinox13.github.io/grid2cloud/) · 🔬 [Scientific Explorer](https://cloud2grid.streamlit.app/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Frozen models + verification data](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduce in one command](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md)**
 
 ![Cloud2Grid overview. Four panels from left to right: real Meteosat E-View images of the Sundon area at 09:00 and 11:30 UTC on 15 June 2024, showing a cloud deck clearing; satellite-derived PV output rising from about 2 to 9 MW; the Sundon network schematic coloured by AC line loading; and grid import over the morning for the AC reference, the generator-aware and the response-aware GENCO models.](figures/01_cloud2grid_overview.png)
 
@@ -134,7 +134,13 @@ E5d reproduces the *change* in grid import closely but not its *level*. A post-h
 
 ## 10. Explore it yourself
 
-### 👉 [Open the Cloud2Grid Explorer](https://cloud2grid.streamlit.app/)
+### 👉 [Open the Cloud2Grid website](https://hinox13.github.io/grid2cloud/)
+
+A guided story in five steps, Clouds → Energy → Grid → GENCO → Value, from the real 15 June 2024 Meteosat images to the original GENCO failure, the fine-tuning steps and an illustrative valuation for one 6 MW solar plant, followed by the full scientific evidence. Every figure is exported from the frozen bundles and labelled with its provenance and evaluation scope.
+
+### 🔬 [Scientific Explorer (Streamlit)](https://cloud2grid.streamlit.app/)
+
+The original Streamlit Explorer remains available as an alternative:
 
 ![The Cloud2Grid Explorer as deployed. A: the last slide of the guided tour at 11:30 UTC on 15 June 2024, with the story caption, four linked readouts from clouds to GENCO, the Meteosat image zoomed to Sundon, the network schematic and the timeline. B: the Overview page with the question and the four fine-tuning steps as cards. C: the Scientific story page with step cards and a bar chart of the solar response by step against the physics.](figures/05_explorer_hero_event.png)
 
@@ -187,6 +193,6 @@ The open GENCO checkpoint and the GridFM toolkits made it possible to run a comp
 - 👤 **Team:** Oriol Hinojo
 - ✉️ **Contact:** [open an issue](https://github.com/hinox13/grid2cloud/issues)
 - 🙏 **Acknowledgements:** Cloud2Grid builds on GENCO ([Puech et al., 2026](https://arxiv.org/abs/2608.09921)) and the open GridFM ecosystem: the [`gridfm/genco-pf-transfer`](https://huggingface.co/gridfm/genco-pf-transfer) checkpoint, [gridfm-graphkit](https://github.com/gridfm/gridfm-graphkit) for fine-tuning and inference, and [gridfm-datakit](https://github.com/gridfm/gridfm-datakit) for synthetic AC data. Every adaptation step here used them. We also thank UK Power Networks and EUMETSAT / LSA SAF for their open data, and the pandapower, PowerModels and pvlib projects.
-- 🖥️ [Explorer](https://cloud2grid.streamlit.app/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Models](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduction](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md)
+- 🌐 [Website](https://hinox13.github.io/grid2cloud/) · 🔬 [Streamlit Explorer](https://cloud2grid.streamlit.app/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Models](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduction](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md)
 
 *Contains modified EUMETSAT Meteosat and LSA SAF data (CC BY 4.0) and UK Power Networks data (CC BY 4.0), which include ONS data (OGL v3.0) and OS data © Crown copyright. GENCO / gridfm: Apache-2.0. Cloud2Grid code and released weights © 2026 Oriol Hinojo, Apache-2.0; verification data CC BY 4.0. Third-party data keep their own licences and are not redistributed; per-source attribution: [`docs/DATA_LICENSES.md`](https://github.com/hinox13/grid2cloud/blob/main/docs/DATA_LICENSES.md) and [`NOTICE`](https://github.com/hinox13/grid2cloud/blob/main/NOTICE).*

@@ -1,0 +1,92 @@
+# The Cloud2Grid website (web/) on GitHub Pages: https://hinox13.github.io/grid2cloud/
+#
+# On every push to main that touches the site or its data, and on demand:
+#   1. data:   web/public/data is re-exported from the frozen data/demo bundles and must match
+#              byte for byte; the claims are re-derived independently (tests/web).
+#   2. build:  type check and production build (base path /grid2cloud/), static guards, browser
+#              tests (Chromium, desktop and phone emulation) against the built site.
+#   3. deploy: the built site, with the repository's licence files, becomes the gh-pages branch
+#              (Settings → Pages → Deploy from a branch → gh-pages, / (root)).
+# The Streamlit Explorer (demo/) is deployed separately by Streamlit Community Cloud.
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "scripts/web/**"
+      - "tests/web/**"
+      - "data/demo/**"
+      - "demo/c2g/theme.py"
+      - ".github/workflows/website.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website
+  cancel-in-progress: false
+
+jobs:
+  data:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Locked environment (no GENCO stack)
+        run: uv sync --frozen --group demo
+      - name: Exported data match the frozen bundles byte for byte
+        run: uv run python scripts/web/export_web_data.py --check
+      - name: Claims re-derived from data/demo
+        run: uv run pytest tests/web -q
+
+  build:
+    needs: data
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - name: Type check and build (base /grid2cloud/)
+        run: npm run build
+      - name: Licence files, Pages marker and static guards (no source map, 3D engine or external script)
+        run: node pages.mjs
+      - name: Browser tests (Chromium, desktop and phone emulation)
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright test --project desktop --project mobile
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: web/dist
+          include-hidden-files: true
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+      - name: Publish the gh-pages branch (the built site only)
+        working-directory: site
+        run: |
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Website build of ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages

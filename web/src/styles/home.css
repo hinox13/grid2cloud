@@ -1,0 +1,604 @@
+/* ------------------------------------------------------------------ home: masthead, title on the axis */
+.home {
+  min-height: 100svh;
+}
+.home-head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: stretch;
+  height: var(--header-h);
+  background: var(--bg);
+}
+.home-tab {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 32px);
+  width: calc(var(--axis) - 0px);
+  padding: 0 20px;
+  background: var(--surface-2);
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+.home-tab a {
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.2s;
+}
+.home-tab a:hover {
+  border-color: var(--accent);
+}
+.home-head .theme-toggle {
+  margin-left: auto;
+  margin-right: var(--gutter);
+}
+
+.masthead {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "a a b c d d"
+    "e f b g d d";
+  height: max(230px, 28svh);
+  background: var(--sat-bg);
+}
+.tile {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  min-width: 0;
+}
+.tile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 52.7% 51.7%; /* Sundon in the frame */
+  animation: drift 26s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  to {
+    translate: -2% 1%;
+  }
+}
+.tile figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: var(--step-small);
+  color: #fff;
+  background: rgba(5, 15, 22, 0.78);
+  padding: 2px 7px;
+}
+.tile-sun {
+  background: var(--accent);
+}
+.tile-net {
+  background: var(--field-ink);
+  color: #f1f3f4;
+}
+.tile-net .net {
+  position: absolute;
+  inset: 8px 8px 30px 8px;
+}
+.tile-net .edge-arrow {
+  display: none;
+}
+.tile-net figcaption {
+  background: none;
+  font-weight: 500;
+}
+.tile-net .claim {
+  font-weight: 700;
+}
+
+.home-title {
+  padding: clamp(28px, 3vw, 56px) var(--gutter) clamp(48px, 7vw, 120px);
+}
+.display {
+  font-size: clamp(2.4rem, 0.3rem + 5.4vw, 6.2rem);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  text-wrap: nowrap;
+}
+.m-only {
+  display: none;
+}
+.display .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.display .line > span {
+  display: inline-block;
+  animation: line-up 0.9s var(--ease) both;
+}
+.display .line:nth-child(2) > span {
+  animation-delay: 0.11s;
+}
+.home-row {
+  display: grid;
+  grid-template-columns: var(--axis) 1fr;
+  margin-top: clamp(24px, 2.6vw, 40px);
+}
+.home-note {
+  max-width: 34ch;
+  font-size: var(--step-body);
+  color: var(--ink-2);
+  padding-right: 24px;
+  animation: rise 0.8s 0.5s var(--ease) both;
+}
+.home-stand {
+  animation: rise 0.8s 0.35s var(--ease) both;
+}
+.lead {
+  font-size: var(--step-lead);
+  line-height: 1.38;
+  max-width: 34ch;
+}
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+.home-meta {
+  margin-top: 8px;
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ five moments, figures in one column */
+.moments {
+  background: var(--surface);
+  padding: clamp(56px, 8vw, 140px) var(--gutter);
+}
+.moments-h {
+  font-size: var(--step-head);
+  margin-left: var(--axis);
+  margin-bottom: clamp(24px, 3vw, 48px);
+}
+.moments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.moment {
+  display: grid;
+  grid-template-columns: var(--axis) 1fr minmax(12ch, auto);
+  align-items: baseline;
+  gap: 16px;
+  padding: 22px 0;
+  text-decoration: none;
+  transition: background-color 0.2s, padding 0.25s var(--ease);
+}
+.moment:hover {
+  background: var(--surface-2);
+  padding-left: 12px;
+}
+.moment-name {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 1rem + 1.8vw, 2.6rem);
+  letter-spacing: -0.03em;
+}
+.moment-line {
+  max-width: 40ch;
+}
+.moment-fig {
+  text-align: right;
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+  padding-right: 12px;
+}
+.moment-fig .claim {
+  color: var(--accent-text);
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+.moment-prov {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ footer: the name, then places */
+.site-foot {
+  background: var(--field-ink);
+  color: #f1f3f4;
+  padding: clamp(40px, 6vw, 96px) var(--gutter) 40px;
+  overflow: hidden;
+}
+:root[data-theme="dark"] .site-foot {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.foot-name {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(3.4rem, 15.5vw, 16rem);
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  margin-left: -0.04em;
+}
+.foot-row {
+  display: grid;
+  grid-template-columns: var(--axis) 1fr;
+  gap: 24px;
+  margin-top: 56px;
+}
+.foot-places {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1rem + 1vw, 2rem);
+  line-height: 1.35;
+}
+.foot-places a {
+  text-decoration: none;
+}
+.foot-places a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+.foot-credits {
+  font-size: 1rem;
+  max-width: 70ch;
+}
+
+@media (max-width: 760px) {
+  .home-tab {
+    width: auto;
+    flex: 1;
+    gap: 14px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+    overflow-x: auto;
+  }
+  .home-tab a:last-child {
+    display: none;
+  }
+  .home-head .theme-toggle {
+    margin-right: 8px;
+  }
+  .wordmark {
+    padding: 0 12px;
+    font-size: 1rem;
+  }
+  /* phone: one strip that tells the sequence: two real frames -> estimated solar -> the network */
+  .masthead {
+    grid-template-columns: 1fr 1fr 1fr 1.25fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "e f b d";
+    height: 19svh;
+    min-height: 150px;
+  }
+  .tile[style*="grid-area: a"] {
+    display: none;
+  }
+  .tile figcaption {
+    left: 6px;
+    bottom: 6px;
+    font-size: 0.6875rem;
+    padding: 1px 4px;
+  }
+  .tile-net .net {
+    inset: 4px 4px 34px 4px;
+  }
+  .tile-net figcaption {
+    font-size: 0.625rem;
+    line-height: 1.2;
+  }
+  .tile-sun .sun-title {
+    top: 6px;
+    left: 6px;
+    font-size: 0.6875rem;
+  }
+  .tile-sun .sun-title span,
+  .sun-fig .sun-when {
+    display: none;
+  }
+  .sun-fig {
+    left: 6px;
+    bottom: 6px;
+    font-size: 0.6875rem;
+  }
+  .home-stand {
+    display: flex;
+    flex-direction: column;
+  }
+  .home-stand .question {
+    order: 1;
+  }
+  .home-stand .home-actions {
+    order: 2;
+    margin-top: 16px;
+  }
+  .home-stand .home-meta {
+    order: 3;
+  }
+  .home-stand .sublead {
+    order: 4;
+    margin-top: 18px;
+  }
+  .home-title {
+    padding-top: 22px;
+  }
+  .lead.question {
+    font-size: 1.125rem;
+  }
+  .sublead {
+    font-size: 0.9375rem;
+    margin-top: 8px;
+  }
+  .home-row {
+    margin-top: 16px;
+  }
+  .tile[style*="grid-area: c"],
+  .tile[style*="grid-area: g"] {
+    display: none;
+  }
+  .display {
+    font-size: 15vw;
+  }
+  .m-only {
+    display: inline;
+  }
+  .display .line:nth-child(2) {
+    font-size: 0.42em;
+    letter-spacing: -0.03em;
+    margin-top: 0.2em;
+  }
+  .home-row,
+  .foot-row {
+    grid-template-columns: 1fr;
+  }
+  .home-note {
+    order: 2;
+    margin-top: 28px;
+    max-width: none;
+  }
+  .home-actions .btn {
+    width: 100%;
+  }
+  .moments-h {
+    margin-left: 0;
+  }
+  .moment {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "name fig" "line line";
+    row-gap: 6px;
+  }
+  .moment-name {
+    grid-area: name;
+  }
+  .moment-line {
+    grid-area: line;
+  }
+  .moment-fig {
+    grid-area: fig;
+  }
+}
+
+.home-journey-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+}
+.home-journey-link::after {
+  content: " →";
+}
+
+/* the research band: an ink field in both themes */
+.research {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: center;
+  padding: clamp(56px, 7vw, 120px) var(--gutter);
+  background: var(--field-ink);
+  color: #f1f3f4;
+  --ink: #f1f3f4;
+  --ink-2: #c5ced5;
+  --muted: #92a0aa;
+  --surface-2: #10242f;
+  --surface-3: #16303d;
+  --accent-text: #ff9a52;
+  --m-AC: #f1f3f4;
+  --m-zero_shot: #ef5d5d;
+  --m-E5: #e07aa3;
+  --m-E5b: #2bb582;
+  --m-E5c: #5aa5ee;
+  --m-E5d: #e7a5d1;
+}
+.research-h {
+  font-size: var(--step-head);
+  margin-bottom: 18px;
+}
+.research-text p {
+  margin-bottom: 14px;
+  max-width: 46ch;
+}
+.research-text .claim {
+  color: #ff9a52;
+}
+.research-text .btn-primary:hover {
+  background: #f1f3f4;
+  color: #050f16;
+}
+@media (max-width: 900px) {
+  .research {
+    grid-template-columns: 1fr;
+  }
+}
+.home-note strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--f-display);
+  margin-bottom: 4px;
+}
+
+.home-facts {
+  list-style: none;
+  margin: 0;
+  padding: 0 24px 0 0;
+  display: grid;
+  gap: 4px;
+  max-width: 36ch;
+  animation: rise 0.8s 0.5s var(--ease) both;
+}
+.home-facts li {
+  padding: 10px 14px;
+  background: var(--surface);
+  border-left: 4px solid var(--accent);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+.home-facts strong {
+  display: block;
+  font-family: var(--f-display);
+  color: var(--ink);
+}
+.lead.question {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 0.95rem + 0.9vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+  max-width: 38ch;
+}
+.sublead {
+  margin-top: 12px;
+  max-width: 54ch;
+  color: var(--ink-2);
+}
+.play-glyph {
+  margin-right: 10px;
+  font-size: 0.85em;
+}
+.home-meta a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+}
+@media (max-width: 760px) {
+  .home-facts {
+    order: 2;
+    margin-top: 28px;
+    max-width: none;
+    padding: 0;
+  }
+}
+
+/* the solar tile: real fleet PV between the frames and the network */
+.tile-sun {
+  color: #050f16;
+}
+.tile-sun .spark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.spark-line {
+  fill: none;
+  stroke: #050f16;
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+/* the real curve is revealed left to right, in time order, once */
+.tile-sun .spark {
+  animation: spark-reveal 2.2s 0.4s var(--ease) both;
+}
+@keyframes spark-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.spark-band {
+  fill: rgba(5, 15, 22, 0.12);
+}
+.spark-cap {
+  stroke: rgba(5, 15, 22, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+.tile-sun .sun-title {
+  top: 10px;
+  bottom: auto;
+  left: 12px;
+  right: 10px;
+  background: none;
+  color: #050f16;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+.tile-sun .sun-title span {
+  display: block;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+.sun-fig {
+  position: absolute;
+  left: 12px;
+  right: 10px;
+  bottom: 10px;
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
+.sun-fig .sun-when {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.tile-sun .claim {
+  color: #050f16;
+}
+
+@media (max-width: 760px) {
+  .tile-sun .sun-title {
+    top: 6px;
+    left: 6px;
+    right: 4px;
+    font-size: 0.6875rem;
+  }
+  .tile-sun .sun-title span,
+  .sun-fig .sun-when {
+    display: none;
+  }
+  .sun-fig {
+    left: 6px;
+    right: 4px;
+    bottom: 6px;
+    font-size: 0.6875rem;
+  }
+  .sun-fig .claim {
+    white-space: normal;
+  }
+}

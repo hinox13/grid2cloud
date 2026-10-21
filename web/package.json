@@ -1,0 +1,29 @@
+{
+  "name": "cloud2grid-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Cloud2Grid: the Experience and the scientific Explorer, a static site over frozen data (web/public/data).",
+  "scripts": {
+    "data": "cd .. && .venv/bin/python scripts/web/export_web_data.py",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc -b",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource/libre-franklin": "5.3.0",
+    "@fontsource/source-serif-4": "5.3.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.1"
+  }
+}

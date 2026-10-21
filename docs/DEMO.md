@@ -1,5 +1,7 @@
 # Cloud2Grid Explorer: run and deploy
 
+> The primary Cloud2Grid website is the React application in [`web/`](../web/README.md), https://hinox13.github.io/grid2cloud/. This page covers the Streamlit Scientific Explorer, which stays available at https://cloud2grid.streamlit.app/.
+
 The Explorer replays **frozen** research results. It opens on an **Overview** (the question,
 the four fine-tuning steps, the answer, one frozen moment of the story and links to the code and
 models); the interactive replay is the **Demo** page.

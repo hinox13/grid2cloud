@@ -1,0 +1,86 @@
+/* Cloud2Grid tokens. Two-colour print logic: blue-black ink and solar orange, with one rest tone.
+   Orange always means sunlight / solar energy, and is also the one action colour. Model colours keep
+   the hues of the Streamlit Explorer (E5c blue, E5d plum) so screenshots and reports stay consistent. */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #050f16;
+  --surface: #0a1a24;
+  --surface-2: #10242f;
+  --surface-3: #16303d;
+  --ink: #f1f3f4;
+  --ink-2: #c5ced5;
+  --muted: #92a0aa;
+  --accent: #ff7a1f;
+  --accent-ink: #050f16;
+  --accent-text: #ff9a52;
+  --field-ink: #050f16;
+
+  --m-AC: #f1f3f4;
+  --m-zero_shot: #ef5d5d;
+  --m-E5: #e07aa3;
+  --m-E5b: #2bb582;
+  --m-E5c: #5aa5ee;
+  --m-E5d: #e7a5d1;
+  --pv: #ff9a3d;
+  --pv-area: rgba(255, 122, 31, 0.22);
+  --clear: #9aa9b4;
+  --price: #c5ced5;
+  --gbp: #ff7a1f;
+  --gap: rgba(255, 122, 31, 0.3);
+  --battery: #9a8ff0;
+  --grid: rgba(241, 243, 244, 0.07);
+  --band-0: #071520;
+  --band-1: #0a1a24;
+  --sat-bg: #02070b;
+  --sel: rgba(241, 243, 244, 0.08);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #eff3f5;
+  --surface-2: #e3e9ed;
+  --surface-3: #d6dee3;
+  --ink: #050f16;
+  --ink-2: #2f3d48;
+  --muted: #56646f;
+  --accent: #ff7a1f;
+  --accent-ink: #050f16;
+  --accent-text: #a94400;
+  --field-ink: #050f16;
+
+  --m-AC: #050f16;
+  --m-zero_shot: #c42b2f;
+  --m-E5: #b5386a;
+  --m-E5b: #0f7a55;
+  --m-E5c: #1f66b8;
+  --m-E5d: #8a2a72;
+  --pv: #c25400;
+  --pv-area: rgba(255, 122, 31, 0.2);
+  --clear: #66757f;
+  --price: #2f3d48;
+  --gbp: #e5650c;
+  --gap: rgba(255, 122, 31, 0.28);
+  --battery: #5a4bc4;
+  --grid: rgba(5, 15, 22, 0.07);
+  --band-0: #f6f8f9;
+  --band-1: #eef2f4;
+  --sat-bg: #050f16;
+  --sel: rgba(5, 15, 22, 0.06);
+}
+
+:root {
+  --f-display: "Libre Franklin", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(1.8rem, 1rem + 2.1vw, 3rem);
+  --step-display: clamp(2.7rem, 1rem + 6.4vw, 8rem);
+  --gutter: clamp(16px, 2.2vw, 32px);
+  --axis: 42%;
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --header-h: 60px;
+}

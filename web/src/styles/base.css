@@ -1,0 +1,215 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-text);
+  font-size: var(--step-body);
+  line-height: 1.55;
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s, color 0.3s;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0;
+  text-wrap: balance;
+}
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+a {
+  color: inherit;
+}
+img {
+  display: block;
+  max-width: none;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+kbd {
+  font-family: var(--f-display);
+  font-size: 0.85em;
+  padding: 0 0.35em;
+  background: var(--surface-2);
+}
+
+/* ------------------------------------------------------------------ numbers */
+.claim {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+.claim .unit {
+  font-weight: 500;
+}
+.claim[data-prov="hypothetical"] {
+  font-style: normal;
+}
+
+/* ------------------------------------------------------------------ controls: square, flat, one shape */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease), background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+.btn:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.btn-large {
+  min-height: 56px;
+  padding: 0 28px;
+  font-size: 1.0625rem;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-secondary {
+  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-text {
+  background: none;
+  border: 0;
+  padding: 8px 4px;
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: transparent;
+  cursor: pointer;
+  transition: text-decoration-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.btn-text:hover {
+  text-decoration-color: var(--accent);
+}
+.btn-text[aria-pressed="true"] {
+  color: var(--accent-text);
+}
+.btn-text:disabled {
+  opacity: 0.4;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  height: var(--header-h);
+  padding: 0 18px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  flex: none;
+}
+
+.note {
+  font-size: var(--step-small);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.loading,
+.data-error {
+  padding: 48px var(--gutter);
+  font-family: var(--f-display);
+  color: var(--muted);
+}
+.data-error strong {
+  color: var(--ink);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes line-up {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

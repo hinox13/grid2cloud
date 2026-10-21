@@ -6,7 +6,7 @@ Copyright 2026 Oriol Hinojo
 What is licensed, and under which terms
 ---------------------------------------
 1. Cloud2Grid source code in this repository (src/, scripts/, tests/, demo/ application code,
-   reproduce/, release/ tooling, configs/): Apache License 2.0, see LICENSE.
+   web/ website code, reproduce/, release/ tooling, configs/): Apache License 2.0, see LICENSE.
 
 2. Cloud2Grid model weights published as GitHub Release assets (release `cloud2grid-models-v1`:
    E5c `e5c_ft_n10000_s2`, E5d `e5d_l1_s0`): Apache License 2.0, to the extent of Cloud2Grid's
@@ -33,6 +33,9 @@ Third-party material
 - gridfm-graphkit and gridfm-datakit (GridFM), Apache-2.0. Used as libraries; not modified.
 - pandapower (BSD-3-Clause) and pvlib (BSD-3-Clause), and other open-source dependencies: see
   their own licences.
+- The website (web/) bundles React and React DOM (MIT) and the Libre Franklin and Source Serif 4
+  fonts (SIL Open Font License 1.1, via @fontsource), unmodified. Their licence texts are
+  published with the site (third-party/).
 - UK Power Networks open data, CC BY 4.0. Contains UK Power Networks data (Long Term Development
   Statement Tables 1, 2a, 2b, 3a, 5; Grid and Primary Sites; Embedded Capacity Register; and
   operational half-hourly data used in the demo). Contains data from Office for National
