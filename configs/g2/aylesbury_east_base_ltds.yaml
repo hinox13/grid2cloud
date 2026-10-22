@@ -1,0 +1,55 @@
+# G2A BASELINE: aylesbury_east_base_ltds — LTDS planning topology of Aylesbury East Grid 33 kV, built
+# with the unchanged E1 model code. Assumptions as pre-registered in configs/g2/g2a_gate_and_validation.yaml.
+# No GENCO output and no weather/satellite data are used to build this file.
+
+scenario:
+  name: aylesbury_east_base_ltds
+  description: "LTDS planning topology; all metered inputs used as published."
+  changes: []
+  calibration: false
+
+region: configs/g2/study_region_aylesbury_east.yaml
+measurements_dir: data/interim/bsp_epn_aylesbury_east_grid_33kv
+
+network:
+  slack_node: "EPN:SUND11"                       # Sundon GIS 132 kV (as A05 in the Sundon model)
+  coupled_nodes: [["EPN:SUND11", "EPN:SUND12"]]  # as A06
+  slack_vm_pu: 1.0
+
+# Transformer sign conventions. Only Waddesdon publishes P. Evidence: the metered Buckingham Rd feeders,
+# which also supply Waddesdon through the BUCK_WADD circuits (checked by correlation, as at Sundon).
+transformer_series:
+  waddesdon_primary_11kv_t1: {positive: hv_to_lv, evidence: {circuit: AYLE_BUCK_2, circuit_positive_into_transformer: false}}
+  waddesdon_primary_11kv_t2: {positive: hv_to_lv, evidence: {circuit: AYLE_BUCK_1, circuit_positive_into_transformer: true}}
+
+# Import into the region, metered on the two 132 kV circuits from Sundon GIS (monthly-index orientation
+# AYLE→SUND, so import = −P). Used instead of grid-transformer meters (no published GT P for this BSP).
+import_circuits:
+  - {line: AYLE_SUG1_1, positive_into_region: false}
+  - {line: AYLE_SUG1_2, positive_into_region: false}
+import_series: []
+
+# Nodal demand (positive = consumption). Transformer-to-busbar assignment follows the LTDS model (HV node
+# match): Exchange St T1/T2 (HV EXCH31/32) feed EXCH51, T3/T4 (HV EXCH33/34) feed EXCH52.
+loads:
+  - {node: "EPN:BUCK51", method: transformer_current, series: [buckingham_rd_primary_11kv_t1, buckingham_rd_primary_11kv_t2], current_kv: 11.0, pf_site_floc: EPN-S0000000H8071}
+  - {node: "EPN:EXCH51", method: transformer_current, series: [exchange_st_primary_11kv_t1, exchange_st_primary_11kv_t2], current_kv: 11.0, pf_site_floc: EPN-S0000000H8134}
+  - {node: "EPN:EXCH52", method: transformer_current, series: [exchange_st_primary_11kv_t3, exchange_st_primary_11kv_t4], current_kv: 11.0, pf_site_floc: EPN-S0000000H8134}
+  - {node: "EPN:NODR51", method: transformer_current, series: [north_dr_primary_11kv_t1, north_dr_primary_11kv_t4], current_kv: 11.0, pf_site_floc: EPN-S0000000H8060}
+  - {node: "EPN:TRIN51", method: transformer_current, series: [tring_primary_11kv_t1, tring_primary_11kv_t2], current_kv: 11.0, pf_site_floc: EPN-S0000000H8063}
+  - {node: "EPN:WADD51", method: transformer_active_power, series: [waddesdon_primary_11kv_t1, waddesdon_primary_11kv_t2], pf_site_floc: EPN-S0000000H8022}
+  # Arla Dairies: customer primary with no published transformer series; its two 33 kV circuits are metered.
+  - {node: "EPN:ALDA32", method: circuit_active_power, circuits: [{line: lne_AYLE_ALDA_1, positive_into_node: true}], pf_site_floc: EPN-S0000000H8049}
+  - {node: "EPN:ALDA31", method: circuit_active_power, circuits: [{line: lne_AYLE_ALDA_2, positive_into_node: true}], pf_site_floc: EPN-S0000000H8049}
+  # KIBR customer (EPN 0265): circuits redacted most months → published monthly mean P (DERIVED).
+  - {node: "EPN:KIBR32", method: circuit_monthly_mean, line: AYLE_KIBR_1, positive_into_node: true, pf_site_floc: EPN-S0000000H8071}
+  - {node: "EPN:KIBR31", method: circuit_monthly_mean, line: AYLE_KIBR_2, positive_into_node: true, pf_site_floc: EPN-S0000000H8071}
+
+validation:
+  active_power: [AYLE_BUCK_1, AYLE_BUCK_2, AYLE_EXCHT_1, AYLE_EXCH_4, AYLE_EXCH_7, lne_AYLE_GT1]
+  current: []
+flagged_circuits: {}
+
+timestamp_selection:
+  max_abs_flow_rating_multiple: 1.5      # same data-quality screen as E2
+validation_timestamps: reports/tables/g2a_validation_timestamps.csv

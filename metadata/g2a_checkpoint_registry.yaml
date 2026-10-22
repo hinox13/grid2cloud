@@ -1,0 +1,134 @@
+experiment: g2a_synthetic
+frozen: true
+rule:
+  within_run: best epoch by the run's monitor on the synthetic validation subset
+  all_seeds_reported: every completed seed is frozen and evaluated; the hypotheses
+    use all seeds as stated above
+  headline_checkpoint_per_arm: lowest synthetic validation monitor value (validation
+    only)
+  freeze: "weights, normalisers, \u03C3 files and run records \u2192 metadata/g2a_checkpoint_registry.yaml\
+    \ with SHA256, committed BEFORE any prediction on a test population (prediction\
+    \ on test targets is refused by code until frozen)"
+runs:
+  g2a_B_s0:
+    arm: B
+    seed: 0
+    status: COMPLETED
+    best_epoch: 80
+    best_monitor: 0.0046339496038854
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_B_s0/best_model_state_dict.pt
+      sha256: 9ea43cdd560a1453b5982b7a42485d671bed33bdfe6cc265f36cbd71b6b675b3
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_B_s0/normalizer_stats.pt
+      sha256: 9dea606be3419a8aa4bbb76a591dd3526223af7f518f557c2bdd747257f66664
+    kappa: null
+  g2a_B_s1:
+    arm: B
+    seed: 1
+    status: COMPLETED
+    best_epoch: 126
+    best_monitor: 0.0038104434497654
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_B_s1/best_model_state_dict.pt
+      sha256: 7d0f7a9f8e369feb713f514b496bbb7e0f95163918bef5c51a111a3ec49a082b
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_B_s1/normalizer_stats.pt
+      sha256: 004bffd6d37b5847fed148b5f0c73b55e2ef60031e2a8232b0cca42b8ed89224
+    kappa: null
+  g2a_B_s2:
+    arm: B
+    seed: 2
+    status: COMPLETED
+    best_epoch: 199
+    best_monitor: 0.0037626575212925
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_B_s2/best_model_state_dict.pt
+      sha256: 1099cc46b349e602fc041657a6611c34f224fb957f7b4989b77b7b3354cad945
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_B_s2/normalizer_stats.pt
+      sha256: ebe735f7d74a00042ce1a43651f943f45e66babf5a543037c21b1c13daf664db
+    kappa: null
+    headline_for_arm: true
+  g2a_C_s0:
+    arm: C
+    seed: 0
+    status: COMPLETED
+    best_epoch: 196
+    best_monitor: 0.0034354948438704
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_C_s0/best_model_state_dict.pt
+      sha256: d8350897b1cf0a4db12633782fbbc2478db994531194bf955b1cde434fc768ee
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_C_s0/normalizer_stats.pt
+      sha256: 9dea606be3419a8aa4bbb76a591dd3526223af7f518f557c2bdd747257f66664
+    kappa: null
+  g2a_C_s1:
+    arm: C
+    seed: 1
+    status: COMPLETED
+    best_epoch: 196
+    best_monitor: 0.0033660437911748
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_C_s1/best_model_state_dict.pt
+      sha256: 6f550a3407ed318e336ee43337f4e4aa6e43987579df4fc4b2e08082c9a800c3
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_C_s1/normalizer_stats.pt
+      sha256: 004bffd6d37b5847fed148b5f0c73b55e2ef60031e2a8232b0cca42b8ed89224
+    kappa: null
+  g2a_C_s2:
+    arm: C
+    seed: 2
+    status: COMPLETED
+    best_epoch: 198
+    best_monitor: 0.0029932053294032
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_C_s2/best_model_state_dict.pt
+      sha256: 4e74bd1746d9084870c493f19c668f82080f7bdbbd8e7b926c81b89c9ed5f1c4
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_C_s2/normalizer_stats.pt
+      sha256: ebe735f7d74a00042ce1a43651f943f45e66babf5a543037c21b1c13daf664db
+    kappa: null
+    headline_for_arm: true
+  g2a_D_s0:
+    arm: D
+    seed: 0
+    status: COMPLETED
+    best_epoch: 198
+    best_monitor: 0.0060140141285955
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_D_s0/best_model_state_dict.pt
+      sha256: 94d1ea2f4bfb502a2e713ea881a4147a3d92188677f621beb576317d961cf860
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_D_s0/normalizer_stats.pt
+      sha256: 9dea606be3419a8aa4bbb76a591dd3526223af7f518f557c2bdd747257f66664
+    kappa: 0.016324573274080663
+  g2a_D_s1:
+    arm: D
+    seed: 1
+    status: COMPLETED
+    best_epoch: 188
+    best_monitor: 0.0170241091400384
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_D_s1/best_model_state_dict.pt
+      sha256: 30277040359655b55f106d26690895110d90b0279322ca2cd34cd6c65637eda9
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_D_s1/normalizer_stats.pt
+      sha256: 004bffd6d37b5847fed148b5f0c73b55e2ef60031e2a8232b0cca42b8ed89224
+    kappa: 0.016324573274080663
+  g2a_D_s2:
+    arm: D
+    seed: 2
+    status: COMPLETED
+    best_epoch: 181
+    best_monitor: 0.0057242740876972
+    checkpoint:
+      path: data/interim/g2a/checkpoints/g2a_D_s2/best_model_state_dict.pt
+      sha256: 5f079f2546d5942d1c6a8e53ff54fffb7d10401b48e1b4360bad9ab16abdd572
+    normalizer:
+      path: data/interim/g2a/checkpoints/g2a_D_s2/normalizer_stats.pt
+      sha256: ebe735f7d74a00042ce1a43651f943f45e66babf5a543037c21b1c13daf664db
+    kappa: 0.016324573274080663
+    headline_for_arm: true
+git_commit: 9e6ef2b053858f42f2b5d0565aa993bcaabdac0f
+working_tree_dirty: true

@@ -206,11 +206,22 @@
 .readouts-arrow {
   align-items: flex-end;
 }
-.readouts-arrow .arrow {
+/* the arrow between two readouts is drawn, not written: a <dl> may only hold dt/dd groups */
+.readouts-arrow {
+  column-gap: 76px;
+}
+.readouts-arrow > div:first-of-type {
+  position: relative;
+}
+.readouts-arrow > div:first-of-type::after {
+  content: "→";
+  position: absolute;
+  right: -50px;
+  bottom: 4px;
   font-family: var(--f-display);
   font-size: 2rem;
+  line-height: 1;
   color: var(--accent-text);
-  padding-bottom: 4px;
 }
 .pending {
   opacity: 0.18;
@@ -577,6 +588,10 @@
   .beat-prologue .stage-visual {
     grid-area: auto;
   }
+  /* on a phone the prologue text sits below the image, on the page background */
+  .beat-prologue .detail-link {
+    color: var(--ink-2);
+  }
   .beat-prologue .stage-text {
     grid-area: auto;
     margin: 0;
@@ -832,17 +847,25 @@
   .beat-v-season .season-view {
     position: static;
   }
-  /* the GENCO turn: its heading before the two cards */
-  .beat-j-shift .stage {
+  /* the GENCO turn, the two strengths and the second network: heading first, then the full figure */
+  .beat-j-shift .stage,
+  .beat-j-two .stage,
+  .beat-j-replicate .stage {
     grid-template-rows: auto auto;
   }
-  .beat-j-shift .stage-visual {
+  .beat-j-shift .stage-visual,
+  .beat-j-two .stage-visual,
+  .beat-j-replicate .stage-visual {
     order: 2;
   }
-  .beat-j-shift .stage-text {
+  .beat-j-shift .stage-text,
+  .beat-j-two .stage-text,
+  .beat-j-replicate .stage-text {
     min-height: auto;
   }
-  .beat-j-shift .journey-stage {
+  .beat-j-shift .journey-stage,
+  .beat-j-two .journey-stage,
+  .beat-j-replicate .journey-stage {
     position: static;
   }
   /* the value: one plant, then the 15 June result, then the method */
@@ -853,4 +876,12 @@
   .beat-v-value .beat-body {
     order: 1;
   }
+}
+
+/* a note under a readout group (outside the <dl>, so the list stays dt/dd pairs) */
+.readouts-note {
+  margin-top: 10px;
+  max-width: 52ch;
+  font-size: var(--step-small);
+  color: var(--ink-2);
 }

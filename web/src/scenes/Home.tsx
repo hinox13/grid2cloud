@@ -24,7 +24,7 @@ const MOMENTS: { ch: string; name: string; line: string; claim: string; prov: st
   { ch: "clouds", name: "Clouds", line: "Real Meteosat images, fifteen minutes apart, watch the deck break.", claim: "n_frames", prov: "observations" },
   { ch: "energy", name: "Energy", line: "Estimated solar output across the local fleet, 11:00 to 11:30.", claim: "fleet_pv_delta", prov: "derived" },
   { ch: "grid", name: "Grid", line: "Freeze the network at 11:00 and give one plant a clear sky.", claim: "cf_AC_1100", prov: "simulated import change" },
-  { ch: "genco", name: "GENCO", line: "From the wrong flow direction to the physical solar response, through five synthetic-data steps.", claim: "slope_E5d", prov: "predicted, all real states" },
+  { ch: "genco", name: "GENCO", line: "From the wrong flow direction to the physical solar response, through four synthetic-data fine-tuning steps; then the same pattern on a second network.", claim: "slope_E5d", prov: "E5d, fitted over all reconstructed real states" },
   { ch: "value", name: "Value", line: "The clouds' extra import across the day, at historical prices.", claim: "day_cloud_gbp", prov: "illustrative" },
 ];
 
@@ -95,7 +95,7 @@ export function Home() {
               <strong>A real UK network, reconstructed:</strong> Sundon, <Claim id="n_buses" bare /> buses, <Claim id="n_branches" bare /> branches
             </li>
             <li>
-              <strong>GENCO, tested and adapted</strong> in five synthetic-data steps
+              <strong>GENCO, tested and adapted</strong> in four synthetic-data steps, and replicated on a second network
             </li>
           </ul>
           <div className="home-stand">
@@ -128,10 +128,10 @@ export function Home() {
             GENCO is a grid foundation model pretrained on synthetic networks. On the real Sundon network it first predicted power flowing the wrong way. Successive synthetic-data experiments taught it the network, then how the network responds to solar.
           </p>
           <p>
-            <strong>Two different problems.</strong> The offset fell from <Claim id="bias_zero_shot" /> to <Claim id="bias_E5b" />; the solar response went from <Claim id="slope_E5c" /> to <Claim id="slope_E5d" /> (physics <Claim id="slope_AC" />). The level is still <Claim id="bias_E5d" /> off: a research model, not an operational one.
+            <strong>Two models, two different strengths.</strong> Envelope tuning (E5b) brought the import bias from <Claim id="bias_zero_shot" /> to <Claim id="bias_E5b" />. Response-aware training (E5d) moved the solar response from <Claim id="slope_E5c" bare /> (E5c) to <Claim id="slope_E5d" /> (physics <Claim id="slope_AC" bare />), but its import bias is <Claim id="bias_E5d" />. No model yet does both: a research result, not an operational one. On a second network the pattern recurred, on synthetic states.
           </p>
           <a className="btn btn-primary" href="#/explore/journey?stage=E5b">
-            Explore the five steps
+            Explore the five stages
           </a>
         </div>
         <div className="research-figure reveal">

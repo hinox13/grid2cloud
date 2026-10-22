@@ -92,7 +92,7 @@ export function NetworkView({ net, state, ac, model = "AC", mode = "flow", highl
       {size.w > 0 && (
         <svg
           viewBox={`${vx} ${vy} ${vw} ${vh}`}
-          role="img"
+          role={interactive ? "group" : "img"}
           aria-label={title ?? "Sundon network schematic"}
           onPointerDown={
             interactive

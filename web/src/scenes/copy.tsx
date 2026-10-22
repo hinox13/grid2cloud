@@ -104,18 +104,31 @@ export const COPY: Record<string, BeatCopy> = {
     ),
   },
   "i-slope": {
-    h: "Not once: across every real half-hour.",
+    h: (
+      <>
+        Not once: across <Claim id="n_states" bare /> half-hours.
+      </>
+    ),
     body: (
       <>
-        One moment could be luck. Fitted over all <Claim id="n_states" bare /> half-hours, the sensitivity says how much import changes per extra MW of solar. A matched run without the new training signal stayed blind.
+        One moment could be luck. Fitted over all <Claim id="n_states" bare /> reconstructed half-hours, the sensitivity says how much import changes per extra MW of solar, from ordinary fine-tuning (E5c) to response-aware training (E5d). On held-out synthetic pairs, a matched run without the new training signal stayed blind.
       </>
     ),
   },
   "j-two": {
-    h: "Two different problems.",
+    h: "Two models. Two different strengths.",
+    lead: "One unresolved challenge.",
     body: (
       <>
-        E5b is the most accurate on the absolute grid state. Only E5d responds like the physics, yet its average import is still <Claim id="bias_E5d" /> too high. A research model: AC power flow stays the reference.
+        E5b came closer to the physics on the absolute grid state: how much is imported, and the power balance. E5d reproduced the solar response far more accurately, but it did not keep E5b's absolute accuracy. Neither model does both, and only one of three E5d training seeds learned the response this well.
+      </>
+    ),
+  },
+  "j-replicate": {
+    h: "On a second network, the pattern recurred.",
+    body: (
+      <>
+        Aylesbury East: <Claim id="g2_buses" bare /> buses, <Claim id="g2_solar_mw" /> of solar and <Claim id="g2_wind_mw" /> of wind. GENCO was fine-tuned again from the same starting point. Ordinary fine-tuning stayed largely blind to solar; response-aware training recovered the physical response in <Claim id="g2_D_ok_seeds" bare /> training seeds.
       </>
     ),
   },
@@ -144,7 +157,7 @@ export const COPY: Record<string, BeatCopy> = {
     h: "The same plant, all season.",
     body: (
       <>
-        The same calculation for the same plant, repeated over every evaluated half-hour of the season. A different time scale, not the 15 June total multiplied.
+        The same calculation for the same plant, repeated over every evaluated half-hour of the season. A different time scale, not the 15 June total multiplied, and a net total: in <Claim id="cloud_neg_periods" bare /> half-hours the satellite-derived output exceeded the modelled clear-sky estimate, and those count against it.
       </>
     ),
   },

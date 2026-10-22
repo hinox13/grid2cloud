@@ -213,3 +213,10 @@ kbd {
     scroll-behavior: auto !important;
   }
 }
+
+/* scrollable regions are keyboard-focusable; show where focus is */
+.table-wrap:focus-visible,
+.scatter-wrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

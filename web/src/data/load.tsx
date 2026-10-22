@@ -53,7 +53,7 @@ export function useClaims(): ClaimMap {
   return c;
 }
 
-const UNIT: Record<string, string> = { MW: " MW", MWh: " MWh", MVA: " MVA", "MW/MW": " MW per MW", "%": " %", "GBP/MWh": "/MWh" };
+const UNIT: Record<string, string> = { MW: " MW", MWh: " MWh", MVA: " MVA", "MW/MW": " MW per MW", "%": " %", "GBP/MWh": "/MWh", pu: " pu", "°/MW": " ° per MW" };
 
 /** A frozen figure exactly as the Python export formatted it. `bare` omits the unit. */
 export function Claim({ id, bare = false }: { id: string; bare?: boolean }) {

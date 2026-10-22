@@ -1,0 +1,142 @@
+{
+  "ok": true,
+  "checks": {
+    "unique_scoped_bus_ids": {
+      "ok": true,
+      "detail": {
+        "n_buses": 56,
+        "duplicates": []
+      }
+    },
+    "all_region_branches_built": {
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "extra": []
+      }
+    },
+    "line_endpoints_valid": {
+      "ok": true,
+      "detail": {
+        "n_lines": 53
+      }
+    },
+    "trafo_endpoints_valid": {
+      "ok": true,
+      "detail": {
+        "n_trafos": 16
+      }
+    },
+    "line_voltage_consistency": {
+      "ok": true,
+      "detail": {
+        "mismatched_lines": []
+      }
+    },
+    "trafo_voltage_consistency (\u00b16% rated vs bus nominal)": {
+      "ok": true,
+      "detail": {
+        "off_nominal_lv_ratio": [
+          "Arla Dairies Primary 33kV -> Arla Dairies Primary 11kV",
+          "Arla Dairies Primary 33kV -> Arla Dairies Primary 11kV",
+          "Exchange St Primary 33kV -> Exchange St Primary 11kV",
+          "Tring Primary 33kV -> Tring Primary 11kV",
+          "Tring Primary 33kV -> Tring Primary 11kV"
+        ]
+      }
+    },
+    "finite_positive_line_parameters": {
+      "ok": true,
+      "detail": {}
+    },
+    "finite_positive_trafo_parameters": {
+      "ok": true,
+      "detail": {}
+    },
+    "duplicate_circuits_reported": {
+      "ok": true,
+      "detail": {
+        "parallel_or_duplicate": [
+          {
+            "name": "AYLE_TRINT_2_(1A)",
+            "from_bus": "EPN:AYTG3B",
+            "to_bus": "EPN:TRIN3A"
+          },
+          {
+            "name": "AYLE_TRINT_2_(1B)",
+            "from_bus": "EPN:AYTG3B",
+            "to_bus": "EPN:TRIN3A"
+          },
+          {
+            "name": "TRINT_PITST_2_(1A)",
+            "from_bus": "EPN:TRIN3A",
+            "to_bus": "EPN:PITS3C"
+          },
+          {
+            "name": "TRINT_PITST_2_(1B)",
+            "from_bus": "EPN:TRIN3A",
+            "to_bus": "EPN:PITS3C"
+          },
+          {
+            "name": "TRINT_TRINT_1",
+            "from_bus": "EPN:TRIN3B",
+            "to_bus": "EPN:TRIN3C"
+          },
+          {
+            "name": "TRINT_TRINT_2",
+            "from_bus": "EPN:TRIN3C",
+            "to_bus": "EPN:TRIN3B"
+          }
+        ]
+      }
+    },
+    "single_connected_component": {
+      "ok": true,
+      "detail": {
+        "n_components": 1,
+        "sizes": [
+          56
+        ]
+      }
+    },
+    "no_isolated_buses": {
+      "ok": true,
+      "detail": {
+        "isolated": []
+      }
+    },
+    "transformers_connected_to_slack": {
+      "ok": true,
+      "detail": {}
+    },
+    "leaf_buses_reported": {
+      "ok": true,
+      "detail": {
+        "leaf_buses": [
+          "EPN:ACSF31",
+          "EPN:ALDA5A",
+          "EPN:ALDA5B",
+          "EPN:DRMD31",
+          "EPN:FOSF31",
+          "EPN:KIBR31",
+          "EPN:KIBR32",
+          "EPN:QURF31"
+        ]
+      }
+    },
+    "ybus_constructed": {
+      "ok": true,
+      "detail": {
+        "shape": [
+          55,
+          55
+        ],
+        "nnz": 187
+      }
+    },
+    "ybus_offdiag_symmetric (no phase shifters)": {
+      "ok": true,
+      "detail": {}
+    }
+  }
+}

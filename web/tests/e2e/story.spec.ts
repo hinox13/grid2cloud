@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { beat, checkClaims, guardNetwork, toBeat } from "./helpers";
 
-const BEATS = ["prologue", "c-sky", "c-play", "c-clear", "e-wipe", "e-curve", "g-states", "g-why", "g-freeze", "j-zero", "j-network", "j-shift", "i-cf", "i-slope", "j-two", "v-value", "v-half", "v-season", "finale"];
+const BEATS = ["prologue", "c-sky", "c-play", "c-clear", "e-wipe", "e-curve", "g-states", "g-why", "g-freeze", "j-zero", "j-network", "j-shift", "i-cf", "i-slope", "j-two", "j-replicate", "v-value", "v-half", "v-season", "finale"];
 
 test("home: premise and both actions in the first screen", async ({ page }) => {
   const net = guardNetwork(page);
@@ -54,7 +54,7 @@ test("the brief's key figures appear where the story states them", async ({ page
   await expect(page.locator("[data-hud-import]")).toHaveAttribute("data-hud-import", "49.8");
   await toBeat(page, "j-zero");
   // question 1, the amount: an average over all real half-hours, opposing directions
-  await expect(page.locator(".scope[data-scope=aggregate]")).toContainText("all 2,829 real half-hours, April–September 2024");
+  await expect(page.locator(".scope[data-scope=aggregate]")).toContainText("all 2,829 reconstructed real half-hours, April–September 2024");
   await expect(page.locator(".question[data-question='1']")).toContainText("How much electricity does the grid import on average?");
   await expect(page.locator(".iax-row[data-stage=AC] [data-claim=import_mean_AC]")).toHaveText("48.6 MW");
   await expect(page.locator(".iax-row[data-stage=zero_shot] [data-claim=import_mean_zero_shot]")).toHaveText("−211.4 MW");
@@ -88,15 +88,32 @@ test("the brief's key figures appear where the story states them", async ({ page
   await toBeat(page, "i-slope");
   await expect(page.locator(".scope[data-scope=aggregate]")).toBeVisible();
   for (const [id, v] of [["slope_AC", "−1.02"], ["slope_E5c", "−0.04"], ["slope_E5d", "−1.07"]]) await expect(page.locator(`.readouts-trio [data-claim=${id}]`)).toHaveText(v);
-  await expect(page.locator(".readouts-trio")).toContainText("MW of import per MW of solar");
-  await expect(page.locator(".readouts-trio")).toContainText("not the 11:00 change in MW");
+  await expect(page.locator(".readouts-note")).toContainText("MW of import per MW of solar");
+  await expect(page.locator(".readouts-note")).toContainText("not the 11:00 change in MW");
+  await expect(page.locator(".readouts-note")).toContainText("E5c → E5d");
+  await expect(page.locator(".beat-body")).toContainText("On held-out synthetic pairs, a matched run");
+  // two models, two strengths: absolute state and solar response scored separately, neither wins both
   await toBeat(page, "j-two");
-  await expect(page.locator(".score-head")).toContainText("Question 1 · the amount");
-  await expect(page.locator(".score-head")).toContainText("Question 2 · the response");
-  await expect(page.locator(".score-row[data-stage=E5d] [data-claim=bias_E5d]")).toHaveText("+13.1 MW");
-  await expect(page.locator(".score-row[data-stage=E5b] [data-claim=bias_E5b]")).toHaveText("+4.4 MW");
-  await expect(page.locator(".score-note")).toContainText("not better on every metric");
-  await expect(page.locator(".takeaway")).toHaveText("First we taught GENCO the network. Then we taught it the physical response. These are different problems.");
+  await expect(page.locator(".beat-h")).toHaveText("Two models. Two different strengths.");
+  await expect(page.locator(".beat-lead")).toHaveText("One unresolved challenge.");
+  await expect(page.locator(".to-cell[data-model=E5b][data-row=state] [data-claim=bias_E5b]")).toHaveText("+4.4 MW");
+  await expect(page.locator(".to-cell[data-model=E5d][data-row=state] [data-claim=bias_E5d]")).toHaveText("+13.1 MW");
+  await expect(page.locator(".to-cell[data-model=E5b][data-row=state] [data-claim=pbe_E5b]")).toHaveText("0.338 MVA");
+  await expect(page.locator(".to-cell[data-model=E5d][data-row=state] [data-claim=pbe_E5d]")).toHaveText("0.676 MVA");
+  await expect(page.locator(".to-cell[data-model=E5b][data-row=resp] [data-claim=slope_E5b]")).toHaveText("−0.06 MW per MW");
+  await expect(page.locator(".to-cell[data-model=E5d][data-row=resp] [data-claim=slope_E5d]")).toHaveText("−1.07 MW per MW");
+  await expect(page.locator(".to-cell.is-better")).toHaveCount(2);
+  await expect(page.locator(".to-cell.is-better[data-model=E5b][data-row=state]")).toHaveCount(1);
+  await expect(page.locator(".to-cell.is-better[data-model=E5d][data-row=resp]")).toHaveCount(1);
+  await expect(page.locator(".to-note")).toContainText("Neither model does both");
+  // the second network: synthetic scope, never presented as real operation
+  await toBeat(page, "j-replicate");
+  await expect(page.locator(".scope[data-scope=synthetic]")).toContainText("Second network · synthetic replication");
+  await expect(page.locator(".ruler-status")).toContainText("not 2024 operation");
+  await expect(page.locator(".readouts [data-claim=g2_C_pv_slope_ratio]")).toHaveText("0.16–0.32");
+  await expect(page.locator(".readouts [data-claim=g2_D_pv_slope_ratio_ok]")).toHaveText("0.99–1.01");
+  await expect(page.locator(".readouts-note")).toContainText("real-data reconstruction failed validation");
+  await expect(page.locator(".repl .repl-dot.is-failed")).toHaveCount(1);
   // the value: one plant and the method first, then the day, one half-hour, the season
   await toBeat(page, "v-value");
   await expect(page.locator(".scope[data-scope=economic]")).toContainText("one 6 MW plant");
@@ -120,7 +137,9 @@ test("the brief's key figures appear where the story states them", async ({ page
   await expect(page.locator(".season-note")).toContainText("not actual costs, savings");
   await expect(page.locator(".season-note")).toContainText("GENCO does not predict prices");
   await toBeat(page, "finale");
-  await expect(page.locator(".finale-takeaway")).toContainText("These are different problems");
+  await expect(page.locator(".finale-takeaway")).toContainText("Two models, two different strengths, one unresolved challenge");
+  await expect(page.locator(".chain")).toContainText("E5c → E5d");
+  await expect(page.locator(".finale-body")).not.toContainText("a second network are the next tests");
 });
 
 test("controls: keyboard, chapters, pause, guided replay", async ({ page }) => {

@@ -1,0 +1,50 @@
+{
+  "network": "aylesbury_east_33kv",
+  "file": "data/interim/g2a/network/aylesbury_east_33kv.m",
+  "n_bus_datakit": 55,
+  "slack_limits_mva": 179.99982,
+  "bus_index": {
+    "EPN:BUCK51": 21,
+    "EPN:EXCH51": 31,
+    "EPN:EXCH52": 32,
+    "EPN:NODR51": 41,
+    "EPN:TRIN51": 51,
+    "EPN:WADD51": 54,
+    "EPN:ALDA5A": 6,
+    "EPN:ALDA5B": 7,
+    "EPN:AYLE31": 11,
+    "EPN:AYLE3A": 12,
+    "EPN:AYLE3B": 13
+  },
+  "load_nodes": [
+    "EPN:BUCK51",
+    "EPN:EXCH51",
+    "EPN:EXCH52",
+    "EPN:NODR51",
+    "EPN:TRIN51",
+    "EPN:WADD51",
+    "EPN:ALDA5A",
+    "EPN:ALDA5B"
+  ],
+  "gen_nodes": [
+    "EPN:AYLE31",
+    "EPN:AYLE3A",
+    "EPN:AYLE3B"
+  ],
+  "pmax_mw_per_gen_bus": 14.166666666666666,
+  "hv_capacity_mw": {
+    "Solar": 39.5,
+    "Wind": 3.0
+  },
+  "planning_case_import_mw": 94.23954461951224,
+  "sources_read": [
+    "configs/g2/aylesbury_east_base_ltds.yaml",
+    "configs/g2/g2a_synthetic_prereg.yaml",
+    "configs/g2/study_region_aylesbury_east.yaml",
+    "data/raw/ukpn/ltds_circuits.parquet",
+    "data/raw/ukpn/ltds_demand_3a.parquet",
+    "data/raw/ukpn/ltds_transformers_2w.parquet"
+  ],
+  "git_commit": "26fbbd5af4b421c1eec369754425ff748c3a4548",
+  "working_tree_dirty": true
+}

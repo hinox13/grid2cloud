@@ -30,7 +30,10 @@ TITLE = "Cloud2Grid: from real clouds to electric grid intelligence"
 # rendered variants present in this checkout (development: all three; publication: README files only)
 VARIANTS = [p for p in (HERE / "README.md", HERE / "Cloud2Grid_HuggingFace_READY.md", HERE / "promotion/README.md",
                         HERE / "Cloud2Grid_submission_final.md", ROOT / "README.md") if p.exists() and TITLE in p.read_text()]
-CONSTRUCTIVE = {str(p.relative_to(ROOT)) for p in (HERE / "Cloud2Grid_submission_final.md", ROOT / "README.md")}
+# the Hugging Face candidate (development checkout only) is generated from the approved text: same claims, own title
+HF = [p for p in (HERE / "hf_v2/Cloud2Grid_submission_v2.md", HERE / "hf_v2/Cloud2Grid_submission_v2_HF.md") if p.exists()]
+VARIANTS += HF
+CONSTRUCTIVE = {str(p.relative_to(ROOT)) for p in (HERE / "Cloud2Grid_submission_final.md", ROOT / "README.md", *HF)}
 
 
 def j(rel: str) -> dict:
@@ -131,9 +134,86 @@ CLAIMS: list[tuple[str, str, str]] = [
     ("both devices pass", "passed on CPU and GPU", "passed on CPU and GPU" if cpu["all_checks_pass"] and gpu["all_checks_pass"] else "FAILED"),
 ]
 
+
+# ---------------------------------------------------------------- 22 Oct 2026: claims of the final audited text
+# Checked in the approved (constructive) variants and the Hugging Face candidate only; the frozen fallback texts
+# predate them. Every number is recomputed from a public table, report or bundle.
+pf = pd.read_csv(T / "e5d_postfreeze_runs_real.csv").set_index("model")
+season = j("data/demo/cloud_impact/season.json")
+per = pd.read_csv(ROOT / "reports/economic_impact/tables/periods.csv", parse_dates=["slot"])
+_d15 = per[per.slot.dt.strftime("%Y-%m-%d") == "2024-06-15"]
+_v = lambda df, col: float((df[col] * 0.5 * df.apx_gbp_mwh).sum())  # noqa: E731
+_e = lambda df, col: float((df[col] * 0.5).sum())  # noqa: E731
+_hh = lambda q, m: float((per[f"{q}_{m}"] - per[f"{q}_AC"]).abs().mean())  # noqa: E731
+_closer = lambda q: float(((per[f"{q}_accounting"] - per[f"{q}_AC"]).abs() < (per[f"{q}_E5d"] - per[f"{q}_AC"]).abs()).mean() * 100)  # noqa: E731
+_e2 = (ROOT / "reports/e2_operational_validation.md").read_text()
+G2 = ROOT / "reports/g2"
+g2a = pd.read_csv(G2 / "s/metrics_absolute.csv").set_index("run")
+g2p = pd.read_csv(G2 / "s/metrics_pairs.csv").query("probe_type == 'pv'").set_index("run").import_slope_ratio
+g2net = j("reports/g2/s/network.json")
+g2val = j("reports/g2/a/validation_summary.json")
+g2assets = pd.read_csv(G2 / "a/pv_assets.csv").query("activity_search_start == 'ACTIVE'")
+_px = g2assets.groupby("native_pixel_id").active_capacity_search_mw.sum()
+_C = [f"g2a_C_s{i}" for i in range(3)]
+_D = [f"g2a_D_s{i}" for i in range(3)]
+_ok = [r for r in _D if 0.8 <= g2p[r] <= 1.2]
+_rng = lambda s_, f: f"{format(s_.min(), f)}–{format(s_.max(), f)}"  # noqa: E731
+
+NEW_CLAIMS: list[tuple[str, str, str]] = [
+    ("seed ratios", "reached 0.68 and 0.80 of the AC reference response",
+     f"reached {pf.at['e5d_l1_s1', 'pv_slope_ratio']:.2f} and {pf.at['e5d_l1_s2', 'pv_slope_ratio']:.2f} of the AC reference response"),
+    ("seed biases", "import biases of +65.4 and +19.2 MW",
+     f"import biases of +{pf.at['e5d_l1_s1', 'import_bias_mw']:.1f} and +{pf.at['e5d_l1_s2', 'import_bias_mw']:.1f} MW"),
+    ("branch response", "from 0.074 to **0.014 MW per MW**",
+     f"from {rt.loc[E5C, 'branch_pv_slope_median_abs_err']:.3f} to **{rt.loc[E5D, 'branch_pv_slope_median_abs_err']:.3f} MW per MW**"),
+    ("angle response", "from 0.050 to **0.0009 ° per MW**",
+     f"from {pf.at['E5c', 'bus_Va_pv_slope_median_abs_err']:.3f} to **{pf.at['e5d_l1_s0', 'bus_Va_pv_slope_median_abs_err']:.4f} ° per MW**"),
+    ("angle AC", "the AC angle response itself is 0.053 ° per MW",
+     f"the AC angle response itself is {pf.at['E5c', 'bus_Va_pv_slope_ac_median_abs']:.3f} ° per MW"),
+    ("E2 PV signature", "a midday dip of about 1.2 MW relative to night in May–August",
+     "a midday dip of about 1.2 MW relative to night in May–August" if "**−1.2 MW relative to night in May–Aug**" in _e2 else "E2 report changed"),
+    # economics (one 6 MW plant): 15 June and the evaluated sample, two counterfactuals
+    ("day cloud", "| 16.94 MWh, £1,661 |", f"| {_e(_d15, 'dcl_AC'):.2f} MWh, £{_v(_d15, 'dcl_AC'):,.0f} |"),
+    ("season cloud", "| 1,428.37 MWh, £93,286 (net) |", f"| {_e(per, 'dcl_AC'):,.2f} MWh, £{_v(per, 'dcl_AC'):,.0f} (net) |"),
+    ("day plant", "| 31.24 MWh, £2,890 |", f"| {_e(_d15, 'dpv_AC'):.2f} MWh, £{_v(_d15, 'dpv_AC'):,.0f} |"),
+    ("season plant", "| 4,038.08 MWh, £234,226 |", f"| {_e(per, 'dpv_AC'):,.2f} MWh, £{_v(per, 'dpv_AC'):,.0f} |"),
+    ("sample", "2,820 evaluated half-hours on 136 days, with APX prices for 2,819",
+     f"{len(per):,} evaluated half-hours on {per.slot.dt.date.nunique()} days, with APX prices for {int(per.apx_gbp_mwh.notna().sum()):,}"),
+    ("net total", "£93,286 is the net illustrative valuation", f"£{_v(per, 'dcl_AC'):,.0f} is the net illustrative valuation"),
+    ("negative periods", "In 927 half-hours the satellite-derived output exceeded", f"In {int((per.dcl_AC < 0).sum())} half-hours the satellite-derived output exceeded"),
+    ("negative prices", "180 half-hours had negative prices", f"{int((per.apx_gbp_mwh < 0).sum())} half-hours had negative prices"),
+    ("E5d totals", "within 0.3 % (plant against no plant) and +0.06 % (clouds)",
+     f"within {abs(season['pv_attributed']['E5d']['value_apx_error_pct']):.1f} % (plant against no plant) and {season['cloud_attributed']['E5d']['value_apx_error_pct']:+.2f} % (clouds)"),
+    ("E5c misses", "(E5c) misses 98 %", f"(E5c) misses {-season['pv_attributed']['E5c']['value_apx_error_pct']:.0f} %"),
+    ("accounting total", "lossless injection accounting is within 1.5 %", f"lossless injection accounting is within {abs(season['pv_attributed']['accounting']['value_apx_error_pct']):.1f} %"),
+    ("cloud per half-hour", "(mean absolute error 0.018 against 0.041 MW, closer in 77 % of half-hours)",
+     f"(mean absolute error {_hh('dcl', 'accounting'):.3f} against {_hh('dcl', 'E5d'):.3f} MW, closer in {_closer('dcl'):.0f} % of half-hours)"),
+    ("plant per half-hour", "(0.042 against 0.049 MW, closer in 54 %)",
+     f"({_hh('dpv', 'accounting'):.3f} against {_hh('dpv', 'E5d'):.3f} MW, closer in {_closer('dpv'):.0f} %)"),
+    ("absolute pricing", "would overstate the value of all imported energy by 27 %",
+     f"would overstate the value of all imported energy by {100 * season['absolute_mode_diagnostic']['E5d']['error_vs_ac_gbp'] / season['absolute_mode_diagnostic']['AC']['import_value_apx_gbp']:.0f} %"),
+    # second network (Aylesbury East): synthetic replication, failed real-data validation
+    ("G2 network", "**Aylesbury East**: 56 buses", f"**Aylesbury East**: {j('reports/g2/a/e1_structural_validation.json')['checks']['unique_scoped_bus_ids']['detail']['n_buses']} buses"),
+    ("G2 generation", "39.5 MW of solar plus 3.0 MW of wind", f"{g2net['hv_capacity_mw']['Solar']:.1f} MW of solar plus {g2net['hv_capacity_mw']['Wind']:.1f} MW of wind"),
+    ("G2 core circuits", "(1 of 6 core circuits met the fit", f"({round(g2val['criteria']['core_fit_share_B'] * 6)} of 6 core circuits met the fit" if g2val["level"] == "FAIL" else "validation passed"),
+    ("G2 sizes", "held-out synthetic states (2,838) and paired solar changes (500)",
+     f"held-out synthetic states ({int(g2a.at['g2a_D_s2', 'n']):,}) and paired solar changes (500)"),
+    ("G2 ordinary", "recovered 0.16–0.32 of the AC solar response", f"recovered {_rng(g2p[_C], '.2f')} of the AC solar response"),
+    ("G2 response-aware", "0.99–1.01 in two of three seeds", f"{_rng(g2p[_ok], '.2f')} in {['zero', 'one', 'two', 'three'][len(_ok)]} of three seeds"),
+    ("G2 failed seed", "The third seed failed (0.38)", f"The third seed failed ({min(g2p[_D]):.2f})"),
+    ("G2 absolute", "(import MAE 10.2–10.9 MW, against 20.1–24.3 MW)",
+     f"(import MAE {_rng(g2a.loc[_ok].import_mae_mw, '.1f')} MW, against {_rng(g2a.loc[_C].import_mae_mw, '.1f')} MW)"),
+    ("G2 pixel", "96 % of the network's 41.2 MW of active solar sits in one native satellite pixel",
+     f"{100 * _px.max() / _px.sum():.0f} % of the network's {g2assets.active_capacity_search_mw.sum():.1f} MW of active solar sits in one native satellite pixel"),
+    ("G2 association", "about −0.51 MW of measured import per MW", "about −0.51 MW of measured import per MW"
+     if "**−0.51 MW per MW of PV**" in (ROOT / "reports/g2a_aylesbury_validation.md").read_text() else "validation report changed"),
+]
+
 # constructive wording: what → (quoted text, recomputed text), required in CONSTRUCTIVE variants instead
 REPHRASE = {
     "control ratio": ("remains insensitive to PV (0.001)", f"remains insensitive to PV ({pv_ratio['e5d_l0_s0']:.3f})"),
+    # 22 Oct 2026: −0.04 is the separately trained E5c checkpoint, not an ablation of E5d
+    "E5c PV slope": ("(E5c) achieved only −0.04 MW per MW", f"(E5c) achieved only {fmt(rt.loc[E5C, 'genco_slope_pv'], '.2f')} MW per MW"),
 }
 # "[details]" claims: CONSTRUCTIVE variants link the report that holds them instead of embedding them
 DETAILS_LINK = {"E6 MAE 2dp [details]": "reports/e6_feasibility_diagnostic.md"}
@@ -179,6 +259,11 @@ def main() -> int:
         if not ok_val or missing or not checked:
             bad += 1
             print(f"FAIL {what}: quoted {quoted!r} | source {recomputed!r} | rephrase {alt!r} | missing in {missing} | checked in {checked} variants")
+    for what, quoted, recomputed in NEW_CLAIMS:
+        missing = [n for n, t in texts.items() if n in CONSTRUCTIVE and quoted not in t]
+        if quoted != recomputed or missing or not any(n in CONSTRUCTIVE for n in texts):
+            bad += 1
+            print(f"FAIL {what}: quoted {quoted!r} | source {recomputed!r} | missing in {missing}")
     for m, row in TABLE.items():
         cells = [c.strip().strip("*").rstrip("¹") for c in row.strip("|").split("|")[1:]]
         want = table_row(m)
@@ -186,8 +271,8 @@ def main() -> int:
         if cells != want or any(rows[n] not in t for n, t in texts.items()):
             bad += 1
             print(f"FAIL table {m}: post {cells} | source {want}")
-    n = len(CLAIMS) + len(TABLE)
-    print(f"{n - bad}/{n} checks pass ({len(CLAIMS)} quoted claims, {len(TABLE)} table rows, {len(texts)} variants)")
+    n = len(CLAIMS) + len(NEW_CLAIMS) + len(TABLE)
+    print(f"{n - bad}/{n} checks pass ({len(CLAIMS) + len(NEW_CLAIMS)} quoted claims, {len(TABLE)} table rows, {len(texts)} variants)")
     return 1 if bad else 0
 
 

@@ -24,7 +24,7 @@ uv sync && uv run pytest                                  # the test suite
 | [`reports/`](reports/) | one report per experiment (E0–E6), with tables and figures; clean-room verification records in [`reports/model_release_v1/`](reports/model_release_v1/) |
 | [`configs/`](configs/), [`metadata/`](metadata/) | pre-registrations, frozen protocols, checkpoint registries, licence manifest |
 | [`src/cloud2grid/`](src/cloud2grid/), [`scripts/`](scripts/) | the pipeline: network reconstruction, satellite PV, scenarios, GENCO adaptation, evaluation |
-| [`tests/`](tests/) | 315 automated tests ([why some skip on a clone](docs/TECHNICAL_NOTES.md#automated-tests)) |
+| [`tests/`](tests/) | 328 automated tests ([why some skip on a clone](docs/TECHNICAL_NOTES.md#automated-tests)) |
 | [`docs/`](docs/) | [technical notes](docs/TECHNICAL_NOTES.md), [data licences](docs/DATA_LICENSES.md), [Explorer deployment](docs/DEMO.md), [project design document](docs/PROJECT_DESIGN.md) |
 | [`submission/`](submission/) | the challenge write-up, its figures, screenshots, [figure manifest](submission/FIGURE_MANIFEST.md) and the scripts that build and check them |
 

@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 export const CLAIMS: Record<string, { display: string; unit: string }> = Object.fromEntries(
   (JSON.parse(readFileSync(new URL("../../public/data/claims.json", import.meta.url), "utf8")) as { id: string; display: string; unit: string }[]).map((c) => [c.id, c]),
 );
-const UNIT: Record<string, string> = { MW: " MW", MWh: " MWh", MVA: " MVA", "MW/MW": " MW per MW", "%": " %", "GBP/MWh": "/MWh" };
+const UNIT: Record<string, string> = { MW: " MW", MWh: " MWh", MVA: " MVA", "MW/MW": " MW per MW", "%": " %", "GBP/MWh": "/MWh", pu: " pu", "°/MW": " ° per MW" };
 
 /** Every rendered figure must be exactly the frozen display string (with or without its unit). */
 export async function checkClaims(page: Page): Promise<number> {

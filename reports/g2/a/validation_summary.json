@@ -1,0 +1,49 @@
+{
+  "criteria": {
+    "structural_checks": true,
+    "ac_convergence": 1.0,
+    "core_fit_share_B": 0.16666666666666666,
+    "core_fit_share_A": 0.16666666666666666,
+    "direction_min": 0.0,
+    "import_nmae": 0.15413687191071662,
+    "daylight_import_r": 0.814353506529702,
+    "residual_vs_pv_r": 0.6586909192376204,
+    "n_daylight": 107
+  },
+  "level": "FAIL",
+  "B_usable": false,
+  "A_strong": false,
+  "pv_specific": false,
+  "real_evaluation_states": 1837,
+  "real_evaluation_ok": true,
+  "decision": "STOP",
+  "transformer_sign_evidence": [
+    {
+      "tx_id": "waddesdon_primary_11kv_t1",
+      "declared": "hv_to_lv",
+      "evidence": "AYLE_BUCK_2",
+      "r": -0.6621006598993754,
+      "expected_sign": -1,
+      "n": 52503,
+      "ok": true,
+      "class": "DERIVED"
+    },
+    {
+      "tx_id": "waddesdon_primary_11kv_t2",
+      "declared": "hv_to_lv",
+      "evidence": "AYLE_BUCK_1",
+      "r": 0.666390720088025,
+      "expected_sign": 1,
+      "n": 52555,
+      "ok": true,
+      "class": "DERIVED"
+    }
+  ],
+  "population_counts": {
+    "loads": 4250,
+    "import": 7095,
+    "targets": 8741,
+    "pv": 8360,
+    "daylight": 4520
+  }
+}

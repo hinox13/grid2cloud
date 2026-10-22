@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
 import { Claim } from "../data/load";
 
-// The three evaluation scopes of the study, labelled the same way in the story and the Explorer so an
-// average over thousands of half-hours, one historical moment and an economic total never read as the
-// same kind of number. Each has its own glyph: one dot, a field of dots, a pound sign.
+// The evaluation scopes of the study, labelled the same way in the story and the Explorer so an
+// average over thousands of half-hours, one historical moment, an economic total and a synthetic
+// replication on a second network never read as the same kind of number. Each has its own glyph:
+// one dot, a field of dots, a pound sign, two linked networks.
 
-export type ScopeKind = "event" | "aggregate" | "economic";
+export type ScopeKind = "event" | "aggregate" | "economic" | "synthetic";
 export type EconomicSpan = "half-hour" | "day" | "season";
 
 function Glyph({ kind }: { kind: ScopeKind }) {
@@ -18,6 +19,13 @@ function Glyph({ kind }: { kind: ScopeKind }) {
         </>
       )}
       {kind === "aggregate" && [0, 1, 2].flatMap((i) => [0, 1, 2].map((j) => <circle key={`${i}${j}`} cx={3 + i * 6} cy={3 + j * 6} r="1.9" fill="currentColor" />))}
+      {kind === "synthetic" && (
+        <>
+          <circle cx="4.5" cy="9" r="3" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="13.5" cy="9" r="3" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <line x1="7.5" y1="9" x2="10.5" y2="9" stroke="currentColor" strokeWidth="1.6" strokeDasharray="1.4 1.2" />
+        </>
+      )}
       {kind === "economic" && (
         <text x="9" y="14" textAnchor="middle" fontSize="15" fontWeight="700" fill="currentColor">
           £
@@ -37,7 +45,14 @@ export function ScopeTag({ kind, cf, span, className = "" }: { kind: ScopeKind; 
     k = "Average · GENCO evaluation";
     d = (
       <>
-        all <Claim id="n_states" bare /> real half-hours, <Claim id="states_span" bare />
+        all <Claim id="n_states" bare /> reconstructed real half-hours, <Claim id="states_span" bare />
+      </>
+    );
+  } else if (kind === "synthetic") {
+    k = "Second network · synthetic replication";
+    d = (
+      <>
+        Aylesbury East · <Claim id="g2_test_states" bare /> held-out synthetic states, <Claim id="g2_pairs" bare /> paired solar changes
       </>
     );
   } else {

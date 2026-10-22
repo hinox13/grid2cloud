@@ -933,3 +933,7 @@ select {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.hyp-list li[data-holds="false"] strong {
+  color: var(--m-zero_shot);
+}

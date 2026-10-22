@@ -1,0 +1,79 @@
+# G2A — Aylesbury East cross-network replication: feasibility gate and E2-style validation criteria.
+#
+# Pre-registered 2026-10-17 ~10:00 UTC, after the user's explicit authorisation of an Aylesbury East study
+# (message of 2026-10-17: central hypothesis = do Sundon's gaps between absolute-state accuracy, physical-
+# response accuracy and power conservation persist on a second, solar-rich grid?). Written BEFORE the
+# network is built, before any AC solve on it, before its satellite PV series exists, and before any GENCO
+# contact. The experimental protocol (arms, seeds, training, evaluation) is pre-registered separately and
+# only if this gate passes.
+#
+# Relation to the G2 gate (configs/g2/feasibility_gate.yaml): Aylesbury East passed F1–F4 and F7 there and
+# failed only F5 (spatial diversity). The user's authorisation drops F5 as a GO condition for G2A. As a
+# consequence G2A makes NO claim about spatial weather structure (H2), and — because Aylesbury East shares
+# its grid supply point (Sundon 132 kV) and much of its weather with Sundon — NO claim of independent
+# meteorological generalisation.
+
+experiment: G2A
+region: configs/g2/study_region_aylesbury_east.yaml
+network_config: configs/g2/aylesbury_east_base_ltds.yaml
+evaluation_period: {start: "2024-04-01", end: "2024-09-30"}
+
+# ------------------------------------------------------------------ model inputs (fixed here)
+model_assumptions:
+  slack: "Sundon GIS 132 kV (EPN:SUND11, coupler to EPN:SUND12 closed) — as in the Sundon model (A05/A06)"
+  loads: "primary-transformer P (Waddesdon) or current × LTDS 3a power factor (Buckingham Rd, Exchange St,
+          North Dr, Tring) at the 11 kV busbars; Arla Dairies from its two metered 33 kV circuits;
+          the KIBR customer (EPN 0265; circuits redacted most months) from the published monthly mean P"
+  pv_hv: "satellite-driven estimated PV (frozen E3 chain, configs/experiments/e3_pv_model.yaml parameters
+          unchanged) for the >= 33 kV farms active through the period (ECR 333 20 MW, 486 15 MW, 6 4.5 MW),
+          injected at the E0-attributed BSP 33 kV busbar nodes (AYLE31/3A/3B, equal split) — the same
+          attribution rule as Sundon. ASSUMED: the farms' customer connection nodes on the Aylesbury–Tring
+          circuits are not identified by any public non-customer field."
+  pv_embedded: "<= 11 kV PV (Waddesdon 1.1 MW, small sites) is inside the observed primary flows (not added)"
+  unmetered: "3.16 MVA onshore wind (LTDS T5, connected) and any other unmetered customer: 0 (ASSUMED;
+              reported as a known bias source)"
+  outages: "none applied (no observed-outage rule is pre-registered for G2A)"
+
+# ------------------------------------------------------------------ validation population
+validation_population:
+  rule: "all half-hours of the evaluation period with every load input, both import meters, and (in daylight)
+         a usable satellite PV value; stratified by calendar month × 6-hour block; seeded sample"
+  n: 200
+  seed: 20261017
+  selection_uses: [input completeness, target completeness, PV-value availability]   # never model error
+
+targets:
+  import: "AYLE_SUG1_1 + AYLE_SUG1_2 (132 kV, active power; import = −(P1 + P2), monthly-index orientation
+           AYLE→SUND); compared with the model flow at the same (Aylesbury) end"
+  core_active_power_circuits: [AYLE_BUCK_1, AYLE_BUCK_2, AYLE_EXCHT_1, AYLE_EXCH_4, AYLE_EXCH_7, lne_AYLE_GT1]
+  inputs_not_targets: [lne_AYLE_ALDA_1, lne_AYLE_ALDA_2, AYLE_KIBR_1, AYLE_KIBR_2]
+
+# ------------------------------------------------------------------ criteria (Sundon E2 levels, unchanged)
+criteria:
+  B_usable:
+    structural_checks: all pass
+    ac_convergence: ">= 0.99"
+    core_circuits_fit: ">= 60 % of core circuits with r >= 0.8 and NMAE <= 0.30"
+    direction_agreement: ">= 0.90 for every core circuit (|observed P| >= 0.5 MW)"
+    import_nmae: "<= 0.25"
+  A_strong:
+    ac_convergence: "== 1.0"
+    core_circuits_fit: ">= 80 % with r >= 0.9 and NMAE <= 0.15"
+    direction_agreement: ">= 0.95"
+    import_nmae: "<= 0.10"
+  pv_specific:   # G2A addition: PV is the dominant driver here, so its estimate must be visible in the import
+    daylight_import_r: ">= 0.80 between observed and simulated import over the daylight validation states"
+    residual_vs_pv: "|r(observed − simulated import, simulated HV PV)| <= 0.50 over the daylight states
+                    (a larger value means the satellite PV estimate is systematically mis-scaled)"
+
+# ------------------------------------------------------------------ real-evaluation feasibility
+real_evaluation:
+  population: "every half-hour of the evaluation period with complete load inputs and (daylight) usable PV"
+  min_states: 1000
+  note: "states are AC solutions of the reconstructed network (simulated references, not measurements)"
+
+decision:
+  GO_training: "B_usable AND pv_specific AND real_evaluation all pass"
+  STOP: "otherwise: stop before any synthetic data or training; report the failing criteria"
+  no_relaxation: "criteria are not changed after the first validation run; sensitivity variants (e.g. PV at
+                  the Tring-circuit customer nodes) may be REPORTED but cannot turn a failed gate into GO"

@@ -1,0 +1,11 @@
+{
+ "note": "Published post-hoc diagnostic (reports/e6_feasibility_diagnostic.md), not pre-registered: on 500 held-out synthetic pairs differing only in PV, the frozen E5d model's absolute import errors in the two states of a pair, and the error of the predicted PV-induced change. A measured observation, not an isolated causal mechanism.",
+ "source": "reports/tables/e6_pair_level_cancellation.csv",
+ "model": "E5d λ1 s0 (frozen)",
+ "population": "held-out synthetic PV pairs",
+ "n_pairs": 500,
+ "corr_err_A_err_B": 0.999121,
+ "level_mae_member_A_mw": 11.677344,
+ "delta_err_mae_mw": 0.045583,
+ "mean_abs_delta_ac_mw": 1.764073
+}

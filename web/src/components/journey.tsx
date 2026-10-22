@@ -92,15 +92,15 @@ export const STAGE_TEXT: Record<Stage, StageText> = {
     change: "A new loss on pairs of synthetic AC states that differ in one input: solar, the battery or one load.",
     fixed: (
       <>
-        Solar response <Claim id="slope_E5d" /> (physics <Claim id="slope_AC" />); load <Claim id="slope_load_E5d" /> (physics <Claim id="slope_load_AC" />). A matched run without the new loss stayed insensitive to solar.
+        Solar response <Claim id="slope_E5d" /> (physics <Claim id="slope_AC" />; E5c <Claim id="slope_E5c" bare />); load <Claim id="slope_load_E5d" /> (physics <Claim id="slope_load_AC" />). On held-out synthetic pairs, a matched run without the new loss stayed blind to solar (ratio <Claim id="l0_syn_ratio" bare />).
       </>
     ),
     left: (
       <>
-        Offset <Claim id="bias_E5d" /> and power-balance error <Claim id="pbe_E5d" />, both worse than E5b; the battery response overshoots (<Claim id="slope_battery_E5d" />). Pre-registered verdict: partial.
+        Offset <Claim id="bias_E5d" /> and power-balance error <Claim id="pbe_E5d" />, both worse than E5b; the battery response overshoots (<Claim id="slope_battery_E5d" />). Only this training seed learned the response this well: with seeds 1 and 2 the response reached <Claim id="e5d_s1_ratio" bare /> and <Claim id="e5d_s2_ratio" bare /> of the physics, with offsets <Claim id="e5d_s1_bias" /> and <Claim id="e5d_s2_bias" />. Pre-registered verdict: partial.
       </>
     ),
-    next: "Open: calibrate the level without losing the response (future work, not attempted here).",
+    next: "Open: calibrate the level without losing the response, and make it stable across seeds (future work, not attempted here).",
   },
 };
 
@@ -240,7 +240,7 @@ export function Scoreboard({ focus, show = STAGES }: { focus?: Stage[]; show?: S
         );
       })}
       <p className="score-note">
-        Best state accuracy: envelope-tuned (E5b). Only response-aware (E5d) responds to solar like the physics. E5d is not better on every metric: its offset and power-balance error are larger than E5b's. Grid-tuned's fitted slope is not a usable response because its import barely follows the physics (r <Claim id="corr_E5" bare />).
+        Closest on most absolute-state metrics: envelope-tuned (E5b). Only response-aware (E5d) responds to solar like the physics. E5d is not better on every metric: its offset and power-balance error are larger than E5b's. Grid-tuned's fitted slope is not a usable response because its import barely follows the physics (r <Claim id="corr_E5" bare />).
       </p>
     </figure>
   );
@@ -263,7 +263,7 @@ export function TwoQuestions() {
         </p>
         <div className="twoq-bars" aria-hidden="true">
           <span className="twoq-row">
-            <span className="twoq-name">AC physics</span>
+            <span className="twoq-name">AC reference</span>
             <span className="twoq-track">
               <span style={{ width: lvl(v("import_mean_AC")), background: "var(--m-AC)" }} />
             </span>
@@ -287,7 +287,7 @@ export function TwoQuestions() {
         </p>
         <div className="twoq-bars is-change" aria-hidden="true">
           <span className="twoq-row">
-            <span className="twoq-name">AC physics</span>
+            <span className="twoq-name">AC reference</span>
             <span className="twoq-track">
               <span style={{ width: rsp(v("slope_AC")), background: "var(--m-AC)" }} />
             </span>
@@ -360,8 +360,90 @@ export function SlopeStrip({ rows, hidden = [] }: { rows: Stage[]; hidden?: Stag
         </div>
       ))}
       <p className="ss-note">
-        Dashed: the AC physics, <Claim id="slope_AC" />. A slope, fitted over all states; not the 11:00 response above.
+        Dashed: the AC reference, <Claim id="slope_AC" />. A slope, fitted over all states; not the 11:00 response above.
       </p>
+    </figure>
+  );
+}
+
+/**
+ * Two models, two different strengths: E5b and E5d side by side on the same 2,829 states, with the
+ * absolute state (the amount) and the solar response (the change) scored separately. The better
+ * model on each row is marked; neither wins both rows.
+ */
+export function TradeOff({ compact = false }: { compact?: boolean }) {
+  const c = useClaims();
+  const v = (id: string) => c[id].value ?? 0;
+  const lg = (x: number) => (Math.log10(Math.max(1, Math.abs(x))) / Math.log10(20)) * 100; // |bias| 1 … 20 MW
+  const rp = (x: number) => (Math.min(1.25, Math.abs(x)) / 1.25) * 100; // |slope| 0 … 1.25 MW/MW
+  const cell = (m: "E5b" | "E5d", row: "state" | "resp") => {
+    const better = row === "state" ? m === "E5b" : m === "E5d";
+    return (
+      <div className={`to-cell ${better ? "is-better" : ""}`} data-model={m} data-row={row}>
+        <span className={`to-mark ${better ? "" : "is-empty"}`} aria-hidden={!better}>
+          {better ? "Stronger" : "\u00a0"}
+        </span>
+        {row === "state" ? (
+          <>
+            <span className="to-v">
+              <Claim id={`bias_${m}`} />
+            </span>
+            <span className="to-track" aria-hidden="true">
+              <span style={{ width: `${lg(v(`bias_${m}`))}%`, background: `var(--m-${m})` }} />
+            </span>
+            <span className="to-s">
+              import bias; power-balance error <Claim id={`pbe_${m}`} />
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="to-v">
+              <Claim id={`slope_${m}`} />
+            </span>
+            <span className="to-track is-resp" aria-hidden="true">
+              <span style={{ width: `${rp(v(`slope_${m}`))}%`, background: `var(--m-${m})` }} />
+              <i style={{ left: `${rp(v("slope_AC"))}%` }} />
+            </span>
+            <span className="to-s">
+              <Claim id={`ratio_pv_${m}`} /> of the AC reference response (<Claim id="slope_AC" bare />)
+            </span>
+          </>
+        )}
+      </div>
+    );
+  };
+  return (
+    <figure className={`tradeoff ${compact ? "is-compact" : ""}`} aria-label="Envelope-tuned E5b against response-aware E5d: absolute state and solar response, scored separately">
+      <div className="to-grid">
+        <span className="to-corner" />
+        {(["E5b", "E5d"] as const).map((m) => (
+          <span key={m} className="to-model" style={{ ["--c" as string]: `var(--m-${m})` }}>
+            <i />
+            {NAME[m]} <span className="iax-exp">{m}</span>
+          </span>
+        ))}
+        <span className="to-row-h">
+          <strong>Absolute state</strong>
+          <em>how much is imported: average gap to the AC reference (shorter is better)</em>
+        </span>
+        {cell("E5b", "state")}
+        {cell("E5d", "state")}
+        <span className="to-row-h">
+          <strong>Solar response</strong>
+          <em>MW of import per MW of solar, fitted; the tick is the AC reference for the reconstructed network</em>
+        </span>
+        {cell("E5b", "resp")}
+        {cell("E5d", "resp")}
+      </div>
+      <figcaption className="to-note">
+        Same <Claim id="n_states" bare /> reconstructed half-hours, same AC targets. <strong>Neither model does both:</strong> E5d did not keep E5b's absolute accuracy.
+        {!compact && (
+          <>
+            {" "}
+            Not every metric favours E5b: E5d follows the import's variation more closely (r <Claim id="corr_E5d" bare /> against <Claim id="corr_E5b" bare />) and has the lower voltage error (<Claim id="vm_mae_E5d" /> against <Claim id="vm_mae_E5b" />).
+          </>
+        )}
+      </figcaption>
     </figure>
   );
 }

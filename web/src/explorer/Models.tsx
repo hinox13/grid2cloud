@@ -63,7 +63,7 @@ export function Models() {
       </Section>
 
       <Section title="Real-state metrics" scope={{ kind: "aggregate" }} aside={<p className="note">95 % block-bootstrap confidence intervals, resampled by day, in brackets. PBE = mean nodal power-balance error; Vm tracking r = median per-bus correlation of predicted and AC voltage over time.</p>}>
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
             <thead>
               <tr>

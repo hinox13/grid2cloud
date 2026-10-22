@@ -28,6 +28,53 @@ export function Value() {
         </Callout>
       </PageHead>
 
+      <Section title="Two counterfactuals, two questions" scope={{ kind: "economic", span: "season" }}>
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
+          <table className="ex-table">
+            <caption>Both vary only the same 6 MW plant; everything else in each AC state is held fixed</caption>
+            <thead>
+              <tr>
+                <th scope="col">Question</th>
+                <th scope="col">Compared</th>
+                <th scope="col" className="num">
+                  15 June 2024
+                </th>
+                <th scope="col" className="num">
+                  All <Claim id="season_periods" bare /> evaluated half-hours
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>What did the clouds add?</strong> Cloud-attributed import
+                </td>
+                <td>observed sky against a hypothetical clear sky over the plant</td>
+                <td className="num">
+                  <Claim id="day_cloud_mwh" />, <Claim id="day_cloud_gbp" />
+                </td>
+                <td className="num">
+                  <Claim id="season_cloud_attributed_mwh" />, <Claim id="season_cloud_attributed_gbp" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>What did the plant displace?</strong> PV-attributed import
+                </td>
+                <td>the plant as observed against no plant at all</td>
+                <td className="num">
+                  <Claim id="day_pv_attr_mwh" />, <Claim id="day_pv_attr_gbp" />
+                </td>
+                <td className="num">
+                  <Claim id="season_pv_attributed_mwh" />, <Claim id="season_pv_attributed_gbp" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="note">Different questions, not one number at two scales: the cloud figure is the gap to a clear-sky estimate, the plant figure the plant's whole contribution. Illustrative values at historical APX prices.</p>
+      </Section>
+
       <Section title="15 June 2024: observed sky against a hypothetical clear sky" scope={{ kind: "economic", span: "day" }}>
         <Seg
           label="Scenario"
@@ -51,7 +98,7 @@ export function Value() {
             { k: "The 11:00 half-hour alone", v: <Claim id="one_cloud_gbp" />, s: <><Claim id="one_cloud_mwh" /> × <Claim id="one_apx" /></> },
           ]}
         />
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
             <caption>Four numbers, four different things</caption>
             <thead>
@@ -109,7 +156,7 @@ export function Value() {
       </Section>
 
       <Section title="Every half-hour of 15 June" scope={{ kind: "economic", span: "day" }} aside={<p className="note">Energy = MW difference × 0.5 h per settlement period; value = energy × the same period's APX price. Computed by the export pipeline from the frozen bundle. E5c and E5d columns are frozen predictions for the same two states.</p>}>
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table dense">
             <thead>
               <tr>
@@ -173,73 +220,128 @@ export function Value() {
         </p>
         <Tiles
           items={[
-            { k: "Import displaced by the 6 MW plant", v: <Claim id="season_pv_attributed_mwh" />, s: <><Claim id="season_pv_attributed_gbp" /> at APX prices (illustrative)</> },
-            { k: "Extra import caused by clouds", v: <Claim id="season_cloud_attributed_mwh" />, s: <><Claim id="season_cloud_attributed_gbp" /> at APX prices (illustrative)</> },
+            { k: "Extra import caused by clouds (vs clear sky)", v: <Claim id="season_cloud_attributed_mwh" />, s: <><Claim id="season_cloud_attributed_gbp" /> at APX prices (illustrative), net of negative half-hours</> },
+            { k: "A different question: import the plant displaced (vs no plant)", v: <Claim id="season_pv_attributed_mwh" />, s: <><Claim id="season_pv_attributed_gbp" /> at APX prices (illustrative)</> },
             { k: "Daily cloud value, 136 days", v: gbp(dc.cloud_value_apx_gbp_median as number), s: `median; 90th percentile ${gbp(dc.cloud_value_apx_gbp_p90 as number)}; largest ${gbp(dc.cloud_value_apx_gbp_max as number)} on ${new Date(ms(String(dc.max_day) + "T00:00:00Z")).toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" })}` },
           ]}
         />
         <div className="ex-season">
           <SeasonView ci={ci} />
         </div>
+        <ul className="ex-list">
+          <li>
+            <strong>Uneven coverage.</strong> The evaluated half-hours fall on <Claim id="season_days" bare /> of the <Claim id="season_days_span" bare /> days of April–September, between <Claim id="periods_day_min" bare /> and <Claim id="periods_day_max" bare /> per day; they are the states that could be reconstructed (daylight, complete data, no line out). The totals are sums over these half-hours, not seasonal totals.
+          </li>
+          <li>
+            <strong>Signed contributions.</strong> In <Claim id="cloud_neg_periods" bare /> half-hours the satellite-derived output exceeded the modelled clear-sky estimate, so their contribution is negative (<Claim id="cloud_neg_mwh" /> against <Claim id="cloud_pos_mwh" /> positive). That is not proof that clouds raised generation in each of them: it can also reflect disagreement between the satellite-derived estimate and the clear-sky model. <Claim id="apx_neg_periods" bare /> valued half-hours had negative APX prices (as low as <Claim id="apx_season_min" />). Both enter with their signs: <Claim id="season_cloud_attributed_gbp" /> is the net illustrative valuation across the evaluated half-hours, not a sum of cloud-related losses.
+          </li>
+        </ul>
         <p className="note">
           The season total is the same calculation repeated over every evaluated half-hour, not the 15 June total multiplied. Only the 6 MW plant is varied: the other <Claim id="other_pv_capacity" /> of local PV sits inside the reconstructed loads and was never changed, so these values do not transfer to other plants or to the network's total solar capacity.
         </p>
       </Section>
 
-      <Section title="How accurately do the models reproduce this valuation?" scope={{ kind: "economic", span: "season" }} aside={<p className="note">The accuracy of an energy valuation, not price prediction. GENCO does not predict prices.</p>}>
-        <div className="table-wrap">
+      <Section title="How accurately do the models reproduce these valuations?" scope={{ kind: "economic", span: "season" }} aside={<p className="note">The accuracy of an energy valuation, not price prediction. GENCO does not predict prices.</p>}>
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
+            <caption>Error against the AC reference, all <Claim id="season_periods" bare /> evaluated half-hours</caption>
             <thead>
               <tr>
-                <th scope="col">Method</th>
+                <th scope="col" rowSpan={2}>
+                  Method
+                </th>
+                <th scope="colgroup" colSpan={2} className="num">
+                  Clouds vs clear sky
+                </th>
+                <th scope="colgroup" colSpan={2} className="num">
+                  Plant vs no plant
+                </th>
+              </tr>
+              <tr>
                 <th scope="col" className="num">
-                  Season value (import displaced)
+                  Season value
                 </th>
                 <th scope="col" className="num">
-                  Error vs AC
+                  Per half-hour (MW)
                 </th>
                 <th scope="col" className="num">
-                  Per-half-hour error (MW)
+                  Season value
+                </th>
+                <th scope="col" className="num">
+                  Per half-hour (MW)
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>AC reference</td>
-                <td className="num">{gbp(pa.AC.value_apx_gbp)}</td>
+                <td className="num">
+                  <Claim id="season_cloud_attributed_gbp" />
+                </td>
                 <td className="num">—</td>
+                <td className="num">{gbp(pa.AC.value_apx_gbp)}</td>
                 <td className="num">—</td>
               </tr>
               <tr>
                 <td>Simple injection accounting (lossless)</td>
-                <td className="num">{gbp(pa.accounting.value_apx_gbp)}</td>
+                <td className="num">
+                  <Claim id="season_cloud_err_accounting" />
+                </td>
+                <td className="num">
+                  <strong>
+                    <Claim id="cloud_hh_mae_accounting" bare />
+                  </strong>
+                </td>
                 <td className="num">
                   <Claim id="season_pv_err_accounting" />
                 </td>
-                <td className="num">{num(pa.accounting.period_mae_mw, 3)}</td>
+                <td className="num">
+                  <strong>
+                    <Claim id="pv_hh_mae_accounting" bare />
+                  </strong>
+                </td>
               </tr>
               <tr>
                 <td>Response-aware GENCO (E5d)</td>
-                <td className="num">{gbp(pa.E5d.value_apx_gbp)}</td>
                 <td className="num">
-                  <Claim id="season_pv_err_E5d" />
+                  <strong>
+                    <Claim id="season_cloud_err_E5d" />
+                  </strong>
                 </td>
-                <td className="num">{num(pa.E5d.period_mae_mw, 3)}</td>
+                <td className="num">
+                  <Claim id="cloud_hh_mae_E5d" bare />
+                </td>
+                <td className="num">
+                  <strong>
+                    <Claim id="season_pv_err_E5d" />
+                  </strong>
+                </td>
+                <td className="num">
+                  <Claim id="pv_hh_mae_E5d" bare />
+                </td>
               </tr>
               <tr>
                 <td>Generator-aware GENCO (E5c)</td>
-                <td className="num">{gbp(pa.E5c.value_apx_gbp)}</td>
+                <td className="num">
+                  <Claim id="season_cloud_err_E5c" />
+                </td>
+                <td className="num">
+                  <Claim id="cloud_hh_mae_E5c" bare />
+                </td>
                 <td className="num">
                   <Claim id="season_pv_err_E5c" />
                 </td>
-                <td className="num">{num(pa.E5c.period_mae_mw, 2)}</td>
+                <td className="num">
+                  <Claim id="pv_hh_mae_E5c" bare />
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
         <p className="ex-p">
-          Signed season totals. E5d's small total error partly comes from errors cancelling: <strong>per half-hour, simple accounting is slightly more accurate</strong>, and the AC calculation itself is exact and cheap on this network. The learned response matters (ordinary adaptation would miss almost all of the value), but this is not evidence that GENCO outperforms physics or accounting. Never price GENCO's absolute import: E5d's bias would overstate the value of all imported energy by <Claim id="abs_mode_E5d_gbp" /> (<Claim id="abs_mode_E5d_pct" />).
+          Season values are signed totals, so E5d's small total errors partly come from errors cancelling. <strong>Per half-hour, simple accounting is more accurate</strong>: closer to AC than E5d in <Claim id="cloud_acc_closer" /> of half-hours for the cloud effect and <Claim id="pv_acc_closer" /> for the plant's contribution, with a lower mean error in both. The AC calculation itself is exact and cheap on this network. The learned response matters (ordinary adaptation would miss almost all of the value), but this is not evidence that GENCO outperforms physics or accounting. Never price GENCO's absolute import: E5d's bias would overstate the value of all imported energy by <Claim id="abs_mode_E5d_gbp" /> (<Claim id="abs_mode_E5d_pct" />).
         </p>
+        <p className="note">All values are for the one 6 MW plant on Sundon. No economic value is computed for the second network (Aylesbury East): it has no validated reconstruction to value.</p>
       </Section>
 
       <Section title="What these numbers are, and are not">

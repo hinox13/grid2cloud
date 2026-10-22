@@ -146,7 +146,7 @@ export function ResponseBars({ stage, children }: { stage: "e5c" | "e5d"; childr
   const v = (id: string) => c[id].value ?? 0;
   const px = (mw: number) => `${(mw / 6.5) * 100}%`;
   return (
-    <div className="genco-bars">
+    <div className="genco-bars" tabIndex={0} role="region" aria-label="The 11:00 counterfactual by model">
       {children}
       <figure className="cf-input" aria-label={`Input: the 6 MW plant goes from ${c.plant_pv_obs_1100.display} MW (observed sky) to ${c.plant_pv_clear_1100.display} MW (hypothetical clear sky)`}>
         <figcaption>
@@ -178,7 +178,7 @@ export function ResponseBars({ stage, children }: { stage: "e5c" | "e5d"; childr
         unit="Change in import, MW · negative = less power drawn from the national grid"
         target={{ value: v("cf_AC_1100"), label: "AC reference" }}
         rows={[
-          { key: "AC", label: <ModelLabel name="AC physics" sub="Simulated · the reference" />, value: v("cf_AC_1100"), display: <Claim id="cf_AC_1100" />, colour: "var(--m-AC)" },
+          { key: "AC", label: <ModelLabel name="AC reference" sub="Simulated · reconstructed network" />, value: v("cf_AC_1100"), display: <Claim id="cf_AC_1100" />, colour: "var(--m-AC)" },
           { key: "E5c", label: <ModelLabel name="Ordinary adapted GENCO" sub="E5c · Predicted" />, value: v("cf_E5c_1100"), display: <Claim id="cf_E5c_1100" />, colour: "var(--m-E5c)" },
           { key: "E5d", label: <ModelLabel name="Response-aware GENCO" sub="E5d · Predicted" />, value: v("cf_E5d_1100"), display: <Claim id="cf_E5d_1100" />, colour: "var(--m-E5d)", hidden: stage === "e5c" },
         ]}
@@ -202,11 +202,10 @@ export function SlopeScatter({ models = ["E5c", "E5d"], children }: { models?: s
   if (error) return <p className="note">The 2,829-state scatter could not be loaded ({error}).</p>;
   if (!data) return <Loading label="Loading 2,829 real states" />;
   return (
-    <div className="scatter-wrap">
+    <div className="scatter-wrap" tabIndex={0} role="region" aria-label="Scatter plot, scrolls on small screens">
       {children}
       <p className="viz-title">
-        Every real half-hour, <Claim id="states_span" bare /> (<Claim id="n_states" bare />
-        ): grid import with the demand and battery effects removed, against the plant's solar output
+        All <Claim id="n_states" bare /> reconstructed real half-hours, <Claim id="states_span" bare />: grid import with the demand and battery effects removed, against the plant's solar output
       </p>
       <div className="scatter-panels">
         {models.map((m) => (
@@ -214,7 +213,7 @@ export function SlopeScatter({ models = ["E5c", "E5d"], children }: { models?: s
         ))}
       </div>
       <p className="note">
-        Solid line: the model's fitted sensitivity. Dashed: the AC physics, <Claim id="slope_AC" />. Sensitivities are MW of import per MW of solar, fitted over all states; they are not the 11:00 response.
+        Solid line: the model's fitted sensitivity. Dashed: the AC reference for the reconstructed network, <Claim id="slope_AC" />. Sensitivities are MW of import per MW of solar, fitted over all states; they are not the 11:00 response.
       </p>
     </div>
   );
@@ -233,7 +232,7 @@ function Scatter({ data, model, slope, slopeId, ac }: { data: PvResponse; model:
         height={260}
         margin={{ l: 40, r: 10, t: 8, b: 30 }}
         title={`${name}: import with load and battery removed against solar output`}
-        desc={`${xsRaw.length} real half-hourly states. Fitted slope ${num(slope, 2, true)} MW per MW; AC physics ${num(ac, 2, true)}.`}
+        desc={`${xsRaw.length} real half-hourly states. Fitted slope ${num(slope, 2, true)} MW per MW; AC reference ${num(ac, 2, true)}.`}
       >
         {(b) => {
           const x = linear(-0.2, 6.3, 0, b.iw);
@@ -288,7 +287,7 @@ export function SeasonView({ ci, children }: { ci: CloudImpact; children?: React
   const dayMax = 3000;
   const dp = (x: number) => `${(x / dayMax) * 100}%`;
   return (
-    <div className="season-view">
+    <div className="season-view" tabIndex={0} role="region" aria-label="The season: evaluated days and values">
       <figure className="cal" aria-label={`Evaluated days, April to September 2024: ${c.season_days.display} days with valued half-hours; 15 June highlighted`}>
         <figcaption>
           <strong>

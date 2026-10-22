@@ -7,6 +7,7 @@ import { Events } from "./Events";
 import { Journey } from "./Journey";
 import { Models } from "./Models";
 import { Rail, RailProvider } from "./Rail";
+import { Replication } from "./Replication";
 import { Response } from "./Response";
 import { Science } from "./Science";
 import { Value } from "./Value";
@@ -16,6 +17,7 @@ const VIEWS: { path: string; name: string; title: string; el: (p: URLSearchParam
   { path: "/explore/journey", name: "Model journey", title: "How we taught GENCO this network", el: (p) => <Journey params={p} /> },
   { path: "/explore/events", name: "Grid events", title: "Weather events", el: (p) => <Events params={p} /> },
   { path: "/explore/response", name: "PV response", title: "The PV response", el: (p) => <Response params={p} /> },
+  { path: "/explore/replication", name: "Second network", title: "A second network", el: () => <Replication /> },
   { path: "/explore/models", name: "Model metrics", title: "Model evolution", el: () => <Models /> },
   { path: "/explore/value", name: "Value", title: "Cloud impact and value", el: () => <Value /> },
   { path: "/explore", name: "Methods", title: "The scientific story", el: () => <Science /> },

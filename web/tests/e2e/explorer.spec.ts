@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { checkClaims, guardNetwork } from "./helpers";
 
-const VIEWS = ["#/explore/journey", "#/explore", "#/explore/events", "#/explore/response", "#/explore/models", "#/explore/value", "#/explore/data"];
+const VIEWS = ["#/explore/journey", "#/explore", "#/explore/events", "#/explore/response", "#/explore/replication", "#/explore/models", "#/explore/value", "#/explore/data"];
 
 test("every Explorer view loads with frozen figures and no external request", async ({ page }) => {
   const net = guardNetwork(page);
@@ -52,7 +52,7 @@ test("response, models, value and data views carry their content", async ({ page
   await expect(page.locator(".ledger-hh")).toContainText("settlement period 26");
   // one plant, two time scales, each section labelled with its scope
   await expect(page.locator(".ex-lead")).toContainText("One explicit 6 MW solar plant");
-  await expect(page.locator(".ex-section .scope[data-scope=economic]").first()).toContainText("one day, 15 June 2024");
+  await expect(page.locator("#s-15-june-2024-observed-sky-against-a-hypothetical-clear-sky .scope[data-scope=economic]")).toContainText("one day, 15 June 2024");
   await expect(page.locator("#s-across-the-season .scope")).toContainText("2,820 half-hours over 136 days");
   await expect(page.locator("#s-across-the-season .cal-grid .cal-day.is-on")).toHaveCount(135);
   await expect(page.locator("#s-across-the-season")).toContainText("not the 15 June total multiplied");
@@ -110,7 +110,12 @@ test("model journey: five stages, keyboard, two dimensions, caveats", async ({ p
   await page.getByRole("tab", { name: /Response-aware/ }).click();
   await expect(page.locator(".jr-panel")).toContainText("both worse than E5b");
   await expect(page.locator(".score-row")).toHaveCount(5);
-  await expect(page.locator("#s-two-different-problems .scope[data-scope=aggregate]")).toContainText("2,829");
+  await expect(page.locator("#s-two-models-two-different-strengths .scope[data-scope=aggregate]")).toContainText("2,829");
+  await expect(page.locator("#s-two-models-two-different-strengths .to-cell.is-better")).toHaveCount(2);
+  await expect(page.locator("#s-two-models-two-different-strengths .ex-table")).toContainText("0.0144");
+  await expect(page.locator("#s-one-seed-one-setting tbody tr")).toHaveCount(7);
+  await expect(page.locator("#s-one-seed-one-setting")).toContainText("not interpretable");
+  await expect(page.locator(".jr-panel")).toContainText("Only this training seed learned the response this well");
   await expect(page.locator("#s-see-it-happen-on-15-june .scope[data-scope=event]")).toContainText("controlled counterfactual");
   await expect(page.locator(".jr-track")).toContainText("PBE 0.338 MVA");
   await page.getByRole("radio", { name: "Generator-aware (E5c)" }).click();
@@ -118,6 +123,55 @@ test("model journey: five stages, keyboard, two dimensions, caveats", async ({ p
   await page.goto("./");
   await page.getByRole("link", { name: "Follow the model journey" }).click();
   await expect(page.locator(".ex-h1")).toContainText("How we taught GENCO");
+});
+
+test("second network: synthetic scope, every seed, failed validation, no economic value", async ({ page }) => {
+  const net = guardNetwork(page);
+  await page.goto("./#/explore/replication");
+  await expect(page.locator(".ex-h1")).toContainText("A second network: Aylesbury East");
+  await expect(page.locator(".ex-callout")).toContainText("Synthetic states only");
+  await expect(page.locator(".ex-callout")).toContainText("not the Sundon model reused");
+  await expect(page.locator("#s-every-seed tbody tr")).toHaveCount(9);
+  await expect(page.locator(".repl-dot.is-failed")).toHaveCount(1);
+  await expect(page.locator(".hyp-list li[data-holds=false]")).toHaveCount(1);
+  await expect(page.locator(".hyp-list li[data-holds=false]")).toContainText("H7 fails");
+  await expect(page.locator("#s-why-the-real-data-validation-failed")).toContainText("never trained or evaluated on Aylesbury's real states");
+  await expect(page.locator("#s-can-it-test-spatial-weather [data-claim=g2_pixel_share]")).toHaveText("96 %");
+  await expect(page.locator("#s-does-the-e5b-e5d-trade-off-recur")).toContainText("Not in the same form");
+  await expect(page.locator(".ex-main")).not.toContainText("£");
+  expect(await checkClaims(page)).toBeGreaterThan(20);
+  expect(net.errors).toEqual([]);
+});
+
+test("network-wide response, the cancellation note and the AC reference qualification", async ({ page }) => {
+  await page.goto("./#/explore/response");
+  const net = page.locator("#s-beyond-the-grid-import-the-response-across-the-network");
+  for (const [id, v] of [["branch_resp_E5c", "0.074"], ["branch_resp_E5d", "0.014 MW per MW"], ["va_resp_E5c", "0.050"], ["va_resp_E5d", "0.0009"], ["va_resp_AC", "0.053"]]) await expect(net.locator(`[data-claim=${id}]`)).toHaveText(v);
+  await expect(net).toContainText("post-verdict, report-only diagnostic");
+  await expect(net).toContainText("does not show that the absolute states are accurate");
+  await page.goto("./#/explore/journey");
+  const two = page.locator("#s-two-models-two-different-strengths");
+  for (const [id, v] of [["cancel_r", "0.999"], ["cancel_level", "11.7 MW"], ["cancel_delta", "0.05 MW"]]) await expect(two.locator(`[data-claim=${id}]`)).toHaveText(v);
+  await expect(two).toContainText("not an established cause");
+  await page.goto("./#/explore");
+  await expect(page.locator(".ex-main")).toContainText("is the reconstruction's response");
+});
+
+test("value: both counterfactuals kept apart, each with its own model accuracy", async ({ page }) => {
+  await page.goto("./#/explore/value");
+  const two = page.locator("#s-two-counterfactuals-two-questions");
+  await expect(two).toContainText("What did the clouds add?");
+  await expect(two).toContainText("What did the plant displace?");
+  await expect(two.locator("[data-claim=season_pv_attributed_gbp]")).toHaveText("£234,226");
+  const acc = page.locator("#s-how-accurately-do-the-models-reproduce-these-valuations");
+  await expect(acc).toContainText("Clouds vs clear sky");
+  await expect(acc).toContainText("Plant vs no plant");
+  for (const [id, v] of [["season_cloud_err_E5d", "+0.06 %"], ["season_pv_err_E5d", "−0.3 %"], ["cloud_hh_mae_accounting", "0.018"], ["cloud_hh_mae_E5d", "0.041"], ["cloud_acc_closer", "77 %"]]) await expect(acc.locator(`[data-claim=${id}]`).first()).toHaveText(v);
+  await expect(page.locator("#s-across-the-season")).toContainText("Signed contributions");
+  await expect(page.locator("#s-across-the-season [data-claim=cloud_neg_periods]")).toHaveText("927");
+  await expect(page.locator("#s-across-the-season")).toContainText("is the net illustrative valuation across the evaluated half-hours");
+  await expect(page.locator("#s-across-the-season")).toContainText("not proof that clouds raised generation");
+  expect(await checkClaims(page)).toBeGreaterThan(30);
 });
 
 test("network zoom, branch details by click and keyboard; timeline hover readout", async ({ page }) => {

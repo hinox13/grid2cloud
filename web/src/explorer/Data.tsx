@@ -23,7 +23,7 @@ export function Data() {
       <PageHead title="Data, licences and reproducibility" lead="This site redistributes only derived and processed data whose licences allow it. Every source passed the project's licence gate for redistribute_derived when the bundles were built. Nothing is fetched from another service while you use it." />
 
       <Section title="Provenance classes">
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
             <tbody>
               {(Object.keys(PROV_LABEL) as Provenance[]).map((k) => (
@@ -106,7 +106,7 @@ export function Data() {
       </Section>
 
       <Section title="Frozen checkpoints">
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
             <thead>
               <tr>
@@ -134,7 +134,7 @@ export function Data() {
             </tbody>
           </table>
         </div>
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
             <caption>Published tables used (sha256)</caption>
             <tbody>
@@ -156,7 +156,7 @@ export function Data() {
       <Section title="Every figure the Experience states" aside={<p className="note">Written once by the export pipeline; the page only displays these strings. Hover any figure on the site to see its class and source.</p>}>
         <details className="ex-details">
           <summary>{claims.data.length} frozen figures</summary>
-          <div className="table-wrap">
+          <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
             <table className="ex-table dense">
               <thead>
                 <tr>
@@ -193,7 +193,7 @@ export function Data() {
       <Section title="Licence-gate decisions">
         <details className="ex-details">
           <summary>{A.gate_decisions.length + A.economic_gate_decisions.length} decisions</summary>
-          <div className="table-wrap">
+          <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
             <table className="ex-table dense">
               <thead>
                 <tr>
@@ -221,7 +221,7 @@ export function Data() {
       <Section title="Files of this site">
         <details className="ex-details">
           <summary>{outs.length} files with sha256</summary>
-          <div className="table-wrap">
+          <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
             <table className="ex-table dense">
               <tbody>
                 {outs.map(([k, v]) => (

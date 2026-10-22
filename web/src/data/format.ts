@@ -6,7 +6,8 @@ export function num(x: number | null | undefined, digits = 1, signed = false): s
   const s = Math.abs(x).toFixed(digits);
   const zero = Number(s) === 0;
   const sign = x < 0 && !zero ? "−" : signed && !zero ? "+" : "";
-  return sign + s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const [int, dec] = s.split(".");
+  return sign + int.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (dec ? "." + dec : "");
 }
 
 export const gbp = (x: number, digits = 0) => (x < 0 ? "−£" : "£") + num(Math.abs(x), digits);

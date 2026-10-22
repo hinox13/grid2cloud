@@ -1,0 +1,74 @@
+{
+ "note": "Qualifiers of the economic case study (one explicit 6 MW plant), recomputed from the released per-half-hour table. Energy = MW × 0.5 h; value = energy × APX price of the same settlement period; signed sums.",
+ "source": "reports/economic_impact/tables/periods.csv",
+ "periods": 2820,
+ "days_with_periods": 136,
+ "days_in_months_covered": 183,
+ "periods_per_day": {
+  "min": 1,
+  "median": 22.0,
+  "max": 28
+ },
+ "periods_by_month": {
+  "April": 571,
+  "May": 487,
+  "June": 718,
+  "July": 434,
+  "August": 344,
+  "September": 266
+ },
+ "utc_first_last": [
+  "05:00",
+  "18:30"
+ ],
+ "apx_missing_periods": 1,
+ "apx_negative_periods": 180,
+ "apx_min_gbp_mwh": -61.09,
+ "apx_max_gbp_mwh": 126.57,
+ "cloud": {
+  "net_mwh": 1428.3749,
+  "net_gbp": 93286.03,
+  "negative_periods": 927,
+  "negative_mwh": -160.1833,
+  "negative_gbp": -9963.52,
+  "positive_mwh": 1588.5582,
+  "negative_value_contributions": 975,
+  "meaning_of_negative": "the satellite-derived output exceeded the modelled clear-sky estimate: possibly cloud enhancement, possibly a disagreement between the satellite-derived estimate and the clear-sky model; not evidence that clouds raised generation in every such half-hour"
+ },
+ "accuracy": {
+  "pv_attributed": {
+   "accounting": {
+    "period_mae_mw": 0.042481,
+    "share_closer_than_E5d": 0.536525,
+    "value_error_pct": -1.536811
+   },
+   "E5d": {
+    "period_mae_mw": 0.048835,
+    "share_closer_than_E5d": null,
+    "value_error_pct": -0.292149
+   },
+   "E5c": {
+    "period_mae_mw": 2.820227,
+    "share_closer_than_E5d": null,
+    "value_error_pct": -98.436408
+   }
+  },
+  "cloud_attributed": {
+   "accounting": {
+    "period_mae_mw": 0.017844,
+    "share_closer_than_E5d": 0.771986,
+    "value_error_pct": -1.50487
+   },
+   "E5d": {
+    "period_mae_mw": 0.041459,
+    "share_closer_than_E5d": null,
+    "value_error_pct": 0.06397
+   },
+   "E5c": {
+    "period_mae_mw": 1.222547,
+    "share_closer_than_E5d": null,
+    "value_error_pct": -98.414525
+   }
+  }
+ }
+}

@@ -4,8 +4,8 @@
     .venv/bin/python scripts/web/export_web_data.py            # writes web/public/data
     .venv/bin/python scripts/web/export_web_data.py --check    # exit 1 if web/public/data is stale
 
-Reads ONLY data/demo (the published, licence-gated bundles built by scripts/build_demo_events.py and
-scripts/economic_impact/build_cloud_impact_bundle.py) and the Explorer's own labels (demo/c2g/theme.py).
+Reads ONLY data/demo (the published, licence-gated bundles built by scripts/build_demo_events.py,
+scripts/economic_impact/build_cloud_impact_bundle.py and scripts/web/build_research_bundle.py) and the Explorer's own labels (demo/c2g/theme.py).
 It recomputes nothing physical: no AC power flow, no GENCO inference, no download. It reshapes tables
 into JSON, copies the observed WebP frames unchanged, and writes every number the story states as an
 explicit claim (value, unit, display string, provenance class, source) so the browser only formats.
@@ -246,7 +246,7 @@ def event(bundle_id: str, out: Path) -> dict:
 
 
 # ----------------------------------------------------------------------------- claims
-def claims(story: dict, evo: pd.DataFrame, cat: dict, periods: pd.DataFrame, season: dict, net: dict) -> list[dict]:
+def claims(story: dict, evo: pd.DataFrame, cat: dict, periods: pd.DataFrame, season: dict, net: dict, res: dict) -> list[dict]:
     """Every number the Experience states, computed here once from the frozen sources."""
     C: list[dict] = []
 
@@ -379,6 +379,103 @@ def claims(story: dict, evo: pd.DataFrame, cat: dict, periods: pd.DataFrame, sea
     add("abs_mode_E5d_gbp", absd["E5d"]["error_vs_ac_gbp"], "GBP", f"£{absd['E5d']['error_vs_ac_gbp']:,.0f}", "predicted", "season.json", "overstatement if E5d's absolute import were priced")
     pct = 100 * absd["E5d"]["error_vs_ac_gbp"] / absd["AC"]["import_value_apx_gbp"]
     add("abs_mode_E5d_pct", pct, "%", f"{pct:.0f}", "predicted", "season.json")
+    for mdl in ("accounting", "E5c", "E5d"):
+        s = season["cloud_attributed"][mdl]
+        add(f"season_cloud_err_{mdl}", s["value_apx_error_pct"], "%", num(s["value_apx_error_pct"], "+.2f" if abs(s["value_apx_error_pct"]) < 1 else "+.1f"), "predicted" if mdl != "accounting" else "simulated", "season.json")
+
+    ej = season["event_2024-06-15"]["AC"]
+    add("day_pv_attr_mwh", ej["pv_energy_mwh"], "MWh", f"{ej['pv_energy_mwh']:.2f}", "hypothetical", "season.json (event_2024-06-15)", "AC import, no plant minus observed, × 0.5 h, 24 half-hours")
+    add("day_pv_attr_gbp", ej["pv_value_apx_gbp"], "GBP", f"£{ej['pv_value_apx_gbp']:,.0f}", "hypothetical", "season.json (event_2024-06-15)", "illustrative")
+
+    # absolute state vs response, E5b against E5d (same 2,829 states, same AC targets)
+    for mdl in ("E5b", "E5c", "E5d"):
+        add(f"mae_{mdl}", ev_row.at[mdl, "import_mae_mw"], "MW", num(ev_row.at[mdl, "import_mae_mw"], ".1f"), "predicted", "data/demo/model_evolution.csv", "mean absolute import error vs AC")
+        add(f"vm_mae_{mdl}", ev_row.at[mdl, "V_error"], "pu", f"{ev_row.at[mdl, 'V_error']:.4f}", "predicted", "data/demo/model_evolution.csv", "mean absolute voltage-magnitude error")
+        add(f"pres_{mdl}", ev_row.at[mdl, "P_residual"], "MW", f"{ev_row.at[mdl, 'P_residual']:.2f}", "predicted", "data/demo/model_evolution.csv", "mean active-power residual")
+        add(f"ratio_pv_{mdl}", ev_row.at[mdl, "pv_slope_ratio"] * 100, "%", f"{ev_row.at[mdl, 'pv_slope_ratio'] * 100:.0f}", "predicted", "data/demo/model_evolution.csv", "fitted solar slope as a share of the AC slope")
+        add(f"branch_p_{mdl}", ev_row.at[mdl, "branch_P_error"], "MW", f"{ev_row.at[mdl, 'branch_P_error']:.2f}", "predicted", "data/demo/model_evolution.csv", "mean absolute branch active-flow error")
+
+    # E5d seed and λ dependence on the same states (report-only post-freeze diagnostics)
+    rs = "data/demo/research/sundon_runs.json"
+    runs = {x["run"]: x for x in res["sundon_runs"]["runs"]}
+    for run, cid in (("e5d_l1_s1", "e5d_s1"), ("e5d_l1_s2", "e5d_s2"), ("e5d_l0.3_s0", "e5d_l03")):
+        x = runs[run]
+        add(f"{cid}_bias", x["import_bias_mw"], "MW", num(x["import_bias_mw"], "+.1f"), "predicted", rs, f"{run}: mean import bias on S1")
+        add(f"{cid}_ratio", x["pv_slope_ratio"], "", f"{x['pv_slope_ratio']:.2f}", "predicted", rs, f"{run}: fitted solar slope / AC slope on S1")
+        add(f"{cid}_pbe", x["PBE_mean"], "MVA", f"{x['PBE_mean']:.2f}", "predicted", rs, f"{run}: mean power-balance error on S1")
+    add("e5d_s0_ratio", runs["e5d_l1_s0"]["pv_slope_ratio"], "", f"{runs['e5d_l1_s0']['pv_slope_ratio']:.2f}", "predicted", rs, "selected run: fitted solar slope / AC slope on S1")
+    # the response across the network, not only at the grid supply point (E5c → E5d, same S1 states)
+    for run, mdl in (("E5c", "E5c"), ("e5d_l1_s0", "E5d")):
+        x = runs[run]
+        add(f"branch_resp_{mdl}", x["branch_pv_slope_median_abs_err"], "MW/MW", f"{x['branch_pv_slope_median_abs_err']:.3f}", "predicted", rs, "median over branches of |model − AC| PV slope of branch active-power flow")
+        add(f"va_resp_{mdl}", x["bus_Va_pv_slope_median_abs_err"], "°/MW", f"{x['bus_Va_pv_slope_median_abs_err']:.4f}" if x["bus_Va_pv_slope_median_abs_err"] < 0.01 else f"{x['bus_Va_pv_slope_median_abs_err']:.3f}", "predicted", rs, "median over buses of |model − AC| PV slope of voltage angle; post-verdict, report-only diagnostic")
+    add("va_resp_AC", runs["E5c"]["bus_Va_pv_slope_ac_median_abs"], "°/MW", f"{runs['E5c']['bus_Va_pv_slope_ac_median_abs']:.3f}", "simulated", rs, "median over buses of |AC| voltage-angle PV slope")
+    ca, cs = res["cancellation"], "data/demo/research/cancellation.json"
+    add("cancel_r", ca["corr_err_A_err_B"], "", f"{ca['corr_err_A_err_B']:.3f}", "predicted", cs, "correlation of the import errors of the two states of a held-out synthetic PV pair (E5d)")
+    add("cancel_level", ca["level_mae_member_A_mw"], "MW", f"{ca['level_mae_member_A_mw']:.1f}", "predicted", cs, "mean absolute import error per state")
+    add("cancel_delta", ca["delta_err_mae_mw"], "MW", f"{ca['delta_err_mae_mw']:.2f}", "predicted", cs, "mean absolute error of the predicted PV-induced change")
+    add("cancel_n", ca["n_pairs"], "pairs", str(ca["n_pairs"]), "simulated", cs)
+    add("l0_syn_ratio", res["sundon_runs"]["synthetic_lambda0_pv_ratio"], "", f"{res['sundon_runs']['synthetic_lambda0_pv_ratio']:.3f}", "predicted", res["sundon_runs"]["synthetic_lambda0_source"], "λ = 0 control, held-out synthetic PV pairs")
+
+    # economic qualifiers (released per-half-hour table)
+    eq, qs = res["economic_qualifiers"], "data/demo/research/economic_qualifiers.json"
+    cl = eq["cloud"]
+    add("cloud_neg_periods", cl["negative_periods"], "half-hours", f"{cl['negative_periods']:,}", "hypothetical", qs, cl["meaning_of_negative"])
+    add("cloud_neg_mwh", cl["negative_mwh"], "MWh", num(cl["negative_mwh"], ",.0f"), "hypothetical", qs, "sum of the negative half-hours")
+    add("cloud_pos_mwh", cl["positive_mwh"], "MWh", f"{cl['positive_mwh']:,.0f}", "hypothetical", qs, "sum of the positive half-hours")
+    add("apx_neg_periods", eq["apx_negative_periods"], "half-hours", str(eq["apx_negative_periods"]), "observed", qs, "valued half-hours with a negative APX price")
+    add("apx_season_min", eq["apx_min_gbp_mwh"], "GBP/MWh", num(eq["apx_min_gbp_mwh"], ".0f").replace("−", "−£") if eq["apx_min_gbp_mwh"] < 0 else f"£{eq['apx_min_gbp_mwh']:.0f}", "observed", qs)
+    add("season_days_span", eq["days_in_months_covered"], "days", str(eq["days_in_months_covered"]), "simulated", qs, "calendar days in the months covered")
+    add("periods_day_min", eq["periods_per_day"]["min"], "half-hours", str(eq["periods_per_day"]["min"]), "simulated", qs)
+    add("periods_day_max", eq["periods_per_day"]["max"], "half-hours", str(eq["periods_per_day"]["max"]), "simulated", qs)
+    for lab, k in (("pv_attributed", "pv"), ("cloud_attributed", "cloud")):
+        a_ = eq["accuracy"][lab]
+        for mdl in ("accounting", "E5d", "E5c"):
+            add(f"{k}_hh_mae_{mdl}", a_[mdl]["period_mae_mw"], "MW", f"{a_[mdl]['period_mae_mw']:.3f}" if a_[mdl]["period_mae_mw"] < 1 else f"{a_[mdl]['period_mae_mw']:.2f}", "predicted" if mdl != "accounting" else "simulated", qs, "mean absolute per-half-hour error vs AC")
+        add(f"{k}_acc_closer", a_["accounting"]["share_closer_than_E5d"] * 100, "%", f"{a_['accounting']['share_closer_than_E5d'] * 100:.0f}", "simulated", qs, "share of half-hours where accounting is closer to AC than E5d")
+
+    # second network: Aylesbury East (synthetic replication; failed real validation)
+    g, gs = res["second_network"], "data/demo/research/second_network.json"
+    nw, sp, rv, rp = g["network"], g["satellite_pv"], g["real_validation"], g["replication"]
+    add("g2_buses", nw["buses_built"], "buses", str(nw["buses_built"]), "derived", gs, "as built from public LTDS data; 55 in the GENCO graph")
+    add("g2_lines", nw["lines"], "lines", str(nw["lines"]), "derived", gs)
+    add("g2_trafos", nw["transformers"], "transformers", str(nw["transformers"]), "derived", gs)
+    add("g2_solar_mw", nw["synthetic_generation_mw"]["Solar"], "MW", f"{nw['synthetic_generation_mw']['Solar']:.1f}", "derived", gs, "33 kV solar represented in the synthetic envelope (ECR)")
+    add("g2_wind_mw", nw["synthetic_generation_mw"]["Wind"], "MW", f"{nw['synthetic_generation_mw']['Wind']:.1f}", "derived", gs, "33 kV wind represented in the synthetic envelope (ECR)")
+    add("g2_gen_mw", nw["synthetic_generation_total_mw"], "MW", f"{nw['synthetic_generation_total_mw']:.1f}", "derived", gs, "generation represented in the synthetic envelope")
+    add("g2_active_pv_mw", sp["active_mw"], "MW", f"{sp['active_mw']:.1f}", "derived", gs, "active PV in 2024 in the satellite chain of the failed real-data validation")
+    add("g2_pixel_share", sp["largest_pixel_share"] * 100, "%", f"{sp['largest_pixel_share'] * 100:.0f}", "derived", gs, "share of active PV in the single largest native LSA SAF pixel")
+    add("g2_pixel_mw", sp["largest_pixel_mw"], "MW", f"{sp['largest_pixel_mw']:.1f}", "derived", gs)
+    add("g2_val_nmae", rv["import_nmae"], "", f"{rv['import_nmae']:.3f}", "simulated", gs, "import NMAE (passes ≤ 0.25)")
+    add("g2_val_core", rv["core_circuit_share"] * 100, "%", f"{rv['core_circuit_share'] * 100:.0f}", "simulated", gs, "core circuits meeting the fit (≥ 60 % required)")
+    add("g2_val_direction", rv["direction_min"], "", f"{rv['direction_min']:.2f}", "simulated", gs, "lowest direction agreement of a core circuit (≥ 0.90 required)")
+    add("g2_val_resid_r", rv["residual_vs_pv_r"], "", f"{rv['residual_vs_pv_r']:.2f}", "simulated", gs, "|r| of import residual and satellite PV (≤ 0.50 required)")
+    add("g2_obs_pv_slope", rv["posthoc_observed_pv_slope"], "MW/MW", num(rv["posthoc_observed_pv_slope"], "+.2f"), "derived", gs, rv["posthoc_note"])
+    add("g2_test_states", rp["test_states"], "states", f"{rp['test_states']:,}", "simulated", gs, "held-out synthetic AC states")
+    add("g2_pairs", rp["pairs_per_type"], "pairs", str(rp["pairs_per_type"]), "simulated", gs, "held-out paired AC states per probe type")
+    rr = pd.DataFrame(rp["runs"])
+    ok = rr[(rr.arm == "D") & rr.pv_slope_ratio.between(0.8, 1.2)]
+    add("g2_D_ok_seeds", len(ok), "seeds", f"{len(ok)} of {int((rr.arm == 'D').sum())}", "predicted", gs, "response-aware seeds recovering the AC PV response")
+
+    def rng(arm: str, col: str, fmt: str, sub: pd.DataFrame | None = None, unit: str = "", note: str = "") -> None:
+        x = (rr[rr.arm == arm] if sub is None else sub)[col]
+        lo, hi = format(x.min(), fmt), format(x.max(), fmt)
+        add(f"g2_{arm}_{col}{'_ok' if sub is not None else ''}", float(x.min()), unit, (lo if lo == hi else f"{lo}–{hi}").replace("-", "−"), "predicted", gs, note or f"range over seeds, arm {arm}")
+
+    for arm in ("B", "C"):
+        rng(arm, "pv_slope_ratio", ".2f")
+        rng(arm, "import_mae_mw", ".1f", unit="MW")
+        rng(arm, "pbe_mean_mva", ".2f", unit="MVA")
+    rng("D", "pv_slope_ratio", ".2f", ok, note="successful response-aware seeds")
+    rng("D", "import_mae_mw", ".1f", ok, "MW", "successful response-aware seeds")
+    rng("D", "pbe_mean_mva", ".2f", ok, "MVA", "successful response-aware seeds")
+    rng("D", "pv_change_err_mw", ".2f", ok, "MW", "error of the predicted PV-induced import change, successful seeds")
+    bad = rr[(rr.arm == "D") & ~rr.pv_slope_ratio.between(0.8, 1.2)].iloc[0]
+    add("g2_D_bad_ratio", bad.pv_slope_ratio, "", f"{bad.pv_slope_ratio:.2f}", "predicted", gs, f"{bad.run}: the failed response-aware seed")
+    add("g2_D_bad_mae", bad.import_mae_mw, "MW", f"{bad.import_mae_mw:.1f}", "predicted", gs, f"{bad.run}")
+    add("g2_ac_std", rp["ac_import_std_mw"], "MW", f"{rp['ac_import_std_mw']:.1f}", "simulated", gs, "standard deviation of the AC import over the test pool")
+    add("g2_export_states", rp["export_states"], "states", str(rp["export_states"]), "simulated", gs, "test states exporting more than 5 MW")
+    add("g2_classification", 0, "", rp["classification"].capitalize(), "predicted", gs, "pre-registered classification (H1–H6 hold, H7 fails)")
     return C
 
 
@@ -480,7 +577,9 @@ def build(out: Path) -> None:
          "bundle": {"schema_version": cat["schema_version"], "git_commit": cat["git_commit"]}},
     )
 
-    write_json(out / "claims.json", claims(story, evo, cat, periods, season, net))
+    res = {k: json.loads((DEMO / f"research/{k}.json").read_text()) for k in ("sundon_runs", "economic_qualifiers", "cancellation", "second_network")}
+    write_json(out / "research.json", res)
+    write_json(out / "claims.json", claims(story, evo, cat, periods, season, net, res))
 
     sources = sorted(p for p in DEMO.rglob("*") if p.is_file() and p.name != ".gitkeep")
     outputs = sorted(p for p in out.rglob("*") if p.is_file())

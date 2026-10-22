@@ -2,7 +2,7 @@ import { useClaims } from "../data/load";
 import { hhmm, ms } from "../data/format";
 import { useReducedMotion, useSize } from "./hooks";
 
-export type TimeMode = "history" | "frozen" | "day" | "season" | "valued";
+export type TimeMode = "history" | "frozen" | "day" | "season" | "valued" | "synthetic";
 
 const DAY_SLOTS = Array.from({ length: 24 }, (_, i) => new Date(Date.UTC(2024, 5, 15, 5, 0) + i * 1_800_000).toISOString().replace(".000", ""));
 const HOURS = Array.from({ length: 13 }, (_, i) => Date.UTC(2024, 5, 15, 5 + i, 0));
@@ -22,11 +22,22 @@ export function TimeRuler({ mode, t, frames, gridSlots }: { mode: TimeMode; t: s
   const slots = mode === "day" ? DAY_SLOTS : gridSlots;
   const tr = rm ? "none" : "transform .9s cubic-bezier(.65,0,.25,1), opacity .6s";
   const lock = ms("2024-06-15T11:00:00Z");
+  if (mode === "synthetic") {
+    const status = `Second network · ${c.g2_test_states.display} synthetic AC states sampled from public metadata · no calendar time, not 2024 operation`;
+    return (
+      <div className="ruler mode-season mode-synthetic" aria-label={`Time: ${status}`} role="group">
+        <div className="ruler-key">
+          <span className="ruler-status">{status}</span>
+        </div>
+        <div ref={ref} className="ruler-track" />
+      </div>
+    );
+  }
   if (mode === "season" || mode === "valued") {
     const months = ["Apr", "May", "Jun", "Jul", "Aug", "Sep"];
     const status =
       mode === "season"
-        ? `Aggregate GENCO evaluation · all ${c.n_states.display} real half-hours, ${c.states_span.display} · not one moment`
+        ? `Aggregate GENCO evaluation · all ${c.n_states.display} reconstructed real half-hours, ${c.states_span.display} · not one moment`
         : `Economic case study · one ${c.plant_capacity.display} MW plant · ${c.season_periods.display} valued half-hours over ${c.season_days.display} days, ${c.states_span.display}`;
     return (
       <div className="ruler mode-season" aria-label={`Time: ${status}`} role="group">

@@ -24,12 +24,16 @@ export function Response({ params }: { params: URLSearchParams }) {
 
   return (
     <>
-      <PageHead title="The PV blind spot, and what closed it" lead="Every earlier GENCO version was nearly blind to solar. The response-aware model learned the correct sensitivity from paired synthetic AC states, and it transferred to real operation. Its absolute level did not.">
+      <PageHead title="The PV blind spot, and what closed it" lead={
+          <>
+            Every earlier GENCO version was nearly blind to solar. The response-aware model (E5d) learned the physical sensitivity from paired synthetic AC states, and it transferred to the <Claim id="n_states" bare /> reconstructed real half-hours. Its absolute level did not, and only one of three training seeds learned the response this well.
+          </>
+        }>
         <Tiles
           items={[
             { k: "AC reference · physics", v: <Claim id="slope_AC" />, s: "import falls almost one-for-one with solar" },
-            { k: <ModelName m="E5c" />, v: <Claim id="slope_E5c" />, s: `${num(evo.E5c.pv_slope_ratio * 100, 0)} % of the physical response: blind to solar` },
-            { k: <ModelName m="E5d" />, v: <Claim id="slope_E5d" />, s: `${num(evo.E5d.pv_slope_ratio * 100, 0)} % of the physical response: learned and transferred` },
+            { k: <ModelName m="E5c" />, v: <Claim id="slope_E5c" />, s: `${num(evo.E5c.pv_slope_ratio * 100, 0)} % of the AC reference response: blind to solar` },
+            { k: <ModelName m="E5d" />, v: <Claim id="slope_E5d" />, s: `${num(evo.E5d.pv_slope_ratio * 100, 0)} % of the AC reference response: learned and transferred` },
           ]}
         />
       </PageHead>
@@ -39,6 +43,19 @@ export function Response({ params }: { params: URLSearchParams }) {
           <SlopeScatter models={["E5c", "E5d"]} />
         </div>
         <p className="note">Each point is one real half-hourly 2024 state. Neither model saw a real state, a satellite value or a real slope in training or selection. Frozen values from the published regression; nothing is re-fitted here.</p>
+      </Section>
+
+      <Section title="Beyond the grid import: the response across the network" scope={{ kind: "aggregate" }}>
+        <Tiles
+          items={[
+            { k: "Branch flows · solar-response error", v: <><Claim id="branch_resp_E5c" bare /> → <Claim id="branch_resp_E5d" /></>, s: "E5c → E5d, median over branches" },
+            { k: "Bus voltage angles · solar-response error", v: <><Claim id="va_resp_E5c" bare /> → <Claim id="va_resp_E5d" bare /> ° per MW</>, s: <>E5c → E5d, median over buses; the AC angle response itself is <Claim id="va_resp_AC" bare /> ° per MW</> },
+          ]}
+        />
+        <p className="ex-p">
+          The same regression as for the grid import, fitted to every branch's active-power flow and every bus's voltage angle: the error is the absolute difference between the model's and the AC reference's slope per MW of solar, then the median over branches or buses. Response-aware training moved these too, so it learned a distributed sensitivity rather than correcting one number at the substation. It does not show that the absolute states are accurate: E5d's import level is still off by <Claim id="bias_E5d" />.
+        </p>
+        <p className="note">Same <Claim id="n_states" bare /> reconstructed half-hours. The branch result was computed with the real-transfer evaluation; the bus-angle result is a post-verdict, report-only diagnostic (reports/e5d_real_transfer.md §2 and §5).</p>
       </Section>
 
       <Section title="…but the real grid is not yet calibrated" scope={{ kind: "aggregate" }}>
@@ -51,7 +68,7 @@ export function Response({ params }: { params: URLSearchParams }) {
           ]}
         />
         <Callout tone="warn">
-          <strong>Correct physical sensitivity does not imply calibrated real-grid transfer.</strong> The response-aware model knows how much the import should move when solar, load or the battery change, but not yet where the import level sits. Pre-registered verdict <strong>E5D-D, partial</strong>: the solar and load criteria pass; import, voltage and battery criteria fail.
+          <strong>Correct physical sensitivity does not imply calibrated real-grid transfer.</strong> The response-aware model tracks how much the import should move when solar and load change (the battery response overshoots), but not where the import level sits. Pre-registered verdict <strong>E5D-D, partial</strong>: the solar and load criteria pass; import, voltage and battery criteria fail. The selected seed is the best of three: seeds 1 and 2 reach <Claim id="e5d_s1_ratio" bare /> and <Claim id="e5d_s2_ratio" bare /> of the solar response with offsets <Claim id="e5d_s1_bias" /> and <Claim id="e5d_s2_bias" />.
         </Callout>
       </Section>
 
@@ -102,7 +119,7 @@ export function Response({ params }: { params: URLSearchParams }) {
         <div className="ex-scatter">
           <SlopeScatter models={["zero_shot", "E5", "E5b", "E5c", "E5d"]} />
         </div>
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table">
             <caption>How strongly each driver moves the grid import (MW per MW), published regression</caption>
             <thead>
@@ -135,7 +152,7 @@ export function Response({ params }: { params: URLSearchParams }) {
         </div>
         <ul className="ex-list">
           <li>
-            <strong>AC (physics):</strong> about −1 MW of import per MW of solar, as energy balance requires.
+            <strong>AC reference:</strong> about −1 MW of import per MW of solar, as energy balance requires in the reconstructed network, where the plant's satellite-estimated output is injected explicitly. It is not a metered response (Methods, Limits).
           </li>
           <li>
             <strong>Generator-aware (E5c)</strong> tracks the battery almost one-for-one ({num(co.E5c.chap31, 2, true)} vs {num(co.AC.chap31, 2, true)}) and load partially ({num(co.E5c.load, 2, true)} vs {num(co.AC.load, 2, true)}), but its solar response is {num(co.E5c.pv, 2, true)}. Its synthetic paired probes showed the same blind spot before any real data entered.

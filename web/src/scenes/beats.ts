@@ -11,11 +11,12 @@ export const CHAPTERS: { id: Exclude<ChapterId, "finale">; name: string; explore
 ];
 
 /**
- * Which measurement a beat shows. The story moves between three that must never look interchangeable:
+ * Which measurement a beat shows. The story moves between four that must never look interchangeable:
  * one historical moment (and its controlled counterfactual), the aggregate GENCO evaluation over all
- * real half-hours, and the economic case study of one 6 MW plant (one half-hour, one day or the season).
+ * reconstructed real half-hours, the synthetic replication on a second network, and the economic case
+ * study of one 6 MW plant (one half-hour, one day or the season).
  */
-export type Scope = { kind: "event"; cf?: boolean } | { kind: "aggregate" } | { kind: "economic"; span: "half-hour" | "day" | "season" };
+export type Scope = { kind: "event"; cf?: boolean } | { kind: "aggregate" } | { kind: "synthetic" } | { kind: "economic"; span: "half-hour" | "day" | "season" };
 
 export interface Beat {
   id: string;
@@ -33,7 +34,7 @@ const EVENT: Scope = { kind: "event" };
 const CF: Scope = { kind: "event", cf: true };
 const AGG: Scope = { kind: "aggregate" };
 
-// guided replay ≈ 95 s; every beat can be stepped through, paused or skipped
+// guided replay ≈ 105 s; every beat can be stepped through, paused or skipped
 export const BEATS: Beat[] = [
   { id: "prologue", ch: "clouds", dwell: 6500, time: { mode: "history", t: T("08:45") }, scope: null },
   { id: "c-sky", ch: "clouds", dwell: 4000, time: { mode: "history", t: T("08:45") }, scope: EVENT },
@@ -49,7 +50,8 @@ export const BEATS: Beat[] = [
   { id: "j-shift", ch: "genco", dwell: 5000, time: { mode: "season", t: null }, scope: AGG },
   { id: "i-cf", ch: "genco", dwell: 6500, time: { mode: "frozen", t: T("11:00") }, scope: CF, question: 2 },
   { id: "i-slope", ch: "genco", dwell: 5000, time: { mode: "season", t: null }, scope: AGG, question: 2 },
-  { id: "j-two", ch: "genco", dwell: 5500, time: { mode: "season", t: null }, scope: AGG },
+  { id: "j-two", ch: "genco", dwell: 7000, time: { mode: "season", t: null }, scope: AGG },
+  { id: "j-replicate", ch: "genco", dwell: 7000, time: { mode: "synthetic", t: null }, scope: { kind: "synthetic" } },
   { id: "v-value", ch: "value", dwell: 6500, time: { mode: "day", t: null }, scope: { kind: "economic", span: "day" } },
   { id: "v-half", ch: "value", dwell: 5500, time: { mode: "day", t: T("11:00") }, scope: { kind: "economic", span: "half-hour" } },
   { id: "v-season", ch: "value", dwell: 5500, time: { mode: "valued", t: null }, scope: { kind: "economic", span: "season" } },

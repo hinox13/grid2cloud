@@ -66,6 +66,7 @@ uv run python scripts/audit_licences.py --check-remote
 - The monthly operational datasets are, per the half-hourly datasets' own descriptions, the index of which circuits are redacted.
 - The E1 transformer datasets link half-hourly `tx_id` series to LTDS transformer nodes, and supply observed nodal demand and the BSP import. The LTDS 3a/5 tables give planning demand, power factor and generation. Only the study region's half-hourly series are retrieved, using a server-side `where` filter.
 - The Elexon BMRS prices value energy on the Cloud Impact page (`reports/economic_impact/`). Required attribution: "Contains BMRS data © Elexon Limited copyright and database right [year]"; no implied endorsement by Elexon. The UKPN flexibility datasets were read only to test whether any dispatch belongs to the modelled network.
+- The research bundles in `data/demo/research/` and the second-network tables in `reports/g2/` are derived results (metrics, fitted slopes, counts, Embedded Capacity Register asset attributes and validation statistics) computed from UK Power Networks open data (CC BY 4.0), Elexon BMRS prices (BMRS licence, attribution above), EUMETSAT LSA SAF-derived PV (CC BY 4.0) and GENCO predictions (Apache-2.0). They contain no raw time series and no model weights.
 - The EPN 33 kV half-hourly dataset is the EPN counterpart of the README's SPN dataset. It was registered in E0-D because most grid-fed 33 kV networks with published data are in EPN.
 
 ## Unresolved (blocked by the gate)

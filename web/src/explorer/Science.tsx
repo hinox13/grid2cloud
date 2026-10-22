@@ -20,20 +20,24 @@ export function Science() {
         lead="Can a neural power-flow foundation model (GENCO) stand in for a physical AC solver on a real distribution network when the weather drives the grid?"
       >
         <Callout>
-          <strong>Short answer: partly.</strong> Out of the box GENCO cannot read this grid. After four fine-tuning steps on synthetic data only, it learned how the real grid responds to solar, battery and load (solar sensitivity <Claim id="slope_E5d" />, physics <Claim id="slope_AC" />), but it still overestimates how much power Sundon draws (<Claim id="bias_E5d" />), so real transfer is only partial and the weather question stays open.
+          <strong>Short answer: partly.</strong> Out of the box GENCO cannot read this grid. After four fine-tuning steps on synthetic data only, two models carry two different strengths: E5b comes closest on the absolute grid state (import bias <Claim id="bias_E5b" />), E5d reproduces the solar and load response (solar <Claim id="slope_E5d" />, physics <Claim id="slope_AC" bare />) but overestimates the import (<Claim id="bias_E5d" />). No model does both, so real transfer is only partial and the weather question stays open. A synthetic replication on a second network showed the same response pattern.
         </Callout>
       </PageHead>
 
-      <Section title="Three kinds of number">
-        <p className="ex-p">Every figure on this site belongs to one of three evaluation scopes, labelled wherever it appears. They answer different questions and are never interchangeable.</p>
+      <Section title="Four kinds of number">
+        <p className="ex-p">Every figure on this site belongs to one of four evaluation scopes, labelled wherever it appears. They answer different questions and are never interchangeable.</p>
         <ul className="scope-list">
           <li>
             <ScopeTag kind="aggregate" />
-            <p>Averages and fitted sensitivities over the same <Claim id="n_states" bare /> AC-reconstructed half-hours: mean import, import bias, power-balance error, MW of import per MW of solar. How the models behave in general.</p>
+            <p>Averages and fitted sensitivities over the same <Claim id="n_states" bare /> AC-reconstructed half-hours (metered loads and battery, satellite-derived solar): mean import, import bias, power-balance error, MW of import per MW of solar. How the models behave in general.</p>
           </li>
           <li>
             <ScopeTag kind="event" />
             <p>The 15 June 2024 cloud clearing, and its controlled counterfactual at 11:00 UTC in which only the 6 MW plant changes. What happened at one moment, in MW.</p>
+          </li>
+          <li>
+            <ScopeTag kind="synthetic" />
+            <p>A second network, Aylesbury East, on synthetic AC states only: GENCO fine-tuned again from the same starting point. A replication of the method, not evidence about real operation there.</p>
           </li>
           <li>
             <ScopeTag kind="economic" span="season" />
@@ -82,7 +86,7 @@ export function Science() {
           </p>
         }
       >
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Table, scrolls sideways on small screens">
           <table className="ex-table ladder">
             <thead>
               <tr>
@@ -140,15 +144,15 @@ export function Science() {
           </table>
         </div>
         <p className="ex-p">
-          The original GENCO predicted <Claim id="import_mean_zero_shot" />, meaning Sundon would be exporting: the wrong direction in <Claim id="zero_shot_wrong_sign" /> of real states. Sampling load, battery and generation over their physical ranges (step 2) cut the real-state error by <Claim id="pbe_cut_E5b_vs_E5" />. Step 3 improved import and battery tracking (r = {num(evo.E5c.import_corr, 2)}), but the solar response stayed near zero. Step 4 trained on pairs of synthetic states that differ in one input; it learned the response, but its offset grew to <Claim id="bias_E5d" />, between <Claim id="e5d_offset_q25" /> and <Claim id="e5d_offset_q75" /> in half of all states and too high in <Claim id="e5d_offset_pos" /> of them.
+          The original GENCO predicted <Claim id="import_mean_zero_shot" />, meaning Sundon would be exporting: the wrong direction in <Claim id="zero_shot_wrong_sign" /> of real states. Sampling load, battery and generation over their physical ranges (step 2) cut the real-state error by <Claim id="pbe_cut_E5b_vs_E5" />. Step 3 improved import and battery tracking (r = {num(evo.E5c.import_corr, 2)}), but the solar response stayed near zero. Step 4 trained on pairs of synthetic states that differ in one input; it learned the response (solar <Claim id="slope_E5c" bare /> → <Claim id="slope_E5d" bare />, E5c → E5d), but its offset grew to <Claim id="bias_E5d" />, between <Claim id="e5d_offset_q25" /> and <Claim id="e5d_offset_q75" /> in half of all states and too high in <Claim id="e5d_offset_pos" /> of them. Only one of its three training seeds learned the response this well.
         </p>
         <div className="ex-figure">
           <Bars
             title="Solar response by step against the physics"
-            desc="Fitted import change per MW of solar for each model, with the AC physics as a dashed target."
+            desc="Fitted import change per MW of solar for each model, with the AC reference as a dashed target."
             domain={[-1.4, 0.2]}
             unit="MW of import per MW of solar, fitted over all real states"
-            target={{ value: c.slope_AC.value ?? 0, label: "AC physics" }}
+            target={{ value: c.slope_AC.value ?? 0, label: "AC reference" }}
             rows={(["zero_shot", "E5b", "E5c", "E5d"] as ModelId[]).map((m) => ({
               key: m,
               label: (
@@ -172,7 +176,7 @@ export function Science() {
       <Section title="How the evidence was kept honest">
         <ul className="ex-list">
           <li>
-            <strong>Pre-registration.</strong> Every experiment's gates, selection rule, transfer criteria and verdict rules were committed before its data, training or evaluation existed.
+            <strong>Pre-registration.</strong> Every adaptation experiment's gates, selection rule, transfer criteria and verdict rules were committed before its data, training or evaluation existed. One coded verdict rule (E5) proved wrong; it was corrected in a published erratum before the next experiment, and the original files were left unchanged.
           </li>
           <li>
             <strong>Synthetic-only selection.</strong> Checkpoints were chosen on synthetic data and frozen, with their SHA256 hashes committed, before any real 2024 state was opened.
@@ -204,10 +208,16 @@ export function Science() {
             <strong>Schematic network.</strong> Several junctions have no published coordinates, so they appear only in the schematic. The drawing merges a coupled 132 kV busbar pair and two double-section cables, hence 37 drawn nodes and 42 drawn edges for the model's <Claim id="n_buses" bare /> buses and <Claim id="n_branches" bare /> branches.
           </li>
           <li>
+            <strong>"The physics" is the reconstruction's response.</strong> The AC reference responds <Claim id="slope_AC" /> per MW of the plant's satellite-estimated output because that output is injected explicitly into a reconstructed network. The satellite estimate was not checked against metered output, and Sundon's measured import was not tested for this response. On the second network such a test was run, and only about half of the estimated solar appeared in the measured import.
+          </li>
+          <li>
             <strong>Average sensitivities.</strong> Solar, load and battery responses are averages over all real states; per-step attributions apply those averages to one event.
           </li>
           <li>
             <strong>No 15-minute predictions for step 4.</strong> Every model is shown on the frozen half-hourly real states behind its published metrics.
+          </li>
+          <li>
+            <strong>One selected seed.</strong> The response-aware result is one checkpoint chosen on synthetic data; other seeds of the same recipe learned the response less well on the real states (Model journey).
           </li>
           <li>
             <strong>Not an operational tool.</strong> The response-aware model is a research model, not a validated state estimator.
@@ -227,7 +237,7 @@ export function Science() {
             <strong>Joint response and state training</strong> that balances absolute accuracy and sensitivities in one objective.
           </li>
           <li>
-            <strong>A second network</strong> where solar spans many satellite pixels, to test the spatial structure of weather.
+            <strong>A second network validated on real data</strong>, with solar across many satellite pixels, to test real transfer and the spatial structure of weather. The <a href="#/explore/replication">Aylesbury East replication</a> is synthetic only: its real-data reconstruction failed validation and its solar sits in one pixel.
           </li>
           <li>
             <strong>Weather re-test</strong> with the frozen protocol once a model passes the complete real-transfer gate.

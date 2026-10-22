@@ -10,11 +10,11 @@ document that configs and reports cite as "README §N" is [`PROJECT_DESIGN.md`](
 uv sync && uv run pytest
 ```
 
-The suite has 315 tests, including leakage and freeze-before-real checks. Some of them check frozen
+The suite has 328 tests, including leakage and freeze-before-real checks. Some of them check frozen
 research artefacts that exist only in the gitignored `data/raw` and `data/interim` folders
 (third-party inputs and intermediate outputs, never redistributed). On a public clone those tests are
 reported as **skipped**, each naming the missing file (`tests/conftest.py`); on a fresh clone of this
-repository 285 pass and 30 are skipped. Where the local data exist, all of them run.
+repository 298 pass and 30 are skipped. Where the local data exist, all of them run.
 
 ## Run the Explorer locally
 

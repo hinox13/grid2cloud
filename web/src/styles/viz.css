@@ -920,8 +920,12 @@
 .iax-row.is-off .iax-name {
   opacity: 0.3;
 }
-.iax.has-focus .iax-row:not(.is-focus):not(.is-off) {
-  opacity: 0.55;
+/* rows out of focus fade their bars, not their text, so every label keeps its contrast */
+.iax.has-focus .iax-row:not(.is-focus):not(.is-off) .iax-bar {
+  opacity: 0.45;
+}
+.iax.has-focus .iax-row:not(.is-focus):not(.is-off) .iax-name {
+  font-weight: 500;
 }
 .iax-name {
   font-family: var(--f-display);
@@ -968,7 +972,7 @@
   top: 13px;
   padding: 0 12px;
   font-size: 1.15rem;
-  color: #fff;
+  color: var(--bg);
 }
 .iax-val.inside .iax-off {
   position: absolute;
@@ -1034,7 +1038,7 @@
   background: var(--surface-2);
 }
 .score:has(.is-focus) .score-row:not(.is-focus) {
-  opacity: 0.55;
+  opacity: 0.8;
 }
 .score-name {
   display: flex;
@@ -1594,7 +1598,7 @@
 }
 .twoq-verdict b {
   font-family: var(--f-display);
-  font-size: 1.0625rem;
+  font-size: 1.1875rem; /* large text (bold, ≥ 18.66 px): the model colours meet WCAG AA in both themes */
 }
 .is-yes .twoq-verdict b {
   color: var(--m-E5b);
@@ -1802,4 +1806,200 @@
   .cf-input figcaption {
     margin-bottom: 40px;
   }
+}
+
+/* ------------------------------------------------------------------ two models, two strengths */
+.tradeoff {
+  margin: 0;
+}
+.to-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) 1fr 1fr;
+  gap: 4px;
+}
+.to-model {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px 6px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+.to-model i {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  background: var(--c);
+}
+.to-row-h {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 12px 14px 0;
+  font-family: var(--f-display);
+}
+.to-row-h strong {
+  font-size: 1.0625rem;
+}
+.to-row-h em {
+  font-style: normal;
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+.to-cell {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  background: var(--surface-2);
+}
+.to-cell.is-better {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.to-v {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 1rem + 0.6vw, 1.65rem);
+  letter-spacing: -0.01em;
+}
+.to-track {
+  position: relative;
+  display: flex;
+  height: 14px;
+  background: var(--surface-3);
+}
+.to-track span {
+  transition: width 1.1s var(--ease);
+}
+.to-track i {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  border-left: 3px dashed var(--m-AC);
+}
+.to-s {
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+.to-mark {
+  align-self: flex-start;
+  padding: 2px 8px;
+  font-family: var(--f-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--ink);
+  color: var(--bg);
+}
+.to-mark.is-empty {
+  visibility: hidden;
+}
+.to-note {
+  margin-top: 14px;
+  font-size: var(--step-small);
+  color: var(--ink-2);
+  max-width: 80ch;
+}
+.to-note strong {
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .to-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .to-model {
+    font-size: 0.9375rem;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+  }
+  .to-v {
+    font-size: 1.25rem;
+  }
+  .to-row-h em {
+    display: none;
+  }
+  .tradeoff.is-compact .to-s,
+  .tradeoff.is-compact .to-note {
+    font-size: 0.75rem;
+  }
+  .to-corner {
+    display: none;
+  }
+  .to-row-h {
+    grid-column: 1 / -1;
+    padding: 12px 0 2px;
+  }
+  .to-cell {
+    padding: 12px 10px 12px;
+  }
+}
+
+/* ------------------------------------------------------------------ second network: every seed */
+.repl .score-head,
+.repl .score-row {
+  grid-template-columns: 190px 1fr 1fr;
+}
+.repl.is-compact .score-head,
+.repl.is-compact .score-row {
+  grid-template-columns: 230px 1fr;
+}
+.repl .score-name > span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.repl .score-cell {
+  grid-template-columns: 1fr 128px;
+}
+.repl .score-val {
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+.repl-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--sel);
+  box-shadow: inset 0 0 0 1px var(--muted);
+}
+.repl-dot {
+  width: 15px;
+  height: 15px;
+  opacity: 0.92;
+}
+.repl-dot.is-failed {
+  border-style: solid;
+  border-width: 3px;
+}
+.repl-tick {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  translate: -50% 0;
+}
+@media (max-width: 700px) {
+  .repl .score-head,
+  .repl .score-row,
+  .repl.is-compact .score-head,
+  .repl.is-compact .score-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .repl .score-head > span:first-child {
+    display: none;
+  }
+  .repl .score-name {
+    padding-left: 0;
+  }
+}
+
+/* the fourth scope: a synthetic replication on a second network */
+.scope-synthetic {
+  box-shadow: inset 0 0 0 2px var(--muted);
+  background: repeating-linear-gradient(135deg, transparent 0 6px, var(--sel) 6px 8px);
+  color: var(--ink);
 }

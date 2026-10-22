@@ -13,16 +13,17 @@
 Using the open GENCO checkpoint and the GridFM toolkits, Cloud2Grid adapts a grid foundation model to a reconstructed real distribution network and evaluates it on satellite-informed 2024 operating states.
 
 - **Zero-shot predictions on Sundon highlight a substantial transfer gap for this unseen topology.** On 2,829 observation-informed, AC-reconstructed 2024 operating states of the Sundon network (UK Power Networks), the official `genco-pf-transfer` checkpoint, under our evaluation conditions, predicts that Sundon exports about 211 MW, where the AC reference imports about 49 MW: an import bias of −260 MW, with the import/export direction reversed in 99.9 % of states.
-- **Synthetic-only adaptation closes most of the gap, and response-aware training recovers the solar sensitivity.** Broader synthetic coverage of the operating envelope cuts the real-state power-balance error by 99 %. A **physics-response-aware loss**, which we implemented in GraphKit and trained on pairs of synthetic AC states, brings GENCO's grid-import response to solar in line with the physics: **−1.07 MW per MW of PV, against −1.02 in AC** (−0.04 without it).
-- **Accurate sensitivities and an accurate absolute state proved to be separate targets.** The response-aware model's import remains **13.1 MW too high**, so its pre-registered verdict is *partial transfer*. A post-hoc diagnostic identifies a mechanism consistent with this: in the examined held-out PV pairs, the two states carry nearly identical absolute import errors, which largely cancel in the difference that the response loss supervises.
+- **Synthetic-only adaptation closes most of the gap, and response-aware training recovers the solar sensitivity.** Broader synthetic coverage of the operating envelope cuts the real-state power-balance error by 99 %. A **physics-response-aware loss**, which we implemented in GraphKit and trained on pairs of synthetic AC states, brings GENCO's grid-import response to solar close to the AC physical reference for the reconstructed network: response-aware training (E5d) recovered **−1.07 MW per MW of PV, against −1.02 in AC**, whereas ordinary generator-aware adaptation (E5c) achieved only −0.04 MW per MW. Only one of three response-aware training seeds learned the response this well.
+- **Two models, two different strengths: accurate sensitivities and an accurate absolute state proved to be separate targets.** E5b was stronger on most absolute-state metrics, whereas E5d reproduced the physical solar response more accurately; neither achieved both. The response-aware model's import remains **13.1 MW too high**, so its pre-registered verdict is *partial transfer*. A post-hoc diagnostic identifies a mechanism consistent with this: in the examined held-out PV pairs, the two states carry nearly identical absolute import errors, which largely cancel in the difference that the response loss supervises.
+- **Second-network synthetic replication; real-data validation remains open.** On a second UK Power Networks network (Aylesbury East), network-specific fine-tuning reproduced the response result on synthetic AC states: ordinary adaptation recovered 0.16–0.32 of the AC solar response, response-aware training 0.99–1.01 in two of three seeds. Its historical-operation reconstruction failed validation, so this is not a second real-world transfer.
 
-| | Pretrained checkpoint (zero-shot) | Best state accuracy (E5b) | Response-aware (E5d) | AC reference |
+| | Pretrained checkpoint (zero-shot) | Best on most absolute-state metrics (E5b) | Response-aware (E5d) | AC reference |
 |---|---:|---:|---:|---:|
 | Real-state power-balance error (MVA) ↓ | 49.0 | **0.338** | 0.676 | 0 |
 | Grid-import response to PV (MW per MW) | −0.06 | −0.06 | **−1.07** | −1.02 |
 | Grid-import bias (MW) | −260 | +4.4 | +13.1 | 0 |
 
-*Same 2,829 AC-reconstructed half-hourly 2024 operating states for every model. AC values are simulated physical references, not measurements.*
+*Same 2,829 AC-reconstructed half-hourly 2024 operating states for every model. AC values are simulated physical references for the reconstructed network, not measurements.*
 
 ---
 
@@ -67,13 +68,13 @@ We first applied the official `gridfm/genco-pf-transfer` checkpoint (pretrained 
 
 ![Progressive adaptation from E4 to E5d. One card per stage, each with its key result and its remaining limitation, plus two dot plots: real-state power-balance error on a log scale, and the PV-to-import response against the AC value of -1.02.](submission/figures/02_transfer_learning_journey.png)
 
-Every experiment was pre-registered: gates, selection rules and verdict rules were committed before its data or training existed. Checkpoints were selected on synthetic data only, then frozen and SHA256-hashed before any real state was opened; failed gates are kept, not relaxed. Each step addressed one limitation and revealed the next requirement:
+Every adaptation experiment was pre-registered, with frozen evaluation rules and documented outcomes: gates, selection rules and verdict rules were committed before its data or training existed. The E5 coded verdict required a published erratum; the original experimental files remain unchanged. Checkpoints were selected on synthetic data only, then frozen and SHA256-hashed before any real state was opened; failed gates are kept, not relaxed. Each step addressed one limitation and revealed the next requirement:
 
 1. **Zero-shot (E4):** a substantial transfer gap for the unseen topology (above).
 2. **Standard synthetic fine-tuning (E5):** held-out synthetic error falls from 44.8 to 0.47 MVA, but real states stay at 33.2 MVA. This gap between held-out synthetic and 2024 accuracy is consistent with a mismatch between the initial synthetic training distribution and the target operating conditions.
 3. **A broader operating envelope (E5b): −99.0 % real-state error.** Synthetic states spanning the physically plausible range, built from published metadata only, bring the real-state error to 0.338 MVA.
 4. **Generator-aware adaptation (E5c):** import correlation reaches 0.96 and the battery response 0.94 (AC 1.00), but the import responds only weakly to PV.
-5. **Physics-response-aware training (E5d):** the PV sensitivity is learned and transfers to real states; the absolute import level remains biased.
+5. **Physics-response-aware training (E5d):** the PV sensitivity is learned and, for the selected seed, transfers to real states; the absolute import level remains biased.
 
 | Stage | PBE (MVA) ↓ | Active res. (MW) ↓ | Import MAE (MW) ↓ | Import r ↑ | PV slope (AC −1.02) |
 |---|---:|---:|---:|---:|---:|
@@ -101,21 +102,23 @@ Only synthetic states and static network metadata were used for training, normal
 ![PV response on real states. Three scatter panels of grid import, with load and battery effects removed, against PV injection for 2,829 real states. The AC reference has slope -1.02 MW per MW, the generator-aware model -0.04, and the response-aware model -1.07, close to the AC line. Summary boxes: PV slope -0.04 to -1.07; PV-attributed import error 2.77 to 0.14 MW; load slope 0.61 to 0.93; and a note that physical sensitivity is recovered but full real-grid calibration is incomplete.](submission/figures/03_pv_response_real_states.png)
 
 - **Held-out synthetic pairs:** the PV import-response ratio rises from **0.014 (E5c) to ≈ 1.0 (E5d)** (0.997 published; 0.999 in our fresh-clone CPU re-run). Battery, load and the distributed branch-flow and voltage responses are also recovered. An identical run **without** the response loss remains insensitive to PV (0.001).
-- **2024 operating states the model never saw:** the PV-to-import slope moves from −0.04 to **−1.07** (AC −1.02); the PV-attributed import error falls from 2.77 to **0.14 MW**; the load response is **0.93**, matching AC's 0.93.
+- **2024 operating states the model never saw:** the PV-to-import slope moves from −0.04 (E5c) to **−1.07** (E5d; AC −1.02); the PV-attributed import error falls from 2.77 to **0.14 MW**; the load response is **0.93**, matching AC's 0.93.
+- **Across the network, not only at the substation (2024 states):** the median branch-flow PV-response error falls from 0.074 to **0.014 MW per MW**, and the median bus voltage-angle PV-response error from 0.050 to **0.0009 ° per MW** (the AC angle response itself is 0.053 ° per MW; the bus-angle figures are a post-verdict, report-only diagnostic). Each error is the median, over branches or buses, of the absolute difference between the model's and the AC reference's fitted PV slope. This shows a distributed sensitivity was learned; it does not show accurate absolute states.
+- **Seed dependence:** on the 2024 states, the two other λ = 1 training seeds reached 0.68 and 0.80 of the AC reference response, with import biases of +65.4 and +19.2 MW. Only the selected seed recovered the response; the result is not seed-stable.
 
-**How to read this comparison.** The matched control (identical code, data and seed, without the response loss) isolates the benefit of response supervision within our evaluated implementation. E5c, E5d and the control share a limitation in our generator representation: because we placed the Leighton Buzzard PV and wind generators on PQ buses, their generation was omitted from the model's internal physics feedback. Evaluation uses the correct generation values, so the reported results remain valid. This limits conclusions about ordinary GENCO fine-tuning beyond our implementation.
+**How to read this comparison.** The matched control (identical code, data and seed, without the response loss) isolates the benefit of response supervision within our evaluated implementation, on held-out synthetic PV pairs. On the 2024 operating states that control was unstable (its fitted PV slope even has the wrong sign), so it is not an interpretable real-state ablation; E5c is a separately trained checkpoint, not the ablation. E5c, E5d and the control share a limitation in our generator representation: because we placed the Leighton Buzzard PV and wind generators on PQ buses, their generation was omitted from the model's internal physics feedback. Evaluation uses the correct generation values, so the reported results remain valid. This limits conclusions about ordinary GENCO fine-tuning beyond our implementation.
 
 ## 8. Transfer to the 2024 operating states: what improved and what remains open
 
 ![Real-state transfer for the five stages, as four bar-chart panels: power-balance error and active-power residual on log scales with the DC power-flow reference, grid-import error on a log scale with the 5 MW gate, and grid-import correlation with the 0.9 gate.](submission/figures/04_real_transfer_performance.png)
 
 **What the results support:**
-- **Response supervision was the decisive change for the PV sensitivity in our setting.** It taught GENCO a renewable-generation sensitivity entirely from synthetic AC solutions, and that sensitivity transferred to unseen 2024 operating states. An identical run without it remained insensitive to PV on held-out synthetic pairs.
+- **Response supervision was the decisive change for the PV sensitivity in our setting.** It taught GENCO a renewable-generation sensitivity entirely from synthetic AC solutions, and, for the selected seed, that sensitivity transferred to unseen 2024 operating states. An identical run without it remained insensitive to PV on held-out synthetic pairs.
 - **Coverage matters.** Broader synthetic operating-envelope coverage substantially improved real-state accuracy in our experiments: −99 % error from E5 to E5b.
 
 **What the results do not support:**
 - **Full transfer.** The response-aware model's import is biased by **+13.1 MW** (MAE 13.2 MW), its voltage error (**0.0109 pu**) misses the 0.010 pu criterion, and its battery response overshoots (**1.17** MW per MW, against 1.00). Its pre-registered verdict is **E5D-D: partial**.
-- **A single best model.** States and sensitivities did not improve together: E5b has the lowest power-balance error, E5c the best battery response, E5d the only physical PV and load sensitivity.
+- **A single best model.** States and sensitivities did not improve together: E5b is best on most absolute-state metrics (lowest power-balance error and import bias), E5c has the best battery response, and E5d the only physical PV and load sensitivity (with the lowest voltage-magnitude error and the highest import correlation).
 - **An operational model.** E5d is a research model, not a validated operational one.
 
 ## 9. Why the absolute import remains biased: a post-hoc diagnostic
@@ -132,7 +135,33 @@ E5d reproduces the *change* in grid import closely but not its *level*. A post-h
 
 → *Diagnostic details:* [`reports/e6_feasibility_diagnostic.md`](https://github.com/hinox13/grid2cloud/blob/main/reports/e6_feasibility_diagnostic.md)
 
-## 10. Explore it yourself
+## 10. Second-network synthetic replication; real-data validation remains open
+
+Is the Sundon result specific to one network? We repeated the adaptation study, pre-registered, on a second UK Power Networks 33 kV network, **Aylesbury East**: 56 buses, reconstructed with the same code, and 39.5 MW of solar plus 3.0 MW of wind represented in the synthetic evaluation. GENCO was fine-tuned again from the same pretrained checkpoint on this network's own synthetic AC states, with three seeds per arm. This is network-specific adaptation, not zero-shot transfer of a Sundon-trained model.
+
+- **A synthetic AC replication only.** The reconstruction of Aylesbury East's historical operation failed its pre-registered validation (1 of 6 core circuits met the fit, and one grid-transformer section flowed the opposite way), so the real-state study was stopped before any training. The results below are on held-out synthetic states (2,838) and paired solar changes (500).
+- **The response result replicated.** Ordinary generator-aware adaptation recovered 0.16–0.32 of the AC solar response; response-aware training recovered 0.99–1.01 in two of three seeds. The third seed failed (0.38), so the pre-registered seed-stability criterion failed.
+- **Sundon's exact E5b/E5d trade-off did not replicate in the same form.** On this network, the successful response-aware seeds were also more accurate on the absolute state than ordinary adaptation (import MAE 10.2–10.9 MW, against 20.1–24.3 MW), yet a substantial, sign-coherent absolute import error remained. The shared result is that response-aware training recovered the physical sensitivity while meaningful absolute-state errors remained.
+- **Spatial cloud effects could not be evaluated.** In the separate real-data check, 96 % of the network's 41.2 MW of active solar sits in one native satellite pixel. That check also found only about −0.51 MW of measured import per MW of satellite-estimated solar: an exploratory, post-hoc association, not a validated causal response.
+
+→ *Second-network report:* [`reports/g2/SECOND_NETWORK_REPORT.md`](https://github.com/hinox13/grid2cloud/blob/main/reports/g2/SECOND_NETWORK_REPORT.md)
+
+## 11. From clouds to an illustrative value: one 6 MW plant
+
+The website's Value chapter turns reconstructed import changes into an illustrative value for **one explicit 6 MW solar plant**, using historical half-hourly Elexon APX prices. The other 2.9 MW of local PV sits inside the metered loads and is never varied. Two counterfactuals answer two different questions:
+
+| Question | Compared | 15 June 2024 | April–September evaluated sample |
+|---|---|---:|---:|
+| Extra import caused by clouds | observed satellite-derived output against a hypothetical clear-sky estimate | 16.94 MWh, £1,661 | 1,428.37 MWh, £93,286 (net) |
+| Import displaced by the plant | observed output against no plant | 31.24 MWh, £2,890 | 4,038.08 MWh, £234,226 |
+
+- **A signed, net valuation over an incomplete season.** The sample is 2,820 evaluated half-hours on 136 days, with APX prices for 2,819 of them (the missing price's energy is counted and its value omitted). £93,286 is the net illustrative valuation across the evaluated periods, including negative contributions and negative market prices. In 927 half-hours the satellite-derived output exceeded the modelled clear-sky estimate, which can reflect cloud enhancement or a disagreement between the two estimates; 180 half-hours had negative prices.
+- **How the methods compare** (against AC, all 2,820 half-hours). Response-aware GENCO's (E5d) totals are within 0.3 % (plant against no plant) and +0.06 % (clouds); ordinary adaptation (E5c) misses 98 %; lossless injection accounting is within 1.5 %. E5d's close totals partly reflect positive and negative errors that cancel. **Per half-hour, simple accounting is more accurate:** clearly for the cloud effect (mean absolute error 0.018 against 0.041 MW, closer in 77 % of half-hours), narrowly for the plant's contribution (0.042 against 0.049 MW, closer in 54 %). Pricing E5d's absolute import instead would overstate the value of all imported energy by 27 %.
+- **Illustrative, not financial.** These are retrospective valuations of AC-reconstructed energy at a national wholesale index, not measured losses, savings, tariffs, bills, nodal prices or forecasts. GENCO does not predict prices. Nothing is extrapolated to other days, plants or networks, and no value is computed for the second network.
+
+→ *Economic study (pre-registered method, data sources, verification):* [`reports/economic_impact/`](https://github.com/hinox13/grid2cloud/blob/main/reports/economic_impact/verification.md)
+
+## 12. Explore it yourself
 
 ### 👉 [Open the Cloud2Grid website](https://hinox13.github.io/grid2cloud/)
 
@@ -151,7 +180,7 @@ The original Streamlit Explorer remains available as an alternative:
 
 Imagery and PV are 15-minute; grid states are the frozen half-hourly 2024 operating states behind every published metric, never interpolated. The app is a lightweight CPU-only replay: no power flow, inference or download runs in it.
 
-## 11. Frozen models and independent verification
+## 13. Frozen models and independent verification
 
 The frozen checkpoints and a held-out verification set are published as a GitHub Release, **[`cloud2grid-models-v1`](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1)**. Anyone can re-run the main synthetic finding with real inference:
 
@@ -169,7 +198,7 @@ uv run python reproduce/verify_models.py
 
 → *Reproducibility and open-science details:* [`docs/TECHNICAL_NOTES.md`](https://github.com/hinox13/grid2cloud/blob/main/docs/TECHNICAL_NOTES.md)
 
-## 12. Conclusions and research directions
+## 14. Conclusions and research directions
 
 The open GENCO checkpoint and the GridFM toolkits made it possible to run a complete, pre-registered adaptation study on a real network with synthetic training data only.
 
@@ -178,24 +207,26 @@ The open GENCO checkpoint and the GridFM toolkits made it possible to run a comp
 **Limitations, stated plainly:**
 - **Full transfer is not achieved.** No stage passes the complete pre-registered real-transfer gate. E5d is not a validated operational model.
 - **The 2024 results are not independently reproducible yet.** The release reproduces the synthetic findings only.
-- **Seed stability.** Response-aware training varied strongly across seeds, and the findings are not consistently reproduced across training seeds. Selection used synthetic criteria only.
+- **Seed stability.** Response-aware training varied strongly across seeds: on the 2024 states the two other λ = 1 seeds reached 0.68 and 0.80 of the AC reference response, and on the second network one of three seeds failed. Selection used synthetic criteria only.
+- **The AC reference is reconstructed physics, not a measured response.** The −1.02 MW per MW is the reconstructed network's modelled response to the injected satellite-derived PV estimate. That estimate was not compared with metered plant output, and Sundon's operational validation found only a small solar signature in the measured import (a midday dip of about 1.2 MW relative to night in May–August, with the battery idle). Satellite observations, satellite-derived PV estimates, reconstructed AC states, hypothetical clear-sky counterfactuals and GENCO predictions are labelled separately throughout; none of them is measured network behaviour.
 - **The weather question is unresolved.** The pre-registered weather test runs only after full transfer succeeds, so we make no claim either way about weather's effect on GENCO.
-- **One network, one satellite pixel.** Sundon's 2024 PV of 1 MW and above sits in one satellite pixel, so spatial weather structure could not be tested.
+- **One satellite pixel per network.** Sundon's 2024 PV of 1 MW and above sits in one satellite pixel, and 96 % of Aylesbury East's active solar in one pixel, so spatial weather structure could not be tested.
+- **Economic values are illustrative.** They value energy at historical national APX prices for one 6 MW plant, with everything else held fixed, over an incomplete sample of half-hours. A public clone re-checks their arithmetic from the released per-half-hour table, but not the AC counterfactual solves.
 - **Generator encoding.** From E5c on, our representation places the Leighton Buzzard generators on PQ buses, so their generation is omitted from the model's internal physics feedback (§7). Evaluation uses the correct generation values, so the reported metrics stand, but the effect of correcting it is not assessed in the results reported here.
 
 **Research directions these results point to:**
 - **Joint physical consistency:** approaches that improve nodal and network-wide power balance while preserving accurate renewable-generation responses and absolute-state predictions, with our generator representation corrected and assessed separately, and any gain confirmed on an untouched real evaluation period.
 - **Calibration of the absolute import:** on held-out synthetic states the adapted import is compressed toward about 56 MW, so the representation and conditioning of the slack injection are concrete levers.
-- **Replication:** a second network with metered solar circuits and plants spanning several independent satellite pixels, to test whether the findings replicate and whether spatial weather structure matters.
+- **Real-data replication:** the synthetic replication on Aylesbury East is complete (§10). Still needed is a second network with validated historical operation and solar distributed across several satellite pixels, to test real transfer and whether spatial weather structure matters.
 
 ## Team, acknowledgements, contact and licences
 
 - 👤 **Team:** Oriol Hinojo
 - ✉️ **Contact:** [open an issue](https://github.com/hinox13/grid2cloud/issues)
-- 🙏 **Acknowledgements:** Cloud2Grid builds on GENCO ([Puech et al., 2026](https://arxiv.org/abs/2608.09921)) and the open GridFM ecosystem: the [`gridfm/genco-pf-transfer`](https://huggingface.co/gridfm/genco-pf-transfer) checkpoint, [gridfm-graphkit](https://github.com/gridfm/gridfm-graphkit) for fine-tuning and inference, and [gridfm-datakit](https://github.com/gridfm/gridfm-datakit) for synthetic AC data. Every adaptation step here used them. We also thank UK Power Networks and EUMETSAT / LSA SAF for their open data, and the pandapower, PowerModels and pvlib projects.
+- 🙏 **Acknowledgements:** Cloud2Grid builds on GENCO ([Puech et al., 2026](https://arxiv.org/abs/2608.09921)) and the open GridFM ecosystem: the [`gridfm/genco-pf-transfer`](https://huggingface.co/gridfm/genco-pf-transfer) checkpoint, [gridfm-graphkit](https://github.com/gridfm/gridfm-graphkit) for fine-tuning and inference, and [gridfm-datakit](https://github.com/gridfm/gridfm-datakit) for synthetic AC data. Every adaptation step here used them. We also thank UK Power Networks, EUMETSAT / LSA SAF and Elexon for their open data, and the pandapower, PowerModels and pvlib projects.
 - 🌐 [Website](https://hinox13.github.io/grid2cloud/) · 🔬 [Streamlit Explorer](https://cloud2grid.streamlit.app/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Models](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduction](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md)
 
-*Contains modified EUMETSAT Meteosat and LSA SAF data (CC BY 4.0) and UK Power Networks data (CC BY 4.0), which include ONS data (OGL v3.0) and OS data © Crown copyright. GENCO / gridfm: Apache-2.0. Cloud2Grid code and released weights © 2026 Oriol Hinojo, Apache-2.0; verification data CC BY 4.0. Third-party data keep their own licences and are not redistributed; per-source attribution: [`docs/DATA_LICENSES.md`](https://github.com/hinox13/grid2cloud/blob/main/docs/DATA_LICENSES.md) and [`NOTICE`](https://github.com/hinox13/grid2cloud/blob/main/NOTICE).*
+*Contains modified EUMETSAT Meteosat and LSA SAF data (CC BY 4.0) and UK Power Networks data (CC BY 4.0), which include ONS data (OGL v3.0) and OS data © Crown copyright. Contains BMRS data © Elexon Limited copyright and database right 2024. GENCO / gridfm: Apache-2.0. Cloud2Grid code and released weights © 2026 Oriol Hinojo, Apache-2.0; verification data CC BY 4.0. Third-party data keep their own licences and are not redistributed; per-source attribution: [`docs/DATA_LICENSES.md`](https://github.com/hinox13/grid2cloud/blob/main/docs/DATA_LICENSES.md) and [`NOTICE`](https://github.com/hinox13/grid2cloud/blob/main/NOTICE).*
 
 ---
 
@@ -222,7 +253,7 @@ uv sync && uv run pytest                                  # the test suite
 | [`reports/`](reports/) | one report per experiment (E0–E6), with tables and figures; clean-room verification records in [`reports/model_release_v1/`](reports/model_release_v1/) |
 | [`configs/`](configs/), [`metadata/`](metadata/) | pre-registrations, frozen protocols, checkpoint registries, licence manifest |
 | [`src/cloud2grid/`](src/cloud2grid/), [`scripts/`](scripts/) | the pipeline: network reconstruction, satellite PV, scenarios, GENCO adaptation, evaluation |
-| [`tests/`](tests/) | 315 automated tests ([why some skip on a clone](docs/TECHNICAL_NOTES.md#automated-tests)) |
+| [`tests/`](tests/) | 328 automated tests ([why some skip on a clone](docs/TECHNICAL_NOTES.md#automated-tests)) |
 | [`docs/`](docs/) | [technical notes](docs/TECHNICAL_NOTES.md), [data licences](docs/DATA_LICENSES.md), [Explorer deployment](docs/DEMO.md), [project design document](docs/PROJECT_DESIGN.md) |
 | [`submission/`](submission/) | the challenge write-up, its figures, screenshots, [figure manifest](submission/FIGURE_MANIFEST.md) and the scripts that build and check them |
 

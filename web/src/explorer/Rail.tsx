@@ -95,7 +95,7 @@ export function Rail({ viewKey, slotRef }: { viewKey: string; slotRef: (el: HTML
         <p className="rail-h">At a glance</p>
         <dl className="rail-facts">
           <div>
-            <dt>Solar sensitivity, AC physics</dt>
+            <dt>Solar sensitivity, AC reference</dt>
             <dd>
               <Claim id="slope_AC" />
             </dd>

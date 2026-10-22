@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Filmstrip } from "../components/SatelliteView";
 import { Wordmark } from "../components/Wordmark";
-import { ImportAxis, PbeStrip, Scoreboard, TwoQuestions } from "../components/journey";
+import { ImportAxis, PbeStrip, TradeOff, TwoQuestions } from "../components/journey";
+import { ReplicationStrip } from "../components/replication";
 import { Question, ScopeTag } from "../components/Scope";
 import { ThemeToggle } from "../components/theme";
 import { TimeRuler } from "../components/TimeRuler";
@@ -275,26 +276,32 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
               </SlopeScatter>
             )}
             {b.id === "j-shift" && (
-              <div className="journey-stage">
+              <div className="journey-stage" tabIndex={0} role="region" aria-label="Model comparison">
                 <TwoQuestions />
               </div>
             )}
             {b.id === "j-zero" && (
-              <div className="journey-stage">
+              <div className="journey-stage" tabIndex={0} role="region" aria-label="Model comparison">
                 <Question n={1} />
                 <ImportAxis rows={["zero_shot"]} withAC hidden={revealed < 2 ? ["zero_shot"] : []} focus="zero_shot" />
               </div>
             )}
             {b.id === "j-network" && (
-              <div className="journey-stage">
+              <div className="journey-stage" tabIndex={0} role="region" aria-label="Model comparison">
                 <Question n={1} />
                 <ImportAxis rows={["zero_shot", "E5", "E5b"]} hidden={revealed < 2 ? ["E5", "E5b"] : revealed < 3 ? ["E5b"] : []} focus={revealed < 3 ? "E5" : "E5b"} />
                 <PbeStrip rows={["zero_shot", "E5", "E5b"]} hidden={revealed < 2 ? ["E5", "E5b"] : revealed < 3 ? ["E5b"] : []} />
               </div>
             )}
             {b.id === "j-two" && (
-              <div className="journey-stage">
-                <Scoreboard focus={["E5b", "E5d"]} />
+              <div className="journey-stage" tabIndex={0} role="region" aria-label="Model comparison">
+                <TradeOff compact />
+              </div>
+            )}
+            {b.id === "j-replicate" && (
+              <div className="journey-stage" tabIndex={0} role="region" aria-label="Model comparison">
+                <Question n={2} />
+                <ReplicationStrip compact />
               </div>
             )}
             {b.ch === "value" &&
@@ -374,16 +381,16 @@ function BeatExtra(p: {
               <Claim id="fleet_pv_1100" />
             </dd>
           </div>
-          <div className="arrow" aria-hidden="true">
-            →
-          </div>
           <div>
             <dt>11:30 UTC</dt>
             <dd className="big">
               <Claim id="fleet_pv_1130" />
             </dd>
           </div>
-          <dd className="prov full">Derived · estimated output of the <Claim id="n_pv_plants" bare /> active plants (EUMETSAT LSA SAF + pvlib)</dd>
+          <div className="prov full">
+            <dt className="sr-only">Source</dt>
+            <dd>Derived · estimated output of the <Claim id="n_pv_plants" bare /> active plants (EUMETSAT LSA SAF + pvlib)</dd>
+          </div>
         </dl>
       );
     case "g-states":
@@ -395,18 +402,18 @@ function BeatExtra(p: {
               <Claim id="import_ac_1100" />
             </dd>
           </div>
-          <div className="arrow" aria-hidden="true">
-            →
-          </div>
           <div className={p.slot.endsWith("11:30:00Z") ? "" : "pending"}>
             <dt>Import, 11:30</dt>
             <dd className="big">
               <Claim id="import_ac_1130" />
             </dd>
           </div>
-          <dd className="prov full">
+          <div className="prov full">
+            <dt className="sr-only">Source</dt>
+            <dd>
             Simulated · AC reconstruction · change <Claim id="import_ac_hist_delta" />
           </dd>
+          </div>
         </dl>
       );
     case "g-why":
@@ -468,7 +475,7 @@ function BeatExtra(p: {
             <dd className="big">
               <Claim id="bias_zero_shot" bare /> → <Claim id="bias_E5b" />
             </dd>
-            <dd className="prov">average gap to the physics, original → E5b</dd>
+            <dd className="prov">average gap to the AC reference, original → E5b</dd>
           </div>
           <div className={`span-2 ${p.revealed >= 3 ? "" : "pending"}`}>
             <dt>Power-balance error</dt>
@@ -511,32 +518,63 @@ function BeatExtra(p: {
       );
     case "i-slope":
       return (
-        <dl className="readouts readouts-trio">
-          {(
-            [
-              ["slope_AC", "AC physics"],
-              ["slope_E5c", "E5c, ordinary"],
-              ["slope_E5d", "E5d, response-aware"],
-            ] as const
-          ).map(([id, l]) => (
-            <div key={id}>
-              <dt>{l}</dt>
-              <dd className="big">
-                <Claim id={id} bare />
-              </dd>
-            </div>
-          ))}
-          <dd className="prov full">MW of import per MW of solar: a fitted sensitivity over all real half-hours, not the 11:00 change in MW.</dd>
-        </dl>
+        <>
+          <dl className="readouts readouts-trio">
+            {(
+              [
+                ["slope_AC", "AC reference"],
+                ["slope_E5c", "E5c, ordinary fine-tuning"],
+                ["slope_E5d", "E5d, response-aware"],
+              ] as const
+            ).map(([id, l]) => (
+              <div key={id}>
+                <dt>{l}</dt>
+                <dd className="big">
+                  <Claim id={id} bare />
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p className="readouts-note prov">E5c → E5d. MW of import per MW of solar: a fitted sensitivity over all reconstructed half-hours, not the 11:00 change in MW. The AC value is the physical reference for the reconstructed network, not a metered response.</p>
+        </>
       );
     case "j-two":
       return (
         <>
-          <p className="takeaway">First we taught GENCO the network. Then we taught it the physical response. These are different problems.</p>
+          <p className="takeaway">First we taught GENCO the network (E5b). Then we taught it the physical response (E5d). Getting both at once is still open.</p>
           <p className="beat-links">
             <a href="#/explore/journey">How we taught GENCO this network, step by step</a>
             <br />
             <a href="#/explore/models">Metrics, verdicts and frozen-model verification</a>
+          </p>
+        </>
+      );
+    case "j-replicate":
+      return (
+        <>
+          <dl className="readouts readouts-pair">
+            <div>
+              <dt>Ordinary fine-tuning</dt>
+              <dd className="big">
+                <Claim id="g2_C_pv_slope_ratio" bare />
+              </dd>
+              <dd className="prov">× the physical response, 3 seeds</dd>
+            </div>
+            <div>
+              <dt>Response-aware</dt>
+              <dd className="big">
+                <Claim id="g2_D_pv_slope_ratio_ok" bare />
+              </dd>
+              <dd className="prov">
+                <Claim id="g2_D_ok_seeds" bare /> seeds; the third <Claim id="g2_D_bad_ratio" bare />
+              </dd>
+            </div>
+          </dl>
+          <p className="readouts-note prov">
+            Synthetic states only: this network's real-data reconstruction failed validation. Here the response-aware seeds were also closer on the absolute state, but still off by <Claim id="g2_D_import_mae_mw_ok" /> on average.
+          </p>
+          <p className="beat-links">
+            <a href="#/explore/replication">The second-network study, every seed and criterion</a>
           </p>
         </>
       );
@@ -559,9 +597,12 @@ function BeatExtra(p: {
                 <Claim id="day_cloud_gbp" />
               </dd>
             </div>
-            <dd className="prov full">
+            <div className="prov full">
+              <dt className="sr-only">Scope</dt>
+              <dd>
               <Claim id="day_periods" bare /> evaluated half-hours, <Claim id="day_first" bare />–<Claim id="day_last" bare /> UTC · retrospective, not an actual cost or saving
             </dd>
+            </div>
           </dl>
         </div>
       );
@@ -632,20 +673,23 @@ function BeatExtra(p: {
             </p>
             <dl className="readouts value-big">
               <div>
-                <dt>Extra import relative to clear sky</dt>
+                <dt>Net extra import relative to clear sky</dt>
                 <dd className="big">
                   <Claim id="season_cloud_attributed_mwh" />
                 </dd>
               </div>
               <div>
-                <dt>Illustrative value</dt>
+                <dt>Net illustrative value</dt>
                 <dd className="big">
                   <Claim id="season_cloud_attributed_gbp" />
                 </dd>
               </div>
-              <dd className="prov full">
-                <Claim id="season_periods" bare /> evaluated half-hours across <Claim id="season_days" bare /> days
+              <div className="prov full">
+                <dt className="sr-only">Scope</dt>
+                <dd>
+                <Claim id="season_periods" bare /> evaluated half-hours across <Claim id="season_days" bare /> days, negative contributions and negative prices included
               </dd>
+              </div>
             </dl>
           </div>
           <p className="part-of">Do not scale these numbers to other plants: only this plant is varied.</p>

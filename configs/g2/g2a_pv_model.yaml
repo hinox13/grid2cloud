@@ -1,0 +1,51 @@
+# G2A satellite → PV forcing model for Aylesbury East: a COPY of the frozen E3 configuration
+# (configs/experiments/e3_pv_model.yaml, 2 Oct 2026). Only the region, the network config (site load
+# nodes) and the LTDS reconciliation group change; every irradiance and PV-chain parameter is identical.
+# Written 2026-10-17, before any Aylesbury PV series existed.
+
+
+label: satellite-driven estimated PV generation   # README §13 — never "measured"
+
+network_config: configs/g2/aylesbury_east_base_ltds.yaml   # site load nodes
+inventory:
+  study_region: configs/g2/study_region_aylesbury_east.yaml   # E0 assets + attribution (authoritative)
+  ecr_raw: data/raw/ukpn/ecr_1mw_and_above.parquet     # date/status fields (no customer fields kept)
+  ecr_raw_small: data/raw/ukpn/ecr_under_1mw.parquet
+  ltds_t5: data/raw/ukpn/ltds_generation_5.parquet
+
+capacity:
+  include_undated: false          # undated connected assets are excluded and reported
+  ltds_snapshot: "2026-05-29"     # LTDS T5 dataset description: "Published 29th May 2026"
+  ltds_mva_per_mw: 1.0526316      # T5 MVA = MW / 0.95; checked on 3 rows (battery 49.5→52.105,
+                                  # LBUZ 11 kV PV 2.0→2.105, Sundon 33 kV PV 21.0→22.105)
+  reconciliation_groups:
+    - group: Aylesbury East Grid 33kV PV at 33 kV
+      ltds: {substation: Aylesbury East Grid 33kV, connection_voltage_kv: "33", fuel_type: Photovoltaic (>=1MW)}
+      ecr: {bulk_supply_point: Aylesbury East Grid 33kV, connection_voltage_kv: 33.0, primary: "-"}
+buses:
+  hv_threshold_kv: 33     # >= 33 kV → site 33 kV busbars (E0 attributed nodes)
+  split: equal            # ASSUMED: section unknown → equal split over the node set
+  ltds_alternative_note: >-
+    LTDS T5 lists 41.6 MVA PV under "Aylesbury East Grid 33kV" (FLOC EPN-S0000000D8002), the same site as
+    the ECR FLOC, so E0's attribution (the BSP 33 kV busbars) and LTDS agree. The farms' customer
+    connection nodes on the Aylesbury–Tring circuits are not identified by non-customer fields (ASSUMED).
+irradiance:
+  clearsky_tolerance: 1.1          # pvlib.irradiance.dni: DNI <= 1.1 × clear-sky DNI …
+  zenith_clearsky_limit_deg: 80    # … for zenith >= 80°
+  zenith_zero_dni_deg: 88          # DNI = 0 for zenith >= 88°
+  min_elevation_for_pv_deg: 0.0
+
+pv:   # UK utility-scale fixed-tilt conventions; all ASSUMED (ECR has no plant engineering data)
+  tilt_deg: 30                     # typical GB ground-mount fixed tilt (20–35°)
+  azimuth_deg: 180                 # south-facing
+  albedo: 0.2                      # grassland
+  sky_diffuse_model: haydavies
+  iam_ashrae_b: 0.05
+  temp_air_c: 15.0                 # no meteorological input; ±10 °C ⇒ ≈ ±3–4 % in P
+  wind_speed_ms: 3.0
+  gamma_pdc: -0.0035               # c-Si power temperature coefficient (1/°C)
+  dc_ac_ratio: 1.25                # ECR capacity = AC export rating; DC oversizing typical 1.2–1.3
+  inverter_eta_nom: 0.98
+  losses_pct: {soiling: 2, shading: 0, snow: 0, mismatch: 2, wiring: 2, connections: 0.5,
+               lid: 1.5, nameplate_rating: 1, age: 0, availability: 0}
+  # availability/snow/shading are annual-average derates, not instantaneous: set to 0.

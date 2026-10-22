@@ -1,0 +1,72 @@
+{
+  "baselines": {
+    "dc_P_residual_mw": 0.06335082051529392,
+    "injection_sum_import_mae_mw": 0.8693345080440458
+  },
+  "H1": {
+    "rule": "zero-shot GENCO active-power residual >= 10 \u00d7 the DC power-flow residual on the absolute test pool",
+    "zs_ga_p_residual": 11424.6767578125,
+    "zs_neg_p_residual": 10905.296875,
+    "dc_p_residual": 0.06335082051529392,
+    "ratio_ga": 180339.8387721655,
+    "ratio_neg": 172141.3674881651,
+    "holds": true
+  },
+  "H2": {
+    "rule": "B and C mean nodal power-balance error (PBE) <= 0.1 \u00d7 zero-shot on the absolute test pool (seed mean)",
+    "B_pbe_seed_mean": 0.6235243678092957,
+    "C_pbe_seed_mean": 0.5000147819519043,
+    "zs_neg_pbe": 22995.224609375,
+    "zs_ga_pbe": 24055.599609375,
+    "holds": true
+  },
+  "H3": {
+    "rule": "C PV import slope ratio <= 0.25 on the test pairs in >= 2 of 3 seeds",
+    "C_pv_slope_ratio": {
+      "0.0": 0.15933252158427919,
+      "1.0": 0.16248910984768888,
+      "2.0": 0.32408284682836014
+    },
+    "holds": true
+  },
+  "H4": {
+    "rule": "D PV import slope ratio in [0.8, 1.2] AND PV import relative error <= 0.25 on the test pairs in >= 2 of 3 seeds (E5d RS1/RS2)",
+    "D_pv_slope_ratio": {
+      "0.0": 1.005032828564166,
+      "1.0": 0.37821493613104856,
+      "2.0": 0.990076037064506
+    },
+    "D_pv_rel_err": {
+      "0.0": 0.012420888058841228,
+      "1.0": 0.5815601944923401,
+      "2.0": 0.012013653293251991
+    },
+    "per_seed": {
+      "0.0": true,
+      "1.0": false,
+      "2.0": true
+    },
+    "holds": true
+  },
+  "H5": {
+    "rule": "for D (seed mean): import MAE on the absolute test pool > 5 MW (E5d ST4 tolerance) AND, on the PV test pairs, the per-state import error >= 10 \u00d7 the error of the predicted PV-induced import change",
+    "D_import_mae_seed_mean": 16.238711992899578,
+    "D_cancellation_ratio_seed_mean": 33.55984926223755,
+    "holds": true
+  },
+  "H6": {
+    "rule": "for D (seed mean, absolute test pool): global sign coherence |\u03a3_i r_i| / \u03a3_i |r_i| >= 0.5 (E6 diagnostic definition; Sundon E5d 0.57)",
+    "D_sign_coherence_seed_mean": 0.5492769281069437,
+    "holds": true
+  },
+  "H7": {
+    "rule": "H4 holds in all 3 D seeds (stable) \u2014 otherwise reported as unstable",
+    "stable": false
+  },
+  "classification": "REPRODUCED",
+  "completed_runs": {
+    "C": 3,
+    "D": 3,
+    "B": 3
+  }
+}

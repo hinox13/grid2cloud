@@ -416,6 +416,7 @@
   align-items: center;
   padding: clamp(56px, 7vw, 120px) var(--gutter);
   background: var(--field-ink);
+  --bg: #050f16; /* the band is always dark: text set on model colours uses the dark ground */
   color: #f1f3f4;
   --ink: #f1f3f4;
   --ink-2: #c5ced5;
