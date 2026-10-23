@@ -878,145 +878,27 @@
     grid-template-columns: 1fr;
   }
 }
+.challenge-q {
+  padding-left: 16px;
+  border-left: 3px solid var(--accent);
+}
 
-/* ------------------------------------------------------------------ a possible future chain (concept, not a pipeline) */
-.vision {
-  margin-top: clamp(48px, 6vw, 96px);
-  padding-top: clamp(28px, 3vw, 44px);
+/* ------------------------------------------------------------------ beyond this study: one short, secondary paragraph */
+.beyond {
+  max-width: 82ch;
+  margin-top: clamp(28px, 3vw, 44px);
+  padding-top: 16px;
   border-top: 1px solid var(--surface-3);
-}
-.vision-h {
-  margin: 0 0 10px;
-  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
-}
-.vision-lead {
-  max-width: 46ch;
-  margin: 0 0 10px;
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(1.1rem, 0.95rem + 0.5vw, 1.4rem);
-  line-height: 1.25;
-}
-.vision-p {
-  max-width: 70ch;
-  margin: 0 0 22px;
-}
-.vision-steps {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 0 0 26px;
-  padding: 0;
-  list-style: none;
-  counter-reset: none;
-}
-.vision-steps li {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 14px 14px 12px;
-  border-top: 3px solid var(--surface-3);
-  background: var(--surface);
-}
-.vision-steps li:not(:last-child)::after {
-  content: "→";
-  position: absolute;
-  right: -13px;
-  top: 18px;
-  font-family: var(--f-display);
-  font-weight: 700;
-  color: var(--muted);
-}
-.vision-steps li.is-ours {
-  border-top-color: var(--accent);
-  box-shadow: inset 0 0 0 2px var(--accent);
-}
-.vision-steps li.is-future {
-  border-top-style: dashed;
-  background: transparent;
-  box-shadow: inset 0 0 0 1px var(--surface-3);
-}
-.vs-icon {
-  color: var(--ink-2);
-}
-.is-ours .vs-icon {
-  color: var(--accent-text);
-}
-.vs-n {
-  font-family: var(--f-display);
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-.vision-steps strong {
-  font-family: var(--f-display);
-  font-size: 1.0625rem;
-  line-height: 1.2;
-}
-.vs-d {
   font-size: var(--step-small);
   color: var(--ink-2);
-  line-height: 1.45;
 }
-.vs-tag {
-  margin-top: auto;
-  padding-top: 6px;
+.beyond-h {
+  margin: 0 0 6px;
   font-family: var(--f-display);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--muted);
-}
-.is-ours .vs-tag {
-  color: var(--accent-text);
-}
-.vision-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(20px, 3vw, 48px);
-}
-.vision-cols p,
-.vision-limits p {
-  margin: 0 0 10px;
-  max-width: 62ch;
-}
-.vision-k {
-  font-family: var(--f-display);
-  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
   color: var(--ink);
 }
-.vision-note {
-  font-size: var(--step-small);
-  color: var(--ink-2);
-}
-.vision-limits {
-  max-width: 80ch;
-  margin-top: 18px;
-  padding: 14px 16px;
-  background: var(--surface-2);
-  font-size: var(--step-small);
-  color: var(--ink-2);
-}
-.vision-limits .vision-k {
-  margin-bottom: 4px;
-}
-@media (max-width: 900px) {
-  .vision-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .vision-steps li:nth-child(2)::after {
-    content: none;
-  }
-}
-@media (max-width: 760px) {
-  .vision-steps,
-  .vision-cols {
-    grid-template-columns: 1fr;
-  }
-  .vision-steps li:not(:last-child)::after {
-    content: "↓" !important;
-    right: auto;
-    left: 50%;
-    top: auto;
-    bottom: -18px;
-  }
+.beyond p {
+  margin: 0;
 }

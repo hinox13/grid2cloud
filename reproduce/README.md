@@ -13,6 +13,17 @@ uv run python reproduce/verify_models.py --device gpu   # optional, CUDA 12.6
 
 No credentials, training data or GPU are needed. The script exits with code 0 only if every check passes.
 
+## From Hugging Face
+
+The same three archives, byte-identical (the verifier checks their SHA256 first), are on Hugging Face: [E5c](https://huggingface.co/oriolh/cloud2grid-e5c-ft-n10000-s2), [E5d](https://huggingface.co/oriolh/cloud2grid-e5d-l1-s0) and the [verification dataset](https://huggingface.co/datasets/oriolh/cloud2grid-verification-synthetic-v1). No login is needed:
+
+```bash
+uv run hf download oriolh/cloud2grid-e5c-ft-n10000-s2 --revision v1 --include "release/*" --local-dir hf_assets
+uv run hf download oriolh/cloud2grid-e5d-l1-s0 --revision v1 --include "release/*" --local-dir hf_assets
+uv run hf download oriolh/cloud2grid-verification-synthetic-v1 --type dataset --revision v1 --include "release/*" --local-dir hf_assets
+uv run python reproduce/verify_models.py --assets-dir hf_assets/release
+```
+
 ## What it does
 
 1. **Gets the assets.** It downloads the three release assets of [`cloud2grid-models-v1`](../reproduce/assets.json) into `reproduce/.assets/`, or uses files already there. You can override the source with `--base-url`.

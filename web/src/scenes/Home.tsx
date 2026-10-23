@@ -221,6 +221,9 @@ export function Home() {
             <p>
               A clear sky cannot be engineered, so no grid model can recover energy that clouds blocked. Curtailment, when available renewable output cannot be accepted, is a different problem, and this study did not measure it.
             </p>
+            <p className="challenge-q">
+              <strong>Cloud2Grid studies whether a pretrained grid foundation model can learn this response</strong> on a real, reconstructed network, from synthetic training data alone.
+            </p>
           </div>
           <ul className="challenge-list" aria-label="What changes in the network when solar output changes">
             <li>
@@ -244,65 +247,21 @@ export function Home() {
           </ul>
         </div>
 
-        <div className="vision reveal" aria-labelledby="vision-h">
-          <h3 id="vision-h" className="vision-h">
-            From forecasting the weather to preparing the grid
+        <div className="beyond reveal" aria-labelledby="beyond-h">
+          <h3 id="beyond-h" className="beyond-h">
+            Beyond Cloud2Grid: connecting Earth observation to energy decisions
           </h3>
-          <p className="vision-lead">What if tomorrow's solar generation could be anticipated, along with how the network would respond, before the clouds arrive?</p>
-          <p className="vision-p">
-            Satellites such as Meteosat show where clouds are and how they move; weather prediction extends that view to the day ahead. Combined with a model of the network's response, such forecasts could let operators examine tomorrow's conditions and plan storage, flexible generation and demand in advance. Cloud2Grid researches one building block of that chain.
+          <p>
+            Initiatives such as Destination Earth's{" "}
+            <a href="https://destine.ecmwf.int/weather-induced-extremes-digital-twin/" target="_blank" rel="noopener">
+              Weather-Induced Extremes Digital Twin
+            </a>{" "}
+            and{" "}
+            <a href="https://predictia.es/en/projects/ai4clouds.html" target="_blank" rel="noopener">
+              AI4Clouds
+            </a>
+            , which fuses SEVIRI and FCI satellite observations, ERA5 reanalysis and Extremes Digital Twin fields into short-term cloud information, show how environmental data can be combined into more useful products. In a future energy value chain, such information could feed renewable-generation forecasts and, with validated network models, storage, flexibility and demand planning. These are independent examples, not components of Cloud2Grid; this study does not use their derived products or implement weather forecasting or operational optimisation.
           </p>
-          <ol className="vision-steps" aria-label="A possible future chain, from weather to grid operations">
-            <li data-step="weather">
-              <VIcon kind="weather" />
-              <span className="vs-n">1</span>
-              <strong>Anticipate the weather</strong>
-              <span className="vs-d">Satellite cloud motion for the next few hours; numerical weather prediction for the day ahead. Uncertainty grows with the horizon.</span>
-              <span className="vs-tag">Existing forecasting · not part of this study</span>
-            </li>
-            <li data-step="generation">
-              <VIcon kind="generation" />
-              <span className="vs-n">2</span>
-              <strong>Forecast renewable output</strong>
-              <span className="vs-d">A PV model turns forecast irradiance into expected output, plant by plant. Wind would need its own forecasts and models.</span>
-              <span className="vs-tag">Cloud2Grid converts past satellite irradiance, not forecasts</span>
-            </li>
-            <li data-step="response" className="is-ours">
-              <VIcon kind="response" />
-              <span className="vs-n">3</span>
-              <strong>Predict the grid's response</strong>
-              <span className="vs-d">Imports and exports, line flows, voltages, circuit loading and possible constraint violations.</span>
-              <span className="vs-tag">What Cloud2Grid investigates: can a grid foundation model learn this response?</span>
-            </li>
-            <li data-step="planning" className="is-future">
-              <VIcon kind="planning" />
-              <span className="vs-n">4</span>
-              <strong>Plan operations</strong>
-              <span className="vs-d">When to charge or discharge storage, shift flexible demand, schedule imports or dispatchable generation, and manage constraints, chosen by a separate decision-support layer.</span>
-              <span className="vs-tag">Future application · not demonstrated</span>
-            </li>
-          </ol>
-          <div className="vision-cols">
-            <div className="vision-example">
-              <p className="vision-k">An illustrative day ahead</p>
-              <p>
-                Tomorrow's forecast shows a sunny morning and thick cloud in the afternoon. A future system could forecast solar output across the network, predict how flows and voltages change, flag when storage or flexible generation would be needed, and test operating plans before the afternoon arrives. On a very sunny day it could flag when to charge storage or shift demand to take up the output, which under suitable conditions could help accept more renewable power and reduce curtailment.
-              </p>
-              <p className="vision-note">The day-ahead horizon is illustrative. Better planning could only help accept output that is available; it cannot recover sunlight that clouds block.</p>
-            </div>
-            <div className="vision-results">
-              <p className="vision-k">Why our results matter for this</p>
-              <p>
-                A model for step 3 must get both the operating state and how it changes with solar right. E5b came closest on the state but barely responds to solar (<Claim id="slope_E5b" />). E5d reproduced the response, line flows included (median branch error <Claim id="branch_resp_E5c" bare /> → <Claim id="branch_resp_E5d" />, E5c → E5d), but its import is <Claim id="bias_E5d" /> off and only one of three seeds learned it this well. On Aylesbury East the response replicated in <Claim id="g2_D_ok_seeds" bare /> seeds, on synthetic states only. <strong>Accurate responses alone do not make safe decisions.</strong>
-              </p>
-            </div>
-          </div>
-          <div className="vision-limits">
-            <p className="vision-k">Not demonstrated by Cloud2Grid</p>
-            <p>
-              Forecasting clouds, solar output or grid states at any horizon; real-time control; better dispatch or storage schedules; avoided curtailment; fossil-fuel or emissions reductions; or savings delivered by GENCO. The values above are reconstructed past scenarios for one plant, not what a forecasting system would earn. An operational system would also need demand forecasts, the current topology and constraints, storage state, asset availability, market rules and uncertainty handling. Any future GENCO-based system would need to be benchmarked against AC power flow and linear-sensitivity methods; on Sundon, AC power flow is already accurate and inexpensive.
-            </p>
-          </div>
         </div>
       </section>
 
@@ -402,56 +361,12 @@ export function SiteFooter() {
           <li>
             <a href="#/explore/data">Data and licences</a>
           </li>
-          <li>
-            <a href="https://cloud2grid.streamlit.app/" target="_blank" rel="noopener">
-              Original Streamlit explorer (alternative)
-            </a>
-          </li>
         </ul>
         <p className="foot-credits">
           {att.data?.footer ?? ""} Contains BMRS data © Elexon Limited copyright and database right 2024.
         </p>
       </div>
     </footer>
-  );
-}
-
-/** Small line icons for the four steps of the possible future chain (decorative; the step titles carry the meaning). */
-function VIcon({ kind }: { kind: "weather" | "generation" | "response" | "planning" }) {
-  return (
-    <svg className="vs-icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {kind === "weather" && (
-        <>
-          <circle cx="12" cy="11" r="4.5" />
-          <path d="M12 2.5v2M3.5 11h2M6 5l1.4 1.4M18 5l-1.4 1.4" />
-          <path d="M10 25h13a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.4 1.8A3.6 3.6 0 0 0 10 25z" />
-        </>
-      )}
-      {kind === "generation" && (
-        <>
-          <path d="M5 20l4-11h16l4 11z" />
-          <path d="M11.5 9L10 20M17 9v11M22.5 9L24 20M7 14.5h20" />
-          <path d="M17 20v6M12 26h10" />
-        </>
-      )}
-      {kind === "response" && (
-        <>
-          <circle cx="6" cy="8" r="2.5" />
-          <circle cx="26" cy="8" r="2.5" />
-          <circle cx="16" cy="16" r="2.5" />
-          <circle cx="8" cy="25" r="2.5" />
-          <circle cx="24" cy="25" r="2.5" />
-          <path d="M8 9.5l6 5M24 9.5l-6 5M14.5 18l-5 5M17.5 18l5 5M8.5 8h15" />
-        </>
-      )}
-      {kind === "planning" && (
-        <>
-          <rect x="5" y="6" width="22" height="21" rx="2" />
-          <path d="M5 12h22M11 3.5v5M21 3.5v5" />
-          <path d="M10 19l3 3 6-6" />
-        </>
-      )}
-    </svg>
   );
 }
 

@@ -352,9 +352,8 @@ test("home: every solar-related number names its experiment, population and kind
 
 test("home: the React website is the official application; Streamlit is only the optional original", async ({ page }) => {
   await page.goto("./");
-  const st = page.locator('a[href^="https://cloud2grid.streamlit.app"]');
-  await expect(st).toHaveCount(1);
-  await expect(st).toContainText("Original Streamlit explorer (alternative)");
+  // the competition presentation shows one application: no link to the legacy Streamlit explorer
+  await expect(page.locator('a[href^="https://cloud2grid.streamlit.app"]')).toHaveCount(0);
   for (const a of await page.locator("a").all()) {
     const t = ((await a.textContent()) ?? "").toLowerCase();
     if (t.includes("official")) expect(await a.getAttribute("href")).not.toContain("streamlit");
@@ -528,25 +527,24 @@ test("the story never moves to the next step on its own unless Play is pressed",
 });
 
 
-test("home vision: a possible future chain, with what Cloud2Grid studies and what it does not", async ({ page }) => {
+test("home: one short, secondary paragraph on Earth observation and energy; the research stays the focus", async ({ page }) => {
   await page.goto("./");
-  const v = page.locator(".vision");
-  await expect(v.locator(".vision-h")).toHaveText("From forecasting the weather to preparing the grid");
-  await expect(v.locator(".vision-steps > li")).toHaveCount(4);
-  await expect(v.locator("li[data-step=weather] .vs-tag")).toContainText("not part of this study");
-  await expect(v.locator("li[data-step=generation] .vs-tag")).toContainText("past satellite irradiance, not forecasts");
-  await expect(v.locator("li.is-ours")).toHaveCount(1);
-  await expect(v.locator("li.is-ours")).toHaveAttribute("data-step", "response");
-  await expect(v.locator("li.is-ours .vs-tag")).toContainText("What Cloud2Grid investigates");
-  await expect(v.locator("li[data-step=planning] .vs-tag")).toContainText("Future application · not demonstrated");
-  await expect(v.locator("li[data-step=planning]")).toContainText("separate decision-support layer");
-  await expect(v).toContainText("The day-ahead horizon is illustrative");
-  await expect(v).toContainText("it cannot recover sunlight that clouds block");
-  await expect(v.locator(".vision-results")).toContainText("E5c → E5d");
-  await expect(v.locator(".vision-results [data-claim=branch_resp_E5d]")).toHaveText("0.014 MW per MW");
-  await expect(v.locator(".vision-results")).toContainText("Accurate responses alone do not make safe decisions");
-  const lim = v.locator(".vision-limits");
-  for (const t of ["at any horizon", "avoided curtailment", "savings delivered by GENCO", "not what a forecasting system would earn", "benchmarked against AC power flow and linear-sensitivity methods", "on Sundon, AC power flow is already accurate and inexpensive"]) await expect(lim).toContainText(t);
-  const text = (await v.innerText()).toLowerCase();
-  for (const bad of ["nowcast", "eumetsat service", "endorse", "partnership", "we forecast", "cloud2grid forecasts", "has demonstrated"]) expect(text, bad).not.toContain(bad);
+  await expect(page.locator(".vision, .vision-steps")).toHaveCount(0); // the four-step forecasting diagram is gone
+  await expect(page.locator(".challenge-q")).toContainText("Cloud2Grid studies whether a pretrained grid foundation model can learn this response");
+  const by = page.locator(".beyond");
+  await expect(by.locator(".beyond-h")).toHaveText("Beyond Cloud2Grid: connecting Earth observation to energy decisions");
+  await expect(by.locator('a[href="https://destine.ecmwf.int/weather-induced-extremes-digital-twin/"]')).toHaveCount(1);
+  await expect(by.locator('a[href="https://predictia.es/en/projects/ai4clouds.html"]')).toHaveCount(1);
+  await expect(by).toContainText("independent examples, not components of Cloud2Grid");
+  await expect(by).toContainText("does not use their derived products or implement weather forecasting or operational optimisation");
+  await expect(by).not.toContainText("none of their data");
+  const words = ((await by.locator("p").innerText()).match(/\S+/g) ?? []).length;
+  expect(words).toBeLessThanOrEqual(95);
+  const text = (await page.locator("body").innerText()).toLowerCase();
+  for (const bad of ["nowcast", "endorse", "partnership with", "in collaboration with", "cloud2grid forecasts", "we forecast", "predict tomorrow", "optimizes dispatch", "has demonstrated"]) expect(text, bad).not.toContain(bad);
+  // reading order: impact, the grid's response, beyond this study, then the research findings
+  const y = async (sel: string) => (await page.locator(sel).first().boundingBox())!.y;
+  expect(await y(".impact-pair")).toBeLessThan(await y(".challenge"));
+  expect(await y(".challenge")).toBeLessThan(await y(".beyond"));
+  expect(await y(".beyond")).toBeLessThan(await y(".research"));
 });

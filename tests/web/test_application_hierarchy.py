@@ -1,7 +1,8 @@
 # ruff: noqa: E501
 """The public hierarchy of Cloud2Grid, wherever it is written: (1) the React website is the official application,
-(2) the GitHub repository holds the source and reproducibility material, (3) the Streamlit Explorer is the optional
-original. No text may present Streamlit as the official or production application.
+(2) the GitHub repository holds the source and reproducibility material, (3) the Streamlit Explorer is a legacy
+alternative, absent from the competition presentation (the written submission and the website). No text may present
+Streamlit as the official or production application.
 
 The preview-repository README generator and review gallery (web/deploy) exist in the development repository only;
 those checks skip elsewhere.
@@ -37,10 +38,14 @@ def test_written_submission_leads_with_the_website(path: Path) -> None:
     assert not OBSOLETE.search(text), OBSOLETE.search(text).group(0)
     links = re.findall(r"\]\((https?://[^)]+)\)", text.split("\n\n![", 1)[0])
     assert links and links[0] == SITE, links[:2]
-    assert "The website above is the official Cloud2Grid application." in text
-    for line in text.splitlines():
-        if STREAMLIT in line and "official" in line.lower():
-            assert "website" in line.lower() and "optional" in line.lower(), line[:160]
+    # the competition presentation shows one application: the React website; no legacy Streamlit link or screenshot
+    assert "streamlit" not in text.lower()
+    assert "05_explorer_hero_event.png" not in text and "UPLOAD-" not in text and "[CONTACT" not in text
+    assert not re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}", text), "no e-mail address in the written submission"
+    for repo in ("oriolh/cloud2grid-e5c-ft-n10000-s2", "oriolh/cloud2grid-e5d-l1-s0", "datasets/oriolh/cloud2grid-verification-synthetic-v1"):
+        assert f"https://huggingface.co/{repo}" in text, repo
+    assert "not components of Cloud2Grid" in text and "none of their data" not in text
+    assert "## 12. Explore it yourself\n\n### 👉 [Cloud2Grid: Guided Experience and Scientific Explorer](" + SITE + ")" in text
 
 
 def test_streamlit_points_to_the_official_website() -> None:

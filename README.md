@@ -163,32 +163,51 @@ The website's Value chapter turns reconstructed import changes into an illustrat
 
 ## 12. Explore it yourself
 
-### 👉 [Open the Cloud2Grid website](https://hinox13.github.io/grid2cloud/)
+### 👉 [Cloud2Grid: Guided Experience and Scientific Explorer](https://hinox13.github.io/grid2cloud/)
 
-A guided story in five steps, Clouds → Energy → Grid → GENCO → Value, from the real 15 June 2024 Meteosat images to the original GENCO failure, the fine-tuning steps and an illustrative valuation for one 6 MW solar plant, followed by the full scientific evidence. Every figure is exported from the frozen bundles and labelled with its provenance and evaluation scope.
+One web application, open in any browser with nothing to install. Every figure on it is exported from the frozen data bundles and labelled with its provenance (observed, satellite-derived, AC-reconstructed, GENCO-predicted or hypothetical) and its evaluation scope.
 
-### [Original Streamlit Explorer](https://cloud2grid.streamlit.app/) (optional alternative)
+**Guided Experience.** Five chapters on one real day, 15 June 2024: Clouds → Energy → Grid → GENCO → Value. They run from real Meteosat images of a cloud deck clearing, through the satellite-derived output of the local solar fleet and the AC-reconstructed network response, including a controlled counterfactual at 11:00 in which only one 6 MW plant changes. They continue with GENCO's adaptation from the original checkpoint to the response-aware stage, and end with an illustrative valuation for that plant. Visitors move on with **Next**, or press **Play**.
 
-The website above is the official Cloud2Grid application. The original Streamlit Explorer remains available as an optional alternative:
+![The Cloud2Grid website home page. Top: real Meteosat images of 15 June 2024 at 08:45, 10:00, 11:00, 11:30 and 12:15 UTC, the satellite-estimated output of the local solar fleet rising from 2.38 to 8.86 MW between 11:00 and 11:30 UTC, and the Sundon network schematic with AC flows at 11:30 UTC, labelled "One single day: 15 June 2024". Below: the title "One cloud. One grid. A chain of consequences." and the "Why it matters" section for one 6 MW plant over 2,820 evaluated half-hours: A, the plant against no plant, 4,038 MWh and £234,226; B, the plant against a modelled clear sky, 1,428 MWh and £93,286 net; with notes that the two must not be added, are AC reconstructions and are illustrations, not savings.](submission/figures/05a_website_home.png)
 
-![The original Streamlit Explorer. A: the last slide of the guided tour at 11:30 UTC on 15 June 2024, with the story caption, four linked readouts from clouds to GENCO, the Meteosat image zoomed to Sundon, the network schematic and the timeline. B: the Overview page with the question and the four fine-tuning steps as cards. C: the Scientific story page with step cards and a bar chart of the solar response by step against the physics.](submission/figures/05_explorer_hero_event.png)
+![The GENCO chapter of the guided experience: "Two models. Two different strengths. One unresolved challenge." Envelope-tuned E5b and response-aware E5d side by side over 2,829 reconstructed half-hours. Absolute state: import bias +4.4 MW and power-balance error 0.338 MVA for E5b, marked stronger, against +13.1 MW and 0.676 MVA for E5d. Solar response: −0.06 MW per MW (6 % of the physical response) for E5b against −1.07 MW per MW (105 %) for E5d, marked stronger, with the AC reference at −1.02.](submission/figures/05b_website_two_strengths.png)
 
-1. **Overview:** the question, the four fine-tuning steps and the answer, on one page.
-2. **Take the guided tour:** six captioned slides over the 15 June 2024 cloud clearing, advanced with **Next**. A real cloud deck clears over Bedfordshire, satellite-derived PV jumps, the AC grid import falls, and each GENCO stage responds to a different degree.
-3. **Explore freely:** switch "Grid shown" between the AC reference and each GENCO stage on three real events: a cloud clearing, broken cumulus and a clear-sky control.
-4. **Scientific story, PV response, Model evolution:** the full argument and every number behind it.
+**Scientific Explorer.** The model journey stage by stage; the PV response across the 2,829 reconstructed states; model metrics with day-block confidence intervals; three weather events with the AC reference and each GENCO stage; the second-network synthetic replication with every seed; the economic study with both counterfactuals kept apart; and data, licences and provenance.
 
-Imagery and PV are 15-minute; grid states are the frozen half-hourly 2024 operating states behind every published metric, never interpolated. The app is a lightweight CPU-only replay: no power flow, inference or download runs in it.
+![The Value chapter, one half-hour worked through, in "The gap" view: the 6 MW plant's satellite-derived output and its hypothetical clear-sky estimate; the AC-reconstructed grid import in both scenarios, with the difference shaded; and the historical APX price, which is the same in every view, with the illustrative value of the extra import per half-hour. The 11:00 half-hour: 4.565 MW × 0.5 h = 2.283 MWh × £96.76 per MWh ≈ £221, one of the 24 half-hours that add up to the day's £1,661.](submission/figures/05c_website_value_gap.png)
+
+![The Scientific Explorer's second-network page, Aylesbury East, labelled as a synthetic replication only: ordinary fine-tuning recovers 0.16–0.32 of the physical solar response, response-aware training 0.99–1.01 in 2 of 3 seeds, the third seed 0.38, pre-registered classification "Reproduced" with the stability hypothesis failing; and every seed's solar response and import error on held-out synthetic data.](submission/figures/05d_website_explorer_replication.png)
+
+- 🌐 [Open the website](https://hinox13.github.io/grid2cloud/) · 💻 [Source code](https://github.com/hinox13/grid2cloud) · 🔁 [Reproduce the models](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md) · 📦 [Frozen models and verification data](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1)
+- 🤗 On Hugging Face: [E5c model](https://huggingface.co/oriolh/cloud2grid-e5c-ft-n10000-s2) · [E5d model](https://huggingface.co/oriolh/cloud2grid-e5d-l1-s0) · [synthetic verification dataset](https://huggingface.co/datasets/oriolh/cloud2grid-verification-synthetic-v1) · base checkpoint [`gridfm/genco-pf-transfer`](https://huggingface.co/gridfm/genco-pf-transfer)
 
 ## 13. Frozen models and independent verification
 
-The frozen checkpoints and a held-out verification set are published as a GitHub Release, **[`cloud2grid-models-v1`](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1)**. Anyone can re-run the main synthetic finding with real inference:
+The frozen checkpoints and a held-out verification set are published as a GitHub Release, **[`cloud2grid-models-v1`](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1)**, and, with the same files and checksums, on Hugging Face:
+
+| | Hugging Face | Licence |
+|---|---|---|
+| E5c, ordinary generator-aware adaptation (weak solar response) | [`oriolh/cloud2grid-e5c-ft-n10000-s2`](https://huggingface.co/oriolh/cloud2grid-e5c-ft-n10000-s2) | Apache-2.0 |
+| E5d, response-aware adaptation | [`oriolh/cloud2grid-e5d-l1-s0`](https://huggingface.co/oriolh/cloud2grid-e5d-l1-s0) | Apache-2.0 |
+| Synthetic verification data | [`oriolh/cloud2grid-verification-synthetic-v1`](https://huggingface.co/datasets/oriolh/cloud2grid-verification-synthetic-v1) | CC BY 4.0 |
+
+Anyone can re-run the main synthetic finding with real inference, from the GitHub Release:
 
 ```bash
 git clone https://github.com/hinox13/grid2cloud
 cd grid2cloud
 uv sync --extra genco
 uv run python reproduce/verify_models.py
+```
+
+or from Hugging Face, anonymously and pinned to the `v1` tag of each repository:
+
+```bash
+uv run hf download oriolh/cloud2grid-e5c-ft-n10000-s2 --revision v1 --include "release/*" --local-dir hf_assets
+uv run hf download oriolh/cloud2grid-e5d-l1-s0 --revision v1 --include "release/*" --local-dir hf_assets
+uv run hf download oriolh/cloud2grid-verification-synthetic-v1 --type dataset --revision v1 --include "release/*" --local-dir hf_assets
+uv run python reproduce/verify_models.py --assets-dir hf_assets/release
 ```
 
 - **Released:** the E5c and E5d checkpoints, each with its own normaliser, a model card and its SHA256; and public held-out synthetic verification data (1,500 AC-solved response pairs and 2,804 held-out states).
@@ -203,6 +222,8 @@ uv run python reproduce/verify_models.py
 The open GENCO checkpoint and the GridFM toolkits made it possible to run a complete, pre-registered adaptation study on a real network with synthetic training data only.
 
 > **In our experiments, synthetic-only transfer of GENCO to a real distribution grid needed more than exposure to the target topology: synthetic data covering realistic operating regimes, and an objective that explicitly teaches physically meaningful sensitivities. Even then, accurate states, accurate sensitivities and global physical conservation behaved as distinct properties, which suggests reporting them as separate metrics and, potentially, giving each its own training signal.**
+
+**Connecting Earth observation to energy applications.** Initiatives such as Destination Earth's [Weather-Induced Extremes Digital Twin](https://destine.ecmwf.int/weather-induced-extremes-digital-twin/), whose global component is developed by ECMWF, and [AI4Clouds](https://predictia.es/en/projects/ai4clouds.html), which combines SEVIRI and FCI observations, ERA5 reanalysis and Extremes Digital Twin fields, show how simulations, reanalysis and satellite data can be fused into more useful environmental information. In a broader energy value chain, such information could support renewable-generation forecasts, and validated network models could assess their implications for power flows, constraints, storage and flexibility. These are independent examples, not components of Cloud2Grid: this study investigates the grid-response part, does not use their derived products, and does not implement weather forecasting or operational optimisation.
 
 **Limitations, stated plainly:**
 - **Full transfer is not achieved.** No stage passes the complete pre-registered real-transfer gate. E5d is not a validated operational model.
@@ -222,9 +243,9 @@ The open GENCO checkpoint and the GridFM toolkits made it possible to run a comp
 ## Team, acknowledgements, contact and licences
 
 - 👤 **Team:** Oriol Hinojo
-- ✉️ **Contact:** [open an issue](https://github.com/hinox13/grid2cloud/issues)
+- ✉️ **Contact:** [open an issue](https://github.com/hinox13/grid2cloud/issues) · GitHub [@hinox13](https://github.com/hinox13) · Hugging Face [@oriolh](https://huggingface.co/oriolh)
 - 🙏 **Acknowledgements:** Cloud2Grid builds on GENCO ([Puech et al., 2026](https://arxiv.org/abs/2608.09921)) and the open GridFM ecosystem: the [`gridfm/genco-pf-transfer`](https://huggingface.co/gridfm/genco-pf-transfer) checkpoint, [gridfm-graphkit](https://github.com/gridfm/gridfm-graphkit) for fine-tuning and inference, and [gridfm-datakit](https://github.com/gridfm/gridfm-datakit) for synthetic AC data. Every adaptation step here used them. We also thank UK Power Networks, EUMETSAT / LSA SAF and Elexon for their open data, and the pandapower, PowerModels and pvlib projects.
-- 🌐 [Website (official application)](https://hinox13.github.io/grid2cloud/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Models](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduction](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md) · [Original Streamlit Explorer (optional)](https://cloud2grid.streamlit.app/)
+- 🌐 [Website](https://hinox13.github.io/grid2cloud/) · 💻 [Code](https://github.com/hinox13/grid2cloud) · 📦 [Models](https://github.com/hinox13/grid2cloud/releases/tag/cloud2grid-models-v1) · 🔁 [Reproduction](https://github.com/hinox13/grid2cloud/blob/cloud2grid-models-v1/reproduce/README.md)
 
 *Contains modified EUMETSAT Meteosat and LSA SAF data (CC BY 4.0) and UK Power Networks data (CC BY 4.0), which include ONS data (OGL v3.0) and OS data © Crown copyright. Contains BMRS data © Elexon Limited copyright and database right 2024. GENCO / gridfm: Apache-2.0. Cloud2Grid code and released weights © 2026 Oriol Hinojo, Apache-2.0; verification data CC BY 4.0. Third-party data keep their own licences and are not redistributed; per-source attribution: [`docs/DATA_LICENSES.md`](https://github.com/hinox13/grid2cloud/blob/main/docs/DATA_LICENSES.md) and [`NOTICE`](https://github.com/hinox13/grid2cloud/blob/main/NOTICE).*
 
@@ -235,7 +256,6 @@ The open GENCO checkpoint and the GridFM toolkits made it possible to run a comp
 ```bash
 git clone https://github.com/hinox13/grid2cloud && cd grid2cloud
 uv sync --group demo
-uv run --group demo streamlit run demo/streamlit_app.py   # the original Streamlit Explorer (optional), CPU only
 (cd web && npm ci && npm run dev)                         # the website (Node 22+)
 uv sync --extra genco
 uv run python reproduce/verify_models.py                  # verify the frozen models
@@ -247,7 +267,7 @@ uv sync && uv run pytest                                  # the test suite
 | Path | Contents |
 |---|---|
 | [`web/`](web/) | the [Cloud2Grid website](https://hinox13.github.io/grid2cloud/) (React, static): the guided Experience and the Scientific Explorer over data exported from [`data/demo/`](data/demo/); deployed by [`.github/workflows/website.yml`](.github/workflows/website.yml) |
-| [`demo/`](demo/) | the original Streamlit Explorer, an optional alternative to the website, and its frozen bundles in [`data/demo/`](data/demo/) |
+| [`demo/`](demo/) | a legacy Streamlit explorer, kept for reference and not part of the presentation, and the frozen bundles in [`data/demo/`](data/demo/) |
 | [`reproduce/`](reproduce/) | one-command verification of the released checkpoints |
 | [`release/models-v1/`](release/models-v1/) | model cards, checksums and build records of `cloud2grid-models-v1` |
 | [`reports/`](reports/) | one report per experiment (E0–E6), with tables and figures; clean-room verification records in [`reports/model_release_v1/`](reports/model_release_v1/) |

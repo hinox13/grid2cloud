@@ -126,7 +126,7 @@ export function Rail({ viewKey, slotRef }: { viewKey: string; slotRef: (el: HTML
           </div>
         </dl>
         <p className="rail-note">
-          Over <Claim id="n_states" bare /> real half-hours of 2024; the value is illustrative.
+          Sensitivities and bias: fitted over <Claim id="n_states" bare /> reconstructed half-hours of 2024. The 15 June figure: one 6 MW plant, one day, illustrative.
         </p>
       </div>
       <div className="rail-block">
