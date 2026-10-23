@@ -143,7 +143,9 @@ test("the brief's key figures appear where the story states them", async ({ page
 });
 
 test("controls: keyboard, chapters, pause, guided replay", async ({ page }) => {
-  await page.goto("./#/experience?play=1");
+  await page.goto("./#/experience");
+  await expect(page.getByRole("button", { name: "Play" })).toBeVisible();
+  await page.keyboard.press("Space");
   await expect(page.getByRole("button", { name: "Pause" })).toBeVisible();
   await page.keyboard.press("Space");
   await expect(page.getByRole("button", { name: "Play" })).toBeVisible();
@@ -364,8 +366,9 @@ test("home on a narrow phone: no sideways scroll, every scope label visible @mob
   const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, hasTouch: true, isMobile: true });
   const page = await ctx.newPage();
   await page.goto("./");
+  await page.waitForLoadState("networkidle"); // measure the settled layout, after the data and fonts
   await page.evaluate(() => document.fonts.ready);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
   for (const sel of [".finding[data-finding='3'] .scope-mark", ".moments a[href='#/experience/value'] .moment-scope", ".impact-card[data-cf=plant] .impact-big", ".impact-card[data-cf=clouds] .impact-big"]) {
     const el = page.locator(sel);
     await el.scrollIntoViewIfNeeded();
@@ -503,4 +506,47 @@ test("v-half on a phone: the views switch by touch @mobile", async ({ page }) =>
   await expect(page.locator(".day-chart")).toHaveAttribute("data-scenario", "both");
   await page.getByRole("radio", { name: "Observed sky" }).tap();
   await expect(page.locator(".day-chart .s-gbp")).toHaveCount(0);
+});
+
+
+test("the story never moves to the next step on its own unless Play is pressed", async ({ page }) => {
+  for (const url of ["./#/experience", "./#/experience?play=1", "./#/experience/genco"]) {
+    await page.goto(url);
+    const first = await beat(page);
+    await expect(page.getByRole("button", { name: "Play" })).toBeVisible();
+    await page.waitForTimeout(9000); // longer than any step's dwell
+    expect(await beat(page), url).toBe(first);
+  }
+  // from the home page: the main action opens the story paused
+  await page.goto("./");
+  await page.getByRole("link", { name: "Experience the story", exact: true }).click();
+  await expect(page.locator('[data-beat="prologue"]')).toBeVisible();
+  await page.waitForTimeout(8000);
+  expect(await beat(page)).toBe("prologue");
+  await page.getByRole("button", { name: "Next" }).click();
+  expect(await beat(page)).toBe("c-sky");
+});
+
+
+test("home vision: a possible future chain, with what Cloud2Grid studies and what it does not", async ({ page }) => {
+  await page.goto("./");
+  const v = page.locator(".vision");
+  await expect(v.locator(".vision-h")).toHaveText("From forecasting the weather to preparing the grid");
+  await expect(v.locator(".vision-steps > li")).toHaveCount(4);
+  await expect(v.locator("li[data-step=weather] .vs-tag")).toContainText("not part of this study");
+  await expect(v.locator("li[data-step=generation] .vs-tag")).toContainText("past satellite irradiance, not forecasts");
+  await expect(v.locator("li.is-ours")).toHaveCount(1);
+  await expect(v.locator("li.is-ours")).toHaveAttribute("data-step", "response");
+  await expect(v.locator("li.is-ours .vs-tag")).toContainText("What Cloud2Grid investigates");
+  await expect(v.locator("li[data-step=planning] .vs-tag")).toContainText("Future application · not demonstrated");
+  await expect(v.locator("li[data-step=planning]")).toContainText("separate decision-support layer");
+  await expect(v).toContainText("The day-ahead horizon is illustrative");
+  await expect(v).toContainText("it cannot recover sunlight that clouds block");
+  await expect(v.locator(".vision-results")).toContainText("E5c → E5d");
+  await expect(v.locator(".vision-results [data-claim=branch_resp_E5d]")).toHaveText("0.014 MW per MW");
+  await expect(v.locator(".vision-results")).toContainText("Accurate responses alone do not make safe decisions");
+  const lim = v.locator(".vision-limits");
+  for (const t of ["at any horizon", "avoided curtailment", "savings delivered by GENCO", "not what a forecasting system would earn", "benchmarked against AC power flow and linear-sensitivity methods", "on Sundon, AC power flow is already accurate and inexpensive"]) await expect(lim).toContainText(t);
+  const text = (await v.innerText()).toLowerCase();
+  for (const bad of ["nowcast", "eumetsat service", "endorse", "partnership", "we forecast", "cloud2grid forecasts", "has demonstrated"]) expect(text, bad).not.toContain(bad);
 });

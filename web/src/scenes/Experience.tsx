@@ -31,14 +31,15 @@ import {
 
 const H = (hm: string) => `2024-06-15T${hm}:00Z`;
 
-export function Experience({ chapter, autoplay }: { chapter: string | null; autoplay: boolean }) {
+export function Experience({ chapter }: { chapter: string | null }) {
   const rm = useReducedMotion();
   const { ev, net, error } = useSceneData();
   const ci = useCloudImpact();
   const fi = useFrameIndex(ev);
   const start = chapter && CHAPTERS.some((c) => c.id === chapter) ? firstBeat(chapter as ChapterId) : chapter === "finale" ? BEATS.length - 1 : 0;
   const [beat, setBeat] = useState(start);
-  const [playing, setPlaying] = useState(autoplay && !rm);
+  // the story never moves to the next step on its own unless the visitor presses Play; each step's own animation still runs
+  const [playing, setPlaying] = useState(false);
   const [frame, setFrame] = useState(0);
   const [camera, setCamera] = useState<Camera>("wide");
   const [wipe, setWipe] = useState(50);
@@ -337,7 +338,7 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
       <footer className="exp-foot">
         <TimeRuler mode={b.time.mode} t={rulerT} frames={ev.frames.map((f) => f.t)} gridSlots={ev.grid_slots} />
         <p className="exp-hint">
-          <kbd>←</kbd> <kbd>→</kbd> move · <kbd>Space</kbd> {playing ? "pause" : "play"} · <kbd>Esc</kbd> leave · guided replay ≈ {GUIDED_SECONDS} s · every number comes from frozen, verified data
+          <kbd>←</kbd> <kbd>→</kbd> move · <kbd>Space</kbd> {playing ? "pause" : "play"} · <kbd>Esc</kbd> leave · Play advances on its own (≈ {GUIDED_SECONDS} s) · every number comes from frozen, verified data
         </p>
       </footer>
     </div>

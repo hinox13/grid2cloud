@@ -14,7 +14,7 @@ export function App() {
   }, [path]);
   if (path.startsWith("/experience")) {
     const ch = path.split("/")[2] ?? null;
-    return <Experience key={path + params.toString()} chapter={ch} autoplay={params.get("play") === "1"} />;
+    return <Experience key={path + params.toString()} chapter={ch} />;
   }
   if (path.startsWith("/explore")) {
     return (

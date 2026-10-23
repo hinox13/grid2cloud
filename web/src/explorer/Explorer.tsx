@@ -45,7 +45,7 @@ export default function Explorer({ path, params }: { path: string; params: URLSe
           ))}
         </nav>
         <div className="ex-actions">
-          <a className="btn-text" href="#/experience?play=1">
+          <a className="btn-text" href="#/experience">
             The experience
           </a>
           <ThemeToggle />
