@@ -35,6 +35,17 @@
   "negative_value_contributions": 975,
   "meaning_of_negative": "the satellite-derived output exceeded the modelled clear-sky estimate: possibly cloud enhancement, possibly a disagreement between the satellite-derived estimate and the clear-sky model; not evidence that clouds raised generation in every such half-hour"
  },
+ "plant": {
+  "net_mwh": 4038.0794,
+  "net_gbp": 234226.26,
+  "negative_periods": 0,
+  "negative_value_contributions": 180,
+  "negative_value_gbp": -5260.47,
+  "estimated_output_mwh": 3978.1808,
+  "import_with_plant_mwh": 68580.041,
+  "share_of_no_plant_import": 0.055607,
+  "meaning": "AC import with the plant removed minus AC import as reconstructed, over the same half-hours; the share is that difference divided by the no-plant import"
+ },
  "accuracy": {
   "pv_attributed": {
    "accounting": {

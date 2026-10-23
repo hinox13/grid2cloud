@@ -47,6 +47,8 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
   const [scenario, setScenario] = useState<Scenario | "both">("observed");
   const [sel, setSel] = useState(12); // 11:00 half-hour of the 24 valued periods
   const [revealed, setRevealed] = useState(0);
+  // once the visitor picks a scenario or a half-hour, the beat's pending programme no longer overrides it
+  const manual = useRef(false);
   const b = BEATS[beat];
   const live = useRef<HTMLDivElement>(null);
 
@@ -56,6 +58,8 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
     const at: [number, () => void][] = [];
     const f = (hm: string) => fi.get(hm) ?? 0;
     setRevealed(0);
+    manual.current = false;
+    const auto = (fn: () => void) => () => !manual.current && fn();
     switch (b.id) {
       case "prologue":
         setCamera("wide");
@@ -109,7 +113,7 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
       case "v-half":
         setScenario("observed");
         setSel(12);
-        at.push([2200, () => setScenario("clear")], [4200, () => setScenario("both")]);
+        at.push([2200, auto(() => setScenario("clear"))], [4200, auto(() => setScenario("both"))]);
         break;
     }
     at.push([0, () => setRevealed(1)], [1400, () => setRevealed(2)], [2800, () => setRevealed(3)], [4600, () => setRevealed(4)]);
@@ -137,6 +141,7 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
     if (!keepPlaying) setPlaying(false);
   }, []);
   const take = <T,>(fn: (v: T) => void) => (v: T) => {
+    manual.current = true;
     setPlaying(false);
     fn(v);
   };
@@ -148,7 +153,8 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
       if (tag === "INPUT" || tag === "TEXTAREA" || e.altKey || e.ctrlKey || e.metaKey) return;
       if (e.key === "ArrowRight" || e.key === "PageDown") go(beat + 1);
       else if (e.key === "ArrowLeft" || e.key === "PageUp") go(beat - 1);
-      else if (e.key === " " || e.key === "k") {
+      else if ((e.key === " " && !(e.target as HTMLElement).closest("button, a, [role=radio]")) || e.key === "k") {
+        // Space on a focused control activates that control; elsewhere it plays or pauses
         e.preventDefault();
         setPlaying((p) => !p);
       } else if (e.key === "Home") go(0);
@@ -316,7 +322,7 @@ export function Experience({ chapter, autoplay }: { chapter: string | null; auto
               ) : (
                 <DayChart ci={ci.data} scenario={scenario} sel={sel} onSel={take(setSel)}>
                   {b.id === "v-half" ? (
-                    <HalfHourLedger ci={ci.data} i={sel} />
+                    <HalfHourLedger ci={ci.data} i={sel} scenario={scenario} />
                   ) : (
                     <p className="season-note">
                       Illustrative, retrospective valuations: historical Elexon APX prices applied to AC-reconstructed energy. Not actual costs, savings, bills or forecasts; GENCO does not predict prices. Only the 6 MW plant is varied. Contains BMRS data © Elexon Limited copyright and database right 2024.
@@ -609,6 +615,7 @@ function BeatExtra(p: {
     case "v-half":
       return (
         <>
+          <p className="sum-k">The gap at 11:00, worked through · the same in every view</p>
           <table className="sum" aria-label="The 11:00 half-hour, worked through">
             <tbody>
               <tr>
@@ -657,7 +664,7 @@ function BeatExtra(p: {
                 ["both", "The gap"],
               ] as const
             ).map(([k, l]) => (
-              <button key={k} role="radio" aria-checked={p.scenario === k} className={p.scenario === k ? "on" : ""} onClick={() => p.setScenario(k)}>
+              <button key={k} role="radio" data-mode={k} aria-checked={p.scenario === k} className={p.scenario === k ? "on" : ""} onClick={() => p.setScenario(k)}>
                 {l}
               </button>
             ))}

@@ -374,6 +374,7 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
   const half = 900_000;
   const obsOn = scenario !== "clear";
   const clrOn = scenario !== "observed";
+  const gapOn = scenario === "both"; // the difference and its value exist only when both scenarios are shown
   const desc = `24 half-hours, 05:00 to 16:30 UTC. Cloud-attributed extra import totals ${D.cloud_AC_mwh.reduce((a, b) => a + b, 0).toFixed(1)} MWh.`;
   const panel = (title: string, h: number, draw: (x: ReturnType<typeof linear>, b: { iw: number; ih: number }) => React.ReactNode, yDom: [number, number], yLabel: string, fmt?: (v: number) => string) => (
     <Chart
@@ -405,6 +406,21 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
   );
   return (
     <div className="day-chart" data-scenario={scenario}>
+      <p className="day-mode" data-mode={scenario} aria-live="polite">
+        {scenario === "observed" ? (
+          <>
+            <strong>Observed sky.</strong> The plant's satellite-derived output and the AC-reconstructed import, as the day happened.
+          </>
+        ) : scenario === "clear" ? (
+          <>
+            <strong>Clear sky, a counterfactual.</strong> Only the 6 MW plant is set to its clear-sky estimate; the metered loads, the battery and the prices are unchanged.
+          </>
+        ) : (
+          <>
+            <strong>The gap.</strong> Extra import = observed − clear sky, × 0.5 h, × the same historical APX price, half-hour by half-hour.
+          </>
+        )}
+      </p>
       {panel(
         "The 6 MW plant: observed sky and hypothetical clear sky (MW)",
         150,
@@ -432,11 +448,17 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
           const xs = ts.map(x);
           return (
             <>
-              <path d={bandPath(xs, P.import_AC_clear_sky_mw.map(y), P.import_AC_observed_mw.map(y))} className="s-gap" />
+              {gapOn && <path d={bandPath(xs, P.import_AC_clear_sky_mw.map(y), P.import_AC_observed_mw.map(y))} className="s-gap" />}
               <path d={linePath(xs, P.import_AC_clear_sky_mw.map(y))} className={`s-clear ${clrOn ? "" : "faded"}`} />
               <path d={linePath(xs, P.import_AC_observed_mw.map(y))} className={`s-ac ${obsOn ? "" : "faded"}`} />
               <text x={4} y={-8} className="panel-title">
-                Grid import · <tspan className="t-ac">observed sky (simulated)</tspan> · <tspan className="t-clear">plant at clear sky (hypothetical)</tspan> · <tspan className="t-gap">gap = extra import caused by clouds</tspan>
+                Grid import · <tspan className="t-ac">observed sky (simulated)</tspan> · <tspan className="t-clear">plant at clear sky (hypothetical)</tspan>
+                {gapOn && (
+                  <>
+                    {" "}
+                    · <tspan className="t-gap">gap = extra import caused by clouds</tspan>
+                  </>
+                )}
               </text>
             </>
           );
@@ -445,7 +467,7 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
         "",
       )}
       {panel(
-        "Historical APX market price (GBP per MWh) and the illustrative value of the cloud-attributed import per half-hour (GBP)",
+        gapOn ? "Historical APX market price (GBP per MWh) and the illustrative value of the cloud-attributed import per half-hour (GBP)" : "Historical APX market price (GBP per MWh), the same in every scenario",
         160,
         (x, b) => {
           const y = linear(-60, 240, b.ih, 0);
@@ -453,7 +475,7 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
           const bw = (x(ts[1]) - x(ts[0])) * 0.62;
           return (
             <>
-              {D.cloud_AC_gbp.map((v, i) => (
+              {gapOn && D.cloud_AC_gbp.map((v, i) => (
                 <rect key={i} x={xs[i] - bw / 2} width={bw} y={Math.min(y(0), y(v))} height={Math.abs(y(v) - y(0))} className={`s-gbp ${v < 0 ? "neg" : ""} ${i === sel ? "on" : ""}`} />
               ))}
               <path d={linePath(xs.map((v) => v - (x(ts[1]) - x(ts[0])) / 2), P.apx_gbp_per_mwh.map(y), true)} className="s-price" />
@@ -467,7 +489,15 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
                 )}
               </g>
               <text x={4} y={-8} className="panel-title">
-                <tspan className="t-price">APX price, £/MWh (observed, Elexon)</tspan> · <tspan className="t-gbp">value of the extra import, £ (illustrative)</tspan>
+                <tspan className="t-price">APX price, £/MWh (observed, Elexon; the same in every scenario)</tspan>
+                {gapOn ? (
+                  <>
+                    {" "}
+                    · <tspan className="t-gbp">value of the extra import, £ (illustrative)</tspan>
+                  </>
+                ) : (
+                  " · the value of the gap appears in The gap view"
+                )}
               </text>
             </>
           );
@@ -484,14 +514,46 @@ export function DayChart({ ci, scenario, sel, onSel, children }: { ci: CloudImpa
   );
 }
 
-export function HalfHourLedger({ ci, i }: { ci: CloudImpact; i: number }) {
+export function HalfHourLedger({ ci, i, scenario = "both" }: { ci: CloudImpact; i: number; scenario?: Scenario | "both" }) {
   const P = ci.periods;
   const D = ci.derived;
+  const when = (
+    <p className="lh-t">
+      {hhmm(P.slot[i])}–{hhmm(new Date(ms(P.slot[i]) + 1_800_000).toISOString())} UTC · settlement period {P.settlement_period[i]}
+    </p>
+  );
+  const price = (
+    <div>
+      <dt>APX price (observed; unchanged by the scenario)</dt>
+      <dd>£{num(P.apx_gbp_per_mwh[i], 2)}/MWh</dd>
+    </div>
+  );
+  if (scenario !== "both") {
+    const obs = scenario === "observed";
+    return (
+      <div className="ledger-hh" aria-live="polite" data-mode={scenario}>
+        {when}
+        <dl>
+          <div>
+            <dt>{obs ? "Plant output, satellite-derived" : "Plant output, clear-sky estimate (hypothetical)"}</dt>
+            <dd>{num(obs ? P.plant_pv_mw[i] : P.plant_pv_clear_mw[i], 2)} MW</dd>
+          </div>
+          <div>
+            <dt>{obs ? "Grid import, AC-reconstructed" : "Grid import, AC re-solved with the plant at clear sky"}</dt>
+            <dd>{num(obs ? P.import_AC_observed_mw[i] : P.import_AC_clear_sky_mw[i], 1)} MW</dd>
+          </div>
+          {price}
+          <div>
+            <dt>Illustrative value</dt>
+            <dd className="lh-none">only for the gap between the two scenarios</dd>
+          </div>
+        </dl>
+      </div>
+    );
+  }
   return (
-    <div className="ledger-hh" aria-live="polite">
-      <p className="lh-t">
-        {hhmm(P.slot[i])}–{hhmm(new Date(ms(P.slot[i]) + 1_800_000).toISOString())} UTC · settlement period {P.settlement_period[i]}
-      </p>
+    <div className="ledger-hh" aria-live="polite" data-mode="both">
+      {when}
       <dl>
         <div>
           <dt>Plant, observed → clear sky</dt>
@@ -503,10 +565,7 @@ export function HalfHourLedger({ ci, i }: { ci: CloudImpact; i: number }) {
           <dt>Extra import caused by clouds</dt>
           <dd>{num(D.cloud_AC_mwh[i], 3, true)} MWh</dd>
         </div>
-        <div>
-          <dt>APX price (observed)</dt>
-          <dd>£{num(P.apx_gbp_per_mwh[i], 2)}/MWh</dd>
-        </div>
+        {price}
         <div>
           <dt>Illustrative value</dt>
           <dd>{gbp(D.cloud_AC_gbp[i])}</dd>

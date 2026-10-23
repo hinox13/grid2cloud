@@ -174,6 +174,19 @@ def economic_qualifiers() -> dict:
             "negative_value_contributions": int(((cl * H * apx) < 0).sum()),
             "meaning_of_negative": "the satellite-derived output exceeded the modelled clear-sky estimate: possibly cloud enhancement, possibly a disagreement between the satellite-derived estimate and the clear-sky model; not evidence that clouds raised generation in every such half-hour",
         },
+        "plant": {
+            "net_mwh": r((P.dpv_AC * H).sum(), 4),
+            "net_gbp": r((P.dpv_AC * H * apx).sum(), 2),
+            "negative_periods": int((P.dpv_AC < 0).sum()),
+            "negative_value_contributions": int(((P.dpv_AC * H * apx) < 0).sum()),
+            "negative_value_gbp": r((P.dpv_AC * H * apx).clip(upper=0).sum(), 2),
+            "estimated_output_mwh": r((P.pv_mw * H).sum(), 4),
+            "import_with_plant_mwh": r((P.I_AC * H).sum(), 4),
+            "share_of_no_plant_import": r(
+                (P.dpv_AC * H).sum() / ((P.I_AC * H).sum() + (P.dpv_AC * H).sum())
+            ),
+            "meaning": "AC import with the plant removed minus AC import as reconstructed, over the same half-hours; the share is that difference divided by the no-plant import",
+        },
         "accuracy": acc,
     }
 

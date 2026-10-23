@@ -6,7 +6,7 @@
 ```bash
 git clone https://github.com/hinox13/grid2cloud && cd grid2cloud
 uv sync --group demo
-uv run --group demo streamlit run demo/streamlit_app.py   # the Streamlit Explorer, CPU only
+uv run --group demo streamlit run demo/streamlit_app.py   # the original Streamlit Explorer (optional), CPU only
 (cd web && npm ci && npm run dev)                         # the website (Node 22+)
 uv sync --extra genco
 uv run python reproduce/verify_models.py                  # verify the frozen models
@@ -18,13 +18,13 @@ uv sync && uv run pytest                                  # the test suite
 | Path | Contents |
 |---|---|
 | [`web/`](web/) | the [Cloud2Grid website](https://hinox13.github.io/grid2cloud/) (React, static): the guided Experience and the Scientific Explorer over data exported from [`data/demo/`](data/demo/); deployed by [`.github/workflows/website.yml`](.github/workflows/website.yml) |
-| [`demo/`](demo/) | the Streamlit Scientific Explorer and its frozen bundles in [`data/demo/`](data/demo/) |
+| [`demo/`](demo/) | the original Streamlit Explorer, an optional alternative to the website, and its frozen bundles in [`data/demo/`](data/demo/) |
 | [`reproduce/`](reproduce/) | one-command verification of the released checkpoints |
 | [`release/models-v1/`](release/models-v1/) | model cards, checksums and build records of `cloud2grid-models-v1` |
 | [`reports/`](reports/) | one report per experiment (E0–E6), with tables and figures; clean-room verification records in [`reports/model_release_v1/`](reports/model_release_v1/) |
 | [`configs/`](configs/), [`metadata/`](metadata/) | pre-registrations, frozen protocols, checkpoint registries, licence manifest |
 | [`src/cloud2grid/`](src/cloud2grid/), [`scripts/`](scripts/) | the pipeline: network reconstruction, satellite PV, scenarios, GENCO adaptation, evaluation |
-| [`tests/`](tests/) | 328 automated tests ([why some skip on a clone](docs/TECHNICAL_NOTES.md#automated-tests)) |
+| [`tests/`](tests/) | 332 automated tests ([why some skip on a clone](docs/TECHNICAL_NOTES.md#automated-tests)) |
 | [`docs/`](docs/) | [technical notes](docs/TECHNICAL_NOTES.md), [data licences](docs/DATA_LICENSES.md), [Explorer deployment](docs/DEMO.md), [project design document](docs/PROJECT_DESIGN.md) |
 | [`submission/`](submission/) | the challenge write-up, its figures, screenshots, [figure manifest](submission/FIGURE_MANIFEST.md) and the scripts that build and check them |
 

@@ -183,6 +183,8 @@ test("interactions: wipe, filmstrip, scenario and half-hour", async ({ page }) =
   await page.locator(".day-scrub input").fill("13");
   await expect(page.locator(".ledger-hh")).toContainText("11:30–12:00 UTC · settlement period 26");
   await page.locator(".day-scrub input").fill("12");
+  await expect(page.locator(".ledger-hh")).not.toContainText("£221"); // no valuation outside the gap view
+  await page.getByRole("radio", { name: "The gap" }).click();
   await expect(page.locator(".ledger-hh")).toContainText("£221");
 });
 
@@ -254,7 +256,7 @@ test("home: the research question and the model journey are on the first screen"
   await page.goto("./");
   await expect(page.locator(".lead.question")).toContainText("grid foundation model trained on synthetic networks");
   await expect(page.locator(".home-facts")).toContainText("Real Meteosat observations");
-  await expect(page.locator(".home-facts")).toContainText("GENCO, tested and adapted");
+  await expect(page.locator(".home-facts")).toContainText("GENCO, adapted on synthetic data only");
   await page.evaluate(() => document.fonts.ready);
   const box = await page.getByRole("link", { name: "Follow the model journey" }).boundingBox();
   expect(box!.y + box!.height).toBeLessThanOrEqual(900);
@@ -303,4 +305,202 @@ test("landscape phone: the story and the home page still work @mobile", async ({
   }
   await expect(page.locator(".finale")).toBeVisible();
   await ctx.close();
+});
+
+test("home: every solar-related number names its experiment, population and kind", async ({ page }) => {
+  await page.goto("./");
+  // A. the historical day: a satellite-derived estimate for the whole local fleet
+  const sun = page.locator(".tile-sun");
+  await expect(sun.locator(".sun-title")).toContainText("Satellite-estimated solar");
+  await expect(sun.locator(".sun-title")).toContainText("local fleet");
+  await expect(sun.locator("[data-claim=fleet_capacity]")).toHaveText("8.945 MW");
+  await expect(page.locator(".masthead-key")).toContainText("satellite-estimated output of the local solar fleet");
+  await expect(page.locator(".masthead-key .key-day")).toHaveText("One single day: 15 June 2024");
+  expect(await page.locator(".masthead-key .key-day").evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(16);
+  const moment = (ch: string) => page.locator(`.moments a[href="#/experience/${ch}"]`);
+  await expect(moment("energy").locator(".moment-scope")).toContainText("15 June 2024 · satellite-estimated · local fleet");
+  await expect(moment("energy")).toContainText("while demand and the battery also change");
+  // B. the controlled counterfactual: one 6 MW plant, AC reconstruction
+  await expect(moment("grid").locator(".moment-scope")).toContainText("11:00 counterfactual · one 6 MW plant · AC-reconstructed grid");
+  await expect(moment("grid").locator("[data-claim=cf_AC_1100]")).toHaveText("−4.57 MW");
+  // C. the Sundon model evaluation: E5c and E5d, fitted over 2,829 reconstructed states
+  await expect(moment("genco")).toContainText("(E5d)");
+  await expect(moment("genco")).toContainText("(E5c)");
+  await expect(moment("genco").locator(".moment-scope")).toContainText("Sundon model evaluation · 2,829 reconstructed states");
+  const f = (n: number) => page.locator(`.finding[data-finding="${n}"]`);
+  await expect(f(1)).toContainText("E5b is the strongest model on most absolute-state metrics");
+  await expect(f(1).locator("[data-claim=bias_E5b]")).toHaveText("+4.4 MW");
+  await expect(f(2)).toContainText("(E5c) →");
+  await expect(f(2)).toContainText("(E5d)");
+  await expect(f(2).locator(".scope-mark")).toContainText("E5c → E5d");
+  await expect(f(2)).toContainText("only one of its three training seeds");
+  await expect(f(2)).toContainText("AC reference on the reconstructed network");
+  // D. Aylesbury: a separate synthetic replication, in dimensionless ratios
+  await expect(f(3).locator(".scope-mark[data-scope=synthetic]")).toContainText("Aylesbury East · synthetic AC states only");
+  await expect(f(3)).toContainText("ratios, not MW per MW");
+  await expect(f(3)).toContainText("real-data reconstruction failed validation");
+  for (const id of ["g2_C_pv_slope_ratio", "g2_D_pv_slope_ratio_ok"]) {
+    await expect(f(3).locator(`[data-claim=${id}]`)).not.toContainText("MW");
+  }
+  await expect(page.locator(".research")).not.toContainText("the pattern recurred");
+  // E. the valuation: one Sundon plant, illustrative
+  await expect(moment("value").locator(".moment-scope")).toContainText("one Sundon 6 MW plant · illustrative counterfactual valuation");
+  await expect(page.locator(".moments-sub")).toContainText("they are not one experiment");
+});
+
+test("home: the React website is the official application; Streamlit is only the optional original", async ({ page }) => {
+  await page.goto("./");
+  const st = page.locator('a[href^="https://cloud2grid.streamlit.app"]');
+  await expect(st).toHaveCount(1);
+  await expect(st).toContainText("Original Streamlit explorer (alternative)");
+  for (const a of await page.locator("a").all()) {
+    const t = ((await a.textContent()) ?? "").toLowerCase();
+    if (t.includes("official")) expect(await a.getAttribute("href")).not.toContain("streamlit");
+  }
+  await expect(page.locator(".home-head a[href*=streamlit], .home-actions a[href*=streamlit]")).toHaveCount(0);
+});
+
+test("home on a narrow phone: no sideways scroll, every scope label visible @mobile", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, hasTouch: true, isMobile: true });
+  const page = await ctx.newPage();
+  await page.goto("./");
+  await page.evaluate(() => document.fonts.ready);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+  for (const sel of [".finding[data-finding='3'] .scope-mark", ".moments a[href='#/experience/value'] .moment-scope", ".impact-card[data-cf=plant] .impact-big", ".impact-card[data-cf=clouds] .impact-big"]) {
+    const el = page.locator(sel);
+    await el.scrollIntoViewIfNeeded();
+    const box = (await el.boundingBox())!;
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(360);
+  }
+  await ctx.close();
+});
+
+test("home impact: one plant, two counterfactuals, never savings by GENCO or recoverable energy", async ({ page }) => {
+  await page.goto("./");
+  const im = page.locator(".impact");
+  await expect(im.locator(".scope[data-scope=economic]")).toContainText("one 6 MW plant");
+  await expect(im.locator(".scope[data-scope=economic]")).toContainText("2,820 half-hours over 136 days");
+  const a = im.locator(".impact-card[data-cf=plant]");
+  const b = im.locator(".impact-card[data-cf=clouds]");
+  await expect(a).toContainText("What one solar plant contributes");
+  await expect(a).toContainText("against no plant at all");
+  await expect(a.locator(".impact-big [data-claim=impact_pv_mwh]")).toHaveText("4,038 MWh");
+  await expect(a.locator("[data-claim=season_pv_attributed_gbp]")).toHaveText("£234,226");
+  await expect(b).toContainText("What changing sunlight means");
+  await expect(b).toContainText("against a modelled clear sky");
+  await expect(b.locator(".impact-big [data-claim=impact_cloud_mwh]")).toHaveText("1,428 MWh");
+  await expect(b.locator("[data-claim=season_cloud_attributed_gbp]")).toHaveText("£93,286");
+  await expect(b).toContainText("A net figure");
+  for (const c of [a, b]) await expect(c).toContainText("illustrative, at historical wholesale prices");
+  const read = im.locator(".impact-read");
+  await expect(read).toContainText("Never add them");
+  await expect(read).toContainText("not the whole local fleet");
+  await expect(read).toContainText("136 of the 183 days");
+  await expect(read).toContainText("Sums are signed");
+  await expect(read).toContainText("money saved by GENCO");
+  await expect(read.locator('a[href="#/explore/value"]')).toHaveCount(1);
+  await expect(im.locator(".challenge")).toContainText("no grid model can recover energy that clouds blocked");
+  await expect(im.locator(".challenge")).toContainText("this study did not measure it");
+  // forbidden overclaims anywhere on the home page
+  const text = (await page.locator("body").innerText()).toLowerCase();
+  for (const bad of ["genco saved", "saved by genco ", "savings of", "wasted", "recovered 1,428", "reduces fossil", "optimizes the grid", "optimises the grid", "prevents"]) expect(text, bad).not.toContain(bad);
+  // the scopes stay distinct, in order: the day, the economic case study, the Sundon evaluation, the synthetic replication
+  await expect(page.locator(".masthead-key .key-day")).toHaveText("One single day: 15 June 2024");
+  await expect(page.locator(".finding[data-finding='1'] .scope-mark")).toContainText("2,829 reconstructed states");
+  await expect(page.locator(".finding[data-finding='3'] .scope-mark")).toContainText("synthetic AC states only");
+  const y = async (sel: string) => (await page.locator(sel).first().boundingBox())!.y;
+  expect(await y(".masthead-key")).toBeLessThan(await y(".impact"));
+  expect(await y(".impact")).toBeLessThan(await y(".research"));
+  expect(await y(".research")).toBeLessThan(await y(".moments"));
+});
+
+
+// ------------------------------------------------------------------ v-half: three views of one counterfactual
+const PRICE_1100 = "£96.76/MWh";
+async function toHalf(page: import("@playwright/test").Page) {
+  await page.goto("./#/experience/value");
+  await expect(page.locator('[data-beat="v-value"]')).toBeVisible();
+  await toBeat(page, "v-half");
+}
+
+test("v-half views: observed, clear sky and the gap each show what they say; the price never changes", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  await toHalf(page);
+  const chart = page.locator(".day-chart");
+  const ledger = page.locator(".ledger-hh");
+  // reduced motion: the beat's final state, the gap
+  await expect(chart).toHaveAttribute("data-scenario", "both");
+  await expect(chart.locator(".s-gap")).toHaveCount(1);
+  await expect(chart.locator(".s-gbp")).toHaveCount(24);
+  await expect(page.locator(".day-mode")).toContainText("Extra import = observed − clear sky");
+  await expect(ledger).toContainText("£221");
+  await expect(ledger).toContainText(PRICE_1100);
+
+  await page.getByRole("radio", { name: "Observed sky" }).click();
+  await expect(chart).toHaveAttribute("data-scenario", "observed");
+  await expect(chart.locator(".s-gap")).toHaveCount(0);
+  await expect(chart.locator(".s-gbp")).toHaveCount(0);
+  await expect(chart.locator(".s-pv")).not.toHaveClass(/faded/);
+  await expect(chart.locator(".s-clear").first()).toHaveClass(/faded/);
+  await expect(page.locator(".day-mode")).toContainText("as the day happened");
+  await expect(ledger).toHaveAttribute("data-mode", "observed");
+  await expect(ledger).toContainText("Plant output, satellite-derived");
+  await expect(ledger).toContainText("1.46 MW");
+  await expect(ledger).toContainText("Grid import, AC-reconstructed");
+  await expect(ledger).not.toContainText("£221");
+  await expect(ledger).toContainText(PRICE_1100);
+
+  await page.getByRole("radio", { name: "Clear sky (hypothetical)" }).click();
+  await expect(chart).toHaveAttribute("data-scenario", "clear");
+  await expect(chart.locator(".s-gap")).toHaveCount(0);
+  await expect(chart.locator(".s-gbp")).toHaveCount(0);
+  await expect(chart.locator(".s-pv")).toHaveClass(/faded/);
+  await expect(page.locator(".day-mode")).toContainText("a counterfactual");
+  await expect(page.locator(".day-mode")).toContainText("the metered loads, the battery and the prices are unchanged");
+  await expect(ledger).toContainText("clear-sky estimate (hypothetical)");
+  await expect(ledger).toContainText("5.97 MW");
+  await expect(ledger).not.toContainText("£221");
+  await expect(ledger).toContainText(PRICE_1100);
+
+  // the worked sum is labelled as the gap, whatever view is selected
+  await expect(page.locator(".sum-k")).toContainText("The gap at 11:00, worked through");
+  for (const [id, v] of [["one_apx", PRICE_1100], ["one_cloud_gbp", "£221"]]) await expect(page.locator(`.sum [data-claim=${id}]`)).toHaveText(v);
+  await ctx.close();
+});
+
+test("v-half guided: the programme runs observed → clear → gap, and a manual choice is never overridden", async ({ page }) => {
+  await toHalf(page);
+  const chart = page.locator(".day-chart");
+  await expect(chart).toHaveAttribute("data-scenario", "observed");
+  await expect(chart).toHaveAttribute("data-scenario", "clear", { timeout: 4000 });
+  await expect(chart).toHaveAttribute("data-scenario", "both", { timeout: 4000 });
+  // re-enter the beat, choose at once, then outlast the pending steps
+  await page.keyboard.press("ArrowLeft");
+  await toBeat(page, "v-half");
+  await page.getByRole("radio", { name: "Observed sky" }).click();
+  await page.waitForTimeout(5000);
+  await expect(chart).toHaveAttribute("data-scenario", "observed");
+  // the keyboard works the same: focus a view and press Space
+  await page.getByRole("radio", { name: "Clear sky (hypothetical)" }).focus();
+  await page.keyboard.press("Space");
+  await expect(chart).toHaveAttribute("data-scenario", "clear");
+});
+
+test("v-half while playing: choosing a view pauses the replay and keeps the view", async ({ page }) => {
+  await toHalf(page);
+  await page.getByRole("button", { name: /^(Play|Resume)/ }).first().click();
+  await page.getByRole("radio", { name: "Observed sky" }).click();
+  await page.waitForTimeout(7000);
+  await expect(page.locator('[data-beat="v-half"]')).toBeVisible();
+  await expect(page.locator(".day-chart")).toHaveAttribute("data-scenario", "observed");
+});
+
+test("v-half on a phone: the views switch by touch @mobile", async ({ page }) => {
+  await toHalf(page);
+  await page.getByRole("radio", { name: "The gap" }).tap();
+  await expect(page.locator(".day-chart")).toHaveAttribute("data-scenario", "both");
+  await page.getByRole("radio", { name: "Observed sky" }).tap();
+  await expect(page.locator(".day-chart .s-gbp")).toHaveCount(0);
 });

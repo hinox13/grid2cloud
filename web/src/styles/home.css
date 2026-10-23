@@ -97,7 +97,7 @@
 }
 
 .home-title {
-  padding: clamp(28px, 3vw, 56px) var(--gutter) clamp(48px, 7vw, 120px);
+  padding: clamp(22px, 1.6vw, 40px) var(--gutter) clamp(48px, 7vw, 120px);
 }
 .display {
   font-size: clamp(2.4rem, 0.3rem + 5.4vw, 6.2rem);
@@ -307,7 +307,7 @@
     left: 6px;
     font-size: 0.6875rem;
   }
-  .tile-sun .sun-title span,
+  .tile-sun .sun-title .sun-sub,
   .sun-fig .sun-when {
     display: none;
   }
@@ -558,7 +558,7 @@
   font-size: 0.875rem;
   line-height: 1.2;
 }
-.tile-sun .sun-title span {
+.tile-sun .sun-title .sun-sub {
   display: block;
   font-weight: 500;
   font-size: 0.75rem;
@@ -589,7 +589,7 @@
     right: 4px;
     font-size: 0.6875rem;
   }
-  .tile-sun .sun-title span,
+  .tile-sun .sun-title .sun-sub,
   .sun-fig .sun-when {
     display: none;
   }
@@ -601,5 +601,284 @@
   }
   .sun-fig .claim {
     white-space: normal;
+  }
+}
+
+/* ------------------------------------------------------------------ where each number comes from */
+.masthead-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 14px;
+  margin: 0;
+  padding: 6px var(--gutter);
+  font-family: var(--f-display);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  background: var(--surface);
+}
+.key-day {
+  font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--accent-text);
+}
+.research-bridge {
+  font-family: var(--f-display);
+  font-weight: 700;
+  color: #f1f3f4;
+}
+.findings {
+  list-style: none;
+  margin: 18px 0 16px;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  max-width: 52ch;
+}
+.finding {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px 12px;
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+}
+.finding[data-finding="3"] {
+  border-left-style: dashed;
+}
+.finding-k {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.finding .scope-mark {
+  color: var(--ink-2);
+}
+.research-text .finding p {
+  margin: 0;
+  font-size: var(--step-small);
+  line-height: 1.5;
+}
+.research-text .research-close {
+  max-width: 52ch;
+}
+.research-figure-k {
+  margin: 0 0 14px;
+  font-family: var(--f-display);
+  font-size: 0.875rem;
+  color: var(--ink-2);
+}
+.moments-sub {
+  max-width: 60ch;
+  margin: -8px 0 18px;
+  color: var(--ink-2);
+}
+.moments-sub {
+  margin-left: var(--axis);
+}
+.moment {
+  grid-template-areas: "name line fig" "name line scope";
+  row-gap: 4px;
+}
+.moment-name {
+  grid-area: name;
+}
+.moment-line {
+  grid-area: line;
+}
+.moment-fig {
+  grid-area: fig;
+}
+.moment-scope {
+  grid-area: scope;
+  justify-self: end;
+  max-width: 34ch;
+  padding-right: 12px;
+  text-align: right;
+}
+.moment-scope .scope-mark {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--muted);
+}
+.moment-scope .claim {
+  color: inherit;
+}
+@media (max-width: 760px) {
+  .masthead-key {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+  .finding {
+    padding: 12px 12px 10px;
+  }
+  .moments-sub {
+    margin-left: 0;
+  }
+  .moment {
+    grid-template-areas: "name fig" "line line" "scope scope";
+  }
+  .moment-scope {
+    justify-self: start;
+    text-align: left;
+    max-width: none;
+  }
+}
+.moment-scope .scope-mark {
+  align-items: flex-start;
+}
+.moment-scope .scope-glyph {
+  margin-top: 1px;
+}
+@media (max-width: 760px) {
+  .masthead-key .d-only {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ why it matters: one plant, two counterfactuals */
+.impact {
+  padding: clamp(56px, 7vw, 120px) var(--gutter);
+  border-top: 1px solid var(--surface-3);
+}
+.impact-eyebrow {
+  margin: 0 0 10px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+.impact-h {
+  max-width: 24ch;
+  margin: 0 0 22px;
+  font-size: var(--step-head);
+  line-height: 1.05;
+}
+.impact-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 72px);
+  margin: 12px 0 28px;
+}
+.impact-card {
+  padding-top: 18px;
+  border-top: 3px solid var(--ink);
+}
+.impact-card[data-cf="clouds"] {
+  border-top-style: dashed;
+}
+.impact-k {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 0.95rem + 0.5vw, 1.4rem);
+}
+.impact-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 6px;
+  font-size: 0.8em;
+  background: var(--ink);
+  color: var(--bg);
+}
+.impact-q {
+  margin: 4px 0 14px;
+  font-family: var(--f-display);
+  font-size: 0.875rem;
+  color: var(--ink-2);
+}
+.impact-big {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 1.6rem + 5vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.impact-big .claim {
+  color: var(--accent-text);
+}
+.impact-big .unit {
+  font-size: 0.42em;
+  letter-spacing: 0;
+}
+.impact-gbp {
+  margin: 10px 0 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+}
+.impact-gbp-note {
+  display: block;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.impact-say {
+  max-width: 44ch;
+  margin: 12px 0 0;
+}
+.impact-read {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px clamp(20px, 3vw, 48px);
+  margin: 0;
+  padding: 18px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--surface-3);
+  font-size: var(--step-small);
+  color: var(--ink-2);
+}
+.impact-read strong {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--f-display);
+  color: var(--ink);
+}
+.challenge {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 72px);
+  align-items: start;
+  margin-top: clamp(48px, 6vw, 96px);
+}
+.challenge-text {
+  max-width: 64ch;
+}
+.challenge-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 3px solid var(--ink);
+}
+.challenge-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--surface-3);
+  color: var(--ink-2);
+}
+.challenge-list strong {
+  font-family: var(--f-display);
+  color: var(--ink);
+}
+.challenge-h {
+  margin: 0 0 14px;
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
+}
+.challenge p {
+  margin: 0 0 14px;
+}
+.challenge-q {
+  padding-left: 16px;
+  border-left: 3px solid var(--accent);
+}
+@media (max-width: 760px) {
+  .impact-pair,
+  .impact-read,
+  .challenge {
+    grid-template-columns: 1fr;
   }
 }

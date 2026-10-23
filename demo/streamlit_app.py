@@ -34,4 +34,10 @@ nav = st.navigation(
     ],
     position="top",
 )
+# The React website is the official application; this explorer is kept as the optional original.
+st.caption(
+    "The official Cloud2Grid application is the website, "
+    "[hinox13.github.io/grid2cloud](https://hinox13.github.io/grid2cloud/). "
+    "This is the original Streamlit explorer, kept as an optional alternative."
+)
 nav.run()

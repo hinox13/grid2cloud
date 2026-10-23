@@ -88,7 +88,7 @@ export function ScopeMark({ kind, children }: { kind: ScopeKind; children: React
   return (
     <span className={`scope-mark mark-${kind}`} data-scope={kind}>
       <Glyph kind={kind} />
-      {children}
+      <span className="scope-mark-t">{children}</span>
     </span>
   );
 }

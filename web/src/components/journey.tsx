@@ -178,7 +178,7 @@ export function ImportAxis({ rows, hidden = [], focus, withAC = false }: { rows:
           );
         })}
       </div>
-      <p className="iax-note">Average power drawn from the national grid over the same {c.n_states.display} real half-hours of 2024. The reference is an AC reconstruction informed by observations, not a measured grid state.</p>
+      <p className="iax-note">Average power drawn from the national grid over the same {c.n_states.display} reconstructed real half-hours of 2024. The reference is an AC reconstruction informed by observations, not a measured grid state.</p>
     </figure>
   );
 }

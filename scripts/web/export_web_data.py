@@ -425,6 +425,11 @@ def claims(story: dict, evo: pd.DataFrame, cat: dict, periods: pd.DataFrame, sea
     add("cloud_pos_mwh", cl["positive_mwh"], "MWh", f"{cl['positive_mwh']:,.0f}", "hypothetical", qs, "sum of the positive half-hours")
     add("apx_neg_periods", eq["apx_negative_periods"], "half-hours", str(eq["apx_negative_periods"]), "observed", qs, "valued half-hours with a negative APX price")
     add("apx_season_min", eq["apx_min_gbp_mwh"], "GBP/MWh", num(eq["apx_min_gbp_mwh"], ".0f").replace("−", "−£") if eq["apx_min_gbp_mwh"] < 0 else f"£{eq['apx_min_gbp_mwh']:.0f}", "observed", qs)
+    pl = eq["plant"]
+    add("impact_pv_mwh", pl["net_mwh"], "MWh", f"{pl['net_mwh']:,.0f}", "hypothetical", qs, "rounded; exact value season_pv_attributed_mwh")
+    add("impact_cloud_mwh", cl["net_mwh"], "MWh", f"{cl['net_mwh']:,.0f}", "hypothetical", qs, "rounded; exact value season_cloud_attributed_mwh")
+    add("impact_pv_share", pl["share_of_no_plant_import"] * 100, "%", f"{pl['share_of_no_plant_import'] * 100:.1f}", "hypothetical", qs, pl["meaning"])
+    add("impact_pv_neg_value_periods", pl["negative_value_contributions"], "half-hours", str(pl["negative_value_contributions"]), "observed", qs, "half-hours where the plant's displaced import carries a negative APX price")
     add("season_days_span", eq["days_in_months_covered"], "days", str(eq["days_in_months_covered"]), "simulated", qs, "calendar days in the months covered")
     add("periods_day_min", eq["periods_per_day"]["min"], "half-hours", str(eq["periods_per_day"]["min"]), "simulated", qs)
     add("periods_day_max", eq["periods_per_day"]["max"], "half-hours", str(eq["periods_per_day"]["max"]), "simulated", qs)

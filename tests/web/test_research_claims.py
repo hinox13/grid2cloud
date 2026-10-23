@@ -285,3 +285,18 @@ def test_network_wide_response_and_cancellation(C: dict) -> None:
         )
         == ("0.999", "11.7", "0.05")
     )
+
+
+def test_homepage_impact_figures(C: dict, P: pd.DataFrame) -> None:
+    """The homepage's impact numbers: the two counterfactuals of one plant, rounded from the same sums."""
+    pv, cl = float((P.dpv_AC * 0.5).sum()), float((P.dcl_AC * 0.5).sum())
+    assert C["impact_pv_mwh"]["display"] == f"{pv:,.0f}" == "4,038"
+    assert C["impact_cloud_mwh"]["display"] == f"{cl:,.0f}" == "1,428"
+    assert C["impact_pv_mwh"]["value"] == pytest.approx(C["season_pv_attributed_mwh"]["value"], abs=1e-3)
+    assert C["impact_cloud_mwh"]["value"] == pytest.approx(C["season_cloud_attributed_mwh"]["value"], abs=1e-3)
+    no_plant = float((P.I_AC * 0.5).sum()) + pv
+    assert C["impact_pv_share"]["value"] == pytest.approx(100 * pv / no_plant, abs=1e-3)
+    assert C["impact_pv_share"]["display"] == "5.6"
+    v = P.dpv_AC * 0.5 * P.apx_gbp_mwh
+    assert C["impact_pv_neg_value_periods"]["value"] == int((v < 0).sum()) == 180
+    assert int((P.dpv_AC < 0).sum()) == 0  # the plant never raises the import; only prices make terms negative
